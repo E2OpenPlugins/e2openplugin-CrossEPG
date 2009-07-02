@@ -1,0 +1,6 @@
+Thanks to Ambrosa (http://www.ambrosa.net) for e2_loadepg (my reference for opentv and enigma2 epg.dat)
+Thanks to Pippo9000 at http://forum.sifteam.eu (for help with internal dgs db and other usefull tips)
+Thanks to Genge at http://forum.sifteam.eu for enigma2 support and debugging
+Thanks to Gianathem at http://www.dreamboxonline.com/forums/ for enigma2 support
+Thanks to Tideglo at http://forum.sifteam.eu for enigma2 support
+Thanks to eepg developers (http://www.linuxtv.org/vdrwiki/index.php/Eepg-plugin) for various epg protocols

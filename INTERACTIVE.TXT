@@ -1,0 +1,43 @@
+From 0.3.0 crossepg could be started in interactive mode and throught pipes you can send commands and receive informations.
+This feature permit a more flexible integration from an external application and crossepg.
+
+
+Interactive and downloader (crossepg_downloader -r)
+
+Commands (sended from main application to crossepg):
+DEMUXER (arg)   : (property) Set the demuxer.
+DOWNLOAD (arg)  : (action) Start download. Arg is the provider name
+WAIT			: (action) Disable timeout until next command
+SAVE            : (action) Save data on disk
+QUIT            : Exit
+
+Information (sended from crossepg to main application)
+OK              : Property setted
+START           : Action started
+END             : Action ended
+ERROR (arg)     : Error. Arg is the error description
+CHANNELS (arg)  : How many channels are read
+SIZE (arg)      : How many bytes are read or parsed
+PROGRESS (arg)  : A progress value from 0 to 100
+TYPE (arg)      : Operation type. Arg is :
+                  - READ CHANNELS
+                  - READ TITLES
+                  - PARSE TITLES
+                  - READ SUMMARIES
+                  - PARSE SUMMARIES
+
+Interactive and dbconverter (crossepg_dbconverter -r)
+
+Commands (sended from main application to crossepg):
+LAMEDB (arg)    : (property) Set the lamedb.
+EPGDAT (arg)    : (property) Set the epg.dat.
+CONVERT         : (action) Start conversion
+TEXT			: (action) Get data in text format throught stdout
+QUIT            : Exit
+
+Information (sended from crossepg to main application)
+OK              : Property setted
+START           : Action started
+END             : Action ended
+ERROR (arg)     : Error. Arg is the error description
+PROGRESS (arg)  : A progress value from 0 to 100

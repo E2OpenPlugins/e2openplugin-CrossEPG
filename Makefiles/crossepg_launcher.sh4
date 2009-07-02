@@ -1,0 +1,41 @@
+include Makefiles/includes/common.include
+include Makefiles/includes/sh4.include
+
+OBJS += src/common/memory.o
+OBJS += src/common/core/config.o
+OBJS += src/common/core/log.o
+OBJS += src/common/core/intl.o
+OBJS += src/dgs/crossepg.launcher.o
+OBJS += src/dgs/dgs.o
+OBJS += src/dgs/dgs_groups.o
+OBJS += src/dgs/dgs_helper.o
+
+CFLAGS += -I./include
+CFLAGS += -I../../include/sbox
+CFLAGS += -I../../include/modules
+CFLAGS += -I../../include/tools
+CFLAGS += -I../../include/st_drv
+CFLAGS += -Wall
+#CFLAGS += -DSLEEP=2000
+
+LIBS +=
+
+LDFLAGS +=
+
+OUTPUT = ./dgs/var/plug-in/crossepg.launcher.plugin
+
+all : clean $(OUTPUT)
+
+clean :
+	rm -f $(OUTPUT)
+	rm -f $(OBJS)
+
+$(OBJS) :
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
+
+$(OUTPUT) : $(OBJS) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -shared -nostartfiles -o $@ $^ $(LIBS)
+	$(STRIP) $@
+	
+install:
+	ncftpput  -u root -p sifteam 192.168.0.6 /var/plug-in/ $(OUTPUT)

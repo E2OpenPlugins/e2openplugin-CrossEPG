@@ -1,0 +1,41 @@
+include Makefiles/includes/common.include
+include Makefiles/includes/sh4.include
+
+OBJS += src/crossepg_alias.o
+OBJS += src/memory.o
+OBJS += src/aliases/aliases.o
+OBJS += src/dgs/dgs.o
+OBJS += src/dgs/dgs_helper.o
+OBJS += src/core/log.o
+OBJS += src/core/config.o
+OBJS += src/epgdb/epgdb.o
+OBJS += src/epgdb/epgdb_channels.o
+OBJS += src/epgdb/epgdb_titles.o
+OBJS += src/epgdb/epgdb_aliases.o
+
+CFLAGS += -I./include
+CFLAGS += -I../../include/sbox
+CFLAGS += -I../../include/modules
+CFLAGS += -I../../include/tools
+CFLAGS += -I../../include/st_drv
+CFLAGS += -Wall
+CFLAGS += -DSTANDALONE
+
+LIBS +=
+
+LDFLAGS +=
+
+OUTPUT = ./dgs/var/crossepg/crossepg_alias
+
+all : clean $(OUTPUT)
+
+clean :
+	rm -f $(OUTPUT)
+	rm -f $(OBJS)
+
+$(OBJS) :
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
+
+$(OUTPUT) : $(OBJS) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -lsqlite3 -ldl -o $@ $^ $(LIBS)
+	$(STRIP) $@

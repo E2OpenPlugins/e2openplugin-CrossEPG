@@ -1,0 +1,92 @@
+# the colors are in RGB notation (rrggbb)
+
+window_top_red_tab ff0000
+window_top_green_tab 00ff00
+window_top_yellow_tab fffc00
+window_top_blue_tab 0090ff
+window_top_clock ffffff
+window_bottom_text ffffff
+window_background 03123e
+
+# GRID BOX
+grid_header_foreground ffffff
+grid_header_background ff00ff
+grid_title_foreground ffffff
+grid_title_background ff00ff
+grid_title_selected_foreground 4f3e20
+grid_title_selected_background c0c0c0
+grid_title_rec_foreground 575556
+grid_title_rec_background f38484
+grid_title_zap_foreground 575556
+grid_title_zap_background 95c1ea
+grid_channel_foreground ffffff
+grid_channel_background ff00ff
+grid_channel_selected_foreground 4f3e20
+grid_channel_selected_background c0c0c0
+grid_border 9db9c8
+
+# EVENT INFO BOX
+info_foreground ffffff
+info_background ff00ff
+
+# CHANNELS LIST BOX
+list_channels_foreground ffffff
+list_channels_background ff00ff
+list_channels_selected_foreground 333333
+list_channels_selected_background cccccc
+
+# TITLES LIST BOX
+list_titles_foreground ffffff
+list_titles_background ff00ff
+list_titles_selected_foreground 333333
+list_titles_selected_background cccccc
+list_titles_rec_foreground ff0000
+list_titles_rec_background ff00ff
+list_titles_zap_foreground 7777ff
+list_titles_zap_background ff00ff
+
+# SCHEDULER LIST BOX
+list_scheduler_foreground ffffff
+list_scheduler_background ff00ff
+list_scheduler_selected_foreground 333333
+list_scheduler_selected_background cccccc
+
+# LIGHT VIEW BOX
+light_foreground ffffff
+light_background ff00ff
+light_zap_foreground 333333
+light_rec_foreground cccccc
+
+# PROGRESS WINDOW
+progress_foreground cccccc
+progress_background 333333
+progress_border cccccc
+
+# CONFIG WINDOW
+config_foreground cccccc
+config_background ff00ff
+config_border cccccc
+config_selected_foreground 4f3e20
+config_selected_background cccccc
+
+# MENU WINDOW
+menu_foreground ffffff
+menu_background ff00ff
+menu_border cccccc
+menu_selected_foreground 4f3e20
+menu_selected_background cccccc
+
+# DIALOG BOX WINDOW
+box_foreground cccccc
+box_background 333333
+box_border cccccc
+
+# PLUGINS BOX
+plugins_top_foreground cccccc
+plugins_top_background 03123e
+plugins_background 03123e
+plugins_border cccccc
+plugins_red ff0000
+plugins_green 00ff00
+plugins_yellow fffc00
+plugins_blue 0090ff

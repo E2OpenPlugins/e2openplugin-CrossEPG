@@ -1,0 +1,65 @@
+crossepglib offer 2 class:
+- CrossEPG_Config
+- CrossEPG_Wrapper
+
+Class CrossEPG_Config
+Properties:
+- providers				list - contain the selected providers
+- db_root				string - path where db is saved
+- home_directory		string - home directory
+- auto_boot				int - enable auto load epg on boot
+- auto_daily			int - enable daily download
+- auto_daily_hours		int - daily download at (hours)
+- auto_daily_minutes	int - daily download at (minutes)
+- auto_tune				int - enable auto download on channel tune
+- auto_tune_osd 		int - enable osd on auto download on channel tune
+
+Functions:
+load()						load configuration
+save()						save configuration
+getChannelID(provider)		get provider service id (return a string)
+getAllProviders()			get providers list (return a list)
+
+
+Class CrossEPG_Wrapper
+Const:
+EVENT_READY			= 0
+EVENT_OK			= 1
+EVENT_START			= 2
+EVENT_END			= 3
+EVENT_QUIT			= 4
+EVENT_ERROR			= 5
+EVENT_ACTION		= 9
+EVENT_STATUS		= 10
+EVENT_PROGRESS		= 11
+EVENT_PROGRESSONOFF	= 12
+EVENT_CHANNEL		= 13
+EVENT_STARTTIME		= 14
+EVENT_LENGTH		= 15
+EVENT_NAME			= 16
+EVENT_DESCRIPTION	= 17
+
+CMD_DOWNLOADER		= 0
+CMD_CONVERTER		= 1
+
+Functions:
+init(cmd)					Init wrapper - cmd is CrossEPG_Wrapper.CMD_DOWNLOADER or CrossEPG_Wrapper.CMD_CONVERTER
+addCallback(callback)		Add an event callback
+delCallback(callback)		Remove a callback
+running()					Wrapper is running (return a bool)
+lamedb(value)				Set lamedb (only for dbconverter)
+egpdat(value)				Set epgdat (only for dbconverter)
+demuxer(value)				Set demuxer (only for downloader)
+download(provider)			Send download action
+convert()					Send convert action
+text()						Send text action
+stop()						Send stop action
+save()						Send save action
+wait()						Send wait action
+quit()						Send quit action
+
+
+Callback format:
+def __wrapperCallback(event, param):
+- event is CrossEPG_Wrapper.EVENT_*
+- param could change in relation with event type. Could be None or a string or int

@@ -1,0 +1,37 @@
+include Makefiles/includes/common.include
+include Makefiles/includes/mipsel.include
+
+OBJS += src/crossepg_importer.o
+OBJS += src/memory.o
+OBJS += src/aliases/aliases.o
+OBJS += src/core/log.o
+OBJS += src/epgdb/epgdb.o
+OBJS += src/epgdb/epgdb_channels.o
+OBJS += src/epgdb/epgdb_titles.o
+OBJS += src/epgdb/epgdb_aliases.o
+OBJS += src/importer/csv.o
+OBJS += src/importer/importer.o
+OBJS += src/net/http.o
+
+CFLAGS += -Wall
+CFLAGS += -DSTANDALONE
+CFLAGS += -DE2
+
+LIBS +=
+
+LDFLAGS +=
+
+OUTPUT = ./enigma2/mipsel/usr/crossepg/crossepg_importer
+
+all : clean $(OUTPUT)
+
+clean :
+	rm -f $(OUTPUT)
+	rm -f $(OBJS)
+
+$(OBJS) :
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
+
+$(OUTPUT) : $(OBJS) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(STRIP) $@
