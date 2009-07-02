@@ -540,7 +540,7 @@ int main (int argc, char **argv)
 	if (epgdb_open (db_root)) log_add ("EPGDB opened");
 	else
 	{
-		interactive_send_text (ACTION_ERROR, "error opening EPGDB");
+		//interactive_send_text (ACTION_ERROR, "error opening EPGDB");
 		log_add ("Error opening EPGDB");
 		epgdb_close ();
 		return 0;
@@ -550,7 +550,7 @@ int main (int argc, char **argv)
 	if (epgdb_load ()) log_add ("Completed");
 	else
 	{
-		interactive_send_text (ACTION_ERROR, "cannot read EPGDB");
+		//interactive_send_text (ACTION_ERROR, "cannot read EPGDB");
 		log_add ("Cannot read EPGDB");
 		epgdb_close ();
 		return 0;
