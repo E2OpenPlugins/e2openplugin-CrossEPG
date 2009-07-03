@@ -1,0 +1,44 @@
+include Makefiles/includes/common.include
+include Makefiles/includes/ppc.include
+
+OBJS += src/common/crossepg_downloader.o
+OBJS += src/common/memory.o
+OBJS += src/common/core/log.o
+OBJS += src/common/core/interactive.o
+OBJS += src/common/dvb/dvb.o
+OBJS += src/common/aliases/aliases.o
+OBJS += src/common/net/http.o
+OBJS += src/common/opentv/opentv.o
+OBJS += src/common/opentv/huffman.o
+OBJS += src/common/opentv/opentv_config.o
+OBJS += src/common/epgdb/epgdb.o
+OBJS += src/common/epgdb/epgdb_index.o
+OBJS += src/common/epgdb/epgdb_channels.o
+OBJS += src/common/epgdb/epgdb_titles.o
+OBJS += src/common/epgdb/epgdb_aliases.o
+
+CFLAGS += -Wall
+CFLAGS += -DE1
+#CFLAGS += -DMEMORYMON
+
+LIBS +=
+
+LDFLAGS += -lpthread
+
+OUTPUT = ./enigma1/ppc/usr/crossepg/crossepg_downloader
+
+all : clean $(OUTPUT)
+
+clean :
+	rm -f $(OUTPUT)
+	rm -f $(OBJS)
+
+$(OBJS) :
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
+
+$(OUTPUT) : $(OBJS) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(STRIP) $@
+	
+install:
+	ncftpput  -u root -p root 192.168.0.7 /usr/crossepg/ $(OUTPUT)

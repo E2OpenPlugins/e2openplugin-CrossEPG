@@ -1,0 +1,4 @@
+CROSS = /opt/dm600/dm600pvr/build/tmp/cross/bin/powerpc-linux-
+CC = $(CROSS)gcc
+STRIP = $(CROSS)strip
+CFLAGS += -I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/include/
