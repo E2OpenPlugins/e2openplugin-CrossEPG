@@ -6,6 +6,7 @@ find . | grep "\.DS_Store" | xargs rm 2>/dev/null
 find . | grep "\.o$" | xargs rm 2>/dev/null
 
 make -f Makefiles/crossepg.sh4 clean
+make -f Makefiles/crossepgd.sh4 clean
 make -f Makefiles/crossepg_alias.sh4 clean
 make -f Makefiles/crossepg_alias.enigma2.sh4 clean
 make -f Makefiles/crossepg_alias.enigma2.mipsel clean
