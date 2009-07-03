@@ -131,7 +131,7 @@ void show_config ()
 	
 	int provider_count = 0;
 	w_config_value_t provider_values[64];
-	DIR *dd = opendir ("/var/crossepg/opentv");
+	DIR *dd = opendir ("/var/crossepg/providers");
 	struct dirent *file;
 	
 	items[4].selected_value = 0;

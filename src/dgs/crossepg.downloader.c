@@ -437,6 +437,7 @@ int plugin_main(int argc, char *argv[])
 		delpid ();
 		return 0;
 	}
+
 	epgdb_load ();
 	
 	scheduler_init ();
@@ -458,12 +459,12 @@ int plugin_main(int argc, char *argv[])
 	window_progress_show ();
 
 	aliases_make (config_get_home_directory ());
-	
+
 	for (i=0; i<64; i++)
 	{
 		if (strlen (config_get_otv_provider (i)) > 0)
 		{
-			sprintf (opentv_file, "%s/opentv/%s.conf", config_get_home_directory (), config_get_otv_provider (i));
+			sprintf (opentv_file, "%s/providers/%s.conf", config_get_home_directory (), config_get_otv_provider (i));
 			if (!opentv_config_read (opentv_file))
 			{
 				log_add ("Cannot load provider configuration");
@@ -479,7 +480,7 @@ int plugin_main(int argc, char *argv[])
 					sleep (config_get_channel_sleep ());
 				}
 				
-				sprintf (dictionary, "%s/opentv/%s.dict", config_get_home_directory (), config_get_otv_provider (i));
+				sprintf (dictionary, "%s/providers/%s.dict", config_get_home_directory (), config_get_otv_provider (i));
 				
 				opentv_download (dictionary);
 			}

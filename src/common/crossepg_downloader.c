@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <linux/dvb/dmx.h>
 #include <sys/ioctl.h>
 #include <sys/poll.h>
 #include <fcntl.h>
@@ -13,6 +12,14 @@
 #include <errno.h>
 #include <pthread.h>
 #include <signal.h>
+
+#ifdef E1
+#include <ost/dmx.h>
+#define dmx_pes_filter_params dmxPesFilterParams
+#define dmx_sct_filter_params dmxSctFilterParams
+#else
+#include <linux/dvb/dmx.h>
+#endif
 
 #include "../common.h"
 

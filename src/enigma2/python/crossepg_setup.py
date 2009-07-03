@@ -44,10 +44,10 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		
 		for partition in harddiskmanager.getMountedPartitions():
 			if partition.mountpoint != "/":
-				if partition.mountpoint + "crossepg/" == self.config.db_root:
+				if partition.mountpoint + "/crossepg/" == self.config.db_root:
 					default = partition.description
 				self.mountdescription.append(partition.description)
-				self.mountpoint.append(partition.mountpoint + "crossepg/")
+				self.mountpoint.append(partition.mountpoint + "/crossepg/")
 				
 		self.citems.append(("Save data on device", ConfigSelection(self.mountdescription, default)))
 		
@@ -71,7 +71,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self.citems.append(("Automatic daily download", ConfigYesNo(self.config.auto_daily > 0)))
 		self.citems.append(("Automatic daily download at", ConfigClock(mktime(ltime))))
 		self.citems.append(("Automatic download on tune", ConfigYesNo(self.config.auto_tune > 0)))
-		self.citems.append(("Automatic download on tune with OSD", ConfigYesNo(self.config.auto_tune_osd > 0)))
+		self.citems.append(("Show OSD for automatic download", ConfigYesNo(self.config.auto_tune_osd > 0)))
 		
 		ConfigListScreen.__init__(self, self.citems)
 		self["key_red"] = Button(_("Cancel"))

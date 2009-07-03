@@ -7,7 +7,9 @@ OBJS += src/common/core/log.o
 OBJS += src/common/core/intl.o
 OBJS += src/common/epgdb/epgdb.o
 OBJS += src/common/epgdb/epgdb_channels.o
+OBJS += src/common/epgdb/epgdb_index.o
 OBJS += src/common/epgdb/epgdb_titles.o
+OBJS += src/common/epgdb/epgdb_aliases.o
 OBJS += src/common/epgdb/epgdb_search.o
 OBJS += src/dgs/crossepg.o
 OBJS += src/dgs/dgs.o
@@ -17,6 +19,7 @@ OBJS += src/dgs/dgs_helper.o
 OBJS += src/dgs/dgs_scheduler.o
 OBJS += src/dgs/scheduler/scheduler.o
 
+CFLAGS += -DDGS
 CFLAGS += -I./include
 CFLAGS += -I../../include/sbox
 CFLAGS += -I../../include/modules

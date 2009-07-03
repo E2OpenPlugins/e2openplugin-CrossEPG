@@ -25,6 +25,7 @@ OBJS += src/dgs/dgs_helper.o
 OBJS += src/dgs/dgs_scheduler.o
 OBJS += src/dgs/scheduler/scheduler.o
 
+CFLAGS += -DDGS
 CFLAGS += -I./include
 CFLAGS += -I../../include/sbox
 CFLAGS += -I../../include/modules

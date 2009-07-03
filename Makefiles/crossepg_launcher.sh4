@@ -10,6 +10,7 @@ OBJS += src/dgs/dgs.o
 OBJS += src/dgs/dgs_groups.o
 OBJS += src/dgs/dgs_helper.o
 
+CFLAGS += -DDGS
 CFLAGS += -I./include
 CFLAGS += -I../../include/sbox
 CFLAGS += -I../../include/modules

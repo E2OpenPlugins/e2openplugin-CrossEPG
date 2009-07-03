@@ -1,7 +1,11 @@
 #!/bin/sh
-[ -f /tmp/myepgd.pid ] && kill `cat /tmp/myepgd.pid`
+[ -f /tmp/crossepgd.pid ] && kill `cat /tmp/crossepgd.pid`
 sleep 1
-tar zxf myepg.tar.gz -C /
-rm myepg.tar.gz
+tar zxvf crossepg.tar.gz -C /
+rm crossepg.tar.gz
 rm installer.sh
-/var/myepg/myepgd &
+chmod +x /var/crossepg/crossepgd
+chmod +x /var/crossepg/crossepg_alias
+chmod +x /var/crossepg/crossepg_importer
+chmod +x /var/crossepg/uninstall.sh
+/var/crossepg/crossepgd &

@@ -19,7 +19,7 @@
 
 #include "scheduler.h"
 
-#define MAGIC_SCHEDULER		"CrossEPG_SCHEDULER"
+#define MAGIC_SCHEDULER		"_xEPG_SCHEDULER"
 #define FAKE_SCHEDULER		"__NO__SCHEDULER"
 #define SCHEDULER_REVISION	0x00
 

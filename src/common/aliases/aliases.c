@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <time.h>
 #include <stdlib.h>
-#ifndef E2
+#ifdef DGS
 #include <sqlite3.h>
 #endif
 #include <wctype.h>
@@ -12,7 +12,7 @@
 #include "../../common.h"
 
 #include "../core/log.h"
-#ifndef E2
+#ifdef DGS
 #include "../../dgs/dgs.h"
 #include "../../dgs/dgs_helper.h"
 #endif
@@ -204,8 +204,10 @@ void _aliases_load (alias_t *aliases, int max_aliases, char *filename)
 
 #ifdef E2
 #include "aliases.enigma2.c"
-#else
+#elif DGS
 #include "aliases.dgs.c"
+#elif E1
+#include "aliases.enigma2.c"
 #endif
 
 bool _aliases_make_extension_check (char *filename, char *extension)
