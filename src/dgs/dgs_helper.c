@@ -423,7 +423,6 @@ bool dgs_helper_add_scheduler (int channel_id, time_t start_time, int length, in
 			fwrite (cmd, strlen (cmd), 1, fd);
 			fclose (fd);
 		}
-		sleep (3);
 		exit (0);
 	}
 	else if (child_pid > 0)
@@ -431,9 +430,6 @@ bool dgs_helper_add_scheduler (int channel_id, time_t start_time, int length, in
 		fd = fopen ("/dev/weboutput", "r");
 		if (fd != NULL)
 		{
-			int status;
-			waitpid (child_pid, &status, 0);
-			
 			fread (data, 4096, 1, fd);
 			fclose (fd);
 			if (memcmp (data, "true", 4) == 0) ret = true;

@@ -217,12 +217,16 @@ void scheduler_del (int channel_id, time_t start_time, int length, int type, boo
 	}
 }
 
-bool scheduler_add (int channel_id, time_t start_time, int length, int type, char *name, bool with_dgs)
+int scheduler_add (int channel_id, time_t start_time, int length, int type, char *name, bool with_dgs)
 {
-	if (start_time < time (NULL)) return false;
-	if (channel_id <= 0) return false;
-	if (length <= 0) return false;
-	if ((type != 0) && (type != 1) && (type != 2)) return false;
+	if (start_time <= time(NULL))
+	{
+		dgs_helper_commander ("rec\n");
+		return -2;
+	}
+	if (channel_id <= 0) return -3;
+	if (length <= 0) return -3;
+	if ((type != 0) && (type != 1) && (type != 2)) return -3;
 	
 	log_add ("Adding scheduled record on channel %d at unixtime %d", channel_id, (int)start_time);
 	bool dgs_added = false;
@@ -308,9 +312,9 @@ bool scheduler_add (int channel_id, time_t start_time, int length, int type, cha
 				tmp = tmp->next;
 			}
 		}
-		return true;
+		return 0;
 	}
-	return false;
+	return -1;
 }
 
 scheduler_t *scheduler_get_by_channel_and_title (dgs_channel_t *channel, epgdb_title_t *title)
@@ -348,7 +352,7 @@ bool _scheduler_link_add (int channel_id, epgdb_title_t *title)
 			if (sch == NULL)
 			{
 				char *title_text = epgdb_read_description (title);
-				if (!scheduler_add (channel_id, dgs_helper_adjust_daylight (title->start_time), title->length, 0, title_text, true))
+				if (scheduler_add (channel_id, dgs_helper_adjust_daylight (title->start_time), title->length, 0, title_text, true) < 0)
 				{
 					// TODO: Add error message box
 				}

@@ -36,6 +36,7 @@ FILENAME=../crossepg_packages/crossepg-$VERSION-full.tar.gz
 FILENAME_DGS_SH4=../crossepg_packages/crossepg-$VERSION-dgs-sh4.tar.gz
 FILENAME_E2_SH4=../crossepg_packages/crossepg-$VERSION-enigma2-sh4.tar.gz
 FILENAME_E2_MIPSEL=../crossepg_packages/crossepg-$VERSION-enigma2-mipsel.tar.gz
+FILENAME_E1_PPC=../crossepg_packages/crossepg-$VERSION-enigma1-ppc.tar.gz
 
 tar --exclude-vcs -zcf $FILENAME ../crossepg
 cd dgs
@@ -48,6 +49,9 @@ tar --exclude-vcs -zcf ../../$FILENAME_E2_SH4 *
 cd ../..
 cd enigma2/mipsel
 tar --exclude-vcs -zcf ../../$FILENAME_E2_MIPSEL *
+cd ../..
+cd enigma1/ppc
+tar --exclude-vcs -zcf ../../$FILENAME_E1_PPC *
 cd ../..
 
 exit 0

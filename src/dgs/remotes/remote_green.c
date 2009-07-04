@@ -51,7 +51,7 @@ static int remote_green_event_handler (event_t *event)
 	
 	if (key == 0x160)		// ok button
 	{
-		if (title_ok () == -1)
+		if (title_ok (false) == -1)
 		{
 			selected_screen = -1;
 			return -1;

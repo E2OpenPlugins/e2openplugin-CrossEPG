@@ -4,6 +4,7 @@ sleep 1
 tar zxvf crossepg.tar.gz -C /
 rm crossepg.tar.gz
 rm installer.sh
+[ ! -e /dev/weboutput ] && mkfifo -m 600 /dev/weboutput
 chmod +x /var/crossepg/crossepgd
 chmod +x /var/crossepg/crossepg_alias
 chmod +x /var/crossepg/crossepg_importer

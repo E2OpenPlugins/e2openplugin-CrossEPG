@@ -56,6 +56,7 @@ light_foreground ffffff
 light_background ff00ff
 light_zap_foreground 333333
 light_rec_foreground cccccc
+light_channel_foreground fffe88
 
 # PROGRESS WINDOW
 progress_foreground cccccc

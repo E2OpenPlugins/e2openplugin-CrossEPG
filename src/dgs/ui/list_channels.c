@@ -85,7 +85,7 @@ static void list_channels_update ()
 			offset = font_width_str (&font, tmp->name, strlen (tmp->name));
 			font_draw_str (&font, tmp->name, strlen (tmp->name), &window_list_channels->fb, window_list_channels->gc, 5, (i*26)+4);
 			
-			if (title_text != NULL)
+			if (title_text != NULL && config_get_show_title ())
 			{
 				char row[1024];
 				char *text = ui_resize_string (title_text, font.size, LIST_CHANNELS_WIDTH - offset - 60);

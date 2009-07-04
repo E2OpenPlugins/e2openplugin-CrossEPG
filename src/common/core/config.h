@@ -33,6 +33,7 @@ int config_get_boot_action ();
 int config_get_cron_action ();
 int config_get_cron_hour ();
 int config_get_channel_sleep ();
+int config_get_show_title ();
 
 void config_set_db_root (char *value);
 void config_set_log_file (char *value);
@@ -54,6 +55,7 @@ void config_set_boot_action (int value);
 void config_set_cron_action (int value);
 void config_set_cron_hour (int value);
 void config_set_channel_sleep (int value);
+void config_set_show_title (int value);
 
 void config_set_sync_hours (int value);
 void config_set_sync_groups (int id, int value);

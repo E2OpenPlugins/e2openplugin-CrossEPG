@@ -26,7 +26,7 @@ static int remote_red_event_handler (event_t *event)
 		group_prev ();
 	
 	if (key == 0x160)		// ok button
-		title_ok ();
+		title_ok (false);
 	
 	if (key == 0xa7)		// rec button
 		title_rec ();

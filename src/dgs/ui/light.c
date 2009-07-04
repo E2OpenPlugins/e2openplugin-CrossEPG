@@ -31,7 +31,7 @@ static void light_update_show_title (epgdb_title_t *title, int row)
 	if ((loctime.tm_year == loctime_now.tm_year) && (loctime.tm_mon == loctime_now.tm_mon) && (loctime.tm_mday == loctime_now.tm_mday))
 	{
 		offset = font_width_str (&font, intl (TODAY), strlen (intl (TODAY)));
-		font_draw_str (&font, intl (TODAY), strlen (intl (TODAY)), &window_light->fb, window_light->gc, 18, 40+(row*26));
+		font_draw_str (&font, intl (TODAY), strlen (intl (TODAY)), &window_light->fb, window_light->gc, 18, 48+(row*26));
 	}
 	else
 	{
@@ -41,9 +41,9 @@ static void light_update_show_title (epgdb_title_t *title, int row)
 	
 	strftime (start_time, 255, intl (TIME_HM), &loctime);
 	
-	font_draw_str (&font, start_time, strlen (start_time), &window_light->fb, window_light->gc, offset+26, 40+(row*26));
+	font_draw_str (&font, start_time, strlen (start_time), &window_light->fb, window_light->gc, offset+26, 48+(row*26));
 	char *name = epgdb_read_description (title);
-	font_draw_str (&font, name, strlen (name), &window_light->fb, window_light->gc, offset+88, 40+(row*26));
+	font_draw_str (&font, name, strlen (name), &window_light->fb, window_light->gc, offset+88, 48+(row*26));
 	offset += (88 + font_width_str (&font, name, strlen (name)));
 	_free (name);
 	
@@ -74,7 +74,7 @@ static void light_update_show_title (epgdb_title_t *title, int row)
 		sprintf (missing, intl (STARTED), (int)(now - dgs_helper_adjust_daylight (title->start_time)) / 60);
 	}
 	sprintf (missing2, "(%s)", missing);
-	font_draw_str (&font, missing2, strlen (missing2), &window_light->fb, window_light->gc, offset+12, 40+(row*26));
+	font_draw_str (&font, missing2, strlen (missing2), &window_light->fb, window_light->gc, offset+12, 48+(row*26));
 }
 
 static void light_update ()
@@ -90,7 +90,9 @@ static void light_update ()
 	if (selected_channel != NULL)
 	{
 		font.size = 20;
+		gc_set_fc (window_light->gc, COLOR_LIGHT_CHANNEL_FOREGROUND);	
 		font_draw_str (&font, selected_channel->name, strlen (selected_channel->name), &window_light->fb, window_light->gc, 5, 10);
+		gc_set_fc (window_light->gc, COLOR_LIGHT_FOREGROUND);	
 		
 		if (selected_title != NULL)
 		{
@@ -106,7 +108,7 @@ static void light_update ()
 	{
 		int width;
 		font.size = 20;
-		gc_set_fc (window_light->gc, COLOR_LIGHT_FOREGROUND);	
+		gc_set_fc (window_light->gc, COLOR_LIGHT_CHANNEL_FOREGROUND);	
 		gc_set_bc (window_light->gc, COLOR_LIGHT_BACKGROUND);
 		width = font_width_str (&font, selected_group->name, strlen (selected_group->name));
 		font_draw_str (&font, selected_group->name, strlen (selected_group->name), &window_light->fb, window_light->gc, LIGHT_WIDTH - width - 5, 10);

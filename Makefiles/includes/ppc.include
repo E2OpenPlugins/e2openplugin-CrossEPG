@@ -1,4 +1,5 @@
-CROSS = /opt/dm600/dm600pvr/build/tmp/cross/bin/powerpc-linux-
+CROSS = /opt/dm600.old2/dm600pvr/build/tmp/cross/bin/powerpc-linux-
 CC = $(CROSS)gcc
+CPP = $(CROSS)g++
 STRIP = $(CROSS)strip
-CFLAGS += -I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/include/
+CFLAGS += -I/opt/dm600.old2/dm600pvr/build/tmp/staging/powerpc-linux/include/

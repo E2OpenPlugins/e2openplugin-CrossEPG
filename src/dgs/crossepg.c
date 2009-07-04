@@ -92,6 +92,82 @@ void delpid ()
 	unlink ("/tmp/crossepg.pid");
 }
 
+void scheduler_sync ()
+{
+	bool changed = false;
+	dgs_scheduler_init ();
+	scheduler_init ();
+	
+	if (!dgs_scheduler_read ())
+	{
+		dgs_scheduler_clean ();
+		return;
+	}
+	if (!scheduler_load (config_get_db_root ()))
+	{
+		scheduler_clean ();
+		dgs_scheduler_clean ();
+		return;
+	}
+	
+	scheduler_t *tmp2;
+	dgs_scheduler_t *tmp = dgs_scheduler_get_first ();
+	
+	while (tmp != NULL)
+	{
+		bool exist = false;
+		tmp2 = scheduler_get_first ();
+		while (tmp2 != NULL)
+		{
+			if ((tmp2->start_time == tmp->start_time) && (tmp2->length == tmp->length) && ((tmp2->type == 0) || (tmp2->type == 1)))
+			{
+				exist = true;
+				break;
+			}
+			tmp2 = tmp2->next;
+		}
+		if (!exist)
+		{
+			scheduler_add (tmp->ch_id, tmp->start_time, tmp->length, tmp->mode, tmp->name, false);
+			changed = true;
+		}
+		tmp = tmp->next;
+	}
+	
+	tmp2 = scheduler_get_first ();
+	while (tmp2 != NULL)
+	{
+		if ((tmp2->type == 0) || (tmp2->type == 1))
+		{
+			bool exist = false;
+			tmp = dgs_scheduler_get_first ();
+			while (tmp != NULL)
+			{
+				if ((tmp2->start_time == tmp->start_time) && (tmp2->length == tmp->length))
+				{
+					exist = true;
+					break;
+				}
+				tmp = tmp->next;
+			}
+			if (!exist)
+			{
+				scheduler_del (tmp2->channel_id, tmp2->start_time, tmp2->length, tmp2->type, false);
+				changed = true;
+			}
+		}
+		tmp2 = tmp2->next;
+	}
+	
+	if (changed)
+	{
+		if (scheduler_save (config_get_db_root ())) log_add ("Saved scheduler list");
+		else log_add ("Error saving scheduler list");
+	}
+	scheduler_clean ();
+	dgs_scheduler_clean ();
+}
+
 int ret = 0;
 
 void show_red ()
@@ -295,6 +371,8 @@ int plugin_main(int argc, char *argv[])
 			log_add ("Cannot load translations");
 	}
 	_free (lang);
+	
+	scheduler_sync ();
 	
 	dgs_groups_init ();
 	dgs_channels_init ();

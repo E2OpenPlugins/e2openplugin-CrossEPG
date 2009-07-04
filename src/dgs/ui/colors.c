@@ -48,6 +48,7 @@ static unsigned int COLOR_LIGHT_BACKGROUND;
 static unsigned int COLOR_LIGHT_FOREGROUND;
 static unsigned int COLOR_LIGHT_REC_FOREGROUND;
 static unsigned int COLOR_LIGHT_ZAP_FOREGROUND;
+static unsigned int COLOR_LIGHT_CHANNEL_FOREGROUND;
 
 static unsigned int COLOR_PROGRESS_FOREGROUND;
 static unsigned int COLOR_PROGRESS_BACKGROUND;
@@ -150,6 +151,7 @@ bool colors_read ()
 	COLOR_LIGHT_FOREGROUND = 0x00ff00ff;
 	COLOR_LIGHT_REC_FOREGROUND = 0x00333333;
 	COLOR_LIGHT_ZAP_FOREGROUND = 0x00cccccc;
+	COLOR_LIGHT_CHANNEL_FOREGROUND = 0x00fffe88;
 	
 	COLOR_PROGRESS_FOREGROUND = 0x00cccccc;
 	COLOR_PROGRESS_BACKGROUND = 0x0003123e;
@@ -242,6 +244,7 @@ bool colors_read ()
 		else if (strcmp (tmp_key, "light_background") == 0) COLOR_LIGHT_BACKGROUND = value;
 		else if (strcmp (tmp_key, "light_zap_foreground") == 0) COLOR_LIGHT_REC_FOREGROUND = value;
 		else if (strcmp (tmp_key, "light_rec_foreground") == 0) COLOR_LIGHT_ZAP_FOREGROUND = value;
+		else if (strcmp (tmp_key, "light_channel_foreground") == 0) COLOR_LIGHT_CHANNEL_FOREGROUND = value;
 		else if (strcmp (tmp_key, "progress_foreground") == 0) COLOR_PROGRESS_FOREGROUND = value;
 		else if (strcmp (tmp_key, "progress_background") == 0) COLOR_PROGRESS_BACKGROUND = value;
 		else if (strcmp (tmp_key, "progress_border") == 0) COLOR_PROGRESS_BORDER = value;

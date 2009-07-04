@@ -19,7 +19,7 @@ static void window_top_update ()
 	strftime (time_string, 10, intl (TIME_HM), &loctime);
 	width = font_width_str (&font, time_string, strlen (time_string));
 	gc_set_fc (window_top->gc, COLOR_WINDOW_TOP_CLOCK);
-	font_draw_str (&font, time_string, strlen (time_string), &window_top->fb, window_top->gc, 687-width, 26);
+	font_draw_str (&font, time_string, strlen (time_string), &window_top->fb, window_top->gc, 670-width, 26);
 	width = font_width_str (&font, intl (GRID), strlen (intl (GRID)));
 	gc_set_fc (window_top->gc, COLOR_WINDOW_TOP_RED_TAB);
 	font_draw_str (&font, intl (GRID), strlen (intl (GRID)), &window_top->fb, window_top->gc, 75-(width/2), 26);

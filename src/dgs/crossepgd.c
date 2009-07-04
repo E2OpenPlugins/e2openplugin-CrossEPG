@@ -20,8 +20,8 @@
 #include "dgs.h"
 #include "dgs_channels.h"
 #include "dgs_helper.h"
-#include "dgs_scheduler.h"
-#include "scheduler/scheduler.h"
+//#include "dgs_scheduler.h"
+//#include "scheduler/scheduler.h"
 
 static char homedir[256]; // = DEFAULT_HOME_DIRECTORY;
 static char plugindir[256];
@@ -75,82 +75,6 @@ bool check_download ()
 	return true;
 }
 
-void scheduler_sync ()
-{
-	bool changed = false;
-	dgs_scheduler_init ();
-	scheduler_init ();
-	
-	if (!dgs_scheduler_read ())
-	{
-		dgs_scheduler_clean ();
-		return;
-	}
-	if (!scheduler_load (config_get_db_root ()))
-	{
-		scheduler_clean ();
-		dgs_scheduler_clean ();
-		return;
-	}
-	
-	scheduler_t *tmp2;
-	dgs_scheduler_t *tmp = dgs_scheduler_get_first ();
-	
-	while (tmp != NULL)
-	{
-		bool exist = false;
-		tmp2 = scheduler_get_first ();
-		while (tmp2 != NULL)
-		{
-			if ((tmp2->start_time == tmp->start_time) && (tmp2->length == tmp->length) && ((tmp2->type == 0) || (tmp2->type == 1)))
-			{
-				exist = true;
-				break;
-			}
-			tmp2 = tmp2->next;
-		}
-		if (!exist)
-		{
-			scheduler_add (tmp->ch_id, tmp->start_time, tmp->length, tmp->mode, tmp->name, false);
-			changed = true;
-		}
-		tmp = tmp->next;
-	}
-	
-	tmp2 = scheduler_get_first ();
-	while (tmp2 != NULL)
-	{
-		if ((tmp2->type == 0) || (tmp2->type == 1))
-		{
-			bool exist = false;
-			tmp = dgs_scheduler_get_first ();
-			while (tmp != NULL)
-			{
-				if ((tmp2->start_time == tmp->start_time) && (tmp2->length == tmp->length))
-				{
-					exist = true;
-					break;
-				}
-				tmp = tmp->next;
-			}
-			if (!exist)
-			{
-				scheduler_del (tmp2->channel_id, tmp2->start_time, tmp2->length, tmp2->type, false);
-				changed = true;
-			}
-		}
-		tmp2 = tmp2->next;
-	}
-	
-	if (changed)
-	{
-		if (scheduler_save (config_get_db_root ())) log_add ("Saved scheduler list");
-		else log_add ("Error saving scheduler list");
-	}
-	scheduler_clean ();
-	dgs_scheduler_clean ();
-}
-
 int main (int argc, char **argv)
 {
 	static struct sigaction act;
@@ -163,7 +87,7 @@ int main (int argc, char **argv)
 	int cron_min = 0;
 	int last_day = -1;
 	char configfile[256];
-	int scheduler_check_count = 0;
+	//int scheduler_check_count = 0;
 	
 	opterr = 0;
 	
@@ -322,6 +246,7 @@ int main (int argc, char **argv)
 				dgs_helper_commander ("web_execute_plugin crossepg.sync.plugin");
 				exec_request = 0;
 			}
+			/*
 			else
 			{
 				scheduler_check_count++;
@@ -331,6 +256,7 @@ int main (int argc, char **argv)
 					scheduler_check_count = 0;
 				}
 			}
+			*/
 		}
 		
 		struct tm loctime;

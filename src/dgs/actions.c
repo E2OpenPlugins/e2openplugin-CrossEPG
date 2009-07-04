@@ -14,20 +14,26 @@ void show_config ()
 	{
 		db_def_path = 1;
 	}
+	else if (strcmp (config_get_db_root (), "/tmp") == 0)
+	{
+		db_def_path = 2;
+	}
 
 	/* create db values */
 	int db_count = 0;
 	w_config_value_t *db_values;
 	if (db_def_path == -1)
 	{
-		db_values = _malloc (sizeof (w_config_value_t) * 3);
+		db_values = _malloc (sizeof (w_config_value_t) * 4);
 		db_values[0].name = intl (CUSTOM);
 		db_count++;
 	}
-	else db_values = _malloc (sizeof (w_config_value_t) * 2);
+	else db_values = _malloc (sizeof (w_config_value_t) * 3);
 	db_values[db_count].name = intl (HARD_DISK);
 	db_count++;
 	db_values[db_count].name = intl (USB_PEN);
+	db_count++;
+	db_values[db_count].name = intl (TEMP_FOLDER);
 	db_count++;
 	items[0].type = 0;
 	items[0].name = intl (DATABASE_PATH);
@@ -127,7 +133,7 @@ void show_config ()
 	items[3].selected_value = 0;
 	items[3].changed = false;	
 
-	/* opentv provider */
+	/* providers */
 	
 	int provider_count = 0;
 	w_config_value_t provider_values[64];
@@ -164,7 +170,7 @@ void show_config ()
 	}
 	
 	items[4].type = 2;
-	items[4].name = intl (OPENTV_PROVIDER);
+	items[4].name = intl (PROVIDERS);
 	items[4].values = provider_values;
 	items[4].values_count = provider_count;
 	items[4].selected_value = 0;
@@ -205,6 +211,9 @@ void show_config ()
 					break;
 				case 1:
 					config_set_db_root ("/mnt/usb");
+					break;
+				case 2:
+					config_set_db_root ("/tmp");
 					break;
 			}
 		}
@@ -282,7 +291,7 @@ void show_aspect_config ()
 {
 	int i;
 	w_config_t mywindow;
-	w_config_item_t items[3];
+	w_config_item_t items[4];
 	
 	/* skin */
 	int skins_count = 0;
@@ -361,10 +370,23 @@ void show_aspect_config ()
 	items[2].selected_value = 0;
 	items[2].changed = false;	
 
+	/* show title near channel in list view*/
+
+	w_config_value_t show_title_values[4];
+	
+	show_title_values[0].name = intl (NO);
+	show_title_values[1].name = intl (YES);
+	items[3].selected_value = config_get_show_title ();
+	items[3].type = 0;
+	items[3].name = "Show title near channel";
+	items[3].values = show_title_values;
+	items[3].values_count = 2;
+	items[3].changed = false;
+
 	/* draw config window */
 	mywindow.title = "Aspect";
 	mywindow.items = items;
-	mywindow.items_count = 3;
+	mywindow.items_count = 4;
 	mywindow.selected_item = 0;
 	mywindow.start_item = 0;
 	window_config_init (&mywindow);
@@ -392,6 +414,8 @@ void show_aspect_config ()
 				j++;
 			}
 		}
+		
+		config_set_show_title (mywindow.items[3].selected_value);
 		
 		if (config_save ()) log_add ("Configuration saved");
 		else log_add ("Error saving configuration");
@@ -817,13 +841,24 @@ static void title_rec ()
 	
 	if (add)
 	{
-		bool added;
+		int added;
 		window_progress_update (intl (SCHEDULER_ADD), "", 0);
 		char *description = epgdb_read_description (selected_title);
 		added = scheduler_add (selected_channel->id, dgs_helper_adjust_daylight (selected_title->start_time), selected_title->length, 0, description, true);
 		_free (description);
 		// TODO: intl ()
-		if (!added) show_message_box (intl (ERROR), "Cannot add event. No free tuner", 0);
+		switch (added)
+		{
+			case -1:
+				show_message_box (intl (ERROR), "Cannot add event. No free tuner", 0);
+				break;
+			case -2:
+				show_message_box (intl (ERROR), "Cannot add event. Event already started", 0);
+				break;
+			case -3:
+				show_message_box (intl (ERROR), "Cannot add event. Unknow error", 0);
+				break;
+		}
 	}
 	window_progress_clean ();
 }
@@ -846,7 +881,7 @@ static void title_link ()
 	window_progress_clean ();
 }
 
-static int title_ok ()
+static int title_ok (bool fullscreen)
 {
 	time_t tmp_time = time (NULL);
 	if (selected_channel == NULL) return 0;
@@ -855,6 +890,7 @@ static int title_ok ()
 		int ch_id = ch_watching_id (ch_mode_live);
 		if (ch_id == selected_channel->id) return -1;
 		ch_change_fg (ch_mode_live, selected_channel->id, NULL);
+		if (!fullscreen) dgs_helper_live_boxed ();
 		return 0;
 	}
 	
@@ -879,13 +915,24 @@ static int title_ok ()
 
 	if (add)
 	{
-		bool added;
+		int added;
 		window_progress_update (intl (SCHEDULER_ADD), "", 0);
 		char *description = epgdb_read_description (selected_title);
 		added = scheduler_add (selected_channel->id, dgs_helper_adjust_daylight (selected_title->start_time), selected_title->length, 1, description, true);
 		_free (description);
 		// TODO: intl ()
-		if (!added) show_message_box (intl (ERROR), "Cannot add event. No free tuner", 0);
+		switch (added)
+		{
+			case -1:
+				show_message_box (intl (ERROR), "Cannot add event. No free tuner", 0);
+				break;
+			case -2:
+				show_message_box (intl (ERROR), "Cannot add event. Event already started", 0);
+				break;
+			case -3:
+				show_message_box (intl (ERROR), "Cannot add event. Unknow error", 0);
+				break;
+		}
 	}
 	window_progress_clean ();
 	

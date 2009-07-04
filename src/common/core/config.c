@@ -51,6 +51,7 @@ static int boot_action;
 static int cron_action;
 static int cron_hour;
 static int channel_sleep;
+static int show_title;
 
 int   config_get_sync_hours				() { return sync_hours;				}
 char *config_get_log_file				() { return log_file;				}
@@ -78,6 +79,7 @@ int   config_get_boot_action			() { return boot_action;			}
 int   config_get_cron_action			() { return cron_action;			}
 int   config_get_cron_hour				() { return cron_hour;				}
 int   config_get_channel_sleep			() { return channel_sleep;			}
+int   config_get_show_title				() { return show_title;				}
 
 void config_set_db_root					(char *value) { strcpy (db_root					, value); }
 void config_set_log_file				(char *value) { strcpy (log_file				, value); }
@@ -98,6 +100,7 @@ void config_set_boot_action				(int value) { boot_action = value; }
 void config_set_cron_action				(int value) { cron_action = value; }
 void config_set_cron_hour				(int value) { cron_hour = value; }
 void config_set_channel_sleep			(int value) { channel_sleep = value; }
+void config_set_show_title				(int value) { show_title = value; }
 void config_set_otv_provider			(int id, char *value) { strcpy (otv_provider[id] , value); }
 
 void config_set_sync_hours				(int value) { sync_hours = value; }
@@ -157,6 +160,7 @@ bool config_read ()
 	boot_action = 2;
 	cron_action = 3;
 	cron_hour = 3;
+	show_title = 1;
 	
 	sprintf (dwnl_file, "%s/%s", dir_plugin, DEFAULT_DWNL_FILE);
 	sprintf (sync_file, "%s/%s", dir_plugin, DEFAULT_SYNC_FILE);
@@ -259,6 +263,8 @@ bool config_read ()
 			cron_hour = atoi (tmp_value);
 		else if (strcmp ("channel_sleep", tmp_key) == 0)
 			channel_sleep = atoi (tmp_value);
+		else if (strcmp ("show_title", tmp_key) == 0)
+			show_title = atoi (tmp_value);
 	}
 	
 	/* strip extra slashes from home and db path */
@@ -320,6 +326,8 @@ bool config_save ()
 	sprintf (tmp, "cron_action=%d\n", cron_action);
 	tmp += strlen (tmp);
 	sprintf (tmp, "cron_hour=%d\n", cron_hour);
+	tmp += strlen (tmp);
+	sprintf (tmp, "show_title=%d\n", show_title);
 	tmp += strlen (tmp);
 	
 	groups[0] = '\0';

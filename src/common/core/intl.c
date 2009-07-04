@@ -68,7 +68,7 @@ void intl_init ()
 	strcpy (strings[OCTOBER],				"October");
 	strcpy (strings[NOVEMBER],				"November");
 	strcpy (strings[DECEMBER],				"December");
-	strcpy (strings[OPENTV_PROVIDER],		"OpenTV Provider");
+	strcpy (strings[PROVIDERS],				"Providers");
 	strcpy (strings[ERROR],					"Error");
 	strcpy (strings[SERIOUS_ERROR],			"Seriours error");
 	strcpy (strings[CANNOT_OPEN_DGSDB],		"Cannot open DGS database");
@@ -261,8 +261,8 @@ bool intl_read (char *file)
 				strcpy (strings[NOVEMBER], value);
 			else if (strcmp ("DECEMBER", key) == 0)
 				strcpy (strings[DECEMBER], value);
-			else if (strcmp ("OPENTV_PROVIDER", key) == 0)
-				strcpy (strings[OPENTV_PROVIDER], value);
+			else if (strcmp ("PROVIDERS", key) == 0)
+				strcpy (strings[PROVIDERS], value);
 			else if (strcmp ("ERROR", key) == 0)
 				strcpy (strings[ERROR], value);
 			else if (strcmp ("SERIOUS_ERROR", key) == 0)
