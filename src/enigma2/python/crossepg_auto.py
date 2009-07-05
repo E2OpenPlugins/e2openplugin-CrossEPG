@@ -1,5 +1,6 @@
 from enigma import *
 from Components.ServiceEventTracker import ServiceEventTracker
+from Tools.Directories import fileExists
 from crossepglib import *
 from crossepg_downloader import CrossEPG_Downloader
 from crossepg_converter import CrossEPG_Converter
@@ -7,11 +8,16 @@ from crossepg_loader import CrossEPG_Loader
 from Screens.Screen import Screen
 
 from time import *
+
+import os
+
 class CrossEPG_Auto(Screen):
 	def __init__(self):
 		self.session = None
 		self.timer = eTimer()
 		self.timer.callback.append(self.__dailyDownload)
+		self.standbyTimer = eTimer()
+		self.standbyTimer.callback.append(self.__backToStandby)
 		self.providers = list()
 		self.providers_id = list()
 		self.providers_last = list()
@@ -67,7 +73,18 @@ class CrossEPG_Auto(Screen):
 				f.close()
 		
 		self.dailyStart()
-		
+		if fileExists("/tmp/crossepg.standby"):
+			os.system("rm /tmp/crossepg.standby")
+			print "[CrossEPG_Auto] coming back in standby in 30 seconds"
+			self.standbyTimer.start(30000, 1)
+	
+	def __backToStandby(self):
+		from Screens.Standby import inStandby
+		if inStandby == None:
+			print "[CrossEPG_Auto] coming back in standby"
+			from Screens.Standby import Standby
+			self.session.open(Standby)
+	
 	def dailyStart(self, hours = None, minutes = None, tomorrow = False):
 		config = CrossEPG_Config()
 		config.load()
@@ -114,7 +131,7 @@ class CrossEPG_Auto(Screen):
 		if self.loader:
 			self.loader.quit()
 			self.loader = None
-		
+	
 	def __dailyDownload(self):
 		print "[CrossEPG_Auto] daily action! starting downloader"
 		if self.enabled:
@@ -133,7 +150,27 @@ class CrossEPG_Auto(Screen):
 	
 	def __dailyConvertEnded(self, session, ret):
 		if ret:
-			self.session.open(CrossEPG_Loader, self.__dailyLoaderEnded)
+			config = CrossEPG_Config()
+			config.load()
+				
+			patchtype = getEPGPatchType()
+			if patchtype == 0 or patchtype == 1:
+				session.open(CrossEPG_Loader, self.__dailyLoaderEnded)
+			elif patchtype == 2 and config.auto_daily_reboot == 0:
+				session.open(CrossEPG_Loader, self.__dailyLoaderEnded)
+			elif config.auto_daily_reboot == 1:
+				from Screens.Standby import inStandby
+				if inStandby == None:
+					os.system("rm /tmp/crossepg.standby")
+				else:
+					print "[CrossEPG_Auto] decoder in standby"
+					os.system("touch /tmp/crossepg.standby")
+					
+				print "[CrossEPG_Auto] rebooting"
+				from Screens.Standby import TryQuitMainloop
+				session.open(TryQuitMainloop, 3)
+			else:
+				self.enabled = True
 		else:
 			self.enabled = True
 		

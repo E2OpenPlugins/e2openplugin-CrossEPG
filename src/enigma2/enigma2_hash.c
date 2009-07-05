@@ -11,12 +11,12 @@
 
 #include "enigma2_hash.h"
 
-static enigma2_hash_t *hashes[256];
+static enigma2_hash_t *hashes[65536];
 
 void enigma2_hash_init ()
 {
 	int i;
-	for (i=0; i<256; i++)
+	for (i=0; i<65536; i++)
 		hashes[i] = NULL;
 }
 
@@ -30,10 +30,10 @@ bool enigma2_hash_add (uint32_t hash, unsigned char *data, unsigned char size)
 	new->prev = NULL;
 	new->next = NULL;
 	
-	if (hashes[hash & 0xff] == NULL) hashes[hash & 0xff] = new;
+	if (hashes[hash & 0xffff] == NULL) hashes[hash & 0xffff] = new;
 	else
 	{
-		enigma2_hash_t *tmp = hashes[hash & 0xff];
+		enigma2_hash_t *tmp = hashes[hash & 0xffff];
 		while (true)
 		{
 			if (tmp->hash == hash)
@@ -56,7 +56,7 @@ bool enigma2_hash_add (uint32_t hash, unsigned char *data, unsigned char size)
 void enigma2_hash_clean ()
 {
 	int i;
-	for (i=0; i<256;i++)
+	for (i=0; i<65536;i++)
 	{
 		enigma2_hash_t *hash = hashes[i];
 		while (hash != NULL)
@@ -74,7 +74,7 @@ int enigma2_hash_count ()
 {
 	int i;
 	int count = 0;
-	for (i=0; i<256;i++)
+	for (i=0; i<65536;i++)
 	{
 		enigma2_hash_t *hash = hashes[i];
 		while (hash != NULL)
@@ -87,7 +87,7 @@ int enigma2_hash_count ()
 	return count;
 }
 
-enigma2_hash_t *enigma2_hash_get_last (unsigned char prefix)
+enigma2_hash_t *enigma2_hash_get_last (unsigned short int prefix)
 {
 	enigma2_hash_t *hash = hashes[prefix];
 	if (hash == NULL) return NULL;
@@ -100,7 +100,7 @@ enigma2_hash_t *enigma2_hash_get_last (unsigned char prefix)
 	return hash;
 }
 
-enigma2_hash_t *enigma2_hash_get_first (unsigned char prefix)
+enigma2_hash_t *enigma2_hash_get_first (unsigned short int prefix)
 {
 	return hashes[prefix];
 }
@@ -108,7 +108,7 @@ enigma2_hash_t *enigma2_hash_get_first (unsigned char prefix)
 void enigma2_hash_sort ()
 {
 	int i;
-	for (i=0; i<256;i++)
+	for (i=0; i<65536;i++)
 	{
 		if (hashes[i] == NULL) continue;
 		enigma2_hash_t *hash = hashes[i];

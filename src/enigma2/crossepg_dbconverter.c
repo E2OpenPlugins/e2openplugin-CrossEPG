@@ -131,6 +131,14 @@ static void write_epgdat ()
 	}
 	log_add ("EPG.DAT opened");
 	
+	if (!enigma2_lamedb_read (lamedb))
+	{
+		log_add ("Error reading lamedb");
+		//interactive_send_text (ACTION_ERROR, "error reading lamedb");
+		interactive_send_text (ACTION_ERROR, lamedb);
+		goto write_end;
+	}
+	
 	unsigned int magic = 0x98765432;
 	fwrite (&magic, sizeof (int), 1, fd);
 	const char *header = "UNFINISHED_V7";
@@ -166,6 +174,8 @@ static void write_epgdat ()
 					
 					/* description */
 					char *description = epgdb_read_description (title);
+					//char *description = _malloc (61);
+					//strcpy (description, "012345678901234567890123456789012345678901234567890123456789");
 					if (strlen (description) > 245) description[245] = '\0';
 					gmtime_r (&title->start_time, &start_time);
 					sdesc_t *sdesc = short_desc (description);
@@ -238,7 +248,7 @@ static void write_epgdat ()
 	log_add ("Writing descriptors...");
 	int hcount = enigma2_hash_count ();
 	fwrite (&hcount, sizeof (int), 1, fd);
-	for (i=0; i<256;i++)
+	for (i=0; i<65536;i++)
 	{
 		if (stop) goto write_end;
 		enigma2_hash_t *hash = enigma2_hash_get_first(i);
@@ -371,13 +381,13 @@ void* interactive (void *args)
 	while (run)
 	{
 		int i = 0, size = 0;
+		memset (buffer, '\0', 4096);
 		while ((size = fread (&byte, 1, 1, stdin)))
 		{
 			if (byte == '\n') break;
 			buffer[i] = byte; 
 			i++;
 		}
-		buffer[i+1] = '\0';
 		
 		if (memcmp (buffer, CMD_QUIT, strlen (CMD_QUIT)) == 0 || quit || size == 0)
 		{
@@ -529,13 +539,6 @@ int main (int argc, char **argv)
 	mkdir (db_root, S_IRWXU|S_IRWXG|S_IRWXO);
 	
 	log_open (NULL, "CrossEPG DB Converter");
-	
-	if (!enigma2_lamedb_read (lamedb))
-	{
-		interactive_send_text (ACTION_ERROR, "error reading lamedb");
-		log_add ("Error reading lamedb");
-		return 0;
-	}
 	
 	if (epgdb_open (db_root)) log_add ("EPGDB opened");
 	else

@@ -15,8 +15,8 @@ void enigma2_hash_init ();
 bool enigma2_hash_add (uint32_t hash, unsigned char *data, unsigned char size);
 void enigma2_hash_clean ();
 int enigma2_hash_count ();
-enigma2_hash_t *enigma2_hash_get_last (unsigned char prefix);
-enigma2_hash_t *enigma2_hash_get_first (unsigned char prefix);
+enigma2_hash_t *enigma2_hash_get_last (unsigned short int prefix);
+enigma2_hash_t *enigma2_hash_get_first (unsigned short int prefix);
 void enigma2_hash_sort ();
 
 #endif //_ENIGMA2_HASH_H_

@@ -20,7 +20,18 @@ def __callbackDownloader(session, ret):
 
 def __callbackConverter(session, ret):
 	if ret:
-		session.open(CrossEPG_Loader, __callbackLoader)
+		config = CrossEPG_Config()
+		config.load()
+		patchtype = getEPGPatchType()
+		if patchtype == 0 or patchtype == 1:
+			session.open(CrossEPG_Loader, __callbackLoader)
+		elif patchtype == 2 and config.manual_reboot == 0:
+			session.open(CrossEPG_Loader, __callbackLoader)
+		elif config.manual_reboot == 1:
+			from Screens.Standby import TryQuitMainloop
+			session.open(TryQuitMainloop, 3)
+		else:
+			crossepg_auto.enable()
 	else:
 		crossepg_auto.enable()
 

@@ -1,17 +1,19 @@
 include Makefiles/includes/common.include
 include Makefiles/includes/mipsel.include
 
-OBJS += src/crossepg_importer.o
-OBJS += src/memory.o
-OBJS += src/aliases/aliases.o
-OBJS += src/core/log.o
-OBJS += src/epgdb/epgdb.o
-OBJS += src/epgdb/epgdb_channels.o
-OBJS += src/epgdb/epgdb_titles.o
-OBJS += src/epgdb/epgdb_aliases.o
-OBJS += src/importer/csv.o
-OBJS += src/importer/importer.o
-OBJS += src/net/http.o
+OBJS += src/common/crossepg_importer.o
+OBJS += src/common/memory.o
+OBJS += src/common/aliases/aliases.o
+OBJS += src/common/core/log.o
+OBJS += src/common/epgdb/epgdb.o
+OBJS += src/common/epgdb/epgdb_channels.o
+OBJS += src/common/epgdb/epgdb_index.o
+OBJS += src/common/epgdb/epgdb_titles.o
+OBJS += src/common/epgdb/epgdb_aliases.o
+OBJS += src/common/epgdb/epgdb_search.o
+OBJS += src/common/importer/csv.o
+OBJS += src/common/importer/importer.o
+OBJS += src/common/net/http.o
 
 CFLAGS += -Wall
 CFLAGS += -DSTANDALONE

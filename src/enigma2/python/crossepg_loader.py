@@ -112,7 +112,7 @@ class CrossEPG_Loader(Screen):
 			return
 			
 		self.__quit()
-		
+	
 	def __loadEPG(self):
 		os.system("cp %s/ext.epg.dat /hdd/epg.dat" % (self.db_root))
 		self.epgpatch(eEPGCache.getInstance())

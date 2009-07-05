@@ -31,11 +31,19 @@ static char import_root[256];
 
 int main (int argc, char **argv)
 {
-	int c;
+	int c, i;
 	opterr = 0;
+
+	strcpy (homedir, argv[0]);
+	for (i = strlen (homedir)-1; i >= 0; i--)
+	{
+		bool ended = false;
+		if (homedir[i] == '/') ended = true;
+		homedir[i] = '\0';
+		if (ended) break;
+	}
 	
 	sprintf (db_root, DEFAULT_DB_ROOT);
-	sprintf (homedir, DEFAULT_HOME_DIRECTORY);
 	sprintf (import_root, DEFAULT_IMPORT_ROOT);
 	
 	log_open (NULL, "CrossEPG Importer");

@@ -19,6 +19,8 @@ from Components.Network import iNetwork
 
 from time import *
 
+import _enigma
+
 class CrossEPG_Setup(ConfigListScreen,Screen):
 	def __init__(self, session, args = 0):
 		if (getDesktop(0).size().width() < 800):
@@ -29,6 +31,12 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+		patchtype = getEPGPatchType()
+		if patchtype == 0 or patchtype == 1:
+			self.fastpatch = True
+		else:
+			self.fastpatch = False
+		
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.providers = self.config.getAllProviders()
@@ -72,7 +80,10 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self.citems.append(("Automatic daily download at", ConfigClock(mktime(ltime))))
 		self.citems.append(("Automatic download on tune", ConfigYesNo(self.config.auto_tune > 0)))
 		self.citems.append(("Show OSD for automatic download", ConfigYesNo(self.config.auto_tune_osd > 0)))
-		
+		if not self.fastpatch:
+			self.citems.append(("Reboot after a daily download", ConfigYesNo(self.config.auto_daily_reboot > 0)))
+			self.citems.append(("Reboot after a manual download", ConfigYesNo(self.config.manual_reboot > 0)))
+			
 		ConfigListScreen.__init__(self, self.citems)
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
@@ -107,6 +118,13 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self.config.auto_tune = int(self.citems[i][1].getValue())
 		i += 1
 		self.config.auto_tune_osd = int(self.citems[i][1].getValue())
+		i += 1
+		
+		if not self.fastpatch:
+			self.config.auto_daily_reboot = int(self.citems[i][1].getValue())
+			i += 1
+			self.config.manual_reboot = int(self.citems[i][1].getValue())
+			i += 1
 		
 		self.config.save()
 		if self.config.auto_daily:

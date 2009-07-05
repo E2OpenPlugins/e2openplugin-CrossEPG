@@ -37,8 +37,10 @@ typedef struct epgdb_title_header_s
 	unsigned char			genre_sub_id;
 	uint32_t				description_crc;
 	unsigned short int		description_length;
+	unsigned int			description_seek;
 	uint32_t				long_description_crc;
 	unsigned short int		long_description_length;
+	unsigned int			long_description_seek;
 } epgdb_title_header_t;
 
 typedef struct epgdb_index_header_s
@@ -57,10 +59,16 @@ static char descriptor_filename[256];
 static char index_filename[256];
 static char aliases_filename[256];
 
+static time_t db_creation_time = 0;
+static time_t db_update_time = 0;
+
 FILE *epgdb_get_fdd () { return fd_d; }
+time_t epgdb_get_creation_time () { return db_creation_time; }
+time_t epgdb_get_update_time () { return db_update_time; }
 
 bool epgdb_open (char* db_root)
 {
+	db_creation_time = db_update_time = time (NULL);
 	sprintf (header_filename, "%s/crossepg.headers.db", db_root);
 	sprintf (descriptor_filename, "%s/crossepg.descriptors.db", db_root);
 	sprintf (index_filename, "%s/crossepg.indexes.db", db_root);
@@ -146,6 +154,10 @@ bool epgdb_save (void(*progress_callback)(int, int))
 	fwrite (FAKE_HEADERS, strlen (FAKE_HEADERS), 1, fd_h);
 	fwrite (&revision, sizeof (unsigned char), 1, fd_h);
 	
+	db_update_time = time (NULL);
+	fwrite (&db_creation_time, sizeof (time_t), 1, fd_h);
+	fwrite (&db_update_time, sizeof (time_t), 1, fd_h);
+	
 	channels_count = 0;
 	fwrite (&channels_count, sizeof (int), 1, fd_h); // write the exact value at end
 	
@@ -158,7 +170,7 @@ bool epgdb_save (void(*progress_callback)(int, int))
 			epgdb_title_t *title = channel->title_first;
 			fwrite (channel, sizeof (epgdb_channel_header_t), 1, fd_h);
 			fwrite (&titles_count, sizeof (int), 1, fd_h);
-
+			
 			while (title != NULL)
 			{
 				fwrite (title, sizeof (epgdb_title_header_t), 1, fd_h);
@@ -173,7 +185,7 @@ bool epgdb_save (void(*progress_callback)(int, int))
 		if (progress_callback != NULL)
 			progress_callback (progress_count, progress_max);
 	}
-	fseek (fd_h, strlen (MAGIC_HEADERS) + sizeof (unsigned char), SEEK_SET);
+	fseek (fd_h, strlen (MAGIC_HEADERS) + sizeof (unsigned char) + (sizeof (time_t) * 2), SEEK_SET);
 	fwrite (&channels_count, sizeof (int), 1, fd_h);
 	fflush (fd_h);
 	fsync (fileno (fd_h));
@@ -278,6 +290,9 @@ bool epgdb_load ()
 	if (memcmp (tmp, MAGIC_HEADERS, strlen (MAGIC_HEADERS)) != 0) return false;
 	fread (&revision, sizeof (unsigned char), 1, fd_h);
 	if (revision != DB_REVISION) return false;
+	
+	fread (&db_creation_time, sizeof (time_t), 1, fd_h);
+	fread (&db_update_time, sizeof (time_t), 1, fd_h);
 	
 	fread (&channels_count, sizeof (int), 1, fd_h);
 	for (i=0; i<channels_count; i++)

@@ -1,4 +1,4 @@
-from enigma import eConsoleAppContainer
+from enigma import *
 from Tools.Directories import crawlDirectory, pathExists, createDir
 from types import *
 
@@ -10,6 +10,32 @@ import new
 import mutex
 import _enigma
 
+# return value
+# -1 none
+# 0 simple epgcache.load() patch
+# 1 edg nemesis patch
+# 2 oudeis patch
+def getEPGPatchType():
+	try:
+		epgpatch = new.instancemethod(_enigma.eEPGCache_load,None,eEPGCache)
+		return 0
+	except Exception, e:
+		pass
+		
+	try:
+		edgpatch = new.instancemethod(_enigma.eEPGCache_reloadEpg,None,eEPGCache)
+		return 1
+	except Exception, e:
+		pass
+		
+	try:
+		oudeispatch = new.instancemethod(_enigma.eEPGCache_importEvent,None,eEPGCache)
+		return 2
+	except Exception, e:
+		pass
+		
+	return -1
+
 class CrossEPG_Config:
 	providers = [ "skyitalia" ]
 	db_root = "/hdd/crossepg"
@@ -20,8 +46,10 @@ class CrossEPG_Config:
 	auto_daily = 0
 	auto_daily_hours = 4
 	auto_daily_minutes = 0
+	auto_daily_reboot = 1
 	auto_tune = 1
 	auto_tune_osd = 0
+	manual_reboot = 1
 	
 	def __init__(self):
 		if pathExists("/usr/crossepg"):
@@ -66,9 +94,13 @@ class CrossEPG_Config:
 						self.auto_tune = int(value);
 					elif key == "auto_tune_osd":
 						self.auto_tune_osd = int(value);
+					elif key == "auto_daily_reboot":
+						self.auto_daily_reboot = int(value);
+					elif key == "manual_reboot":
+						self.manual_reboot = int(value);
 						
 		f.close()
-		print "[CrossEPG_Config] configuration loaded"
+		#print "[CrossEPG_Config] configuration loaded"
 		
 	def save(self):
 		try:
@@ -86,9 +118,11 @@ class CrossEPG_Config:
 		f.write("auto_daily_minutes=%d\n" % (self.auto_daily_minutes))
 		f.write("auto_tune=%d\n" % (self.auto_tune))
 		f.write("auto_tune_osd=%d\n" % (self.auto_tune_osd))
+		f.write("auto_daily_reboot=%d\n" % (self.auto_daily_reboot))
+		f.write("manual_reboot=%d\n" % (self.manual_reboot))
 		
 		f.close()
-		print "[CrossEPG_Config] configuration saved"
+		#print "[CrossEPG_Config] configuration saved"
 		
 	def getChannelID(self, provider):
 		try:

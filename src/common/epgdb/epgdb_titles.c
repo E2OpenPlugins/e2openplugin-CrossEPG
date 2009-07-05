@@ -32,11 +32,11 @@ char *epgdb_read_description (epgdb_title_t *title)
 {
 	char *ret = _malloc (title->description_length + 1);
 	memset (ret, '\0', title->description_length + 1);
-	epgdb_index_t *index = epgdb_index_get_by_crc_length (title->description_crc, title->description_length);
-	if (index == NULL) return ret;
+	//epgdb_index_t *index = epgdb_index_get_by_crc_length (title->description_crc, title->description_length);
+	//if (index == NULL) return ret;
 	if (epgdb_get_fdd () == NULL) return ret;
-	fseek (epgdb_get_fdd (), index->seek, SEEK_SET);
-	fread (ret, index->length, 1, epgdb_get_fdd ());
+	fseek (epgdb_get_fdd (), title->description_seek, SEEK_SET);
+	fread (ret, title->description_length, 1, epgdb_get_fdd ());
 	return ret;
 }
 
@@ -44,12 +44,12 @@ char *epgdb_read_long_description (epgdb_title_t *title)
 {
 	char *ret = _malloc (title->long_description_length + 1);
 	memset (ret, '\0', title->long_description_length + 1);
-	epgdb_index_t *index = epgdb_index_get_by_crc_length (title->long_description_crc, title->long_description_length);
-	if (index == NULL) return ret;
+	//epgdb_index_t *index = epgdb_index_get_by_crc_length (title->long_description_crc, title->long_description_length);
+	//if (index == NULL) return ret;
 	if (epgdb_get_fdd () == NULL) return ret;
 	
-	fseek (epgdb_get_fdd (), index->seek, SEEK_SET);
-	fread (ret, index->length, 1, epgdb_get_fdd ());
+	fseek (epgdb_get_fdd (), title->long_description_seek, SEEK_SET);
+	fread (ret, title->long_description_length, 1, epgdb_get_fdd ());
 	return ret;
 }
 
@@ -76,6 +76,7 @@ epgdb_title_t *epgdb_titles_set_description (epgdb_title_t *title, char *descrip
 		}
 	}
 	
+	title->description_seek = index->seek;
 	return title;
 }
 
@@ -102,6 +103,7 @@ epgdb_title_t *epgdb_titles_set_long_description (epgdb_title_t *title, char *de
 			fwrite (description, index->length, 1, fd);
 		}
 	}
+	title->long_description_seek = index->seek;
 	
 	return title;
 }
@@ -187,8 +189,10 @@ epgdb_title_t *epgdb_titles_add (epgdb_channel_t *channel, epgdb_title_t *title)
 	
 	title->description_length = 0;
 	title->description_crc = 0;
+	title->description_seek = 0;
 	title->long_description_length = 0;
 	title->long_description_crc = 0;
+	title->long_description_seek = 0;
 	title->changed = true;
 	
 	/* add into list */				

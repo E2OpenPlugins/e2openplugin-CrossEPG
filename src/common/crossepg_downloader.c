@@ -290,13 +290,14 @@ void *interactive (void *args)
 	while (run)
 	{
 		int i = 0, size = 0;
+		memset (buffer, '\0', 4096);
 		while ((size = fread (&byte, 1, 1, stdin)))
 		{
 			if (byte == '\n') break;
 			buffer[i] = byte; 
 			i++;
 		}
-		buffer[i+1] = '\0';
+		//buffer[i+1] = '\0';
 		if (memcmp (buffer, CMD_QUIT, strlen (CMD_QUIT)) == 0 || quit || size == 0)
 		{
 			run = false;

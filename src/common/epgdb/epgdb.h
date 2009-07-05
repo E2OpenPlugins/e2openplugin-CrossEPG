@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define DB_REVISION	0x04
+#define DB_REVISION	0x05
 
 typedef struct epgdb_title_s
 {
@@ -16,8 +16,10 @@ typedef struct epgdb_title_s
 	unsigned char			genre_sub_id;
 	uint32_t				description_crc;
 	unsigned short int		description_length;
+	unsigned int			description_seek;
 	uint32_t				long_description_crc;
 	unsigned short int		long_description_length;
+	unsigned int			long_description_seek;
 	
 	/* other elements */
 	bool					changed;
@@ -69,5 +71,7 @@ bool epgdb_load ();
 bool epgdb_save (void(*progress_callback)(int, int));
 void epgdb_clean ();
 FILE *epgdb_get_fdd ();
+time_t epgdb_get_creation_time ();
+time_t epgdb_get_update_time ();
 
 #endif // _EPGDB_H_
