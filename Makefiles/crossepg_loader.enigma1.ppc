@@ -1,0 +1,46 @@
+include Makefiles/includes/common.include
+include Makefiles/includes/ppc.include
+include Makefiles/includes/enigma1.include
+
+OBJS += src/enigma1/crossepg_loader.o
+#OBJS += src/common/memory.o
+#OBJS += src/common/core/log.o
+#OBJS += src/common/core/interactive.o
+#OBJS += src/common/dvb/dvb.o
+#OBJS += src/common/aliases/aliases.o
+#OBJS += src/common/net/http.o
+#OBJS += src/common/opentv/opentv.o
+#OBJS += src/common/opentv/huffman.o
+#OBJS += src/common/opentv/opentv_config.o
+#OBJS += src/common/epgdb/epgdb.o
+#OBJS += src/common/epgdb/epgdb_index.o
+#OBJS += src/common/epgdb/epgdb_channels.o
+#OBJS += src/common/epgdb/epgdb_titles.o
+#OBJS += src/common/epgdb/epgdb_aliases.o
+
+CXXFLAGS += -fno-rtti -fno-exceptions
+
+CFLAGS += -DE1
+#CFLAGS += -DMEMORYMON
+
+LIBS +=
+
+LDFLAGS += -lpthread -module
+
+OUTPUT = ./enigma1/ppc/usr/crossepg/crossepg_loader.so
+
+all : clean $(OUTPUT)
+
+clean :
+	rm -f $(OUTPUT)
+	rm -f $(OBJS)
+
+$(OBJS) :
+	$(CXX) $(CFLAGS) $(CXXFLAGS) -c -o $@ $(@:.o=.cpp)
+
+$(OUTPUT) : $(OBJS) 
+	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(STRIP) $@
+	
+install:
+	ncftpput  -u root -p root 192.168.0.7 /usr/crossepg/ $(OUTPUT)

@@ -1,0 +1,23 @@
+
+#CXXFLAGS += -I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/kernel/include/linux/
+#CXXFLAGS += -I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/include
+#CXXFLAGS += -I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/include/sigc++-1.2/
+#CXXFLAGS += -I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/lib/sigc++-1.2/include/
+#CXXFLAGS += -I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/include/freetype2
+#CXXFLAGS += -I/opt/dm600/sources/cvs/enigma/apps/tuxbox/enigma
+#CXXFLAGS += -I/opt/dm600/sources/cvs/enigma/apps/tuxbox/enigma/include
+#CXXFLAGS += -I/opt/dm600/sources/cvs/enigma/apps/tuxbox/enigma/src
+#CXXFLAGS += -I/opt/dm600/sources/cvs/tuxbox-plugins/apps/tuxbox/plugins/include
+#CXXFLAGS += -I/opt/dm600/sources/cvs/tuxbox-libs/apps/misc/libs/libxmltree/
+
+#CXXFLAGS += -I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/include -fexpensive-optimizations -fomit-frame-pointer #-frename-registers -O2 -I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/include/enigma -DHAVE_DREAMBOX_HARDWARE #-DDREAMBOX -I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/include -I/include #-I/opt/dm600/dm600pvr/build/tmp/staging/powerpc-linux/include/tuxbox #-I/opt/dm600/dm600pvr/build/tmp/work/tuxbox-plugins-enigma-0.0+cvs20060112-r0/plugins
+
+#CXXFLAGS += -fno-rtti -fno-exceptions -Wall -O2 -pipe
+
+
+
+
+
+#INCLUDES = -I/var/dream/cvs/cdk/linux/include -I$(CDK_SRC)/apps/tuxbox/enigma/include -I$(CDKROOT)/include #-I$(CDKROOT)/include/sigc++-1.2 -I$(CDKROOT)/lib/sigc++-1.2/include -I$(CDK_SRC)/apps/tuxbox/enigma #-I$(CDK_SRC)/apps/misc/libs/libxmltree -I$(CDK_SRC)/apps/tuxbox/plugins/include -I$(CDKROOT)/include/freetype2 -I. #-I$(CDK_SRC)/apps/tuxbox/enigma/src
+
+#CFLAGS   = -DHAVECACHE=$(HAVECACHE) -DENIGMAVERSION=$(ENIGMAVERSION) -DEMU_PLUGIN $(INCLUDES) -fno-rtti -fno-exceptions -Wall #-O2 -mcpu=823 -mmultiple -mstring -pipe

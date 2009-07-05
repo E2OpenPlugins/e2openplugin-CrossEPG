@@ -9,5 +9,5 @@ find . | grep "\._" | xargs rm 2>/dev/null
 find . | grep "\.DS_Store" | xargs rm 2>/dev/null
 find . | grep "\.o$" | xargs rm 2>/dev/null
 
-./svnadd
+./svnadd .
 svn commit
