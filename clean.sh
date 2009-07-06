@@ -17,6 +17,7 @@ make -f Makefiles/crossepg_downloader.enigma2.sh4 clean
 make -f Makefiles/crossepg_downloader.enigma2.mipsel clean
 make -f Makefiles/crossepg_downloader.enigma1.ppc clean
 make -f Makefiles/crossepg_dbinfo.enigma2.sh4 clean
+make -f Makefiles/crossepg_dbinfo.enigma2.ppc clean
 make -f Makefiles/crossepg_importer.sh4 clean
 make -f Makefiles/crossepg_importer.enigma2.sh4 clean
 make -f Makefiles/crossepg_importer.enigma2.mipsel clean

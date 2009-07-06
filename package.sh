@@ -13,6 +13,7 @@ make -f Makefiles/crossepg_downloader.enigma2.sh4
 make -f Makefiles/crossepg_downloader.enigma2.mipsel
 make -f Makefiles/crossepg_downloader.enigma1.ppc
 make -f Makefiles/crossepg_dbinfo.enigma2.sh4
+make -f Makefiles/crossepg_dbinfo.enigma2.ppc
 make -f Makefiles/crossepg_importer.sh4
 make -f Makefiles/crossepg_importer.enigma2.sh4
 make -f Makefiles/crossepg_importer.enigma2.mipsel

@@ -1,6 +1,7 @@
 from enigma import *
 from crossepglib import *
 from crossepg_auto import crossepg_auto
+from crossepg_info import CrossEPG_Info
 
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -22,7 +23,7 @@ from time import *
 import _enigma
 
 class CrossEPG_Setup(ConfigListScreen,Screen):
-	def __init__(self, session, args = 0):
+	def __init__(self, session):
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/setup_sd.xml" % (os.path.dirname(sys.modules[__name__].__file__))
 		else:
@@ -87,10 +88,13 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		ConfigListScreen.__init__(self, self.citems)
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
+		self["key_yellow"] = Button(_("Info"))
+		self["key_blue"] = Button(_("Download"))
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
 			"red": self.cancel,
 			"green": self.save,
+			"yellow": self.info,
 			"save": self.save,
 			"cancel": self.cancel,
 			"ok": self.save,
@@ -135,6 +139,9 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		crossepg_auto.auto_tune_osd = self.config.auto_tune_osd
 		
 		self.close()
+		
+	def info(self):
+		self.session.open(CrossEPG_Info)
 		
 	def cancel(self):
 		self.close()

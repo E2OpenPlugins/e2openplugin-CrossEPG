@@ -184,18 +184,30 @@ class CrossEPG_Wrapper:
 	EVENT_END = 3
 	EVENT_QUIT = 4
 	EVENT_ERROR = 5
-	EVENT_ACTION = 9
-	EVENT_STATUS = 10
-	EVENT_PROGRESS = 11
-	EVENT_PROGRESSONOFF = 12
-	EVENT_CHANNEL = 13
-	EVENT_STARTTIME = 14
-	EVENT_LENGTH = 15
-	EVENT_NAME = 16
-	EVENT_DESCRIPTION = 17
+	EVENT_ACTION = 6
+	EVENT_STATUS = 7
+	EVENT_PROGRESS = 8
+	EVENT_PROGRESSONOFF = 9
+	EVENT_CHANNEL = 10
+	EVENT_STARTTIME = 11
+	EVENT_LENGTH = 12
+	EVENT_NAME = 13
+	EVENT_DESCRIPTION = 14
+	INFO_HEADERSDB_SIZE = 15
+	INFO_DESCRIPTORSDB_SIZE = 16
+	INFO_INDEXESDB_SIZE = 17
+	INFO_ALIASESDB_SIZE = 18
+	INFO_TOTAL_SIZE = 19
+	INFO_CHANNELS_COUNT = 20
+	INFO_EVENTS_COUNT = 21
+	INFO_HASHES_COUNT = 22
+	INFO_CREATION_TIME = 23
+	INFO_UPDATE_TIME = 24
+	INFO_VERSION = 25
 	
 	CMD_DOWNLOADER = 0
 	CMD_CONVERTER = 1
+	CMD_INFO = 2
 
 	home_directory = ""
 
@@ -221,6 +233,8 @@ class CrossEPG_Wrapper:
 			x = "%s/crossepg_downloader -k 19 -r -d %s" % (self.home_directory, dbdir)
 		elif cmd == self.CMD_CONVERTER:
 			x = "%s/crossepg_dbconverter -k 19 -r -d %s" % (self.home_directory, dbdir)
+		elif cmd == self.CMD_INFO:
+			x = "%s/crossepg_dbinfo -k 19 -r -d %s" % (self.home_directory, dbdir)
 		else:
 			print "[CrossEPG_Wrapper] unknow command on init"
 			return
@@ -313,6 +327,28 @@ class CrossEPG_Wrapper:
 				self.__callCallbacks(self.EVENT_PROGRESSONOFF, False)
 			else:
 				self.__callCallbacks(self.EVENT_PROGRESS, int(data[9:]))
+		elif data.find("VERSION ") == 0:
+			self.__callCallbacks(self.INFO_VERSION, data[8:])
+		elif data.find("HEADERSDB_SIZE ") == 0:
+			self.__callCallbacks(self.INFO_HEADERSDB_SIZE, data[15:])
+		elif data.find("DESCRIPTORSDB_SIZE ") == 0:
+			self.__callCallbacks(self.INFO_DESCRIPTORSDB_SIZE, data[19:])
+		elif data.find("INDEXESDB_SIZE ") == 0:
+			self.__callCallbacks(self.INFO_INDEXESDB_SIZE, data[15:])
+		elif data.find("ALIASESDB_SIZE ") == 0:
+			self.__callCallbacks(self.INFO_ALIASESDB_SIZE, data[15:])
+		elif data.find("TOTAL_SIZE ") == 0:
+			self.__callCallbacks(self.INFO_TOTAL_SIZE, data[11:])
+		elif data.find("CHANNELS_COUNT ") == 0:
+			self.__callCallbacks(self.INFO_CHANNELS_COUNT, data[15:])
+		elif data.find("EVENTS_COUNT ") == 0:
+			self.__callCallbacks(self.INFO_EVENTS_COUNT, data[13:])
+		elif data.find("HASHES_COUNT ") == 0:
+			self.__callCallbacks(self.INFO_HASHES_COUNT, data[13:])
+		elif data.find("CREATION_TIME ") == 0:
+			self.__callCallbacks(self.INFO_CREATION_TIME, data[14:])
+		elif data.find("UPDATE_TIME ") == 0:
+			self.__callCallbacks(self.INFO_UPDATE_TIME, data[12:])
 
 	def __callCallbacks(self, event, param = None):
 		for callback in self.callbackList:

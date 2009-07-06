@@ -1,5 +1,5 @@
 include Makefiles/includes/common.include
-include Makefiles/includes/sh4.include
+include Makefiles/includes/mipsel.include
 
 OBJS += src/common/crossepg_dbinfo.o
 OBJS += src/common/core/log.o
@@ -19,7 +19,7 @@ LIBS +=
 
 LDFLAGS +=
 
-OUTPUT = ./enigma2/sh4/var/crossepg/crossepg_dbinfo
+OUTPUT = ./enigma2/mipsel/usr/crossepg/crossepg_dbinfo
 
 all : clean $(OUTPUT)
 
@@ -33,6 +33,3 @@ $(OBJS) :
 $(OUTPUT) : $(OBJS) 
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 	$(STRIP) $@
-	
-install:
-	ncftpput  -u root -p sifteam 192.168.0.6 /var/crossepg/ $(OUTPUT)
