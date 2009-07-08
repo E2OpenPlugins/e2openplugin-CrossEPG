@@ -135,10 +135,19 @@ class CrossEPG_Auto(Screen):
 	def __dailyDownload(self):
 		print "[CrossEPG_Auto] daily action! starting downloader"
 		if self.enabled:
-			self.stop()
-			self.session.open(CrossEPG_Downloader, self.__dailyDownloadEnded)
-			self.enabled = False
-			self.dailyStart(self.hours, self.minutes, True)
+			if self.session.nav.RecordTimer.isRecording():
+				now = time()
+				ttime = localtime(now)
+				hour = ttime[3] + 1;
+				if hour > 23:
+					hour = 0;
+				print "[CrossEPG_Auto] record in progress.. download delayed"
+				self.dailyStart(hour, ttime[4], False)
+			else:
+				self.stop()
+				self.session.open(CrossEPG_Downloader, self.__dailyDownloadEnded)
+				self.enabled = False
+				self.dailyStart(self.hours, self.minutes, True)
 		else:
 			print "[CrossEPG_Auto] another download is in progress... skipped"
 		

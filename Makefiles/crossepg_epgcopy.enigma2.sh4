@@ -1,0 +1,31 @@
+include Makefiles/includes/common.include
+include Makefiles/includes/sh4.include
+
+OBJS += src/enigma2/crossepg_epgcopy.o
+
+CFLAGS += -Wall
+CFLAGS += -DSTANDALONE
+CFLAGS += -DE2
+
+LIBS +=
+
+LDFLAGS +=
+
+OUTPUT = ./enigma2/sh4/var/crossepg/crossepg_epgcopy
+
+all : clean $(OUTPUT)
+
+clean :
+	rm -f $(OUTPUT)
+	rm -f $(OBJS)
+
+$(OBJS) :
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
+
+$(OUTPUT) : $(OBJS) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(STRIP) $@
+	
+install:
+	ncftpput  -u root -p sifteam 192.168.0.6 /var/crossepg/ $(OUTPUT)
+	

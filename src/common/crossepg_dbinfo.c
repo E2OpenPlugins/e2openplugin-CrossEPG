@@ -64,7 +64,7 @@ void dump ()
 
 	while (channel != NULL)
 	{
-		printf ("Servide ID: %X Transport Service ID: %X Network ID: %X\n", channel->sid, channel->tsid, channel->nid);
+		printf ("Service ID: %X Transport Service ID: %X Network ID: %X\n", channel->sid, channel->tsid, channel->nid);
 		epgdb_title_t *title = channel->title_first;
 		while (title != NULL)
 		{
@@ -127,6 +127,8 @@ int main (int argc, char **argv)
 	log_open (NULL, "CrossEPG DB Info");
 	
 	while (db_root[strlen (db_root) - 1] == '/') db_root[strlen (db_root) - 1] = '\0';
+	
+	mkdir (db_root, S_IRWXU|S_IRWXG|S_IRWXO);
 	
 	if (epgdb_open (db_root)) log_add ("EPGDB opened");
 	else

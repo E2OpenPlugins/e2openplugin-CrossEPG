@@ -38,7 +38,6 @@ class CrossEPG_Info(Screen):
 		self.config = CrossEPG_Config()
 		self.config.load()
 		
-		self["logo"] = Pixmap()
 		self["version"] = Label("")
 		self["create"] = Label("")
 		self["last_update"] = Label("")
