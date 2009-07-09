@@ -1,0 +1,9 @@
+Package: crossepg
+Section: extra
+Priority: optional
+Version: 0.3.0rc1-svn-14
+Architecture: sh4
+Maintainer: Sandro Cavazzoni (http://www.crossepg.com)
+Depends:
+Description: An EPG downloader
+Source: none

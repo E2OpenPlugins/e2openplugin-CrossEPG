@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <sys/stat.h>
 
 #include "../common.h"
 
@@ -83,7 +84,7 @@ void dump ()
 
 int main (int argc, char **argv)
 {
-	int c, i;
+	int c;
 	opterr = 0;
 	bool iactive = false;
 	bool edump = false;
