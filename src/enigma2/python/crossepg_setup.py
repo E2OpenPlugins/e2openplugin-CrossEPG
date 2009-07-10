@@ -89,7 +89,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button(_("Info"))
-		self["key_blue"] = Button(_(""))
+		self["key_blue"] = Button(_(" "))
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
 			"red": self.cancel,

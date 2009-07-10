@@ -29,5 +29,6 @@ make -f Makefiles/crossepg_launcher.sh4 clean
 rm -rf enigma2/sh4/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/*
 rm -rf enigma2/mipsel/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/*
 rm src/enigma2/python/*.pyc
+rm src/enigma2/python/*.pyo
 
 exit 0
