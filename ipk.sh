@@ -10,14 +10,20 @@ cat enigma2/sh4/CONTROL/control | sed "s/Version:.*/Version: $VERSION/" > enigma
 mv enigma2/sh4/CONTROL/control.tmp enigma2/sh4/CONTROL/control
 cat enigma2/mipsel/CONTROL/control | sed "s/Version:.*/Version: $VERSION/" > enigma2/mipsel/CONTROL/control.tmp
 mv enigma2/mipsel/CONTROL/control.tmp enigma2/mipsel/CONTROL/control
+
+rm -rf /tmp/crossepg_ipkg
+mkdir /tmp/crossepg_ipkg
 cd enigma2/sh4
-tar --exclude-vcs -c * | tar -x -C ../../ipkg-tmp
+tar --exclude-vcs -c * | tar -x -C /tmp/crossepg_ipkg
 cd ../..
-ipkg-build -o root -g root ipkg-tmp/
-rm -rf ipkg-tmp/*
+ipkg-build -o root -g root /tmp/crossepg_ipkg
+
+rm -rf /tmp/crossepg_ipkg
+mkdir /tmp/crossepg_ipkg
 cd enigma2/mipsel
-tar --exclude-vcs -c * | tar -x -C ../../ipkg-tmp
+tar --exclude-vcs -c * | tar -x -C /tmp/crossepg_ipkg
 cd ../..
-ipkg-build -o root -g root ipkg-tmp/
-rm -rf ipkg-tmp/*
+ipkg-build -o root -g root /tmp/crossepg_ipkg
+
+rm -rf /tmp/crossepg_ipkg
 mv *.ipk ../crossepg_packages
