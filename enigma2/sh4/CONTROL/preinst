@@ -6,3 +6,4 @@
 [ -f /var/crossepg/crossepg_importer ] && rm /var/crossepg/crossepg_importer
 [ -f /var/crossepg/crossepg_epgmove.sh ] && rm /var/crossepg/crossepg_epgmove.sh
 [ -d /var/crossepg/providers ] && rm -rf /var/crossepg/providers
+exit 0
