@@ -108,14 +108,91 @@ void progress (int value, int max)
 	}
 }
 
+int events_count = 0;
+
+static void write_titles (epgdb_channel_t *channel, FILE *fd)
+{
+	epgdb_title_t *title = channel->title_first;
+	while (title != NULL)
+	{
+		int i;
+		char *buf;
+		int crcs_count = 1;
+		uint32_t crcs[17];
+		char length;
+		struct tm start_time;
+		
+		/* description */
+		char *description = epgdb_read_description (title);
+		if (strlen (description) > 245) description[245] = '\0';
+		gmtime_r (&title->start_time, &start_time);
+		sdesc_t *sdesc = short_desc (description);
+		
+		crcs[0] = crc32 (sdesc->data, sdesc->size);
+		if (!enigma2_hash_add (crcs[0], sdesc->data, sdesc->size)) _free (sdesc->data);
+		_free (sdesc);
+		_free (description);
+		
+		/* long description */
+		char *ldescription = epgdb_read_long_description (title);
+		if (strlen (ldescription) > 0)
+		{
+			if (strlen (ldescription) > (245*16)) ldescription[245*16] = '\0';
+			ldesc_t *ldesc = long_desc (ldescription);
+			
+			for (i=0; i<ldesc->count; i++)
+			{
+				crcs[i+1] = crc32 (ldesc->data[i], ldesc->size[i]);
+				if (!enigma2_hash_add (crcs[i+1], ldesc->data[i], ldesc->size[i])) _free (ldesc->data[i]);
+				crcs_count++;
+			}
+			
+			_free (ldesc);
+		}
+		
+		_free (ldescription);
+		
+		events_count++;
+		uint16_t event_id = events_count;
+		uint16_t start_mjd = title->mjd;
+		length = 10 + (crcs_count * 4);
+		buf = _malloc (length + 2);
+		buf[0] = 0x01;
+		buf[1] = length ;
+		buf[2] = (event_id >> 8) & 0xff;
+		buf[3] = event_id & 0xff;
+		buf[4] = (start_mjd >> 8) & 0xff;
+		buf[5] = start_mjd & 0xff;
+		buf[6] = toBCD (start_time.tm_hour);
+		buf[7] = toBCD (start_time.tm_min);
+		buf[8] = toBCD (start_time.tm_sec);
+		buf[9] = toBCD (title->length / (60*60));
+		buf[10] = toBCD ((title->length / 60) % 60);
+		buf[11] = toBCD (title->length % 60);
+		for (i=0; i<crcs_count; i++)
+		{
+			memcpy (buf+12+(i*4), &crcs[i], 4);
+		}
+		
+		fwrite (buf, length+2, 1, fd);
+		_free (buf);
+		
+		title = title->next;
+		//count++;
+		if (stop) return;
+	}
+}
+
 static void write_epgdat ()
 {
 	int i;
-	int count = 1;
+	//int count = 1;
 	int ccount = 0;
 	int progress_max = epgdb_channels_count ();
 	int progress_now = 0;
 	FILE *fd;
+	
+	events_count = 0;
 	
 	interactive_send (ACTION_START);
 	interactive_send_text (ACTION_PROGRESS, "ON");
@@ -162,77 +239,30 @@ static void write_epgdat ()
 				fwrite (&nid, sizeof (int), 1, fd);
 				fwrite (&tsid, sizeof (int), 1, fd);
 				fwrite (&titles_count, sizeof (int), 1, fd);
-				epgdb_title_t *title = channel->title_first;
-				while (title != NULL)
-				{
-					int i;
-					char *buf;
-					int crcs_count = 1;
-					uint32_t crcs[17];
-					char length;
-					struct tm start_time;
-					
-					/* description */
-					char *description = epgdb_read_description (title);
-					//char *description = _malloc (61);
-					//strcpy (description, "012345678901234567890123456789012345678901234567890123456789");
-					if (strlen (description) > 245) description[245] = '\0';
-					gmtime_r (&title->start_time, &start_time);
-					sdesc_t *sdesc = short_desc (description);
-					
-					crcs[0] = crc32 (sdesc->data, sdesc->size);
-					if (!enigma2_hash_add (crcs[0], sdesc->data, sdesc->size)) _free (sdesc->data);
-					_free (sdesc);
-					_free (description);
-					
-					/* long description */
-					char *ldescription = epgdb_read_long_description (title);
-					if (strlen (ldescription) > 0)
-					{
-						if (strlen (ldescription) > (245*16)) ldescription[245*16] = '\0';
-						ldesc_t *ldesc = long_desc (ldescription);
-						
-						for (i=0; i<ldesc->count; i++)
-						{
-							crcs[i+1] = crc32 (ldesc->data[i], ldesc->size[i]);
-							if (!enigma2_hash_add (crcs[i+1], ldesc->data[i], ldesc->size[i])) _free (ldesc->data[i]);
-							crcs_count++;
-						}
-						
-						_free (ldesc);
-					}
-					
-					_free (ldescription);
-					
-					uint16_t event_id = count;
-					uint16_t start_mjd = title->mjd; //get_mjd (&start_time);
-					length = 10 + (crcs_count * 4);
-					buf = _malloc (length + 2);
-					buf[0] = 0x01;
-					buf[1] = length ;
-					buf[2] = (event_id >> 8) & 0xff;
-					buf[3] = event_id & 0xff;
-					buf[4] = (start_mjd >> 8) & 0xff;
-					buf[5] = start_mjd & 0xff;
-					buf[6] = toBCD (start_time.tm_hour);
-					buf[7] = toBCD (start_time.tm_min);
-					buf[8] = toBCD (start_time.tm_sec);
-					buf[9] = toBCD (title->length / (60*60));
-					buf[10] = toBCD ((title->length / 60) % 60);
-					buf[11] = toBCD (title->length % 60);
-					for (i=0; i<crcs_count; i++)
-					{
-						memcpy (buf+12+(i*4), &crcs[i], 4);
-					}
-					
-					fwrite (buf, length+2, 1, fd);
-					_free (buf);
-					
-					title = title->next;
-					count++;
-					if (stop) goto write_end;
-				}
+				
+				write_titles (channel, fd);
+				
+				if (stop) goto write_end;
 				ccount++;
+			}
+			
+			for (i = 0; i < channel->aliases_count; i++)
+			{
+				if (enigma2_lamedb_exist (channel->aliases[i].nid, channel->aliases[i].tsid, channel->aliases[i].sid))
+				{
+					int nid = channel->aliases[i].nid;
+					int tsid = channel->aliases[i].tsid;
+					int sid = channel->aliases[i].sid;
+					fwrite (&sid, sizeof (int), 1, fd);
+					fwrite (&nid, sizeof (int), 1, fd);
+					fwrite (&tsid, sizeof (int), 1, fd);
+					fwrite (&titles_count, sizeof (int), 1, fd);
+					
+					write_titles (channel, fd);
+					
+					if (stop) goto write_end;
+					ccount++;
+				}
 			}
 		}
 		
