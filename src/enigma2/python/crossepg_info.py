@@ -1,5 +1,6 @@
 from enigma import getDesktop, iPlayableService, eTimer, eServiceReference, eEPGCache
 from crossepglib import *
+from crossepg_locale import _
 from Screens.Screen import Screen
 from Components.Label import Label
 from Components.Pixmap import Pixmap
@@ -64,25 +65,25 @@ class CrossEPG_Info(Screen):
 	
 	def __wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.INFO_HEADERSDB_SIZE:
-			self["headersdb_size"].text = "Headers db size: %s" % (param)
+			self["headersdb_size"].text = _("Headers db size: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_DESCRIPTORSDB_SIZE:
-			self["descriptorsdb_size"].text = "Descriptors db size: %s" % (param)
+			self["descriptorsdb_size"].text = _("Descriptors db size: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_INDEXESDB_SIZE:
-			self["indexesdb_size"].text = "Indexes db size: %s" % (param)
+			self["indexesdb_size"].text = _("Indexes db size: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_ALIASESDB_SIZE:
-			self["aliasesdb_size"].text = "Aliases db size: %s" % (param)
+			self["aliasesdb_size"].text = _("Aliases db size: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_TOTAL_SIZE:
-			self["total_size"].text = "Total size: %s" % (param)
+			self["total_size"].text = _("Total size: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_CHANNELS_COUNT:
-			self["channels_count"].text = "Channels count: %s" % (param)
+			self["channels_count"].text = _("Channels count: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_EVENTS_COUNT:
-			self["events_count"].text = "Events count: %s" % (param)
+			self["events_count"].text = _("Events count: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_HASHES_COUNT:
-			self["hashes_count"].text = "Hashes count: %s" % (param)
+			self["hashes_count"].text = _("Hashes count: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_CREATION_TIME:
-			self["create"].text = "Creation time: %s" % (param)
+			self["create"].text = _("Creation time: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_UPDATE_TIME:
-			self["last_update"].text = "Last update time: %s" % (param)
+			self["last_update"].text = _("Last update time: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_VERSION:
-			self["version"].text = "Version: %s" % (param)
+			self["version"].text = _("Version: %s") % (param)
 			

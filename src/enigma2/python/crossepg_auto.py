@@ -5,6 +5,7 @@ from crossepglib import *
 from crossepg_downloader import CrossEPG_Downloader
 from crossepg_converter import CrossEPG_Converter
 from crossepg_loader import CrossEPG_Loader
+from crossepg_locale import _
 from Screens.Screen import Screen
 
 from time import *

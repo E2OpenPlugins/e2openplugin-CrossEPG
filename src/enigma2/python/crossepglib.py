@@ -1,4 +1,5 @@
 from enigma import *
+from crossepg_locale import _
 from Tools.Directories import crawlDirectory, pathExists, createDir
 from types import *
 
@@ -299,27 +300,27 @@ class CrossEPG_Wrapper:
 			print "[CrossEPG_Wrapper] <- TYPE %s" % (ttype)
 			if (ttype == "READ CHANNELS"):
 				self.type = 0;
-				self.__callCallbacks(self.EVENT_ACTION, "Reading channels")
+				self.__callCallbacks(self.EVENT_ACTION, _("Reading channels"))
 			elif (ttype == "READ TITLES"):
 				self.type = 1;
-				self.__callCallbacks(self.EVENT_ACTION, "Reading titles")
+				self.__callCallbacks(self.EVENT_ACTION, _("Reading titles"))
 			elif (ttype == "PARSE TITLES"):
 				self.type = 2;
-				self.__callCallbacks(self.EVENT_ACTION, "Parsing titles")
+				self.__callCallbacks(self.EVENT_ACTION, _("Parsing titles"))
 			elif (ttype == "READ SUMMARIES"):
 				self.type = 3;
-				self.__callCallbacks(self.EVENT_ACTION, "Reading summaries")
+				self.__callCallbacks(self.EVENT_ACTION, _("Reading summaries"))
 			elif (ttype == "PARSE SUMMARIES"):
 				self.type = 4;
-				self.__callCallbacks(self.EVENT_ACTION, "Parsing summaries")
+				self.__callCallbacks(self.EVENT_ACTION, _("Parsing summaries"))
 		elif data.find("CHANNELS ") == 0:
-			self.__callCallbacks(self.EVENT_STATUS, "%s channels" % (data[9:]))
+			self.__callCallbacks(self.EVENT_STATUS, _("%s channels") % (data[9:]))
 		elif data.find("SIZE ") == 0:
 			if self.type == 1 or self.type == 3:
 				self.maxSize = data[5:]
-				self.__callCallbacks(self.EVENT_STATUS, "Read %s" % (data[5:]))
+				self.__callCallbacks(self.EVENT_STATUS, _("Read %s") % (data[5:]))
 			else:
-				self.__callCallbacks(self.EVENT_STATUS, "%s of %s" % (data[5:], self.maxSize))
+				self.__callCallbacks(self.EVENT_STATUS, _("%s of %s") % (data[5:], self.maxSize))
 		elif data.find("PROGRESS ") == 0:
 			if data[9:] == "ON":
 				self.__callCallbacks(self.EVENT_PROGRESSONOFF, True)
@@ -385,13 +386,13 @@ class CrossEPG_Wrapper:
 		
 	def convert(self):
 		print "[CrossEPG_Wrapper] -> CONVERT"
-		self.__callCallbacks(self.EVENT_ACTION, "Converting data")
+		self.__callCallbacks(self.EVENT_ACTION, _("Converting data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
 		self.cmd.write("CONVERT\n", 8)
 		
 	def text(self):
 		print "[CrossEPG_Wrapper] -> TEXT"
-		self.__callCallbacks(self.EVENT_ACTION, "Loading data")
+		self.__callCallbacks(self.EVENT_ACTION, _("Loading data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
 		self.cmd.write("TEXT\n", 5)
 			
@@ -401,7 +402,7 @@ class CrossEPG_Wrapper:
 
 	def save(self):
 		print "[CrossEPG_Wrapper] -> SAVE"
-		self.__callCallbacks(self.EVENT_ACTION, "Saving data")
+		self.__callCallbacks(self.EVENT_ACTION, _("Saving data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
 		self.cmd.write("SAVE\n", 5)
 

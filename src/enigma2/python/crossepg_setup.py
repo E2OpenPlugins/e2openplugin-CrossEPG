@@ -2,6 +2,7 @@ from enigma import *
 from crossepglib import *
 from crossepg_auto import crossepg_auto
 from crossepg_info import CrossEPG_Info
+from crossepg_locale import _
 
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -58,7 +59,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 				self.mountdescription.append(partition.description)
 				self.mountpoint.append(partition.mountpoint + "/crossepg/")
 				
-		self.citems.append(("Save data on device", ConfigSelection(self.mountdescription, default)))
+		self.citems.append((_("Save data on device"), ConfigSelection(self.mountdescription, default)))
 		
 		for lamedb in self.lamedbs:
 			if lamedb == "lamedb":
@@ -71,19 +72,19 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		else:
 			lamedbs_sel = self.config.lamedb.replace("lamedb.", "").replace(".", " ")
 				
-		self.citems.append(("Preferred lamedb", ConfigSelection(self.lamedbs_desc, lamedbs_sel)))
+		self.citems.append((_("Preferred lamedb"), ConfigSelection(self.lamedbs_desc, lamedbs_sel)))
 		
 		for provider in self.providers:
-			self.citems.append(("Enable provider %s" % (provider), ConfigYesNo(self.config.providers.count(provider) > 0)))
+			self.citems.append((_("Enable provider %s") % (provider), ConfigYesNo(self.config.providers.count(provider) > 0)))
 		
-		self.citems.append(("Automatic load data on boot", ConfigYesNo(self.config.auto_boot > 0)))
-		self.citems.append(("Automatic daily download", ConfigYesNo(self.config.auto_daily > 0)))
-		self.citems.append(("Automatic daily download at", ConfigClock(mktime(ltime))))
-		self.citems.append(("Automatic download on tune", ConfigYesNo(self.config.auto_tune > 0)))
-		self.citems.append(("Show OSD for automatic download", ConfigYesNo(self.config.auto_tune_osd > 0)))
+		self.citems.append((_("Automatic load data on boot"), ConfigYesNo(self.config.auto_boot > 0)))
+		self.citems.append((_("Automatic daily download"), ConfigYesNo(self.config.auto_daily > 0)))
+		self.citems.append((_("Automatic daily download at"), ConfigClock(mktime(ltime))))
+		self.citems.append((_("Automatic download on tune"), ConfigYesNo(self.config.auto_tune > 0)))
+		self.citems.append((_("Show OSD for automatic download"), ConfigYesNo(self.config.auto_tune_osd > 0)))
 		if not self.fastpatch:
-			self.citems.append(("Reboot after a daily download", ConfigYesNo(self.config.auto_daily_reboot > 0)))
-			self.citems.append(("Reboot after a manual download", ConfigYesNo(self.config.manual_reboot > 0)))
+			self.citems.append((_("Reboot after a daily download"), ConfigYesNo(self.config.auto_daily_reboot > 0)))
+			self.citems.append((_("Reboot after a manual download"), ConfigYesNo(self.config.manual_reboot > 0)))
 			
 		ConfigListScreen.__init__(self, self.citems)
 		self["key_red"] = Button(_("Cancel"))

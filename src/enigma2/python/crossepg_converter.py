@@ -1,5 +1,6 @@
 from enigma import getDesktop, iPlayableService, eTimer, eServiceReference, eEPGCache
 from crossepglib import *
+from crossepg_locale import _
 from Screens.Screen import Screen
 from Components.Label import Label
 from Components.ProgressBar import ProgressBar
@@ -33,7 +34,7 @@ class CrossEPG_Converter(Screen):
 		f.close()
 		Screen.__init__(self, session)
 		
-		self["action"] = Label("Starting converter")
+		self["action"] = Label(_("Starting converter"))
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
@@ -101,7 +102,7 @@ class CrossEPG_Converter(Screen):
 			self.close()
 			
 		elif event == CrossEPG_Wrapper.EVENT_ERROR:
-			self.session.open(MessageBox, "CrossEPG error: %s" % (param), type = MessageBox.TYPE_INFO, timeout = 20)
+			self.session.open(MessageBox, _("CrossEPG error: %s") % (param), type = MessageBox.TYPE_INFO, timeout = 20)
 			self.ret = False
 			self.quit()
 			
