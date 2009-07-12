@@ -8,6 +8,7 @@
 #define CMD_LAMEDB "LAMEDB"
 #define CMD_EPGDAT "EPGDAT"
 #define CMD_CONVERT "CONVERT"
+#define CMD_IMPORT "IMPORT"
 #define CMD_TEXT "TEXT"
 #define CMD_WAIT "WAIT"
 #define CMD_STOP "STOP"
@@ -20,6 +21,8 @@
 #define ACTION_END		"END"
 #define ACTION_TYPE		"TYPE"
 #define ACTION_PROGRESS	"PROGRESS"
+#define ACTION_FILE		"FILE"
+#define ACTION_URL		"URL"
 #define ACTION_READY	"READY"
 
 #define INFO_HEADERSDB_SIZE					"HEADERSDB_SIZE"

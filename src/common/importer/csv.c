@@ -72,13 +72,17 @@ char *csvtok (char *value, char separator)
 	return field;
 }
 
-static int get_mjd (struct tm *value)
+static int get_mjd (time_t value)
 {
+	struct tm *time = gmtime(&value);
+	
 	int l = 0;
-	if (value->tm_mon <= 1)	// Jan or Feb
+	int month = time->tm_mon + 1;
+	if (month == 1 || month == 2)
 		l = 1;
-	return (14956 + value->tm_mday + ((value->tm_year - l) * 365.25) + ((value->tm_mon + 2 + l * 12) * 30.6001));
+	return 14956 + time->tm_mday + (int)((time->tm_year - l) * 365.25) + (int)((month + 1 + l*12) * 30.6001);
 }
+
 bool csv_read (char *file, void(*progress_callback)(int, int))
 {
 	char line[LINE_SIZE];
@@ -109,8 +113,8 @@ bool csv_read (char *file, void(*progress_callback)(int, int))
 		title->length = atoi (csvtok (NULL, ','));
 		title->genre_id = 0;
 		title->genre_sub_id = 0;
-		struct tm *loctime = localtime (&title->start_time);
-		title->mjd = get_mjd (loctime);
+		title->mjd = get_mjd (title->start_time);
+		printf ("%d\n", title->mjd);
 		epgdb_titles_add (channel, title);
 		
 		epgdb_titles_set_description (title, csvtok (NULL, ','));

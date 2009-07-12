@@ -5,6 +5,7 @@ OBJS += src/common/crossepg_importer.o
 OBJS += src/common/memory.o
 OBJS += src/common/aliases/aliases.o
 OBJS += src/common/core/log.o
+OBJS += src/common/core/interactive.o
 OBJS += src/common/epgdb/epgdb.o
 OBJS += src/common/epgdb/epgdb_channels.o
 OBJS += src/common/epgdb/epgdb_index.o
@@ -21,7 +22,7 @@ CFLAGS += -DE2
 
 LIBS +=
 
-LDFLAGS +=
+LDFLAGS += -lpthread
 
 OUTPUT = ./enigma2/mipsel/usr/crossepg/crossepg_importer
 

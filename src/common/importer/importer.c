@@ -25,8 +25,11 @@
 
 #include "csv.h"
 
-static void(*_progress_callback)(char*, int, int) = NULL;
-static void(*_progress_url_callback)(char*, int, int) = NULL;
+static void(*_progress_callback)(int, int) = NULL;
+static void(*_url_callback)(char*) = NULL;
+//static void(*_url_stop_callback)(char*) = NULL;
+static void(*_file_callback)(char*) = NULL;
+//static void(*_file_stop_callback)(char*) = NULL;
 static void(*_step_callback)() = NULL;
 static char _file[256];
 static char _url[256];
@@ -39,17 +42,23 @@ bool importer_extension_check (char *filename, char *extension)
 	return true;
 }
 
-void importer_csv_callback (int value, int max)
-{
-	if (_progress_callback != NULL)
-		_progress_callback (_file, value, max);
-}
+//static void importer_progress_callback (int value, int max)
+//{
+//	if (_progress_callback != NULL)
+//		_progress_callback (_file, value, max);
+//}
 
-void importer_url_callback (int value, int max)
-{
-	if (_progress_callback != NULL)
-		_progress_url_callback (_url, value, max);
-}
+//void importer_url_callback (char *url)
+//{
+//	if (_progress_callback != NULL)
+//		_progress_url_callback (url);
+//}
+
+//void importer_file_callback (char *file)
+//{
+//	if (_progress_callback != NULL)
+//		_progress_file_callback (file);
+//}
 
 void importer_parse_csv (char *dir, char *filename, char *label)
 {
@@ -60,7 +69,8 @@ void importer_parse_csv (char *dir, char *filename, char *label)
 		sprintf (file, "%s/%s", dir, filename);
 	
 	log_add ("Importing data from '%s'...", label);
-	if (csv_read (file, importer_csv_callback)) log_add ("Data imported");
+	if (_file_callback != NULL) _file_callback (label);
+	if (csv_read (file, _progress_callback)) log_add ("Data imported");
 	else log_add ("Cannot import csv file");
 	
 	if (_step_callback != NULL) _step_callback ();
@@ -119,7 +129,7 @@ void importer_parse_url (char *dir, char *filename, char *dbroot)
 		while ((tmp[0+pos] != '\0') && (tmp[0+pos] != '\n')) pos++;
 		if (pos > (sizeof (page) - 1)) continue;
 		memcpy (page, tmp, pos);
-		strcpy (_file, page);
+		//strcpy (_file, page);
 		
 		if (line[strlen (line)-1] == '\n') line[strlen (line)-1] = '\0';
 		
@@ -134,10 +144,15 @@ void importer_parse_url (char *dir, char *filename, char *dbroot)
 				log_add ("Cannot get temp file");
 				continue;
 			}
-			ok = http_get (host, page, atoi (port), fd, importer_url_callback);
+			if (_url_callback != NULL) _url_callback (host);	// TODO: compose full url?
+			ok = http_get (host, page, atoi (port), fd, _progress_callback);
 			close (fd);
 			if (_step_callback != NULL) _step_callback ();
-			if (ok) importer_parse_csv (NULL, sfn, line);
+			if (ok)
+			{
+				if (_file_callback != NULL) _file_callback (page);
+				importer_parse_csv (NULL, sfn, line);
+			}
 			else if (_step_callback != NULL) _step_callback ();
 			
 			unlink (sfn);
@@ -186,13 +201,17 @@ int importer_set_steps (char *dir, void(*step_callback)())
 	return steps;
 }
 
-void importer_parse_directory (char *dir, char *dbroot, void(*progress_callback)(char*, int, int), void(*progress_url_callback)(char*, int, int))
+void importer_parse_directory (char *dir, char *dbroot,
+								void(*progress_callback)(int, int),
+								void(*url_callback)(char*),
+								void(*file_callback)(char*))
 {
 	DIR *dp;
 	struct dirent *ep;
 	
 	_progress_callback = progress_callback;
-	_progress_url_callback = progress_url_callback;
+	_url_callback = url_callback;
+	_file_callback = file_callback;
 	
 	dp = opendir (dir);
 	if (dp != NULL)
