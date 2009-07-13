@@ -51,6 +51,8 @@ class CrossEPG_Config:
 	auto_tune = 1
 	auto_tune_osd = 0
 	manual_reboot = 1
+	enable_importer = 0
+	show_downloader = 1
 	
 	def __init__(self):
 		if pathExists("/usr/crossepg"):
@@ -99,6 +101,10 @@ class CrossEPG_Config:
 						self.auto_daily_reboot = int(value);
 					elif key == "manual_reboot":
 						self.manual_reboot = int(value);
+					elif key == "enable_importer":
+						self.enable_importer = int(value);
+					elif key == "show_downloader":
+						self.show_downloader = int(value);
 						
 		f.close()
 		#print "[CrossEPG_Config] configuration loaded"
@@ -121,6 +127,8 @@ class CrossEPG_Config:
 		f.write("auto_tune_osd=%d\n" % (self.auto_tune_osd))
 		f.write("auto_daily_reboot=%d\n" % (self.auto_daily_reboot))
 		f.write("manual_reboot=%d\n" % (self.manual_reboot))
+		f.write("enable_importer=%d\n" % (self.enable_importer))
+		f.write("show_downloader=%d\n" % (self.show_downloader))
 		
 		f.close()
 		#print "[CrossEPG_Config] configuration saved"
@@ -179,36 +187,40 @@ class CrossEPG_Config:
 		return lamedbs
 
 class CrossEPG_Wrapper:
-	EVENT_READY = 0
-	EVENT_OK = 1
-	EVENT_START = 2
-	EVENT_END = 3
-	EVENT_QUIT = 4
-	EVENT_ERROR = 5
-	EVENT_ACTION = 6
-	EVENT_STATUS = 7
-	EVENT_PROGRESS = 8
-	EVENT_PROGRESSONOFF = 9
-	EVENT_CHANNEL = 10
-	EVENT_STARTTIME = 11
-	EVENT_LENGTH = 12
-	EVENT_NAME = 13
-	EVENT_DESCRIPTION = 14
-	INFO_HEADERSDB_SIZE = 15
-	INFO_DESCRIPTORSDB_SIZE = 16
-	INFO_INDEXESDB_SIZE = 17
-	INFO_ALIASESDB_SIZE = 18
-	INFO_TOTAL_SIZE = 19
-	INFO_CHANNELS_COUNT = 20
-	INFO_EVENTS_COUNT = 21
-	INFO_HASHES_COUNT = 22
-	INFO_CREATION_TIME = 23
-	INFO_UPDATE_TIME = 24
-	INFO_VERSION = 25
+	EVENT_READY				= 0
+	EVENT_OK				= 1
+	EVENT_START				= 2
+	EVENT_END				= 3
+	EVENT_QUIT				= 4
+	EVENT_ERROR				= 5
+	EVENT_ACTION			= 6
+	EVENT_STATUS			= 7
+	EVENT_PROGRESS			= 8
+	EVENT_PROGRESSONOFF		= 9
+	EVENT_CHANNEL			= 10
+	EVENT_STARTTIME			= 11
+	EVENT_LENGTH			= 12
+	EVENT_NAME				= 13
+	EVENT_DESCRIPTION		= 14
+	EVENT_FILE				= 15
+	EVENT_URL				= 16
 	
-	CMD_DOWNLOADER = 0
-	CMD_CONVERTER = 1
-	CMD_INFO = 2
+	INFO_HEADERSDB_SIZE		= 50
+	INFO_DESCRIPTORSDB_SIZE	= 51
+	INFO_INDEXESDB_SIZE		= 52
+	INFO_ALIASESDB_SIZE		= 53
+	INFO_TOTAL_SIZE			= 54
+	INFO_CHANNELS_COUNT		= 55
+	INFO_EVENTS_COUNT		= 56
+	INFO_HASHES_COUNT		= 57
+	INFO_CREATION_TIME		= 58
+	INFO_UPDATE_TIME		= 59
+	INFO_VERSION			= 60
+	
+	CMD_DOWNLOADER	= 0
+	CMD_CONVERTER	= 1
+	CMD_INFO		= 2
+	CMD_IMPORTER	= 3
 
 	home_directory = ""
 
@@ -236,6 +248,8 @@ class CrossEPG_Wrapper:
 			x = "%s/crossepg_dbconverter -k 19 -r -d %s" % (self.home_directory, dbdir)
 		elif cmd == self.CMD_INFO:
 			x = "%s/crossepg_dbinfo -k 19 -r -d %s" % (self.home_directory, dbdir)
+		elif cmd == self.CMD_IMPORTER:
+			x = "%s/crossepg_importer -k 19 -r -d %s" % (self.home_directory, dbdir)
 		else:
 			print "[CrossEPG_Wrapper] unknow command on init"
 			return
@@ -328,6 +342,10 @@ class CrossEPG_Wrapper:
 				self.__callCallbacks(self.EVENT_PROGRESSONOFF, False)
 			else:
 				self.__callCallbacks(self.EVENT_PROGRESS, int(data[9:]))
+		elif data.find("FILE ") == 0:
+			self.__callCallbacks(self.EVENT_FILE, data[5:])
+		elif data.find("URL ") == 0:
+			self.__callCallbacks(self.EVENT_URL, data[4:])
 		elif data.find("VERSION ") == 0:
 			self.__callCallbacks(self.INFO_VERSION, data[8:])
 		elif data.find("HEADERSDB_SIZE ") == 0:
@@ -389,6 +407,10 @@ class CrossEPG_Wrapper:
 		self.__callCallbacks(self.EVENT_ACTION, _("Converting data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
 		self.cmd.write("CONVERT\n", 8)
+		
+	def importx(self):
+		print "[CrossEPG_Wrapper] -> IMPORT"
+		self.cmd.write("IMPORT\n", 7)
 		
 	def text(self):
 		print "[CrossEPG_Wrapper] -> TEXT"

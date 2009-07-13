@@ -1,6 +1,7 @@
 from enigma import *
 from crossepglib import *
 from crossepg_downloader import CrossEPG_Downloader
+from crossepg_importer import CrossEPG_Importer
 from crossepg_converter import CrossEPG_Converter
 from crossepg_loader import CrossEPG_Loader
 from crossepg_setup import CrossEPG_Setup
@@ -17,10 +18,21 @@ class CrossEPG_Main:
 
 	def __callbackDownloader(self, session, ret):
 		if ret:
+			config = CrossEPG_Config()
+			config.load()
+			if config.enable_importer == 1:
+				session.open(CrossEPG_Importer, self.__callbackImporter)
+			else:
+				session.open(CrossEPG_Converter, self.__callbackConverter)
+		else:
+			crossepg_auto.enable()
+			
+	def __callbackImporter(self, session, ret):
+		if ret:
 			session.open(CrossEPG_Converter, self.__callbackConverter)
 		else:
 			crossepg_auto.enable()
-
+			
 	def __callbackConverter(self, session, ret):
 		if ret:
 			config = CrossEPG_Config()

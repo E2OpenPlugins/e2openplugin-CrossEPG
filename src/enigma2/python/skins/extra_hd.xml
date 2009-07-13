@@ -1,0 +1,13 @@
+<screen position="100,100" size="560,400" title="CrossEPG Extra">
+	<widget name="version" position="10,10" size="540,25" font="Regular;20" />
+	<widget name="create" position="10,40" size="540,25" font="Regular;20" />
+	<widget name="last_update" position="10,70" size="540,25" font="Regular;20" />
+	<widget name="headersdb_size" position="10,100" size="540,25" font="Regular;20" />
+	<widget name="descriptorsdb_size" position="10,130" size="540,25" font="Regular;20" />
+	<widget name="indexesdb_size" position="10,160" size="540,25" font="Regular;20" />
+	<widget name="aliasesdb_size" position="10,190" size="540,25" font="Regular;20" />
+	<widget name="total_size" position="10,220" size="540,25" font="Regular;20" />
+	<widget name="channels_count" position="10,250" size="540,25" font="Regular;20" />
+	<widget name="events_count" position="10,280" size="540,25" font="Regular;20" />
+	<widget name="hashes_count" position="10,310" size="540,25" font="Regular;20" />
+</screen>

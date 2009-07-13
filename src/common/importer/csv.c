@@ -83,7 +83,7 @@ static int get_mjd (time_t value)
 	return 14956 + time->tm_mday + (int)((time->tm_year - l) * 365.25) + (int)((month + 1 + l*12) * 30.6001);
 }
 
-bool csv_read (char *file, void(*progress_callback)(int, int))
+bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *stop)
 {
 	char line[LINE_SIZE];
 	FILE *fd;
@@ -100,7 +100,7 @@ bool csv_read (char *file, void(*progress_callback)(int, int))
 	fseek (fd, 0, SEEK_SET);
 
 	count = 0;
-	while (fgets (line, sizeof(line), fd)) 
+	while (fgets (line, sizeof(line), fd) && *stop == false) 
 	{
 		int nid = atoi (csvtok (line, ','));
 		int tsid = atoi (csvtok (NULL, ','));
@@ -114,7 +114,6 @@ bool csv_read (char *file, void(*progress_callback)(int, int))
 		title->genre_id = 0;
 		title->genre_sub_id = 0;
 		title->mjd = get_mjd (title->start_time);
-		printf ("%d\n", title->mjd);
 		epgdb_titles_add (channel, title);
 		
 		epgdb_titles_set_description (title, csvtok (NULL, ','));

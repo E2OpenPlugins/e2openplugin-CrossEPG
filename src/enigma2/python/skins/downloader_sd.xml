@@ -1,5 +1,11 @@
-<screen position="460,450" size="180,60" title="CrossEPG">
-	<widget name="action" position="5,0" size="170,20" font="Regular;16" />
-	<widget name="status" position="5,20" size="170,20" font="Regular;16" />
-	<widget name="progress" position="0,45" size="180,15" borderWidth="1" />
+<screen position="400,460" size="280,75" flags="wfNoBorder">
+	<!-- draw border -->
+	<eLabel position="1,1"    zPosition="1"  size="278,2" backgroundColor="#999999" />
+	<eLabel position="1,72"  zPosition="1"  size="278,2" backgroundColor="#999999" />
+	<eLabel position="1,3"    zPosition="1"  size="2,71"  backgroundColor="#999999" />
+	<eLabel position="277,3" zPosition="1"  size="2,71"  backgroundColor="#999999" />
+	<!-- elements -->
+	<widget name="action" halign="center" valign="center" position="5,2" size="270,20" font="Regular;16" />
+	<widget name="status" halign="center" valign="center" position="5,25" size="270,20" font="Regular;15" />
+	<widget name="progress" position="5,55" size="270,15" borderWidth="1" />
 </screen>

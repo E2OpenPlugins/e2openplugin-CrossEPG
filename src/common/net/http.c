@@ -26,7 +26,7 @@ char *_build_get_query (char *host, char *page)
 	return query;
 }
 
-bool http_get (char *host, char *page, int port, int tempfile, void(*progress_callback)(int, int))
+bool http_get (char *host, char *page, int port, int tempfile, void(*progress_callback)(int, int), volatile bool *stop)
 {
 	struct sockaddr_in *remote;
 	struct hostent *hent;
@@ -119,7 +119,7 @@ bool http_get (char *host, char *page, int port, int tempfile, void(*progress_ca
 	char *htmlcontent;
 	//log_add ("Downloading file...");
 	bool error = false;
-	while ((tmpres = recv (sock, buf, BUFSIZ, 0)) > 0)
+	while ((tmpres = recv (sock, buf, BUFSIZ, 0)) > 0 && *stop == false)
 	{
 		if (htmlstart == false)
 		{

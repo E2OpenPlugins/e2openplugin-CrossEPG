@@ -54,7 +54,7 @@ void progress_callback (int value, int max)
 
 void url_callback (char *url)
 {
-	interactive_send_text (ACTION_FILE, url);
+	interactive_send_text (ACTION_URL, url);
 }
 
 void file_callback (char *file)
@@ -66,10 +66,10 @@ void *import (void *args)
 {
 	interactive_send (ACTION_START);
 	interactive_send_text (ACTION_PROGRESS, "ON");
-	importer_parse_directory (import_root, db_root, progress_callback, url_callback, file_callback);
+	importer_parse_directory (import_root, db_root, progress_callback, url_callback, file_callback, &stop);
+	exec = false;
 	interactive_send_text (ACTION_PROGRESS, "OFF");
 	interactive_send (ACTION_END);
-	exec = false;
 	return NULL;
 }
 
@@ -246,7 +246,8 @@ int main (int argc, char **argv)
 	if (iactive) interactive_manager ();
 	else
 	{
-		importer_parse_directory (import_root, db_root, NULL, NULL, NULL);
+		volatile bool useless = false;
+		importer_parse_directory (import_root, db_root, NULL, NULL, NULL, &useless);
 		
 		log_add ("Saving data...");
 		if (epgdb_save (NULL)) log_add ("Data saved");
