@@ -3,7 +3,7 @@
 
 typedef enum type_bool {false = 0, true} bool;
 
-#define RELEASE "0.3.0rc2 (svn 23)"
+#define RELEASE "0.3.0rc2 (svn 24)"
 
 #define MAX_OTV_LOOP_CYCLES			10000
 #define MAX_BAT_LOOP_CYCLES			200
@@ -16,7 +16,7 @@ typedef enum type_bool {false = 0, true} bool;
 #define DEFAULT_DWNL_FILE			"crossepg.downloader.plugin"
 #define DEFAULT_SYNC_FILE			"crossepg.sync.plugin"
 #define DEFAULT_SYNC_HOURS			12
-#define DEFAULT_OTV_PROVIDER		"skyitalia"
+#define DEFAULT_OTV_PROVIDER		"skyit_hotbird_13.0"
 
 #ifdef E2
 #define DEFAULT_DB_ROOT				"/hdd/crossepg"

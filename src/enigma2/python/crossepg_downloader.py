@@ -60,7 +60,7 @@ class CrossEPG_Downloader(Screen):
 		
 		if len(self.config.providers) == 0 and not self.provider:
 			if self.endCallback:
-				self.endCallback(self.session, False)
+				self.endCallback(self.session, True)
 			self.close()
 		
 		self.wrapper = CrossEPG_Wrapper()

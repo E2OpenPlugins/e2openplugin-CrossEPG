@@ -1,0 +1,3 @@
+<screen position="100,100" size="1080,550" title="CrossEPG Exec">
+	<widget name="log" position="10,10" size="1060,530" font="Regular;18" />
+</screen>

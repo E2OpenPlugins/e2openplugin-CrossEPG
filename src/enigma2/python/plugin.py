@@ -13,19 +13,29 @@ def Plugins(**kwargs):
 	config = CrossEPG_Config()
 	config.load()
 	plugins = list()
-	if config.show_downloader == 1:
+	if config.show_plugin == 1 and config.show_extension == 1:
 		plugins.append(PluginDescriptor(name="CrossEPG Downloader",
 										description=_("An EPG downloader"),
 										where = [ PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_PLUGINMENU ],
 										fnc = crossepg_main.downloader))
+	elif config.show_extension == 1:
+		plugins.append(PluginDescriptor(name="CrossEPG Downloader",
+										description=_("An EPG downloader"),
+										where = PluginDescriptor.WHERE_EXTENSIONSMENU,
+										fnc = crossepg_main.downloader))
+	elif config.show_plugin == 1:
+		plugins.append(PluginDescriptor(name="CrossEPG Downloader",
+										description=_("An EPG downloader"),
+										where = PluginDescriptor.WHERE_PLUGINMENU,
+										fnc = crossepg_main.downloader))
 										
 	plugins.append(PluginDescriptor(name="CrossEPG",
-									description=_("An EPG downloader (setup panel)"),
-									where = [ PluginDescriptor.WHERE_MENU, PluginDescriptor.WHERE_EXTENSIONSMENU ],
+									description=_("CrossEPG setup panel"),
+									where = PluginDescriptor.WHERE_MENU,
 									fnc = setup))
 										
 	plugins.append(PluginDescriptor(name="CrossEPG Auto",
-									description = _("An EPG downloader (automatic actions)"),
+									description = _("CrossEPG automatic actions"),
 									where = PluginDescriptor.WHERE_SESSIONSTART,
 									fnc = crossepg_main.autostart))
 	return plugins;

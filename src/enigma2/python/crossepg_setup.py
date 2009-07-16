@@ -2,6 +2,7 @@ from enigma import *
 from crossepglib import *
 from crossepg_auto import crossepg_auto
 from crossepg_info import CrossEPG_Info
+from crossepg_extra import CrossEPG_Extra
 from crossepg_locale import _
 
 from Screens.Screen import Screen
@@ -17,13 +18,14 @@ from Components.Harddisk import harddiskmanager
 from Components.PluginComponent import plugins
 from Components.ActionMap import ActionMap
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+from Plugins.Plugin import PluginDescriptor
 
 from time import *
 
 import _enigma
 
 class CrossEPG_Setup(ConfigListScreen,Screen):
-	def __init__(self, session):
+	def __init__(self, session, auto_action):
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/setup_sd.xml" % (os.path.dirname(sys.modules[__name__].__file__))
 		else:
@@ -47,6 +49,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self.mountpoint = list()
 		self.mountdescription = list()
 		self.session = session
+		self.auto_action = auto_action
 		ttime = localtime()
 		ltime = (ttime[0], ttime[1], ttime[2], self.config.auto_daily_hours, self.config.auto_daily_minutes, ttime[5], ttime[6], ttime[7], ttime[8])
 		default = None
@@ -67,7 +70,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 				self.lamedbs_desc.append(lamedb.replace("lamedb.", "").replace(".", " "))
 				
 		if self.config.lamedb == "lamedb":
-			lamedbs_sel = "main lamedb"
+			lamedbs_sel = _("main lamedb")
 		else:
 			lamedbs_sel = self.config.lamedb.replace("lamedb.", "").replace(".", " ")
 				
@@ -85,18 +88,20 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		if not self.fastpatch:
 			self.citems.append((_("Reboot after a daily download"), ConfigYesNo(self.config.auto_daily_reboot > 0)))
 			self.citems.append((_("Reboot after a manual download"), ConfigYesNo(self.config.manual_reboot > 0)))
-		self.citems.append((_("Show downloader in plugin list"), ConfigYesNo(self.config.show_downloader > 0)))
+		self.citems.append((_("Show as plugin"), ConfigYesNo(self.config.show_plugin > 0)))
+		self.citems.append((_("Show as extension"), ConfigYesNo(self.config.show_extension > 0)))
 			
 		ConfigListScreen.__init__(self, self.citems)
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button(_("Info"))
-		self["key_blue"] = Button(_(" "))
+		self["key_blue"] = Button(_("Extra"))
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
 			"red": self.cancel,
 			"green": self.save,
 			"yellow": self.info,
+			"blue": self.extra,
 			"save": self.save,
 			"cancel": self.cancel,
 			"ok": self.save,
@@ -133,7 +138,14 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 			i += 1
 			self.config.manual_reboot = int(self.citems[i][1].getValue())
 			i += 1
-		self.config.show_downloader = int(self.citems[i][1].getValue())
+		
+		if self.config.show_plugin != int(self.citems[i][1].getValue()):
+			reload_plugins = True
+		self.config.show_plugin = int(self.citems[i][1].getValue())
+		i += 1
+		if self.config.show_extension != int(self.citems[i][1].getValue()):
+			reload_plugins = True
+		self.config.show_extension = int(self.citems[i][1].getValue())
 		i += 1
 		
 		self.config.save()
@@ -144,12 +156,24 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		crossepg_auto.auto_tune = self.config.auto_tune
 		crossepg_auto.auto_tune_osd = self.config.auto_tune_osd
 		
-		plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
+		if reload_plugins:
+			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU):
+				if plugin.name == "CrossEPG Downloader":
+					plugins.removePlugin(plugin)
+				
+			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_EXTENSIONSMENU):
+				if plugin.name == "CrossEPG Downloader":
+					plugins.removePlugin(plugin)
+				
+			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
 		
 		self.close()
 		
 	def info(self):
 		self.session.open(CrossEPG_Info)
+		
+	def extra(self):
+		self.session.open(CrossEPG_Extra, self.auto_action)
 		
 	def cancel(self):
 		self.close()

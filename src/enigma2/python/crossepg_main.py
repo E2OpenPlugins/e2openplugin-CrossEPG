@@ -54,7 +54,7 @@ class CrossEPG_Main:
 		crossepg_auto.enable()
 
 	def setup(self, session, **kwargs):
-		session.open(CrossEPG_Setup)
+		session.open(CrossEPG_Setup, self.downloader)
 
 	def autostart(self, reason, session):
 		crossepg_auto.init(session)

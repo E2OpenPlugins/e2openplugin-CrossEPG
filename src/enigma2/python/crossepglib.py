@@ -52,7 +52,8 @@ class CrossEPG_Config:
 	auto_tune_osd = 0
 	manual_reboot = 1
 	enable_importer = 0
-	show_downloader = 1
+	show_plugin = 1
+	show_extension = 1
 	
 	def __init__(self):
 		if pathExists("/usr/crossepg"):
@@ -103,8 +104,10 @@ class CrossEPG_Config:
 						self.manual_reboot = int(value);
 					elif key == "enable_importer":
 						self.enable_importer = int(value);
-					elif key == "show_downloader":
-						self.show_downloader = int(value);
+					elif key == "show_plugin":
+						self.show_plugin = int(value);
+					elif key == "show_extension":
+						self.show_extension = int(value);
 						
 		f.close()
 		#print "[CrossEPG_Config] configuration loaded"
@@ -128,7 +131,8 @@ class CrossEPG_Config:
 		f.write("auto_daily_reboot=%d\n" % (self.auto_daily_reboot))
 		f.write("manual_reboot=%d\n" % (self.manual_reboot))
 		f.write("enable_importer=%d\n" % (self.enable_importer))
-		f.write("show_downloader=%d\n" % (self.show_downloader))
+		f.write("show_plugin=%d\n" % (self.show_plugin))
+		f.write("show_extension=%d\n" % (self.show_extension))
 		
 		f.close()
 		#print "[CrossEPG_Config] configuration saved"
@@ -175,7 +179,8 @@ class CrossEPG_Config:
 		cfiles = crawlDirectory("%s/providers/" % (self.home_directory), ".*\.conf$")
 		for cfile in cfiles:
 			providers.append(cfile[1].replace(".conf", ""))
-			
+		
+		providers.sort()
 		return providers
 		
 	def getAllLamedbs(self):
@@ -183,8 +188,20 @@ class CrossEPG_Config:
 		cfiles = crawlDirectory("/etc/enigma2/", "^lamedb.*")
 		for cfile in cfiles:
 			lamedbs.append(cfile[1])
-
+			
 		return lamedbs
+		
+	def getAllImportScripts(self):
+		scripts = list()
+		importdir = "%s/import_scripts/" % (self.db_root)
+		if not pathExists(importdir):
+			importdir = "/hdd/crossepg/import_scripts/"
+		
+		cfiles = crawlDirectory(importdir, ".*")
+		for cfile in cfiles:
+			scripts.append(cfile[1])
+			
+		return scripts
 
 class CrossEPG_Wrapper:
 	EVENT_READY				= 0

@@ -7,6 +7,7 @@ from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
 from Components.ServiceEventTracker import ServiceEventTracker
 from Components.ActionMap import NumberActionMap
+from Components.Button import Button
 from Plugins.Plugin import PluginDescriptor
 from ServiceReference import ServiceReference
 from threading import Thread
@@ -50,10 +51,16 @@ class CrossEPG_Info(Screen):
 		self["channels_count"] = Label("")
 		self["events_count"] = Label("")
 		self["hashes_count"] = Label("")
-		self["actions"] = NumberActionMap(["WizardActions", "InputActions"],
+		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
-			"back": self.quit
-		}, -1)
+			"red": self.quit,
+			"cancel": self.quit
+		}, -2)
+		
+		self["key_red"] = Button(_("Exit"))
+		self["key_green"] = Button(" ")
+		self["key_yellow"] = Button(" ")
+		self["key_blue"] = Button(" ")
 		
 		self.wrapper = CrossEPG_Wrapper()
 		self.wrapper.addCallback(self.__wrapperCallback)
