@@ -13,6 +13,7 @@ OBJS += src/common/epgdb/epgdb_titles.o
 OBJS += src/common/epgdb/epgdb_aliases.o
 OBJS += src/common/epgdb/epgdb_search.o
 OBJS += src/common/importer/csv.o
+OBJS += src/common/importer/gzip.o
 OBJS += src/common/importer/importer.o
 OBJS += src/common/net/http.o
 OBJS += src/dgs/dgs.o
@@ -30,6 +31,7 @@ CFLAGS += -DDGS
 LIBS +=
 
 LDFLAGS += -lpthread
+LDFLAGS += -lz
 
 OUTPUT = ./dgs/var/crossepg/crossepg_importer
 

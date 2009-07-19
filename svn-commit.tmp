@@ -1,0 +1,17 @@
+(common) added gzip compression for csv
+(enigma2) added import and scripts on daily action
+
+--This line, and those below, will be ignored--
+
+AM   enigma2/sh4/var/crossepg/crossepg_otv_scanner
+M    src/enigma2/python/crossepg_auto.py
+A    src/common/importer/gzip.h
+M    src/common/importer/importer.c
+A    src/common/importer/gzip.c
+M    src/common/crossepg_otv_scanner.c
+M    src/common/opentv/opentv.c
+M    src/common.h
+M    Makefiles/crossepg_importer.enigma2.mipsel
+M    Makefiles/crossepg_importer.enigma2.sh4
+M    Makefiles/crossepg_importer.sh4
+A    Makefiles/crossepg_otv_scanner.enigma2.sh4

@@ -13,6 +13,7 @@ OBJS += src/common/epgdb/epgdb_titles.o
 OBJS += src/common/epgdb/epgdb_aliases.o
 OBJS += src/common/epgdb/epgdb_search.o
 OBJS += src/common/importer/csv.o
+OBJS += src/common/importer/gzip.o
 OBJS += src/common/importer/importer.o
 OBJS += src/common/net/http.o
 
@@ -23,6 +24,7 @@ CFLAGS += -DE2
 LIBS +=
 
 LDFLAGS += -lpthread
+LDFLAGS += -lz
 
 OUTPUT = ./enigma2/sh4/var/crossepg/crossepg_importer
 

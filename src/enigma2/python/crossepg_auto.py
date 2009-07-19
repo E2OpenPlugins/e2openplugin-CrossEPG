@@ -5,6 +5,8 @@ from crossepglib import *
 from crossepg_downloader import CrossEPG_Downloader
 from crossepg_converter import CrossEPG_Converter
 from crossepg_loader import CrossEPG_Loader
+from crossepg_importer import CrossEPG_Importer
+from crossepg_exec import CrossEPG_Exec
 from crossepg_locale import _
 from Screens.Screen import Screen
 
@@ -153,6 +155,26 @@ class CrossEPG_Auto(Screen):
 			print "[CrossEPG_Auto] another download is in progress... skipped"
 		
 	def __dailyDownloadEnded(self, session, ret):
+		if ret:
+			config = CrossEPG_Config()
+			config.load()
+			if config.enable_importer == 1:
+				self.scripts = config.getAllImportScripts()
+				self.scripts_index = 0;
+				self.__dailyStartScripts(session)
+			else:
+				self.session.open(CrossEPG_Converter, self.__dailyConvertEnded)
+		else:
+			self.enabled = True
+	
+	def __dailyStartScripts(self, session):
+		if len(self.scripts) > self.scripts_index:
+			self.session.open(CrossEPG_Exec, self.scripts[self.scripts_index], False, self.__dailyStartScripts)
+			self.scripts_index += 1
+		else:
+			self.session.open(CrossEPG_Importer, self.__dailyImporterEnded)
+
+	def __dailyImporterEnded(self, session, ret):
 		if ret:
 			self.session.open(CrossEPG_Converter, self.__dailyConvertEnded)
 		else:

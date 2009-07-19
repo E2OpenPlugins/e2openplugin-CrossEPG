@@ -12,7 +12,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-#include "common.h"
+#include "../common.h"
 
 #include "core/log.h"
 

@@ -22,7 +22,7 @@
 #include "../aliases/aliases.h"
 #include "../epgdb/epgdb.h"
 #include "../net/http.h"
-
+#include "gzip.h"
 #include "csv.h"
 
 static void(*_progress_callback)(int, int) = NULL;
@@ -113,7 +113,7 @@ void importer_parse_url (char *dir, char *filename, char *dbroot)
 		
 		if (line[strlen (line)-1] == '\n') line[strlen (line)-1] = '\0';
 		
-		if (importer_extension_check (page, "csv"))
+		if (importer_extension_check (page, "csv") || importer_extension_check (page, "csv.gz"))
 		{
 			bool ok;
 			char sfn[256];
@@ -130,7 +130,26 @@ void importer_parse_url (char *dir, char *filename, char *dbroot)
 			ok = http_get (host, page, atoi (port), fd, _progress_callback, _stop);
 			close (fd);
 			if (_step_callback != NULL) _step_callback ();
-			if (ok) importer_parse_csv (NULL, sfn, line);
+			if (ok)
+			{
+				if (importer_extension_check (page, "csv")) importer_parse_csv (NULL, sfn, line);
+				else if (importer_extension_check (page, "csv.gz"))
+				{
+					int fd2 = -1;
+					char sfn2[256];
+					sprintf (sfn2, "%s/crossepg.tmp.XXXXXX", dbroot);
+					if ((fd2 = mkstemp (sfn2)) == -1) log_add ("Cannot get temp file");
+					else
+					{
+						FILE *dest = fdopen (fd2, "w");
+						if (!gzip_inf (sfn, dest)) log_add ("Error deflating file");
+						fclose (dest);
+						close (fd2);
+						importer_parse_csv (NULL, sfn2, line);
+						unlink (sfn2);
+					}
+				}
+			}
 			else if (_step_callback != NULL) _step_callback ();
 			
 			unlink (sfn);
@@ -208,6 +227,29 @@ void importer_parse_directory (char *dir, char *dbroot,
 				sprintf (new_file, "%s.imported", file);
 				rename (file, new_file);
 			}
+			else if (importer_extension_check (ep->d_name, "csv.gz"))
+			{
+				char file[256];
+				char new_file[256];
+				int fd = -1;
+				char sfn[256];
+				strcpy (_file, ep->d_name);
+				sprintf (sfn, "%s/crossepg.tmp.XXXXXX", dbroot);
+				if ((fd = mkstemp (sfn)) == -1) log_add ("Cannot get temp file");
+				else
+				{
+					FILE *dest = fdopen (fd, "w");
+					if (!gzip_inf (ep->d_name, dest)) log_add ("Error deflating file");
+					fclose (dest);
+					close (fd);
+					importer_parse_csv (NULL, sfn, ep->d_name);
+					unlink (sfn);
+				}
+				sprintf (file, "%s/%s", dir, ep->d_name);
+				sprintf (new_file, "%s.imported", file);
+				rename (file, new_file);
+			}
+			
 			else if (importer_extension_check (ep->d_name, "url"))
 				importer_parse_url (dir, ep->d_name, dbroot);
 		}
