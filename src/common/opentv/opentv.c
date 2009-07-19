@@ -119,7 +119,7 @@ unsigned short opentv_channels_count()
 	return ch_count;
 }
 
-void opentv_read_titles (unsigned char *data, unsigned int length)
+void opentv_read_titles (unsigned char *data, unsigned int length, bool huffman_debug)
 {
 	epgdb_title_t *title;
 	unsigned short int channel_id	= (data[3] << 8) | data[4];
@@ -157,9 +157,18 @@ void opentv_read_titles (unsigned char *data, unsigned int length)
 				title->genre_sub_id = 0;
 				title = epgdb_titles_add (channels[channel_id], title);
 				
-				if (!huffman_decode (data + offset + 9, description_length, tmp, 256))
+				if (!huffman_decode (data + offset + 9, description_length, tmp, 256, huffman_debug))
 					tmp[0] = '\0';
-					
+				
+				if (huffman_debug)
+				{
+					char mtime[20];
+					struct tm *loctime = localtime (&title->start_time);
+					printf ("Nid: %x Tsid: %x Sid: %x\n", channels[channel_id]->nid, channels[channel_id]->tsid, channels[channel_id]->sid);
+					strftime (mtime, 20, "%d/%m/%Y %H:%M", loctime);
+					printf ("Start time: %s\n", mtime);
+				}
+				
 				epgdb_titles_set_description (title, tmp);
 				tit_count++;
 			}
@@ -169,7 +178,7 @@ void opentv_read_titles (unsigned char *data, unsigned int length)
 	}
 }
 
-void opentv_read_summaries (unsigned char *data, unsigned int length)
+void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffman_debug)
 {
 	if (length < 20) return;
 	
@@ -200,8 +209,17 @@ void opentv_read_summaries (unsigned char *data, unsigned int length)
 					if (title->changed)
 					{
 						char tmp[4096];
-						if (!huffman_decode (data + offset + 2, description_length, tmp, 4096))
+						if (!huffman_decode (data + offset + 2, description_length, tmp, 4096, huffman_debug))
 							tmp[0] = '\0';
+						
+						if (huffman_debug)
+						{
+							char mtime[20];
+							struct tm *loctime = localtime (&title->start_time);
+							printf ("Nid: %x Tsid: %x Sid: %x\n", channels[channel_id]->nid, channels[channel_id]->tsid, channels[channel_id]->sid);
+							strftime (mtime, 20, "%d/%m/%Y %H:%M", loctime);
+							printf ("Start time: %s\n", mtime);
+						}
 						
 						epgdb_titles_set_long_description (title, tmp);
 					}

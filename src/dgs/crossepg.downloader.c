@@ -219,7 +219,7 @@ static void opentv_download_titles ()
 	log_add ("Parsing titles...");
 	for (i=0; i<buffer_index; i++)
 	{
-		opentv_read_titles (buffer[i].data, buffer[i].size);
+		opentv_read_titles (buffer[i].data, buffer[i].size, false);
 		_free (buffer[i].data);
 		//usleep (200);
 		if ((i%100) == 0)
@@ -301,7 +301,7 @@ static void opentv_download_summaries ()
 	log_add ("Parsing summaries...");
 	for (i=0; i<buffer_index; i++)
 	{
-		opentv_read_summaries (buffer[i].data, buffer[i].size);
+		opentv_read_summaries (buffer[i].data, buffer[i].size, false);
 		_free (buffer[i].data);
 		//usleep (2000);
 		if ((i%100) == 0)

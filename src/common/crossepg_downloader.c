@@ -41,6 +41,8 @@ buffer_t buffer[65536];
 unsigned short buffer_index;
 unsigned int buffer_size;
 unsigned int buffer_size_last;
+bool huffman_debug_titles = false;
+bool huffman_debug_summaries = false;
 
 char demuxer[256];
 char provider[256];
@@ -197,7 +199,7 @@ void download_opentv ()
 		time_t lasttime = 0;
 		for (i=0; i<buffer_index; i++)
 		{
-			if (!stop) opentv_read_titles (buffer[i].data, buffer[i].size);
+			if (!stop) opentv_read_titles (buffer[i].data, buffer[i].size, huffman_debug_titles);
 			buffer_size += buffer[i].size;
 			_free (buffer[i].data);
 			if ((i % 100) == 0)
@@ -243,7 +245,7 @@ void download_opentv ()
 		lasttime = 0;
 		for (i=0; i<buffer_index; i++)
 		{
-			if (!stop) opentv_read_summaries (buffer[i].data, buffer[i].size);
+			if (!stop) opentv_read_summaries (buffer[i].data, buffer[i].size, huffman_debug_summaries);
 			buffer_size += buffer[i].size;
 			_free (buffer[i].data);
 			if ((i % 100) == 0)
@@ -411,9 +413,9 @@ int main (int argc, char **argv)
 	}
 
 	strcpy (demuxer, DEFAULT_DEMUXER);
-	strcpy (provider, "skyitalia");
+	strcpy (provider, DEFAULT_OTV_PROVIDER);
 
-	while ((c = getopt (argc, argv, "h:d:x:l:p:k:ri")) != -1)
+	while ((c = getopt (argc, argv, "h:d:x:l:p:k:riyz")) != -1)
 	{
 		switch (c)
 		{
@@ -440,6 +442,12 @@ int main (int argc, char **argv)
 				interactive_enable ();
 				iactive = true;
 				break;
+			case 'y':
+				huffman_debug_summaries = true;
+				break;
+			case 'z':
+				huffman_debug_titles = true;
+				break;
 			case '?':
 				printf ("Usage:\n");
 				printf ("  ./crossepg_downloader [options]\n");
@@ -454,6 +462,8 @@ int main (int argc, char **argv)
 				printf ("                default: %s\n", provider);
 				printf ("  -k nice       see \"man nice\"\n");
 				printf ("  -r            interactive mode\n");
+				printf ("  -y            debug mode for huffman dictionary (summaries)\n");
+				printf ("  -z            debug mode for huffman dictionary (titles)\n");
 				printf ("  -h            show this help\n");
 				return 0;
 		}

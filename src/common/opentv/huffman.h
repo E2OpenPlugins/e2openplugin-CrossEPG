@@ -13,6 +13,6 @@ type_huffman_node	huffman_root;
 bool huffman_read_dictionary (char *file);
 void huffman_free_dictionary ();
 void huffman_free_node (type_huffman_node *node);
-bool huffman_decode (const unsigned char *data, int length, char *result, int result_max_length);
+bool huffman_decode (const unsigned char *data, int length, char *result, int result_max_length, bool huffman_debug);
 
 #endif // _HUFFMAN_H_

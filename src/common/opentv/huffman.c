@@ -127,7 +127,7 @@ void huffman_free_node (type_huffman_node *node)
 	if (node->value != NULL) _free (node->value);
 }
 
-bool huffman_decode (const unsigned char *data, int length, char *result, int result_max_length)
+bool huffman_decode (const unsigned char *data, int length, char *result, int result_max_length, bool huffman_debug)
 {
 	type_huffman_node *node = &huffman_root;
 	unsigned char byte;
@@ -135,6 +135,7 @@ bool huffman_decode (const unsigned char *data, int length, char *result, int re
 	int index = 0;
 	bool too_long = false;
 	int i;
+	bool ended = false;
 
 	if (result_max_length > HUFFMAN_MAX_SIZE) result_max_length = HUFFMAN_MAX_SIZE;
 	
@@ -148,26 +149,46 @@ bool huffman_decode (const unsigned char *data, int length, char *result, int re
 		{
 			if ((byte & mask) == 0)
 			{
-				if (node->p0 != NULL) node = node->p0;
-				else
+				if (huffman_debug) printf ("0");
+				if (!ended)
 				{
-					log_add ("Error. Cannot decode Huffman data");
-					return false;				
+					if (node->p0 != NULL) node = node->p0;
+					else
+					{
+						if (!huffman_debug)
+						{
+							log_add ("Error. Cannot decode Huffman data");
+							return false;
+						}
+						printf ("|ERROR|");
+						ended = true;
+					}
 				}
 			}
 			else
 			{
-				if (node->p1 != NULL) node = node->p1;
-				else
+				if (huffman_debug) printf ("1");
+				if (!ended)
 				{
-					log_add ("Error. Cannot decode Huffman data");
-					return false;				
+					if (node->p1 != NULL) node = node->p1;
+					else
+					{
+						if (!huffman_debug)
+						{
+							log_add ("Error. Cannot decode Huffman data");
+							return false;
+						}
+						printf ("|ERROR|");
+						ended = true;
+					}
 				}
 			}
 			
-			if (node->value != NULL)
+			if (node->value != NULL && !ended)
 			{
 				int size;
+				
+				if (huffman_debug) printf ("|%s|", node->value);
 				
 				if ((index + strlen(node->value)) >= (result_max_length - 1))
 				{
@@ -196,5 +217,14 @@ bool huffman_decode (const unsigned char *data, int length, char *result, int re
 	
 	result[index] = '\0';
 	
-	return true;
+	if (!ended)
+	{
+		if (huffman_debug) printf ("|OK\n%s\n", result);
+		return true;
+	}
+	else
+	{
+		if (huffman_debug) printf ("\n%s\n", result);
+		return false;
+	}
 }
