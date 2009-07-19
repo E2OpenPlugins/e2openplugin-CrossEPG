@@ -6,6 +6,7 @@ from Components.Label import Label
 from Components.ProgressBar import ProgressBar
 from Components.ServiceEventTracker import ServiceEventTracker
 from Components.ActionMap import NumberActionMap
+from Components.config import config
 from Plugins.Plugin import PluginDescriptor
 from ServiceReference import ServiceReference
 from threading import Thread
@@ -48,6 +49,14 @@ class CrossEPG_Loader(Screen):
 				
 		self.endCallback = endCallback
 		self.wrapper = None
+		
+		if pathExists("/usr/crossepg"):
+			self.home_directory = "/usr/crossepg"
+		elif pathExists("/var/crossepg"):
+			self.home_directory = "/var/crossepg"
+		else:
+			print "[CrossEPG_Config] ERROR!! CrossEPG binaries non found"
+		
 		# check for common patches
 		try:
 			self.epgpatch = new.instancemethod(_enigma.eEPGCache_load,None,eEPGCache)
@@ -104,6 +113,7 @@ class CrossEPG_Loader(Screen):
 			self.wrapper.init(CrossEPG_Wrapper.CMD_CONVERTER, self.config.db_root)
 		else:
 			print "No patch found... please reboot enigma2 manually"
+			self.hide()
 			if self.endCallback:
 				self.endCallback(self.session, True)
 			self.close()
@@ -115,15 +125,21 @@ class CrossEPG_Loader(Screen):
 		self.__quit()
 	
 	def __loadEPG(self):
-		os.system("cp %s/ext.epg.dat /hdd/epg.dat" % (self.db_root))
+		cmd = "%s/crossepg_epgcopy %s/ext.epg.dat /hdd/epg.dat" % (self.home_directory, self.db_root)
+		print "[CrossEPG_Loader] %s" % (cmd)
+		os.system(cmd)
 		self.epgpatch(eEPGCache.getInstance())
+		self.hide()
 		if self.endCallback:
 			self.endCallback(self.session, True)
 		self.close()
 		
 	def __loadEDG(self):
-		os.system("cp %s/ext.epg.dat /hdd/epg.dat" % (self.db_root))
+		cmd = "%s/crossepg_epgcopy %s/ext.epg.dat %s/epg.dat" % (self.home_directory, self.db_root, config.nemepg.path.value)
+		print "[CrossEPG_Loader] %s" % (cmd)
+		os.system(cmd)
 		self.edgpatch(eEPGCache.getInstance())
+		self.hide()
 		if self.endCallback:
 			self.endCallback(self.session, True)
 		self.close()
@@ -176,6 +192,7 @@ class CrossEPG_Loader(Screen):
 			if self.epg_channel:
 				if len(self.epg_tuple) > 0:
 					self.oudeispatch(eEPGCache.getInstance(), self.epg_channel, self.epg_tuple)
+			self.hide()
 			if self.endCallback:
 				self.endCallback(self.session, self.ret)
 			self.close()
@@ -192,6 +209,7 @@ class CrossEPG_Loader(Screen):
 				self.wrapper.quit()
 				return
 				
+		self.hide()
 		if self.endCallback:
 			self.endCallback(self.session, False)
 		self.close()

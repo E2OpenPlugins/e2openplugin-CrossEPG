@@ -52,7 +52,8 @@ class CrossEPG_Extra(Screen):
 			
 		menulist.append(_("Import data"))
 		menulist.append(_("Convert db"))
-		menulist.append(_("Load data"))
+		if getEPGPatchType() > -1:
+			menulist.append(_("Load data"))
 		
 		self["menu"] = MenuList(menulist)
 		

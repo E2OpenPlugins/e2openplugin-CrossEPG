@@ -59,6 +59,7 @@ class CrossEPG_Downloader(Screen):
 		self.endCallback = endCallback
 		
 		if len(self.config.providers) == 0 and not self.provider:
+			self.hide()
 			if self.endCallback:
 				self.endCallback(self.session, True)
 			self.close()
@@ -138,6 +139,7 @@ class CrossEPG_Downloader(Screen):
 				self["progress"].setValue(100)
 				self.hideprogress.start(500, 1)
 		elif event == CrossEPG_Wrapper.EVENT_QUIT:
+			self.hide()
 			if self.endCallback:
 				self.endCallback(self.session, self.ret)
 			self.close()
@@ -157,6 +159,7 @@ class CrossEPG_Downloader(Screen):
 			self.ret = False
 			self.wrapper.quit()
 		else:
+			self.hide()
 			if self.endCallback:
 				self.endCallback(self.session, False)
 			self.close()

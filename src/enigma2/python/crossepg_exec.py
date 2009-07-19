@@ -22,7 +22,7 @@ import os
 import sys
 
 class CrossEPG_Exec(Screen):
-	def __init__(self, session, cmd, stop = False):
+	def __init__(self, session, cmd, stop = False, endCallback = None):
 		self.session = session
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/exec_sd.xml" % (os.path.dirname(sys.modules[__name__].__file__))
@@ -38,6 +38,7 @@ class CrossEPG_Exec(Screen):
 		self.app = eConsoleAppContainer()
 		self.config = CrossEPG_Config()
 		self.config.load()
+		self.endCallback = endCallback
 		self["log"] = ScrollLabel("")
 		
 		self["actions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions"],
@@ -63,6 +64,9 @@ class CrossEPG_Exec(Screen):
 		self.app.appClosed.append(self.__cmdFinished)
 		self.app.dataAvail.append(self.__cmdData)
 		if self.app.execute("%s/%s" % (importdir, self.cmd)):
+			self.hide()
+			if self.endCallback:
+				self.endCallback(self.session)
 			self.close()
 			
 	def __cmdFinished(self, retval):
@@ -73,10 +77,14 @@ class CrossEPG_Exec(Screen):
 
 	def __cmdData(self, data):
 		self["log"].setText(self["log"].getText() + data)
+		self["log"].lastPage()
 		
 	def __quit(self):
 		if self.app.running():
 			self.app.kill()
 		else:
+			self.hide()
+			if self.endCallback:
+				self.endCallback(self.session)
 			self.close()
 

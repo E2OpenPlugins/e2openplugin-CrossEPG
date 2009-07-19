@@ -77,6 +77,7 @@ class CrossEPG_Importer(Screen):
 			else:
 				self.wrapper.delCallback(self.__wrapperCallback)
 				self.wrapper.quit()
+				self.hide()
 				if self.endCallback:
 					self.endCallback(self.session, self.ret)
 				self.close()
@@ -108,6 +109,7 @@ class CrossEPG_Importer(Screen):
 				self.hideprogress.start(500, 1)
 				
 		elif event == CrossEPG_Wrapper.EVENT_QUIT:
+			self.hide()
 			if self.endCallback:
 				self.endCallback(self.session, self.ret)
 			self.close()
@@ -122,6 +124,7 @@ class CrossEPG_Importer(Screen):
 			self.ret = False
 			self.wrapper.quit()
 		else:
+			self.hide()
 			if self.endCallback:
 				self.endCallback(self.session, False)
 			self.close()
