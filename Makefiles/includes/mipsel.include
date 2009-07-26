@@ -1,3 +1,5 @@
 CROSS = /opt/dm7025/build/tmp/cross/bin/mipsel-linux-
 CC = $(CROSS)gcc
 STRIP = $(CROSS)strip
+CFLAGS += -I/opt/dm7025/build/tmp/staging/i686-linux/include
+LDFLAGS += -L/opt/dm7025/build/tmp/staging/mipsel-linux/lib

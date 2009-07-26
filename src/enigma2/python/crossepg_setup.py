@@ -70,7 +70,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 				self.lamedbs_desc.append(lamedb.replace("lamedb.", "").replace(".", " "))
 				
 		if self.config.lamedb == "lamedb":
-			lamedbs_sel = _("main lamedb")
+			lamedbs_sel = "main lamedb"
 		else:
 			lamedbs_sel = self.config.lamedb.replace("lamedb.", "").replace(".", " ")
 				

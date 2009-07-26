@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 #include "db/db.h"
 #include "ch/ch.h"
@@ -16,6 +17,30 @@
 
 #include "dgs.h"
 #include "dgs_helper.h"
+
+static bool fifo_exist = false;
+
+void prepare_fifo ()
+{
+	struct stat buf;
+	int i = stat ("/dev/weboutput", &buf);
+	if (i == 0)
+	{
+		if (S_ISFIFO (buf.st_mode))
+		{
+			fifo_exist = true;
+			return;
+		}
+		unlink ("/dev/weboutput");
+	}
+	fifo_exist = false;
+	system ("mkfifo -m 600 /dev/weboutput");
+}
+
+void release_fifo()
+{
+	if (!fifo_exist) unlink ("/dev/weboutput");
+}
 
 int _dgs_helper_get_channel_callback (void *p_data, int num_fields, char **p_fields, char **p_col_names)
 {	
@@ -427,6 +452,7 @@ bool dgs_helper_add_scheduler (int channel_id, time_t start_time, int length, in
 	}
 	else if (child_pid > 0)
 	{
+		prepare_fifo ();
 		fd = fopen ("/dev/weboutput", "r");
 		if (fd != NULL)
 		{
@@ -435,6 +461,7 @@ bool dgs_helper_add_scheduler (int channel_id, time_t start_time, int length, in
 			if (memcmp (data, "true", 4) == 0) ret = true;
 		}
 		else log_add ("Cannot read from /dev/weboutput");
+		release_fifo ();
 	}
 	else
 		log_add ("Cannot fork process!");

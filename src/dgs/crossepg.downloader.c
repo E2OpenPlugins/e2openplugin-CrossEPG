@@ -57,6 +57,7 @@ typedef struct buffer_s
 
 static int step_count = 0;
 static int step_index = 0;
+static volatile bool stop = false;
 
 bool savepid ()
 {
@@ -351,32 +352,30 @@ void save_progress (int value, int max)
 	}
 }
 
-void import_progress (char *file, int value, int max)
+static char last_msg[256];
+void simple_progress (int value, int max)
 {
 	static int last = 0;
 	int now = (value*100)/max;
 	if (now != last)
 	{
 		char step[256];
-		char msg[256];
+		//char msg[256];
 		sprintf (step, "%s %d/%d", intl (STEP), step_index, step_count);
-		sprintf (msg, "Importing '%s'", file);
-		window_progress_update (step, msg, now);
+		//sprintf (msg, "%s", last_msg);
+		window_progress_update (step, last_msg, now);
 		last = now;
 	}
 }
 
-void url_progress (char *url, int value, int max)
+void import_progress (char *file)
 {
-	static int last = 0;
-	int now = (value*100)/max;
-	if (now != last)
-	{
-		char step[256];
-		sprintf (step, "%s %d/%d", intl (STEP), step_index, step_count);
-		window_progress_update (step, url, now);
-		last = now;
-	}
+	strcpy (last_msg, file);
+}
+
+void url_progress (char *url)
+{
+	strcpy (last_msg, url);
 }
 
 void step_next ()
@@ -393,6 +392,8 @@ int plugin_main(int argc, char *argv[])
 	char dictionary[256];
 	int providers_count = 0;
 	int i;
+	
+	last_msg[0] = '\0';
 	
 	savepid ();
 	nice (20);
@@ -488,7 +489,7 @@ int plugin_main(int argc, char *argv[])
 	}
 	if ((ch_watching_id (ch_mode_live) != ch_id) && (ch_id > 0)) ch_change_fg (ch_mode_live, ch_id, NULL);
 
-	importer_parse_directory (DEFAULT_IMPORT_ROOT, config_get_db_root (), import_progress, url_progress);
+	importer_parse_directory (DEFAULT_IMPORT_ROOT, config_get_db_root (), simple_progress, import_progress, url_progress, &stop);
 	
 	if (step_count > 2)
 	{
