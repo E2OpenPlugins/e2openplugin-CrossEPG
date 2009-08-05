@@ -114,10 +114,21 @@ bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *st
 		title->genre_id = 0;
 		title->genre_sub_id = 0;
 		title->mjd = get_mjd (title->start_time);
-		epgdb_titles_add (channel, title);
+		title->iso_639_1 = 'e';		// default language... if different we set it later
+		title->iso_639_2 = 'n';
+		title->iso_639_3 = 'g';
+		title = epgdb_titles_add (channel, title);
 		
 		epgdb_titles_set_description (title, csvtok (NULL, ','));
 		epgdb_titles_set_long_description (title, csvtok (NULL, ','));
+		
+		char *iso639 = csvtok (NULL, ',');
+		if (strlen (iso639) >= 3)
+		{
+			title->iso_639_1 = iso639[0];
+			title->iso_639_2 = iso639[1];
+			title->iso_639_3 = iso639[2];
+		}
 		event_id++;
 		
 		count++;

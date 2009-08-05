@@ -26,4 +26,11 @@ cd ../..
 ipkg-build -o root -g root /tmp/crossepg_ipkg
 
 rm -rf /tmp/crossepg_ipkg
+mkdir /tmp/crossepg_ipkg
+cd enigma2/ppc
+tar --exclude-vcs -c * | tar -x -C /tmp/crossepg_ipkg
+cd ../..
+ipkg-build -o root -g root /tmp/crossepg_ipkg
+
+rm -rf /tmp/crossepg_ipkg
 mv *.ipk ../crossepg_packages

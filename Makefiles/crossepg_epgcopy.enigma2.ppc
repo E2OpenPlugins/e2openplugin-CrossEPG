@@ -1,0 +1,27 @@
+include Makefiles/includes/common.include
+include Makefiles/includes/ppc.include
+
+OBJS += src/enigma2/crossepg_epgcopy.o
+
+CFLAGS += -Wall
+CFLAGS += -DSTANDALONE
+CFLAGS += -DE2
+
+LIBS +=
+
+LDFLAGS +=
+
+OUTPUT = ./enigma2/ppc/usr/crossepg/crossepg_epgcopy
+
+all : clean $(OUTPUT)
+
+clean :
+	rm -f $(OUTPUT)
+	rm -f $(OBJS)
+
+$(OBJS) :
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
+
+$(OUTPUT) : $(OBJS) 
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(STRIP) $@

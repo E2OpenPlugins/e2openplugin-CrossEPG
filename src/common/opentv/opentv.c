@@ -155,6 +155,9 @@ void opentv_read_titles (unsigned char *data, unsigned int length, bool huffman_
 				title->length = ((data[offset + 4] << 9) | (data[offset + 5] << 1));
 				title->genre_id = data[offset + 6];
 				title->genre_sub_id = 0;
+				title->iso_639_1 = 'e';		// TODO: load language from provider configuration
+				title->iso_639_2 = 'n';
+				title->iso_639_3 = 'g';
 				title = epgdb_titles_add (channels[channel_id], title);
 				
 				if (!huffman_decode (data + offset + 9, description_length, tmp, 256, huffman_debug))

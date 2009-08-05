@@ -41,6 +41,9 @@ typedef struct epgdb_title_header_s
 	uint32_t				long_description_crc;
 	unsigned short int		long_description_length;
 	unsigned int			long_description_seek;
+	unsigned char			iso_639_1;
+	unsigned char			iso_639_2;
+	unsigned char			iso_639_3;
 } epgdb_title_header_t;
 
 typedef struct epgdb_index_header_s

@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define DB_REVISION	0x05
+#define DB_REVISION	0x06
 
 typedef struct epgdb_title_s
 {
@@ -20,6 +20,9 @@ typedef struct epgdb_title_s
 	uint32_t				long_description_crc;
 	unsigned short int		long_description_length;
 	unsigned int			long_description_seek;
+	unsigned char			iso_639_1;
+	unsigned char			iso_639_2;
+	unsigned char			iso_639_3;
 	
 	/* other elements */
 	bool					changed;

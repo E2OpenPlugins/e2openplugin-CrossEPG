@@ -47,51 +47,62 @@ typedef struct ldesc_s
 	char count;
 } ldesc_t;
 
-static sdesc_t* short_desc (char *value)
+static sdesc_t* short_desc (char *value, unsigned char iso639_1, unsigned char iso639_2, unsigned char iso639_3)
 {
 	sdesc_t *ret = _malloc (sizeof (sdesc_t));
 	ret->size = strlen (value);
 	ret->data = _malloc (ret->size + 8);
 	ret->data[0] = 0x4d;
-	ret->data[1] = ret->size + 6;
-	ret->data[2] = 'e';
-	ret->data[3] = 'n';
-	ret->data[4] = 'g';
-	ret->data[5] = ret->size + 1;
-	ret->data[6] = 0x05;
-	memcpy (ret->data+7, value, ret->size);
-	ret->data[ret->size+7] = 0x00;
-	ret->size += 8;
+	//ret->data[1] = ret->size + 6;
+	ret->data[1] = ret->size + 5;
+	ret->data[2] = iso639_1;
+	ret->data[3] = iso639_2;
+	ret->data[4] = iso639_3;
+	//ret->data[5] = ret->size + 1;
+	ret->data[5] = ret->size;
+	//ret->data[6] = 0x05;
+	//memcpy (ret->data+7, value, ret->size);
+	memcpy (ret->data+6, value, ret->size);
+	//ret->data[ret->size+7] = 0x00;
+	ret->data[ret->size+6] = 0x00;
+	//ret->size += 8;
+	ret->size += 7;
 	return ret;
 }
 
-static ldesc_t* long_desc (char *value)
+static ldesc_t* long_desc (char *value, unsigned char iso639_1, unsigned char iso639_2, unsigned char iso639_3)
 {
 	int i;
 	ldesc_t* ret = _malloc (sizeof (ldesc_t));
-	ret->count = strlen (value) / 245;
+	ret->count = strlen (value) / 246;
+	//ret->count = strlen (value) / 245;
 	for (i=0; i<ret->count; i++)
-		ret->size[i] = 245 + 9;
+		ret->size[i] = 246 + 8;
+		//ret->size[i] = 245 + 9;
 		
-	if ((strlen (value) % 245) > 0)
+	//if ((strlen (value) % 245) > 0)
+	if ((strlen (value) % 246) > 0)
 	{
-		ret->size[(int)ret->count] = (strlen (value) % 245) + 9;
+		//ret->size[(int)ret->count] = (strlen (value) % 245) + 9;
+		ret->size[(int)ret->count] = (strlen (value) % 246) + 8;
 		ret->count++;
 	}
 	
 	for (i=0; i<ret->count; i++)
 	{
 		ret->data[i] = _malloc (ret->size[i]);
-		memcpy (ret->data[i]+9, value+(i*245), ret->size[i]-9);
+		//memcpy (ret->data[i]+9, value+(i*245), ret->size[i]-9);
+		memcpy (ret->data[i]+8, value+(i*246), ret->size[i]-8);
 		ret->data[i][0] = 0x4e;
 		ret->data[i][1] = ret->size[i] - 2;
 		ret->data[i][2] = (i << 4) + (ret->count - 1);
-		ret->data[i][3] = 'e';
-		ret->data[i][4] = 'n';
-		ret->data[i][5] = 'g';
+		ret->data[i][3] = iso639_1;
+		ret->data[i][4] = iso639_2;
+		ret->data[i][5] = iso639_3;
 		ret->data[i][6] = 0x00;
-		ret->data[i][7] = ret->size[i] + 1 - 9;
-		ret->data[i][8] = 0x05;
+		//ret->data[i][7] = ret->size[i] + 1 - 9;
+		ret->data[i][7] = ret->size[i] - 8;
+		//ret->data[i][8] = 0x05;
 	}
 	
 	return ret;
@@ -124,9 +135,10 @@ static void write_titles (epgdb_channel_t *channel, FILE *fd)
 		
 		/* description */
 		char *description = epgdb_read_description (title);
-		if (strlen (description) > 245) description[245] = '\0';
+		//if (strlen (description) > 245) description[245] = '\0';
+		if (strlen (description) > 246) description[246] = '\0';
 		gmtime_r (&title->start_time, &start_time);
-		sdesc_t *sdesc = short_desc (description);
+		sdesc_t *sdesc = short_desc (description, title->iso_639_1, title->iso_639_2, title->iso_639_3);
 		
 		crcs[0] = crc32 (sdesc->data, sdesc->size);
 		if (!enigma2_hash_add (crcs[0], sdesc->data, sdesc->size)) _free (sdesc->data);
@@ -137,8 +149,9 @@ static void write_titles (epgdb_channel_t *channel, FILE *fd)
 		char *ldescription = epgdb_read_long_description (title);
 		if (strlen (ldescription) > 0)
 		{
-			if (strlen (ldescription) > (245*16)) ldescription[245*16] = '\0';
-			ldesc_t *ldesc = long_desc (ldescription);
+			//if (strlen (ldescription) > (245*16)) ldescription[245*16] = '\0';
+			if (strlen (ldescription) > (246*16)) ldescription[246*16] = '\0';
+			ldesc_t *ldesc = long_desc (ldescription, title->iso_639_1, title->iso_639_2, title->iso_639_3);
 			
 			for (i=0; i<ldesc->count; i++)
 			{

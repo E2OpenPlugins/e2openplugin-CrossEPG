@@ -1,6 +1,7 @@
 #!/bin/sh
 [ -f /tmp/crossepgd.pid ] && kill `cat /tmp/crossepgd.pid`
 sleep 1
+rm -rf /var/crossepg/providers/*
 tar zxvf crossepg.tar.gz -C /
 rm crossepg.tar.gz
 rm installer.sh

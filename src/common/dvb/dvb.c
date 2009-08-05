@@ -10,7 +10,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
-#ifdef E1
+#ifdef OLDDVBAPI
 #include <ost/dmx.h>
 #define dmx_pes_filter_params dmxPesFilterParams
 #define dmx_sct_filter_params dmxSctFilterParams

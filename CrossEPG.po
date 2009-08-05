@@ -1,0 +1,263 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: enigma2 - crossepg\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-07-21 09:25+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Spaeleus <spaeleus@croci.org>\n"
+"Language-Team: www.linsat.net <spaeleus@croci.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: /home/dario/Plugins/CrossEPG\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: /home/dario/Plugins/CrossEPG\n"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:60
+#: /home/dario/Plugins/CrossEPG/crossepg_extra.py:60
+msgid "Exit"
+msgstr "Uscire"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:75
+#, python-format
+msgid "Headers db size: %s"
+msgstr "Dimensioni db headers: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:77
+#, python-format
+msgid "Descriptors db size: %s"
+msgstr "Dimensioni db descrizioni: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:79
+#, python-format
+msgid "Indexes db size: %s"
+msgstr "Dimensioni db indici: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:81
+#, python-format
+msgid "Aliases db size: %s"
+msgstr "Dimensioni db alias: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:83
+#, python-format
+msgid "Total size: %s"
+msgstr "Dimensioni totali: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:85
+#, python-format
+msgid "Channels count: %s"
+msgstr "Numero canali: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:87
+#, python-format
+msgid "Events count: %s"
+msgstr "Numero eventi: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:89
+#, python-format
+msgid "Hashes count: %s"
+msgstr "Numero chiavi: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:91
+#, python-format
+msgid "Creation time: %s"
+msgstr "Ora di creazione: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:93
+#, python-format
+msgid "Last update time: %s"
+msgstr "Ora ultimo aggiornamento: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_info.py:95
+#, python-format
+msgid "Version: %s"
+msgstr "Versione: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_loader.py:37
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:434
+msgid "Loading data"
+msgstr "Caricamento dati..."
+
+#: /home/dario/Plugins/CrossEPG/crossepg_loader.py:201
+#: /home/dario/Plugins/CrossEPG/crossepg_importer.py:118
+#: /home/dario/Plugins/CrossEPG/crossepg_downloader.py:147
+#: /home/dario/Plugins/CrossEPG/crossepg_converter.py:105
+#, python-format
+msgid "CrossEPG error: %s"
+msgstr "Errore CrossEPG: %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_importer.py:37
+msgid "Starting importer"
+msgstr "Avvio importazione..."
+
+#: /home/dario/Plugins/CrossEPG/crossepg_importer.py:86
+msgid "Parsing"
+msgstr "Analisi..."
+
+#: /home/dario/Plugins/CrossEPG/crossepg_importer.py:90
+msgid "Downloading"
+msgstr "Download..."
+
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:334
+msgid "Reading channels"
+msgstr "Lettura canali..."
+
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:337
+msgid "Reading titles"
+msgstr "Lettura titoli..."
+
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:340
+msgid "Parsing titles"
+msgstr "Analisi titoli..."
+
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:343
+msgid "Reading summaries"
+msgstr "Lettura sommari..."
+
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:346
+msgid "Parsing summaries"
+msgstr "Analisi sommari..."
+
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:348
+#, python-format
+msgid "%s channels"
+msgstr "%s canali"
+
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:352
+#, python-format
+msgid "Read %s"
+msgstr "Lettura %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:354
+#, python-format
+msgid "%s of %s"
+msgstr "%s di %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:424
+msgid "Converting data"
+msgstr "Conversione dati..."
+
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:444
+msgid "Saving data"
+msgstr "Salvataggio dati..."
+
+#: /home/dario/Plugins/CrossEPG/plugin.py:18
+#: /home/dario/Plugins/CrossEPG/plugin.py:23
+#: /home/dario/Plugins/CrossEPG/plugin.py:28
+msgid "An EPG downloader"
+msgstr "Downloader EPG"
+
+#: /home/dario/Plugins/CrossEPG/plugin.py:33
+msgid "CrossEPG setup panel"
+msgstr "Pannello configurazione CrossEPG"
+
+#: /home/dario/Plugins/CrossEPG/plugin.py:38
+msgid "CrossEPG automatic actions"
+msgstr "Automatismi di CrossEPG"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_downloader.py:37
+msgid "Starting downloader"
+msgstr "Avvio download..."
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:64
+msgid "Save data on device"
+msgstr "Salvataggio dati su supporto"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:77
+msgid "Preferred lamedb"
+msgstr "lamedb preferito"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:80
+#, python-format
+msgid "Enable provider %s"
+msgstr "Abilitare il provider %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:82
+msgid "Enable csv import"
+msgstr "Abilitare importazione csv"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:83
+msgid "Automatic load data on boot"
+msgstr "Caricare automaticamente i dati all'avvio"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:84
+msgid "Automatic daily download"
+msgstr "Scaricamento automatico giornaliero"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:85
+msgid "Automatic daily download at"
+msgstr "Scaricamento automatico giornaliero alle"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:86
+msgid "Automatic download on tune"
+msgstr "Scaricamento automatico su sintonizzazione"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:87
+msgid "Show OSD for automatic download"
+msgstr "Mostrare OSD su scaricamento automatico"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:89
+msgid "Reboot after a daily download"
+msgstr "Riavviare dopo lo scaricamento giornaliero"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:90
+msgid "Reboot after a manual download"
+msgstr "Riavviare dopo uno scaricamento manuale"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:91
+msgid "Show as plugin"
+msgstr "Mostrare come plugin"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:92
+msgid "Show as extension"
+msgstr "Mostrare come estensione"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:95
+msgid "Cancel"
+msgstr "Annullare"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:96
+msgid "OK"
+msgstr "Ok"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:97
+msgid "Info"
+msgstr "Informazioni"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:98
+msgid "Extra"
+msgstr "Extra"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_extra.py:45
+msgid "Start automated task"
+msgstr "Avviare il processo automatizzato"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_extra.py:47
+#, python-format
+msgid "Download %s"
+msgstr "Scaricare %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_extra.py:51
+#, python-format
+msgid "Execute import script %s"
+msgstr "Eseguire script di importazione %s"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_extra.py:53
+msgid "Import data"
+msgstr "Importare dati"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_extra.py:54
+msgid "Convert db"
+msgstr "Convertire db"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_extra.py:56
+msgid "Load data"
+msgstr "Caricare dati"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_converter.py:37
+msgid "Starting converter"
+msgstr "Avvio conversione..."
+
