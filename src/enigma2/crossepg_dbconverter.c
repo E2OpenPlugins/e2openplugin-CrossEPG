@@ -357,6 +357,14 @@ void write_text ()
 	int progress_max = epgdb_channels_count ();
 	int progress_now = 0;
 
+	if (!enigma2_lamedb_read (lamedb))
+	{
+		log_add ("Error reading lamedb");
+		//interactive_send_text (ACTION_ERROR, "error reading lamedb");
+		interactive_send_text (ACTION_ERROR, lamedb);
+		goto write_end;
+	}
+
 	interactive_send (ACTION_START);
 	interactive_send_text (ACTION_PROGRESS, "ON");
 

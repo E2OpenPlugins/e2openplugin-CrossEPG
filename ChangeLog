@@ -1,3 +1,11 @@
+2009-08-05 [r32]  
+
+	* (enigma2) fixed bug on language charset (common) add language iso
+	  639 column in cvs format (enigma2) added italian language
+	  translation (thanks to Spaeleus) (common) added iso 639 field in
+	  epgdb (common) moved epgdb to revision 6 (enigma2) added ppc
+	  makefiles (not working yet)
+
 2009-07-26 [r31]  
 
 	* (dgs) fixed background for light view (thanks to
