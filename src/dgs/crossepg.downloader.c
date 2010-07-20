@@ -3,8 +3,8 @@
 #include <time.h>
 #include "plugin/plugin.h"
 #include "_debug/debug.h"
-#include "fb/gtools.h"
-#include "fb/image.h"
+#include "gui/gtools.h"
+#include "gui/image.h"
 #include "dir_navi/dir_navigator.h"
 #include "event/event.h"
 #include "font/font.h"
@@ -112,7 +112,7 @@ static void opentv_download_channels ()
 		unsigned char mask[1];
 		int cycles = 0;
 		int errors = 0;
-		dmx_t dmx = dmx_open (2);
+		dmx_t dmx = dmx_open (1);
 		filter[0] = 0x4a;
 		mask[0] = 0xff;
 		dmx_filter_set (dmx, opentv_config_get_channels_pids ()[i], filter, mask, 1);
@@ -166,7 +166,7 @@ static void opentv_download_titles ()
 		char first[sizeof(buffer)];
 		int first_length = 0;
 		int cycles = 0;
-		dmx_t dmx = dmx_open (2);
+		dmx_t dmx = dmx_open (1);
 		filter[0] = 0xa0;
 		mask[0] = 0xfc;
 		dmx_filter_set (dmx, opentv_config_get_titles_pids ()[i], filter, mask, 1);
@@ -249,7 +249,7 @@ static void opentv_download_summaries ()
 		char first[sizeof(buffer)];
 		int first_length = 0;
 		int cycles = 0;
-		dmx_t dmx = dmx_open (2);
+		dmx_t dmx = dmx_open (1);
 		filter[0] = 0xa8;
 		mask[0] = 0xfc;
 		dmx_filter_set (dmx, opentv_config_get_summaries_pids ()[i], filter, mask, 1);

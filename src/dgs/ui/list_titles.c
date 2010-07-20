@@ -1,10 +1,10 @@
 static window_t *window_list_titles = NULL;
 // 274
 
-#define LIST_TITLES_X_OFFSET	335
+#define LIST_TITLES_X_OFFSET	620
 #define LIST_TITLES_Y_OFFSET	290
-#define LIST_TITLES_WIDTH		355
-#define LIST_TITLES_HEIGHT		210
+#define LIST_TITLES_WIDTH		580
+#define LIST_TITLES_HEIGHT		300
 
 static void list_titles_init ()
 {
@@ -28,7 +28,7 @@ static void list_titles_update ()
 	time_t now = time (NULL) - (dgs_helper_get_daylight_saving () * (60 * 60));
 	
 	gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_BACKGROUND);
-	gt_fillrect (&window_list_titles->fb, window_list_titles->gc, 0, 0, LIST_TITLES_WIDTH, LIST_TITLES_HEIGHT);
+	gt_fillrect (&window_list_titles->gui, window_list_titles->gc, 0, 0, LIST_TITLES_WIDTH, LIST_TITLES_HEIGHT);
 
 	gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_FOREGROUND);	
 	gc_set_bc (window_list_titles->gc, COLOR_LIST_TITLES_BACKGROUND);
@@ -37,7 +37,7 @@ static void list_titles_update ()
 	{
 		epgdb_title_t *title = start_title;
 		int i;
-		for (i=0; (i<8) && (title != NULL); i++)
+		for (i=0; (i<10) && (title != NULL); i++)
 		{
 			int sch_mode = -1;
 			scheduler_t *scheduler = scheduler_get_by_channel_and_title (selected_channel, title);
@@ -48,7 +48,7 @@ static void list_titles_update ()
 				if (selected_column == 1)
 				{
 					gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_SELECTED_BACKGROUND);
-					gt_fillrect (&window_list_titles->fb, window_list_titles->gc, 0, (26 * i), LIST_TITLES_WIDTH, 26);
+					gt_fillrect (&window_list_titles->gui, window_list_titles->gc, 0, (29 * i), LIST_TITLES_WIDTH, 29);
 					gc_set_bc (window_list_titles->gc, COLOR_LIST_TITLES_SELECTED_BACKGROUND);
 					if (sch_mode == 0) gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_REC_FOREGROUND);
 					else if (sch_mode == 1) gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_ZAP_FOREGROUND);
@@ -59,7 +59,7 @@ static void list_titles_update ()
 					gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_SELECTED_BACKGROUND);
 					gc_set_bc (window_list_titles->gc, COLOR_LIST_TITLES_SELECTED_FOREGROUND);
 					gc_set_lt (window_list_titles->gc, 2);
-					gt_rect (&window_list_titles->fb, window_list_titles->gc, 1, (26 * i)+1, LIST_TITLES_WIDTH-2, 24);
+					gt_rect (&window_list_titles->gui, window_list_titles->gc, 1, (29 * i)+1, LIST_TITLES_WIDTH-2, 27);
 					gc_set_bc (window_list_titles->gc, COLOR_LIST_TITLES_BACKGROUND);
 					if (sch_mode == 0) gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_REC_FOREGROUND);
 					else if (sch_mode == 1) gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_ZAP_FOREGROUND);
@@ -69,14 +69,14 @@ static void list_titles_update ()
 			else if (sch_mode == 0)
 			{
 				gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_REC_BACKGROUND);
-				gt_fillrect (&window_list_titles->fb, window_list_titles->gc, 0, (26 * i), LIST_TITLES_WIDTH, 26);
+				gt_fillrect (&window_list_titles->gui, window_list_titles->gc, 0, (29 * i), LIST_TITLES_WIDTH, 29);
 				gc_set_bc (window_list_titles->gc, COLOR_LIST_TITLES_REC_BACKGROUND);
 				gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_REC_FOREGROUND);
 			}
 			else if (sch_mode == 1)
 			{
 				gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_ZAP_BACKGROUND);
-				gt_fillrect (&window_list_titles->fb, window_list_titles->gc, 0, (26 * i), LIST_TITLES_WIDTH, 26);
+				gt_fillrect (&window_list_titles->gui, window_list_titles->gc, 0, (29 * i), LIST_TITLES_WIDTH, 29);
 				gc_set_bc (window_list_titles->gc, COLOR_LIST_TITLES_ZAP_BACKGROUND);
 				gc_set_fc (window_list_titles->gc, COLOR_LIST_TITLES_ZAP_FOREGROUND);
 			}
@@ -92,24 +92,24 @@ static void list_titles_update ()
 			localtime_r (&start_time, &loctime);
 			localtime_r (&now, &loctime_now);
 			
-			font.size = 14;
+			font.size = 18;
 			int offset;
 			
 			if ((loctime.tm_year == loctime_now.tm_year) && (loctime.tm_mon == loctime_now.tm_mon) && (loctime.tm_mday == loctime_now.tm_mday))
 			{
 				offset = font_width_str (&font, intl (TODAY), strlen (intl (TODAY)));
-				font_draw_str (&font, intl (TODAY), strlen (intl (TODAY)), &window_list_titles->fb, window_list_titles->gc, 5, (i*26)+4);
+				font_draw_str (&font, intl (TODAY), strlen (intl (TODAY)), &window_list_titles->gui, window_list_titles->gc, 5, (i*29)+4);
 			}
 			else
 			{
 				offset = font_width_str (&font, intl (SUNDAY + loctime.tm_wday), strlen (intl (SUNDAY + loctime.tm_wday)));
-				font_draw_str (&font, intl (SUNDAY + loctime.tm_wday), strlen (intl (SUNDAY + loctime.tm_wday)), &window_list_titles->fb, window_list_titles->gc, 5, (i*26)+4);
+				font_draw_str (&font, intl (SUNDAY + loctime.tm_wday), strlen (intl (SUNDAY + loctime.tm_wday)), &window_list_titles->gui, window_list_titles->gc, 5, (i*29)+4);
 			}
 			
 			strftime (time_string, 10, intl (TIME_HM), &loctime);
-			font_draw_str (&font, time_string, strlen (time_string), &window_list_titles->fb, window_list_titles->gc, offset + 12, (i*26)+4);
+			font_draw_str (&font, time_string, strlen (time_string), &window_list_titles->gui, window_list_titles->gc, offset + 12, (i*29)+4);
 			char *text = ui_resize_string (title_text, font.size, LIST_TITLES_WIDTH - offset - 60);
-			font_draw_str (&font, text, strlen (text), &window_list_titles->fb, window_list_titles->gc, offset + 57, (i*26)+4);
+			font_draw_str (&font, text, strlen (text), &window_list_titles->gui, window_list_titles->gc, offset + 70, (i*29)+4);
 			_free (title_text);
 			_free (text);
 			title = title->next;

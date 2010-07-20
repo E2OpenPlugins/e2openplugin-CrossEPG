@@ -1,13 +1,13 @@
 static window_t *window_progress = NULL;
-static img_t progress_background = NULL;
-static int window_progress_x = 440;
-static int window_progress_y = 440;
+static gui_image_t progress_background = NULL;
+//static int window_progress_x = 0;
+//static int window_progress_y = 0;
 static int window_progress_show_bar = true;
 
 void window_progress_set_pos (int x, int y)
 {
-	window_progress_x = x;
-	window_progress_y = y;
+	//window_progress_x = x;
+	//window_progress_y = y;
 }
 
 void window_progress_set_show_bar (bool value)
@@ -18,11 +18,11 @@ void window_progress_set_show_bar (bool value)
 static void window_progress_init ()
 {
 	char file[256];
-	rect_t rect = { window_progress_x, window_progress_y, 240, 96 };
+	rect_t rect = { 0, 0, 1280, 720 };
 	window_progress = wm_create (&rect, "CrossEPG Progress", NULL, NULL, COLOR_TRANSPARENT);
-	sprintf (file, "%s/skins/%s/%s", config_get_home_directory (), config_get_skin (), "backgrounds/progress.bmp");
-	if (progress_background) img_close (progress_background);
-	progress_background = img_open_absolute_path (file);
+	sprintf (file, "%s/skins/%s/%s", config_get_home_directory (), config_get_skin (), "backgrounds/progress.png");
+	if (progress_background) gui_close_image (progress_background);
+	progress_background = gui_open_image_by_path(file, gui_image_type_png);
 }
 
 static void window_progress_show ()
@@ -33,7 +33,7 @@ static void window_progress_show ()
 static void window_progress_clean ()
 {
 	wm_destroy (window_progress);
-	if (progress_background) img_close (progress_background);
+	if (progress_background) gui_close_image (progress_background);
 	progress_background = NULL;
 }
 
@@ -41,21 +41,13 @@ static void window_progress_update (char *message1, char *message2, int value)
 {
 	struct _font font;
 	
-	font.size = 13;
+	font.size = 16;
 	
 	if (progress_background)
 	{
-		gc_set_fc (window_progress->gc, COLOR_TRANSPARENT);	
-		gt_fillrect (&window_progress->fb, window_progress->gc, 0, 0, 240, 96);
-		img_draw (&window_progress->fb, progress_background, window_progress->gc, 0, 0, 240, 96, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
-	}
-	else
-	{
-		gc_set_fc (window_progress->gc, COLOR_PROGRESS_BACKGROUND);	
-		gt_fillrect (&window_progress->fb, window_progress->gc, 0, 0, 240, 96);
-		gc_set_fc (window_progress->gc, COLOR_PROGRESS_BORDER);	
-		gc_set_lt (window_progress->gc, 2);
-		gt_rect (&window_progress->fb, window_progress->gc, 1, 1, 239, 94);
+		gc_set_fc (window_progress->gc, COLOR_TRANSPARENT);
+		gt_fillrect (&window_progress->gui, window_progress->gc, 0, 0, 1280, 720);
+		gui_draw_image (&window_progress->gui, progress_background, window_progress->gc, 0, 0, 1280, 720, 0); 
 	}
 	
 	gc_set_fc (window_progress->gc, COLOR_PROGRESS_FOREGROUND);	
@@ -63,28 +55,16 @@ static void window_progress_update (char *message1, char *message2, int value)
 	
 	if (window_progress_show_bar)
 	{
-		int width = font_width_str (&font, message1, strlen (message1));
-		font_draw_str (&font, message1, strlen (message1), &window_progress->fb, window_progress->gc, (240 - width) / 2, 13);
-		width = font_width_str (&font, message2, strlen (message2));
-		font_draw_str (&font, message2, strlen (message2), &window_progress->fb, window_progress->gc, (240 - width) / 2, 33);
+		font_draw_str (&font, message1, strlen (message1), &window_progress->gui, window_progress->gc, 50, 620);
+		font_draw_str (&font, message2, strlen (message2), &window_progress->gui, window_progress->gc, 50, 640);
 		
-		gt_rect (&window_progress->fb, window_progress->gc, 10, 61, 220, 20);
-		gt_fillrect (&window_progress->fb, window_progress->gc, 10, 61, value * 2.2, 20);
+		gt_fillrect (&window_progress->gui, window_progress->gc, 0, 604, value * 12.8, 2);
 	}
 	else
 	{
+		font_draw_str (&font, message1, strlen (message1), &window_progress->gui, window_progress->gc, 50, 620);
 		if (strlen (message2) > 0)
-		{
-			int width = font_width_str (&font, message1, strlen (message1));
-			font_draw_str (&font, message1, strlen (message1), &window_progress->fb, window_progress->gc, (240 - width) / 2, 23);
-			width = font_width_str (&font, message2, strlen (message2));
-			font_draw_str (&font, message2, strlen (message2), &window_progress->fb, window_progress->gc, (240 - width) / 2, 53);
-		}
-		else
-		{
-			int width = font_width_str (&font, message1, strlen (message1));
-			font_draw_str (&font, message1, strlen (message1), &window_progress->fb, window_progress->gc, (240 - width) / 2, 38);
-		}
+			font_draw_str (&font, message2, strlen (message2), &window_progress->gui, window_progress->gc, 50, 640);
 	}
 
 	wm_redraw (window_progress);

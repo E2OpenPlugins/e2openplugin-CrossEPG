@@ -72,7 +72,7 @@ bool textarea (window_t *wnd, char *message, int x, int y, int width, int height
 					for (j=words_last; j<(i-1); j++)
 					{
 						if ((rows >= row_offset) && (rows < (max_rows + row_offset)))
-							font_draw_str (&font, words[j], strlen (words[j]), &wnd->fb, wnd->gc, x + offset, y + ((rows-row_offset)*rowsize));
+							font_draw_str (&font, words[j], strlen (words[j]), &wnd->gui, wnd->gc, x + offset, y + ((rows-row_offset)*rowsize));
 						offset += words_sizes[j] + 5 + adjust;
 						if (j == (i-3)) offset += width - offset - words_sizes[i-2];
 					}
@@ -87,7 +87,7 @@ bool textarea (window_t *wnd, char *message, int x, int y, int width, int height
 				for (j=words_last; j<(i+1); j++)
 				{
 					if ((rows >= row_offset) && (rows < (max_rows + row_offset)))
-						font_draw_str (&font, words[j], strlen (words[j]), &wnd->fb, wnd->gc, x + offset, y + ((rows-row_offset)*rowsize));
+						font_draw_str (&font, words[j], strlen (words[j]), &wnd->gui, wnd->gc, x + offset, y + ((rows-row_offset)*rowsize));
 					offset += words_sizes[j] + 5;
 				}
 				words_last = i+1;
@@ -102,7 +102,7 @@ bool textarea (window_t *wnd, char *message, int x, int y, int width, int height
 				for (j=words_last; j<(i+1); j++)
 				{
 					if ((rows >= row_offset) && (rows < (max_rows + row_offset)))
-						font_draw_str (&font, words[j], strlen (words[j]), &wnd->fb, wnd->gc, x + offset, y + ((rows-row_offset)*rowsize));
+						font_draw_str (&font, words[j], strlen (words[j]), &wnd->gui, wnd->gc, x + offset, y + ((rows-row_offset)*rowsize));
 					offset += words_sizes[j] + 5;
 				}
 				words_last = i+1;

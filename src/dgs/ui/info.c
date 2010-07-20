@@ -1,8 +1,8 @@
 static window_t *window_info = NULL;
 
 #define INFO_X_OFFSET 	20
-#define INFO_Y_OFFSET 	50
-#define INFO_WIDTH		430
+#define INFO_Y_OFFSET 	70
+#define INFO_WIDTH		1240
 #define INFO_HEIGHT		210
 
 static void info_update ()
@@ -11,20 +11,20 @@ static void info_update ()
 	int group_size = 0;
 	//int daylight = dgs_helper_get_daylight_saving () * (60 * 60);
 	gc_set_fc (window_info->gc, COLOR_INFO_BACKGROUND);
-	gt_fillrect (&window_info->fb, window_info->gc, 0, 0, INFO_WIDTH, INFO_HEIGHT);
+	gt_fillrect (&window_info->gui, window_info->gc, 0, 0, INFO_WIDTH, INFO_HEIGHT);
 
 	gc_set_fc (window_info->gc, COLOR_INFO_FOREGROUND);	
 	gc_set_bc (window_info->gc, COLOR_INFO_BACKGROUND);
 	gc_set_lt (window_info->gc, 1);
-	gt_rect (&window_info->fb, window_info->gc, 0, 30, INFO_WIDTH, 1);
+	//gt_rect (&window_info->gui, window_info->gc, 0, 30, INFO_WIDTH, 1);
 
 	if (selected_group != NULL)
 	{
-		font.size = 17;
+		font.size = 20;
 		gc_set_fc (window_info->gc, COLOR_INFO_FOREGROUND);	
 		gc_set_bc (window_info->gc, COLOR_INFO_BACKGROUND);
 		group_size = font_width_str (&font, selected_group->name, strlen (selected_group->name));
-		font_draw_str (&font, selected_group->name, strlen (selected_group->name), &window_info->fb, window_info->gc, INFO_WIDTH - group_size - 4, 2);
+		font_draw_str (&font, selected_group->name, strlen (selected_group->name), &window_info->gui, window_info->gc, INFO_WIDTH - group_size - 40, 2);
 	}
 
 	if (selected_title != NULL)
@@ -39,13 +39,13 @@ static void info_update ()
 		char missing[256];
 		time_t now;
 		
-		font.size = 17;
-		char *resized_name = ui_resize_string (name, font.size, INFO_WIDTH - group_size - 14);
-		font_draw_str (&font, resized_name, strlen (resized_name), &window_info->fb, window_info->gc, 4, 2);
+		font.size = 24;
+		char *resized_name = ui_resize_string (name, font.size, INFO_WIDTH - group_size - 30);
+		font_draw_str (&font, resized_name, strlen (resized_name), &window_info->gui, window_info->gc, 20, 1);
 		_free (resized_name);
 		_free (name);
 		
-		textarea (window_info, description, 4, 34, INFO_WIDTH - 8, INFO_HEIGHT - 30, 16, 20, 6, 0);
+		textarea (window_info, description, 20, 50, INFO_WIDTH - 60, INFO_HEIGHT - 70, 16, 20, 6, 0);
 		
 		_free (description);
 		
@@ -77,8 +77,9 @@ static void info_update ()
 			if (selected_title->length > 0)
 			{
 				int perc_width;
-				perc_width = (INFO_WIDTH * (now - dgs_helper_adjust_daylight (selected_title->start_time))) / selected_title->length;
-				gt_fillrect (&window_info->fb, window_info->gc, 0, 26, perc_width, 4);
+				perc_width = ((INFO_WIDTH-60) * (now - dgs_helper_adjust_daylight (selected_title->start_time))) / selected_title->length;
+				gt_rect (&window_info->gui, window_info->gc, 20, 28, perc_width, 1);
+				//gt_fillrect (&window_info->gui, window_info->gc, 0, 26, perc_width, 4);
 			}
 		}
 		time_t tmptime = dgs_helper_adjust_daylight (selected_title->start_time);
@@ -91,23 +92,25 @@ static void info_update ()
 		else
 			sprintf (message, intl (START), intl (SUNDAY + loctime.tm_wday), loctime.tm_mday, intl (JANUARY + loctime.tm_mon), start_time, (selected_title->length / 60));
 		
-		font.size = 14;
-		font_draw_str (&font, missing, strlen (missing), &window_info->fb, window_info->gc, 4, INFO_HEIGHT - 40);
-		font_draw_str (&font, message, strlen (message), &window_info->fb, window_info->gc, 4, INFO_HEIGHT - 22);
+		font.size = 16;
+		font_draw_str (&font, missing, strlen (missing), &window_info->gui, window_info->gc, 20, INFO_HEIGHT - 42);
+		font_draw_str (&font, message, strlen (message), &window_info->gui, window_info->gc, 320, INFO_HEIGHT - 42);
 		
 		scheduler = scheduler_get_by_channel_and_title (selected_channel, selected_title);
 		if (scheduler != NULL)
 		{
-			font.size = 14;
+			font.size = 16;
 			if (scheduler->type == 0)
 			{
-				if (bullet_red)
-					img_draw (&window_info->fb, bullet_red, window_info->gc, INFO_WIDTH - 16, INFO_HEIGHT - 20, 14, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
+				if (button_rec)
+					gui_draw_image (&window_info->gui, button_rec, window_info->gc, INFO_WIDTH - 53, INFO_HEIGHT - 42, 26, 23, 0);
+					//img_draw (&window_info->gui, bullet_red, window_info->gc, INFO_WIDTH - 16, INFO_HEIGHT - 20, 14, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
 			}
 			else if (scheduler->type == 1)
 			{
-				if (bullet_blue)
-					img_draw (&window_info->fb, bullet_blue, window_info->gc, INFO_WIDTH - 16, INFO_HEIGHT - 20, 14, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
+				if (button_timer)
+					gui_draw_image (&window_info->gui, button_timer, window_info->gc, INFO_WIDTH - 53, INFO_HEIGHT - 42, 26, 23, 0);
+					//img_draw (&window_info->gui, bullet_blue, window_info->gc, INFO_WIDTH - 16, INFO_HEIGHT - 20, 14, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
 			}
 		}
 	}

@@ -1,16 +1,16 @@
 static window_t *window_grid = NULL;
 
-#define GRID_X_OFFSET 	20
+#define GRID_X_OFFSET 	35
 #define GRID_Y_OFFSET 	270
-#define GRID_WIDTH		670
+#define GRID_WIDTH		1195
 #define GRID_HEIGHT		(((GRID_ROWS+1)*GRID_ROW_HEIGHT)+2)
-#define GRID_ROW_HEIGHT 26
-#define GRID_ROWS 		8
+#define GRID_ROW_HEIGHT 29
+#define GRID_ROWS 		10
 
 #define GRID_X_TIME    (3*60*60)
 #define GRID_SPP       (GRID_X_TIME / GRID_EVENT_WIDTH)
 
-#define GRID_CHANNEL_WIDTH	150
+#define GRID_CHANNEL_WIDTH	200
 #define GRID_EVENT_WIDTH    (GRID_WIDTH-GRID_CHANNEL_WIDTH)
 
 static void grid_init ()
@@ -111,7 +111,7 @@ static int grid_drawbox (dgs_channel_t *channel, epgdb_title_t *title, int row)
 
 	if ((dgs_helper_adjust_daylight (title->start_time) + title->length) <= start_time) return -1;
 	if (dgs_helper_adjust_daylight (title->start_time) >= (start_time + GRID_X_TIME)) return 1;
-	font.size = 14;
+	font.size = 16;
 	
 	/* calculate x and width */
 
@@ -142,40 +142,41 @@ static int grid_drawbox (dgs_channel_t *channel, epgdb_title_t *title, int row)
 	if (selected_title == title)
 	{
 		gc_set_fc (window_grid->gc, COLOR_GRID_TITLES_SELECTED_BACKGROUND);
-		gt_fillrect (&window_grid->fb, window_grid->gc, x + 1, ((row + 1) * GRID_ROW_HEIGHT) + 2, width - 1, GRID_ROW_HEIGHT - 3);
+		gt_fillrect (&window_grid->gui, window_grid->gc, x + 1, ((row + 1) * GRID_ROW_HEIGHT) + 2, width - 1, GRID_ROW_HEIGHT - 3);
 		gc_set_fc (window_grid->gc, COLOR_GRID_BORDER);
 		gc_set_bc (window_grid->gc, COLOR_GRID_TITLES_SELECTED_BACKGROUND);
-		gt_rect (&window_grid->fb, window_grid->gc, x, ((row + 1) * GRID_ROW_HEIGHT) + 1, width, GRID_ROW_HEIGHT - 1);
+		gt_rect (&window_grid->gui, window_grid->gc, x, ((row + 1) * GRID_ROW_HEIGHT) + 1, width, GRID_ROW_HEIGHT - 1);
 		gc_set_fc (window_grid->gc, COLOR_GRID_TITLES_SELECTED_FOREGROUND);
-		font_draw_str (&font, text, strlen (text), &window_grid->fb, window_grid->gc, x + 5, ((row + 1) * GRID_ROW_HEIGHT) + 4);
+		font_draw_str (&font, text, strlen (text), &window_grid->gui, window_grid->gc, x + 5, ((row + 1) * GRID_ROW_HEIGHT) + 4);
 	}
 	else if (sch_mode == 0)
 	{
 		gc_set_fc (window_grid->gc, COLOR_GRID_TITLES_REC_BACKGROUND);
-		gt_fillrect (&window_grid->fb, window_grid->gc, x + 1, ((row + 1) * GRID_ROW_HEIGHT) + 2, width - 1, GRID_ROW_HEIGHT - 3);
+		gt_fillrect (&window_grid->gui, window_grid->gc, x + 1, ((row + 1) * GRID_ROW_HEIGHT) + 2, width - 1, GRID_ROW_HEIGHT - 3);
 		gc_set_fc (window_grid->gc, COLOR_GRID_BORDER);
 		gc_set_bc (window_grid->gc, COLOR_GRID_TITLES_REC_BACKGROUND);
-		gt_rect (&window_grid->fb, window_grid->gc, x, ((row + 1) * GRID_ROW_HEIGHT) + 1, width, GRID_ROW_HEIGHT - 1);
+		gt_rect (&window_grid->gui, window_grid->gc, x, ((row + 1) * GRID_ROW_HEIGHT) + 1, width, GRID_ROW_HEIGHT - 1);
 		gc_set_fc (window_grid->gc, COLOR_GRID_TITLES_REC_FOREGROUND);
-		font_draw_str (&font, text, strlen (text), &window_grid->fb, window_grid->gc, x + 5, ((row + 1) * GRID_ROW_HEIGHT) + 4);
+		font_draw_str (&font, text, strlen (text), &window_grid->gui, window_grid->gc, x + 5, ((row + 1) * GRID_ROW_HEIGHT) + 4);
 	}
 	else if (sch_mode == 1)
 	{
 		gc_set_fc (window_grid->gc, COLOR_GRID_TITLES_ZAP_BACKGROUND);
-		gt_fillrect (&window_grid->fb, window_grid->gc, x + 1, ((row + 1) * GRID_ROW_HEIGHT) + 2, width - 1, GRID_ROW_HEIGHT - 3);
+		gt_fillrect (&window_grid->gui, window_grid->gc, x + 1, ((row + 1) * GRID_ROW_HEIGHT) + 2, width - 1, GRID_ROW_HEIGHT - 3);
 		gc_set_fc (window_grid->gc, COLOR_GRID_BORDER);
 		gc_set_bc (window_grid->gc, COLOR_GRID_TITLES_ZAP_BACKGROUND);
-		gt_rect (&window_grid->fb, window_grid->gc, x, ((row + 1) * GRID_ROW_HEIGHT) + 1, width, GRID_ROW_HEIGHT - 1);
+		gt_rect (&window_grid->gui, window_grid->gc, x, ((row + 1) * GRID_ROW_HEIGHT) + 1, width, GRID_ROW_HEIGHT - 1);
 		gc_set_fc (window_grid->gc, COLOR_GRID_TITLES_ZAP_FOREGROUND);
-		font_draw_str (&font, text, strlen (text), &window_grid->fb, window_grid->gc, x + 5, ((row + 1) * GRID_ROW_HEIGHT) + 4);
+		font_draw_str (&font, text, strlen (text), &window_grid->gui, window_grid->gc, x + 5, ((row + 1) * GRID_ROW_HEIGHT) + 4);
 	}
 	else
 	{		
 		gc_set_fc (window_grid->gc, COLOR_GRID_BORDER);
 		gc_set_bc (window_grid->gc, COLOR_GRID_TITLES_BACKGROUND);
-		gt_rect (&window_grid->fb, window_grid->gc, x, ((row + 1) * GRID_ROW_HEIGHT) + 1, width, GRID_ROW_HEIGHT - 1);
+		gt_rect (&window_grid->gui, window_grid->gc, x, ((row + 1) * GRID_ROW_HEIGHT) + 1, 1, GRID_ROW_HEIGHT - 1);
+		gt_rect (&window_grid->gui, window_grid->gc, x+width, ((row + 1) * GRID_ROW_HEIGHT) + 1, 1, GRID_ROW_HEIGHT - 1);
 		gc_set_fc (window_grid->gc, COLOR_GRID_TITLES_FOREGROUND);
-		font_draw_str (&font, text, strlen (text), &window_grid->fb, window_grid->gc, x + 5, ((row + 1) * GRID_ROW_HEIGHT) + 4);
+		font_draw_str (&font, text, strlen (text), &window_grid->gui, window_grid->gc, x + 5, ((row + 1) * GRID_ROW_HEIGHT) + 4);
 	}
 	
 	_free (text);
@@ -194,31 +195,31 @@ static void grid_update ()
 	
 	/* draw background */
 	gc_set_fc (window_grid->gc, COLOR_TRANSPARENT);
-	gt_fillrect (&window_grid->fb, window_grid->gc, 0, 0, GRID_WIDTH, GRID_HEIGHT);
+	gt_fillrect (&window_grid->gui, window_grid->gc, 0, 0, GRID_WIDTH, GRID_HEIGHT);
 
 	gc_set_fc (window_grid->gc, COLOR_GRID_HEADERS_BACKGROUND);
-	gt_fillrect (&window_grid->fb, window_grid->gc, 0, 0, GRID_WIDTH, GRID_ROW_HEIGHT);
+	gt_fillrect (&window_grid->gui, window_grid->gc, 0, 0, GRID_WIDTH, GRID_ROW_HEIGHT);
 	
 	gc_set_fc (window_grid->gc, COLOR_GRID_BORDER);
 	gc_set_bc (window_grid->gc, COLOR_GRID_HEADERS_BACKGROUND);
 	gc_set_lt (window_grid->gc, 1);
-	gt_rect (&window_grid->fb, window_grid->gc, 1, 1, GRID_CHANNEL_WIDTH - 1, GRID_ROW_HEIGHT - 1);
-	gt_rect (&window_grid->fb, window_grid->gc, GRID_CHANNEL_WIDTH, 1, GRID_EVENT_WIDTH - 2, GRID_ROW_HEIGHT - 1);
+	gt_rect (&window_grid->gui, window_grid->gc, 1, 1, GRID_CHANNEL_WIDTH - 1, GRID_ROW_HEIGHT - 1);
+	gt_rect (&window_grid->gui, window_grid->gc, GRID_CHANNEL_WIDTH, 1, GRID_EVENT_WIDTH - 2, GRID_ROW_HEIGHT - 1);
 	
 	for (i=1; i<=GRID_ROWS; i++)
 	{
 		gc_set_fc (window_grid->gc, COLOR_GRID_CHANNELS_BACKGROUND);
-		gt_fillrect (&window_grid->fb, window_grid->gc, 1, GRID_ROW_HEIGHT * i, GRID_CHANNEL_WIDTH, GRID_ROW_HEIGHT - 1);
+		gt_fillrect (&window_grid->gui, window_grid->gc, 1, GRID_ROW_HEIGHT * i, GRID_CHANNEL_WIDTH, GRID_ROW_HEIGHT - 1);
 
 		gc_set_fc (window_grid->gc, COLOR_GRID_TITLES_BACKGROUND);
-		gt_fillrect (&window_grid->fb, window_grid->gc, GRID_CHANNEL_WIDTH, GRID_ROW_HEIGHT * i, GRID_EVENT_WIDTH - 2, GRID_ROW_HEIGHT - 1);
+		gt_fillrect (&window_grid->gui, window_grid->gc, GRID_CHANNEL_WIDTH, GRID_ROW_HEIGHT * i, GRID_EVENT_WIDTH - 2, GRID_ROW_HEIGHT - 1);
 
 		gc_set_fc (window_grid->gc, COLOR_GRID_BORDER);
 		gc_set_bc (window_grid->gc, COLOR_GRID_CHANNELS_BACKGROUND);
-		gt_rect (&window_grid->fb, window_grid->gc, 1, GRID_ROW_HEIGHT * i, GRID_CHANNEL_WIDTH, GRID_ROW_HEIGHT - 1);
+		gt_rect (&window_grid->gui, window_grid->gc, 1, GRID_ROW_HEIGHT * i, GRID_CHANNEL_WIDTH, GRID_ROW_HEIGHT - 1);
 
 		gc_set_bc (window_grid->gc, COLOR_GRID_TITLES_BACKGROUND);
-		gt_rect (&window_grid->fb, window_grid->gc, GRID_CHANNEL_WIDTH, GRID_ROW_HEIGHT * i, GRID_EVENT_WIDTH - 2, GRID_ROW_HEIGHT - 1);
+		gt_rect (&window_grid->gui, window_grid->gc, GRID_CHANNEL_WIDTH, GRID_ROW_HEIGHT * i, GRID_EVENT_WIDTH - 2, GRID_ROW_HEIGHT - 1);
 	}
 	
 	/* draw now marker */
@@ -230,59 +231,59 @@ static void grid_update ()
 		x += GRID_CHANNEL_WIDTH;
 		gc_set_fc (window_grid->gc, COLOR_GRID_BORDER);
 		gc_set_lt (window_grid->gc, 2);
-		gt_rect (&window_grid->fb, window_grid->gc, x, GRID_ROW_HEIGHT - 8, 0, 6);
+		gt_rect (&window_grid->gui, window_grid->gc, x, GRID_ROW_HEIGHT - 8, 0, 6);
 		gc_set_lt (window_grid->gc, 1);
 	}
 	
 	/* draw header */
 
-	font.size = 16;
+	font.size = 18;
 	sel_time = start_time;
 	loctime = localtime (&sel_time);
 	strftime (string, 20, intl (DATE_DM), loctime);
 	gc_set_fc (window_grid->gc, COLOR_GRID_HEADERS_FOREGROUND);
 	gc_set_bc (window_grid->gc, COLOR_GRID_HEADERS_BACKGROUND);
-	font_draw_str (&font, string, strlen(string), &window_grid->fb, window_grid->gc, 2, 2);
+	font_draw_str (&font, string, strlen(string), &window_grid->gui, window_grid->gc, 2, 2);
 		
-	font.size = 12;
+	font.size = 14;
 	strftime (string, 10, intl (TIME_HM), loctime);
-	font_draw_str (&font, string, strlen(string), &window_grid->fb, window_grid->gc, GRID_CHANNEL_WIDTH + 2, 2);
+	font_draw_str (&font, string, strlen(string), &window_grid->gui, window_grid->gc, GRID_CHANNEL_WIDTH + 2, 2);
 
 	sel_time = sel_time + (60*60);
 	loctime = localtime (&sel_time);
 	strftime (string, 10, intl (TIME_HM), loctime);
-	font_draw_str (&font, string, strlen(string), &window_grid->fb, window_grid->gc, GRID_CHANNEL_WIDTH + (GRID_EVENT_WIDTH * 0.33) + 2, 2);
+	font_draw_str (&font, string, strlen(string), &window_grid->gui, window_grid->gc, GRID_CHANNEL_WIDTH + (GRID_EVENT_WIDTH * 0.33) + 2, 2);
 	gc_set_fc (window_grid->gc, COLOR_GRID_BORDER);
-	gt_rect (&window_grid->fb, window_grid->gc, GRID_CHANNEL_WIDTH + (GRID_EVENT_WIDTH * 0.33), 1, 0, GRID_ROW_HEIGHT - 2);
+	gt_rect (&window_grid->gui, window_grid->gc, GRID_CHANNEL_WIDTH + (GRID_EVENT_WIDTH * 0.33), 1, 0, GRID_ROW_HEIGHT - 2);
 	gc_set_fc (window_grid->gc, COLOR_GRID_HEADERS_FOREGROUND);
 
 	sel_time = sel_time + (60*60);
 	loctime = localtime (&sel_time);
 	strftime (string, 10, intl (TIME_HM), loctime);
-	font_draw_str (&font, string, strlen(string), &window_grid->fb, window_grid->gc, GRID_CHANNEL_WIDTH + (GRID_EVENT_WIDTH * 0.66) + 2, 2);
+	font_draw_str (&font, string, strlen(string), &window_grid->gui, window_grid->gc, GRID_CHANNEL_WIDTH + (GRID_EVENT_WIDTH * 0.66) + 2, 2);
 	gc_set_fc (window_grid->gc, COLOR_GRID_BORDER);
-	gt_rect (&window_grid->fb, window_grid->gc, GRID_CHANNEL_WIDTH + (GRID_EVENT_WIDTH * 0.66), 1, 0, GRID_ROW_HEIGHT - 2);
+	gt_rect (&window_grid->gui, window_grid->gc, GRID_CHANNEL_WIDTH + (GRID_EVENT_WIDTH * 0.66), 1, 0, GRID_ROW_HEIGHT - 2);
 	gc_set_fc (window_grid->gc, COLOR_GRID_HEADERS_FOREGROUND);
 
 	sel_time = sel_time + (60*60);
 	loctime = localtime (&sel_time);
 	strftime (string, 10, intl (TIME_HM), loctime);
-	font_draw_str (&font, string, strlen(string), &window_grid->fb, window_grid->gc, GRID_WIDTH - 36, 2);
+	font_draw_str (&font, string, strlen(string), &window_grid->gui, window_grid->gc, GRID_WIDTH - 42, 2);
 
 	/* draw elements */
 
 	if (start_channel != NULL)
 	{
 		tmp = start_channel;
-		for (i=0; (i<8) && (i<dgs_channels_count ()); i++)
+		for (i=0; (i<10) && (i<dgs_channels_count ()); i++)
 		{
 			epgdb_title_t *title;
 			char *text;
-			font.size = 16;
+			font.size = 18;
 			if (tmp == selected_channel)
 			{
 				gc_set_fc (window_grid->gc, COLOR_GRID_CHANNELS_SELECTED_BACKGROUND);
-				gt_fillrect (&window_grid->fb, window_grid->gc, 2, (GRID_ROW_HEIGHT * (i+1)) + 1, GRID_CHANNEL_WIDTH - 2, GRID_ROW_HEIGHT - 2);
+				gt_fillrect (&window_grid->gui, window_grid->gc, 2, (GRID_ROW_HEIGHT * (i+1)) + 1, GRID_CHANNEL_WIDTH - 2, GRID_ROW_HEIGHT - 2);
 				gc_set_bc (window_grid->gc, COLOR_GRID_CHANNELS_SELECTED_BACKGROUND);
 				gc_set_fc (window_grid->gc, COLOR_GRID_CHANNELS_SELECTED_FOREGROUND);
 			}
@@ -293,7 +294,7 @@ static void grid_update ()
 			}
 			
 			text = ui_resize_string (tmp->name, font.size, GRID_CHANNEL_WIDTH - 5);
-			font_draw_str (&font, text, strlen (text), &window_grid->fb, window_grid->gc, 5, ((i+1)*26)+3);
+			font_draw_str (&font, text, strlen (text), &window_grid->gui, window_grid->gc, 5, ((i+1)*GRID_ROW_HEIGHT)+3);
 			_free (text);
 			
 			if (tmp->db_channel != NULL)

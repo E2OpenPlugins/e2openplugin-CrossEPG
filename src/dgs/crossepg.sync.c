@@ -3,8 +3,8 @@
 #include <time.h>
 #include "plugin/plugin.h"
 #include "_debug/debug.h"
-#include "fb/gtools.h"
-#include "fb/image.h"
+#include "gui/gtools.h"
+#include "gui/image.h"
 #include "dir_navi/dir_navigator.h"
 #include "event/event.h"
 #include "font/font.h"

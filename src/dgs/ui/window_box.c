@@ -11,7 +11,7 @@ typedef struct w_box_s
 	int				height;
 	int				offset_rows;
 	bool			more_rows;
-	img_t			background;
+	gui_image_t		background;
 	char			*background_file;
 } w_box_t;
 
@@ -21,7 +21,8 @@ static void window_box_init (w_box_t *window)
 	rect_t rect = { window->x, window->y, window->width, window->height };
 	window->_wnd = wm_create (&rect, window->title, NULL, NULL, COLOR_TRANSPARENT);
 	sprintf (file, "%s/skins/%s/backgrounds/%s", config_get_home_directory (), config_get_skin (), window->background_file);
-	window->background = img_open_absolute_path (file);
+	if (window->background) gui_close_image (window->background);
+	window->background = gui_open_image_by_path(file, gui_image_type_png);
 }
 
 static void window_box_show (w_box_t *window)
@@ -32,69 +33,73 @@ static void window_box_show (w_box_t *window)
 static void window_box_clean (w_box_t *window)
 {
 	wm_destroy (window->_wnd);
-	if (window->background) img_close (window->background);
+	if (window->background) gui_close_image (window->background);
 }
 
 static void window_box_update (w_box_t *window)
 {
-	int offset;
+	//int offset;
 	struct _font font;
-	font.size = 17;
+	font.size = 22;
 	
 	if (window->background)
 	{
 		gc_set_fc (window->_wnd->gc, COLOR_TRANSPARENT);	
-		gt_fillrect (&window->_wnd->fb, window->_wnd->gc, 0, 0, window->width, window->height);
-		img_draw (&window->_wnd->fb, window->background, window->_wnd->gc, 0, 0, window->width, window->height, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
+		gt_fillrect (&window->_wnd->gui, window->_wnd->gc, 0, 0, window->width, window->height);
+		gui_draw_image (&window->_wnd->gui, window->background, window->_wnd->gc, 0, 0, window->width, window->height, 0); 
+		//img_draw (&window->_wnd->gui, window->background, window->_wnd->gc, 0, 0, window->width, window->height, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
 	}
 	else
 	{
 		gc_set_fc (window->_wnd->gc, COLOR_BOX_BACKGROUND);	
-		gt_fillrect (&window->_wnd->fb, window->_wnd->gc, 0, 0, window->width, window->height);
+		gt_fillrect (&window->_wnd->gui, window->_wnd->gc, 0, 0, window->width, window->height);
 		gc_set_fc (window->_wnd->gc, COLOR_BOX_BORDER);	
 		gc_set_lt (window->_wnd->gc, 2);
-		gt_rect (&window->_wnd->fb, window->_wnd->gc, 1, 1, window->width - 2, window->height - 2);
+		gt_rect (&window->_wnd->gui, window->_wnd->gc, 1, 1, window->width - 2, window->height - 2);
 	}
 	
 	gc_set_fc (window->_wnd->gc, COLOR_BOX_FOREGROUND);
 	gc_set_bc (window->_wnd->gc, COLOR_BOX_BACKGROUND);
 	
-	offset = (window->width / 2) - (font_width_str (&font, window->title, strlen (window->title)) / 2);
-	font_draw_str (&font, window->title, strlen (window->title), &window->_wnd->fb, window->_wnd->gc, offset, 8);
+	//offset = (window->width / 2) - (font_width_str (&font, window->title, strlen (window->title)) / 2);
+	font_draw_str (&font, window->title, strlen (window->title), &window->_wnd->gui, window->_wnd->gc, 55, 16);
 	
 	//gc_set_fc (window->_wnd->gc, COLOR_BOX_BORDER);	
-	//gt_rect (&window->_wnd->fb, window->_wnd->gc, 1, 32, window->width - 2, 1);
+	//gt_rect (&window->_wnd->gui, window->_wnd->gc, 1, 32, window->width - 2, 1);
 	
+	font.size = 17;
 	gc_set_fc (window->_wnd->gc, COLOR_BOX_FOREGROUND);
-	window->more_rows = !textarea (window->_wnd, window->message, 10, 45, window->width - 20, 0, font.size, 24, 14, window->offset_rows);
-	
-	font.size = 12;
-	
+	window->more_rows = !textarea (window->_wnd, window->message, 10, 60, window->width - 40, 0, font.size, 24, 14, window->offset_rows);
+		
 	if (window->type == 1)
 	{
 		if (button_ok)
-			img_draw (&window->_wnd->fb, button_ok, window->_wnd->gc, window->width - 40, window->height - 30, 30, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
+			gui_draw_image (&window->_wnd->gui, button_ok, window->_wnd->gc, window->width - 40, window->height - 30, 26, 23, 0);
+			//img_draw (&window->_wnd->gui, button_ok, window->_wnd->gc, window->width - 40, window->height - 30, 30, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
 		else
-			font_draw_str (&font, "Ok", 2, &window->_wnd->fb, window->_wnd->gc, window->width - 40, window->height - 30);
+			font_draw_str (&font, "Ok", 2, &window->_wnd->gui, window->_wnd->gc, window->width - 40, window->height - 30);
 			
 		if (button_exit)
-			img_draw (&window->_wnd->fb, button_exit, window->_wnd->gc, window->width - 80, window->height - 30, 30, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
+			gui_draw_image (&window->_wnd->gui, button_exit, window->_wnd->gc, window->width - 80, window->height - 30, 26, 23, 0);
+			//img_draw (&window->_wnd->gui, button_exit, window->_wnd->gc, window->width - 80, window->height - 30, 30, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
 		else
-			font_draw_str (&font, "Exit", 4, &window->_wnd->fb, window->_wnd->gc, window->width - 80, window->height - 30);
+			font_draw_str (&font, "Exit", 4, &window->_wnd->gui, window->_wnd->gc, window->width - 80, window->height - 30);
 	}
 	else if (window->type == 2)
 	{
 		if (button_i)
-			img_draw (&window->_wnd->fb, button_i, window->_wnd->gc, window->width - 40, window->height - 30, 30, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
+			gui_draw_image (&window->_wnd->gui, button_i, window->_wnd->gc, window->width - 40, window->height - 30, 26, 23, 0);
+			//img_draw (&window->_wnd->gui, button_i, window->_wnd->gc, window->width - 40, window->height - 30, 30, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
 		else
-			font_draw_str (&font, "i", 4, &window->_wnd->fb, window->_wnd->gc, window->width - 40, window->height - 30);
+			font_draw_str (&font, "i", 4, &window->_wnd->gui, window->_wnd->gc, window->width - 40, window->height - 30);
 	}
 	else
 	{
 		if (button_exit)
-			img_draw (&window->_wnd->fb, button_exit, window->_wnd->gc, window->width - 40, window->height - 30, 30, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
+			gui_draw_image (&window->_wnd->gui, button_exit, window->_wnd->gc, window->width - 40, window->height - 30, 26, 23, 0);
+			//img_draw (&window->_wnd->gui, button_exit, window->_wnd->gc, window->width - 40, window->height - 30, 30, 14, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
 		else
-			font_draw_str (&font, "Exit", 4, &window->_wnd->fb, window->_wnd->gc, window->width - 40, window->height - 30);
+			font_draw_str (&font, "Exit", 4, &window->_wnd->gui, window->_wnd->gc, window->width - 40, window->height - 30);
 	}
 	
 	wm_redraw (window->_wnd);
@@ -197,5 +202,5 @@ int show_message_box_with_pos (char *title, char* message, int type, int x, int 
 
 int show_message_box (char *title, char* message, int type)
 {
-	return show_message_box_with_pos (title, message, type, 160, 100, 400, 150, "info_small.bmp");
+	return show_message_box_with_pos (title, message, type, 440, 285, 400, 150, "info_small.png");
 }

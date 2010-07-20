@@ -4,8 +4,8 @@
 #include "plugin/api.h"
 #include "plugin/plugin.h"
 #include "_debug/debug.h"
-#include "fb/gtools.h"
-#include "fb/image.h"
+#include "gui/gtools.h"
+#include "gui/image.h"
 #include "dir_navi/dir_navigator.h"
 #include "event/event.h"
 #include "font/font.h"
@@ -458,7 +458,7 @@ int plugin_main(int argc, char *argv[])
 		{
 			case 0:
 				dgs_helper_live_boxed ();
-				show_background ("red_screen.bmp", 0);
+				show_background ("red_screen.png", 0);
 				window_top_show ();
 				window_bottom_show (0);
 				info_show ();
@@ -466,7 +466,7 @@ int plugin_main(int argc, char *argv[])
 				break;
 			case 1:
 				dgs_helper_live_boxed ();
-				show_background ("green_screen.bmp", 0);
+				show_background ("green_screen.png", 0);
 				window_top_show ();
 				window_bottom_show (0);
 				info_show ();
@@ -475,7 +475,7 @@ int plugin_main(int argc, char *argv[])
 			case 2:
 				info_hide ();
 				dgs_helper_live_restore ();
-				show_background ("yellow_screen.bmp", 1);
+				show_background ("yellow_screen.png", 1);
 				window_top_show ();
 				window_bottom_hide ();
 				show_yellow ();
@@ -485,7 +485,7 @@ int plugin_main(int argc, char *argv[])
 				start_scheduler = scheduler_get_first ();
 				info_hide ();
 				dgs_helper_live_boxed ();
-				show_background ("blue_screen.bmp", 0);
+				show_background ("blue_screen.png", 0);
 				window_top_show ();
 				window_bottom_show (1);
 				show_blue ();

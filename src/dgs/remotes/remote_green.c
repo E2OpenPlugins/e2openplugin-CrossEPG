@@ -99,7 +99,7 @@ static int remote_green_event_handler (event_t *event)
 		else
 		{
 			int i;
-			for (i=0;i<8;i++) title_prev ();
+			for (i=0;i<10;i++) title_prev ();
 		}
 	}
 	
@@ -113,7 +113,7 @@ static int remote_green_event_handler (event_t *event)
 		else
 		{
 			int i;
-			for (i=0;i<8;i++) title_next ();
+			for (i=0;i<10;i++) title_next ();
 		}
 	}
 	

@@ -1,8 +1,8 @@
-#define WINDOWS_PLUGINS_WIDTH 720
-#define WINDOWS_PLUGINS_HEIGHT 85
-#define WINDOWS_PLUGINS_FOOTER_WIDTH 720
-#define WINDOWS_PLUGINS_FOOTER_HEIGHT 60
-static img_t plugin_background = NULL;
+#define WINDOWS_PLUGINS_WIDTH 1280
+#define WINDOWS_PLUGINS_HEIGHT 140
+#define WINDOWS_PLUGINS_FOOTER_WIDTH 1280
+#define WINDOWS_PLUGINS_FOOTER_HEIGHT 64
+static gui_image_t plugin_background = NULL;
 
 typedef struct w_plugin_item_s
 {
@@ -34,20 +34,21 @@ typedef struct w_plugins_s
 static void window_plugins_init (w_plugins_t *window)
 {
 	char file[256];
-	sprintf (file, "%s/skins/%s/%s", config_get_home_directory (), config_get_skin (), "backgrounds/plugin.bmp");
-	if (plugin_background) img_close (plugin_background);
-	plugin_background = img_open_absolute_path (file);
+	sprintf (file, "%s/skins/%s/%s", config_get_home_directory (), config_get_skin (), "backgrounds/plugin.png");
+	if (plugin_background) gui_close_image (plugin_background);
+	plugin_background = gui_open_image_by_path(file, gui_image_type_png);
 	if (plugin_background)
 	{
-		rect_t rect_background = { 0, 0, 720, 576 };
+		rect_t rect_background = { 0, 0, 1280, 720 };
 		window->_wnd_background = wm_create (&rect_background, window->title, NULL, NULL, COLOR_TRANSPARENT);
 		gc_set_fc (window->_wnd_background->gc, COLOR_TRANSPARENT);
-		gt_fillrect (&window->_wnd_background->fb, window->_wnd_background->gc, 0, 0, 720, 576);
-		img_draw (&window->_wnd_background->fb, plugin_background, window->_wnd_background->gc, 0, 0, 720, 576, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
+		gt_fillrect (&window->_wnd_background->gui, window->_wnd_background->gc, 0, 0, 1280, 720);
+		//img_draw (&window->_wnd_background->gui, plugin_background, window->_wnd_background->gc, 0, 0, 720, 576, IMG_ALIGN_CENTER|IMG_ALIGN_MIDDLE);
+		gui_draw_image (&window->_wnd_background->gui, plugin_background, window->_wnd_background->gc, 0, 0, 1280, 720, 0);
 		wm_redraw (window->_wnd_background);
 	}
 	rect_t rect = { 0, 0, WINDOWS_PLUGINS_WIDTH, WINDOWS_PLUGINS_HEIGHT };
-	rect_t rect_footer = { 0, 576 - WINDOWS_PLUGINS_FOOTER_HEIGHT, WINDOWS_PLUGINS_FOOTER_WIDTH, WINDOWS_PLUGINS_FOOTER_HEIGHT };
+	rect_t rect_footer = { 0, 720 - WINDOWS_PLUGINS_FOOTER_HEIGHT, WINDOWS_PLUGINS_FOOTER_WIDTH, WINDOWS_PLUGINS_FOOTER_HEIGHT };
 	window->_wnd = wm_create (&rect, window->title, NULL, NULL, COLOR_TRANSPARENT);
 	window->_wnd_footer = wm_create (&rect_footer, window->title, NULL, NULL, COLOR_TRANSPARENT);
 }
@@ -66,7 +67,7 @@ static void window_plugins_clean (w_plugins_t *window)
 	if (plugin_background)
 	{
 		wm_destroy (window->_wnd_background);
-		img_close (plugin_background);
+		gui_close_image (plugin_background);
 		plugin_background = NULL;
 	}
 }
@@ -150,21 +151,21 @@ static void window_plugins_update (w_plugins_t *window)
 	if (plugin_background)
 	{
 		gc_set_fc (window->_wnd->gc, COLOR_TRANSPARENT);
-		gt_fillrect (&window->_wnd->fb, window->_wnd->gc, 0, 0, WINDOWS_PLUGINS_WIDTH, WINDOWS_PLUGINS_HEIGHT);
+		gt_fillrect (&window->_wnd->gui, window->_wnd->gc, 0, 0, WINDOWS_PLUGINS_WIDTH, WINDOWS_PLUGINS_HEIGHT);
 		
 		gc_set_fc (window->_wnd_footer->gc, COLOR_TRANSPARENT);
-		gt_fillrect (&window->_wnd_footer->fb, window->_wnd_footer->gc, 0, 0, WINDOWS_PLUGINS_FOOTER_WIDTH, WINDOWS_PLUGINS_FOOTER_HEIGHT);
+		gt_fillrect (&window->_wnd_footer->gui, window->_wnd_footer->gc, 0, 0, WINDOWS_PLUGINS_FOOTER_WIDTH, WINDOWS_PLUGINS_FOOTER_HEIGHT);
 	}
 	else
 	{
 		gc_set_fc (window->_wnd->gc, COLOR_PLUGINS_TOP_BACKGROUND);
-		gt_fillrect (&window->_wnd->fb, window->_wnd->gc, 0, 0, WINDOWS_PLUGINS_WIDTH, WINDOWS_PLUGINS_HEIGHT);
+		gt_fillrect (&window->_wnd->gui, window->_wnd->gc, 0, 0, WINDOWS_PLUGINS_WIDTH, WINDOWS_PLUGINS_HEIGHT);
 
 		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_BACKGROUND);
-		gt_fillrect (&window->_wnd_footer->fb, window->_wnd_footer->gc, 0, 0, WINDOWS_PLUGINS_FOOTER_WIDTH, WINDOWS_PLUGINS_FOOTER_HEIGHT);
+		gt_fillrect (&window->_wnd_footer->gui, window->_wnd_footer->gc, 0, 0, WINDOWS_PLUGINS_FOOTER_WIDTH, WINDOWS_PLUGINS_FOOTER_HEIGHT);
 	}
 	
-	font.size = 12;
+	font.size = 18;
 	
 	gc_set_fc (window->_wnd->gc, COLOR_PLUGINS_TOP_FOREGROUND);
 	gc_set_bc (window->_wnd->gc, COLOR_PLUGINS_TOP_BACKGROUND);
@@ -173,87 +174,89 @@ static void window_plugins_update (w_plugins_t *window)
 	if (window->red_item > -1)
 	{
 		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_RED);
-		char *text = ui_resize_string (window->plugins[window->red_item].desc, font.size, 165);
-		int offset = 104 - (font_width_str (&font, text, strlen (text)) / 2);
-		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->fb, window->_wnd_footer->gc, offset, 10);
-		_free (text);
-	}
-
-	if (window->red_long_item > -1)
-	{
-		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_RED);
-		char *text = ui_resize_string (window->plugins[window->red_long_item].desc, font.size, 165);
-		int offset = 104 - (font_width_str (&font, text, strlen (text)) / 2);
-		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->fb, window->_wnd_footer->gc, offset, 25);
+		char *text = ui_resize_string (window->plugins[window->red_item].desc, font.size, 256);
+		int offset = 256 - (font_width_str (&font, text, strlen (text)) / 2);
+		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->gui, window->_wnd_footer->gc, offset, 10);
 		_free (text);
 	}
 	
 	if (window->green_item > -1)
 	{
 		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_GREEN);
-		char *text = ui_resize_string (window->plugins[window->green_item].desc, font.size, 165);
-		int offset = 272 - (font_width_str (&font, text, strlen (text)) / 2);
-		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->fb, window->_wnd_footer->gc, offset, 10);
-		_free (text);
-	}
-
-	if (window->green_long_item > -1)
-	{
-		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_GREEN);
-		char *text = ui_resize_string (window->plugins[window->green_long_item].desc, font.size, 165);
-		int offset = 272 - (font_width_str (&font, text, strlen (text)) / 2);
-		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->fb, window->_wnd_footer->gc, offset, 25);
+		char *text = ui_resize_string (window->plugins[window->green_item].desc, font.size, 256);
+		int offset = 512 - (font_width_str (&font, text, strlen (text)) / 2);
+		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->gui, window->_wnd_footer->gc, offset, 10);
 		_free (text);
 	}
 	
 	if (window->yellow_item > -1)
 	{
 		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_YELLOW);
-		char *text = ui_resize_string (window->plugins[window->yellow_item].desc, font.size, 165);
-		int offset = 440 - (font_width_str (&font, text, strlen (text)) / 2);
-		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->fb, window->_wnd_footer->gc, offset, 10);
-		_free (text);
-	}
-
-	if (window->yellow_long_item > -1)
-	{
-		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_YELLOW);
-		char *text = ui_resize_string (window->plugins[window->yellow_long_item].desc, font.size, 165);
-		int offset = 440 - (font_width_str (&font, text, strlen (text)) / 2);
-		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->fb, window->_wnd_footer->gc, offset, 25);
+		char *text = ui_resize_string (window->plugins[window->yellow_item].desc, font.size, 256);
+		int offset = 768 - (font_width_str (&font, text, strlen (text)) / 2);
+		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->gui, window->_wnd_footer->gc, offset, 10);
 		_free (text);
 	}
 	
 	if (window->blue_item > -1)
 	{
 		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_BLUE);
-		char *text = ui_resize_string (window->plugins[window->blue_item].desc, font.size, 165);
-		int offset = 608 - (font_width_str (&font, text, strlen (text)) / 2);
-		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->fb, window->_wnd_footer->gc, offset, 10);
+		char *text = ui_resize_string (window->plugins[window->blue_item].desc, font.size, 256);
+		int offset = 1024 - (font_width_str (&font, text, strlen (text)) / 2);
+		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->gui, window->_wnd_footer->gc, offset, 10);
+		_free (text);
+	}
+
+	font.size = 16;
+	
+	if (window->red_long_item > -1)
+	{
+		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_RED);
+		char *text = ui_resize_string (window->plugins[window->red_long_item].desc, font.size, 256);
+		int offset = 256 - (font_width_str (&font, text, strlen (text)) / 2);
+		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->gui, window->_wnd_footer->gc, offset, 35);
+		_free (text);
+	}
+
+	if (window->green_long_item > -1)
+	{
+		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_GREEN);
+		char *text = ui_resize_string (window->plugins[window->green_long_item].desc, font.size, 256);
+		int offset = 512 - (font_width_str (&font, text, strlen (text)) / 2);
+		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->gui, window->_wnd_footer->gc, offset, 35);
+		_free (text);
+	}
+
+	if (window->yellow_long_item > -1)
+	{
+		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_YELLOW);
+		char *text = ui_resize_string (window->plugins[window->yellow_long_item].desc, font.size, 256);
+		int offset = 768 - (font_width_str (&font, text, strlen (text)) / 2);
+		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->gui, window->_wnd_footer->gc, offset, 35);
 		_free (text);
 	}
 
 	if (window->blue_long_item > -1)
 	{
 		gc_set_fc (window->_wnd_footer->gc, COLOR_PLUGINS_BLUE);
-		char *text = ui_resize_string (window->plugins[window->blue_long_item].desc, font.size, 165);
-		int offset = 608 - (font_width_str (&font, text, strlen (text)) / 2);
-		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->fb, window->_wnd_footer->gc, offset, 25);
+		char *text = ui_resize_string (window->plugins[window->blue_long_item].desc, font.size, 256);
+		int offset = 1024 - (font_width_str (&font, text, strlen (text)) / 2);
+		font_draw_str (&font, text, strlen (text), &window->_wnd_footer->gui, window->_wnd_footer->gc, offset, 35);
 		_free (text);
 	}
 	
 	gc_set_lt (window->_wnd->gc, 2);
-	gt_line (&window->_wnd->fb, window->_wnd->gc, 35,  32, 25, 51);
-	gt_line (&window->_wnd->fb, window->_wnd->gc, 25,  52, 35, 72);
-	gt_line (&window->_wnd->fb, window->_wnd->gc, WINDOWS_PLUGINS_WIDTH - 45, 32, WINDOWS_PLUGINS_WIDTH - 35, 51);
-	gt_line (&window->_wnd->fb, window->_wnd->gc, WINDOWS_PLUGINS_WIDTH - 35, 52, WINDOWS_PLUGINS_WIDTH - 45, 72);
+	gt_line (&window->_wnd->gui, window->_wnd->gc, 35,  20, 25, 39);
+	gt_line (&window->_wnd->gui, window->_wnd->gc, 25,  40, 35, 60);
+	gt_line (&window->_wnd->gui, window->_wnd->gc, WINDOWS_PLUGINS_WIDTH - 45, 20, WINDOWS_PLUGINS_WIDTH - 35, 39);
+	gt_line (&window->_wnd->gui, window->_wnd->gc, WINDOWS_PLUGINS_WIDTH - 35, 40, WINDOWS_PLUGINS_WIDTH - 45, 60);
 	
 	font.size = 24;
 	offset = (WINDOWS_PLUGINS_WIDTH / 2) - (font_width_str (&font, window->plugins[window->selected_item].desc, strlen (window->plugins[window->selected_item].desc)) / 2);
-	font_draw_str (&font, window->plugins[window->selected_item].desc, strlen (window->plugins[window->selected_item].desc), &window->_wnd->fb, window->_wnd->gc, offset, 28);
+	font_draw_str (&font, window->plugins[window->selected_item].desc, strlen (window->plugins[window->selected_item].desc), &window->_wnd->gui, window->_wnd->gc, offset, 16);
 	font.size = 16;
 	offset = (WINDOWS_PLUGINS_WIDTH / 2) - (font_width_str (&font, window->plugins[window->selected_item].name, strlen (window->plugins[window->selected_item].name)) / 2);
-	font_draw_str (&font, window->plugins[window->selected_item].name, strlen (window->plugins[window->selected_item].name), &window->_wnd->fb, window->_wnd->gc, offset, 60);
+	font_draw_str (&font, window->plugins[window->selected_item].name, strlen (window->plugins[window->selected_item].name), &window->_wnd->gui, window->_wnd->gc, offset, 48);
 	
 	wm_redraw (window->_wnd);
 	wm_redraw (window->_wnd_footer);

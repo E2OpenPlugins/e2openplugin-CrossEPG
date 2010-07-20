@@ -1,9 +1,9 @@
 static window_t *window_list_channels = NULL;
 
-#define LIST_CHANNELS_X_OFFSET	22
+#define LIST_CHANNELS_X_OFFSET	35
 #define LIST_CHANNELS_Y_OFFSET	290
-#define LIST_CHANNELS_WIDTH		300
-#define LIST_CHANNELS_HEIGHT	210
+#define LIST_CHANNELS_WIDTH		540
+#define LIST_CHANNELS_HEIGHT	300
 
 static void list_channels_init ()
 {
@@ -27,7 +27,7 @@ static void list_channels_update ()
 	time_t now = time (NULL) - (dgs_helper_get_daylight_saving () * (60 * 60));
 	
 	gc_set_fc (window_list_channels->gc, COLOR_LIST_CHANNELS_BACKGROUND);
-	gt_fillrect (&window_list_channels->fb, window_list_channels->gc, 0, 0, LIST_CHANNELS_WIDTH, LIST_CHANNELS_HEIGHT);
+	gt_fillrect (&window_list_channels->gui, window_list_channels->gc, 0, 0, LIST_CHANNELS_WIDTH, LIST_CHANNELS_HEIGHT);
 
 	gc_set_fc (window_list_channels->gc, COLOR_LIST_CHANNELS_FOREGROUND);	
 	gc_set_bc (window_list_channels->gc, COLOR_LIST_CHANNELS_BACKGROUND);
@@ -36,7 +36,7 @@ static void list_channels_update ()
 	{
 		int i;
 		dgs_channel_t *tmp = start_channel;
-		for (i=0; (i<8) && (i<dgs_channels_count ()); i++)
+		for (i=0; (i<10) && (i<dgs_channels_count ()); i++)
 		{
 			int offset;
 			epgdb_title_t *title;
@@ -48,7 +48,7 @@ static void list_channels_update ()
 				if (selected_column == 0)
 				{
 					gc_set_fc (window_list_channels->gc, COLOR_LIST_CHANNELS_SELECTED_BACKGROUND);
-					gt_fillrect (&window_list_channels->fb, window_list_channels->gc, 0, (26 * i), LIST_CHANNELS_WIDTH, 26);
+					gt_fillrect (&window_list_channels->gui, window_list_channels->gc, 0, (29 * i), LIST_CHANNELS_WIDTH, 29);
 					gc_set_bc (window_list_channels->gc, COLOR_LIST_CHANNELS_SELECTED_BACKGROUND);
 					gc_set_fc (window_list_channels->gc, COLOR_LIST_CHANNELS_SELECTED_FOREGROUND);
 				}
@@ -57,7 +57,7 @@ static void list_channels_update ()
 					gc_set_fc (window_list_channels->gc, COLOR_LIST_CHANNELS_SELECTED_BACKGROUND);
 					gc_set_bc (window_list_channels->gc, COLOR_LIST_CHANNELS_SELECTED_FOREGROUND);
 					gc_set_lt (window_list_channels->gc, 2);
-					gt_rect (&window_list_channels->fb, window_list_channels->gc, 1, (26 * i)+1, LIST_CHANNELS_WIDTH-2, 24);
+					gt_rect (&window_list_channels->gui, window_list_channels->gc, 1, (29 * i)+1, LIST_CHANNELS_WIDTH-2, 27);
 					gc_set_bc (window_list_channels->gc, COLOR_LIST_CHANNELS_BACKGROUND);
 					gc_set_fc (window_list_channels->gc, COLOR_LIST_CHANNELS_FOREGROUND);
 				}
@@ -81,17 +81,17 @@ static void list_channels_update ()
 				}
 			}
 			
-			font.size = 15;
+			font.size = 18;
 			offset = font_width_str (&font, tmp->name, strlen (tmp->name));
-			font_draw_str (&font, tmp->name, strlen (tmp->name), &window_list_channels->fb, window_list_channels->gc, 5, (i*26)+4);
+			font_draw_str (&font, tmp->name, strlen (tmp->name), &window_list_channels->gui, window_list_channels->gc, 5, (i*29)+4);
 			
 			if (title_text != NULL && config_get_show_title ())
 			{
 				char row[1024];
 				char *text = ui_resize_string (title_text, font.size, LIST_CHANNELS_WIDTH - offset - 60);
 				sprintf (row, "(%s - %d%%)", text, perc);
-				font.size = 14;
-				font_draw_str (&font, row, strlen (row), &window_list_channels->fb, window_list_channels->gc, offset + 15, (i*26)+4);
+				font.size = 16;
+				font_draw_str (&font, row, strlen (row), &window_list_channels->gui, window_list_channels->gc, offset + 15, (i*29)+4);
 				_free (text);
 				_free (title_text);
 			}

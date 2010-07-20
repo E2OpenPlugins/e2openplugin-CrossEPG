@@ -8,4 +8,4 @@ find . | grep "\.DS_Store" | xargs rm 2>/dev/null
 find . | grep "\.o$" | xargs rm 2>/dev/null
 
 ./svnadd .
-svn commit
+svn commit --username sandro.cavazzoni

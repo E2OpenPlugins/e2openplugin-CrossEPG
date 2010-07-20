@@ -590,7 +590,7 @@ static void channels_next ()
 	if (selected_channel == NULL) return;
 	
 	tmp = start_channel;
-	for (i=1; i<8; i++) tmp = dgs_channels_get_next (tmp);
+	for (i=1; i<10; i++) tmp = dgs_channels_get_next (tmp);
 	
 	if (selected_channel == tmp)
 	{
@@ -751,7 +751,7 @@ static void title_next ()
 	
 	int i;
 	epgdb_title_t *tmp = start_title;
-	for (i=1; (i<8) && (tmp!=NULL); i++) tmp = tmp->next;
+	for (i=1; (i<10) && (tmp!=NULL); i++) tmp = tmp->next;
 
 	if (selected_title == tmp)
 	{
@@ -995,7 +995,7 @@ static void title_show_info ()
 		memcpy (tmp, similar_text, strlen (similar_text));
 	}
 	
-	show_message_box_with_pos (name, description, 2, 50, 80, 620, 420, "info_large.bmp");
+	show_message_box_with_pos (name, description, 2, 140, 60, 1000, 600, "info_large.png");
 	
 	epgdb_search_free (similar);
 	_free (name);
@@ -1008,7 +1008,7 @@ static void channels_prev_page ()
     if (start_channel == NULL) return;
 
 	int i;
-	for (i=0; i<8; i++)
+	for (i=0; i<10; i++)
 	{
 		selected_channel = dgs_channels_get_prev (selected_channel);
 		start_channel = dgs_channels_get_prev (start_channel);
@@ -1037,7 +1037,7 @@ static void channels_next_page ()
     if (start_channel == NULL) return;
 		
 	int i;
-	for (i=0; i<8; i++)
+	for (i=0; i<10; i++)
 	{
 		selected_channel = dgs_channels_get_next (selected_channel);
 		start_channel = dgs_channels_get_next (start_channel);
