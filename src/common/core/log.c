@@ -26,7 +26,7 @@ bool log_open (char *file, char *plugin_name)
 	if (file != NULL)
 	    fd = fopen (file, "w");
 	
-	log_add ("%s %s (c) 2009 Sandro Cavazzoni (http://www.crossepg.com)", plugin_name, RELEASE);
+	log_add ("SIFTeam %s %s (c) 2009-2010 Sandro Cavazzoni (http://www.crossepg.com)", plugin_name, RELEASE);
 	log_add ("This software is distributed under the terms of the GNU General Public License v2");
 	
 	return (fd != NULL);

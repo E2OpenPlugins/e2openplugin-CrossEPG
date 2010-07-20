@@ -31,7 +31,7 @@
 
 plugin_info( author,    "Sandro Cavazzoni" );
 plugin_info( rev,	    RELEASE );
-plugin_info( desc,	    "CrossEPG Sync" );
+plugin_info( desc,	    "SIFTeam CrossEPG Sync" );
 plugin_info( ldesc,     "Sync CrossEPG database with the internal DGS EPG" );
 
 #include "ui/colors.c"
@@ -173,7 +173,7 @@ int plugin_main(int argc, char *argv[])
 	
 	if (!dgs_opendb ())
 	{
-		show_message_box (intl (SERIOUS_ERROR), intl (CANNOT_OPEN_DGSDB), 0);
+		//show_message_box (intl (SERIOUS_ERROR), intl (CANNOT_OPEN_DGSDB), 0);
 		delpid ();
 		return 0;
 	}

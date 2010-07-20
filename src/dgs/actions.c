@@ -6,15 +6,15 @@ void show_config ()
 	
 	/* check for log default path */
 	int db_def_path = -1;
-	if (strcmp (config_get_db_root (), "/media") == 0)
+	if (strcmp (config_get_db_root (), "/media/crossepg") == 0)
 	{
 		db_def_path = 0;
 	}
-	else if (strcmp (config_get_db_root (), "/mnt/usb") == 0)
+	else if (strcmp (config_get_db_root (), "/mnt/usb/crossepg") == 0)
 	{
 		db_def_path = 1;
 	}
-	else if (strcmp (config_get_db_root (), "/tmp") == 0)
+	else if (strcmp (config_get_db_root (), "/tmp/crossepg") == 0)
 	{
 		db_def_path = 2;
 	}
@@ -207,13 +207,13 @@ void show_config ()
 			switch (mywindow.items[0].selected_value)
 			{
 				case 0:
-					config_set_db_root ("/media");
+					config_set_db_root ("/media/crossepg");
 					break;
 				case 1:
-					config_set_db_root ("/mnt/usb");
+					config_set_db_root ("/mnt/usb/crossepg");
 					break;
 				case 2:
-					config_set_db_root ("/tmp");
+					config_set_db_root ("/tmp/crossepg");
 					break;
 			}
 		}

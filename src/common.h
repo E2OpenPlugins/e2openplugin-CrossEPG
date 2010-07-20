@@ -26,8 +26,8 @@ typedef enum type_bool {false = 0, true} bool;
 #define DEFAULT_LAMEDB				"/etc/enigma2/lamedb"
 #elif DGS
 #define DEFAULT_HOME_DIRECTORY		"/var/crossepg/"
-#define DEFAULT_DB_ROOT				"/media"
-#define DEFAULT_IMPORT_ROOT			"/media/import"
+#define DEFAULT_DB_ROOT				"/media/crossepg"
+#define DEFAULT_IMPORT_ROOT			"/media/crossepg/import"
 #elif E1
 #define DEFAULT_DB_ROOT				"/hdd/crossepg"
 #define DEFAULT_IMPORT_ROOT			"/hdd/crossepg/import"

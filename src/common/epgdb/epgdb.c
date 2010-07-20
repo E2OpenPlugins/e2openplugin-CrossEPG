@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+#include <sys/stat.h>
 
 #include "../../common.h"
 
@@ -77,6 +78,8 @@ bool epgdb_open (char* db_root)
 	sprintf (index_filename, "%s/crossepg.indexes.db", db_root);
 	sprintf (aliases_filename, "%s/crossepg.aliases.db", db_root);
 	
+	mkdir (db_root, S_IRWXU|S_IRWXG|S_IRWXO);
+
 	fd_h = fopen (header_filename, "r+");
 	if (fd_h == NULL) fd_h = fopen (header_filename, "w+");
 	if (fd_h == NULL) return false;

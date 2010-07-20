@@ -36,8 +36,8 @@
 
 plugin_info( author,    "Sandro Cavazzoni" );
 plugin_info( rev,	    RELEASE );
-plugin_info( desc,	    "CrossEPG" );
-plugin_info( ldesc,     "A graphical EPG" );
+plugin_info( desc,	    "SIFTeam CrossEPG" );
+plugin_info( ldesc,     "A graphical weekly EPG" );
 
 static dgs_channel_t *selected_channel;
 static dgs_channel_t *start_channel;

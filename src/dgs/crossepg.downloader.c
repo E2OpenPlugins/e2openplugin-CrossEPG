@@ -40,7 +40,7 @@
 
 plugin_info( author,    "Sandro Cavazzoni" );
 plugin_info( rev,	    RELEASE );
-plugin_info( desc,	    "CrossEPG Downloader" );
+plugin_info( desc,	    "SIFTeam CrossEPG Downloader" );
 plugin_info( ldesc,     "An EPG downloader with OpenTV support" );
 
 #include "ui/colors.c"

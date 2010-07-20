@@ -29,7 +29,7 @@
 
 plugin_info( author,    "Sandro Cavazzoni" );
 plugin_info( rev,	    RELEASE );
-plugin_info( desc,	    "CrossEPG Launcher" );
+plugin_info( desc,	    "SIFTeam CrossEPG Launcher" );
 plugin_info( ldesc,     "" );
 
 #include "ui/colors.c"
