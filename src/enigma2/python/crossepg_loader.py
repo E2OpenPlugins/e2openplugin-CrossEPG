@@ -110,7 +110,7 @@ class CrossEPG_Loader(Screen):
 			self.epg_length = 0
 			self.epg_name = ""
 			
-			self.wrapper.init(CrossEPG_Wrapper.CMD_CONVERTER, self.config.db_root)
+			self.wrapper.init(CrossEPG_Wrapper.CMD_CONVERTER, self.db_root)
 		else:
 			print "No patch found... please reboot enigma2 manually"
 			self.hide()

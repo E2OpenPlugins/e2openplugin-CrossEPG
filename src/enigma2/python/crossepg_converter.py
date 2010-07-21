@@ -60,7 +60,7 @@ class CrossEPG_Converter(Screen):
 		self.hideprogress = eTimer()
 		self.hideprogress.callback.append(self["progress"].hide)
 		
-		self.wrapper.init(CrossEPG_Wrapper.CMD_CONVERTER, self.config.db_root)
+		self.wrapper.init(CrossEPG_Wrapper.CMD_CONVERTER, self.db_root)
 	
 	def quit(self):
 		self.__quit()

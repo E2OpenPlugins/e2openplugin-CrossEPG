@@ -61,7 +61,7 @@ class CrossEPG_Importer(Screen):
 		self.hideprogress.callback.append(self["progress"].hide)
 		
 		self.status = 0
-		self.wrapper.init(CrossEPG_Wrapper.CMD_IMPORTER, self.config.db_root)
+		self.wrapper.init(CrossEPG_Wrapper.CMD_IMPORTER, self.db_root)
 	
 	def quit(self):
 		self.__quit()

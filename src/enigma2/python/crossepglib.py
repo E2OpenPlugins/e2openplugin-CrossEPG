@@ -266,7 +266,8 @@ class CrossEPG_Wrapper:
 		elif cmd == self.CMD_INFO:
 			x = "%s/crossepg_dbinfo -k 19 -r -d %s" % (self.home_directory, dbdir)
 		elif cmd == self.CMD_IMPORTER:
-			x = "%s/crossepg_importer -k 19 -r -d %s" % (self.home_directory, dbdir)
+			importdir = "%s/import/" % (dbdir)
+			x = "%s/crossepg_importer -k 19 -r -i %s -d %s" % (self.home_directory, importdir, dbdir)
 		else:
 			print "[CrossEPG_Wrapper] unknow command on init"
 			return
