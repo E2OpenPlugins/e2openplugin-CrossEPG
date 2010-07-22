@@ -495,6 +495,7 @@ void dgs_helper_del_scheduler (int scheduler_id)
 void dgs_helper_live_restore ()
 {
 #ifndef STANDALONE
+/*
 	bool setted = false;
 	bool pillar_box = false;
 	bool zoom_box = false;
@@ -532,24 +533,27 @@ void dgs_helper_live_restore ()
 	if (!setted) dgs_helper_commander ("vid_pig 0 0 720 576\n");
 		
 	_free (ratio);
+*/
 #endif
 }
 
 void dgs_helper_live_boxed ()
 {
+/*
 	dgs_helper_commander ("vid_pig 460 50 236 210\n");
+*/
 }
 
 void dgs_helper_power_on ()
 {
 	dgs_helper_commander ("web_warm_on\n");
-	sleep (2);
+	sleep (10);
 }
 
 void dgs_helper_power_off ()
 {
 	dgs_helper_commander ("web_warm_off\n");
-	sleep (2);
+	sleep (10);
 }
 
 // return 0 = power on

@@ -164,6 +164,7 @@ int plugin_main(int argc, char *argv[])
 	int *ptr_groups;
 	int i;
 	int groups_count;
+	bool is_off = false;
 
 	now = time (NULL);
 	
@@ -224,6 +225,10 @@ int plugin_main(int argc, char *argv[])
 		delpid ();
 		return 0;
 	}
+	
+	if (dgs_helper_power_status () == -1) is_off = true;
+
+	if (is_off) dgs_helper_power_on ();
 	
 	window_progress_init ();
 	window_progress_update (intl (SYNC_EPG), "", 0);
@@ -323,6 +328,8 @@ int plugin_main(int argc, char *argv[])
 	sleep (2);
 	
 	window_progress_clean ();
+	
+	if (is_off) dgs_helper_power_off ();
 	
 	images_clean ();
 	epgdb_clean ();
