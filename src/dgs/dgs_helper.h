@@ -13,6 +13,7 @@ char *dgs_helper_get_aspect_ratio ();
 bool dgs_helper_get_daylight_saving ();
 time_t dgs_helper_adjust_daylight (time_t value);
 void dgs_helper_commander (char *command);
+bool dgs_helper_commander_with_output (char *command);
 bool dgs_helper_add_scheduler (int channel_id, time_t start_time, int length, int type, char *name);
 void dgs_helper_del_scheduler (int scheduler_id);
 void dgs_helper_live_boxed ();

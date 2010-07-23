@@ -87,6 +87,7 @@ int main (int argc, char **argv)
 	int cron_min = 0;
 	int last_day = -1;
 	char configfile[256];
+	bool is_off = false;
 	//int scheduler_check_count = 0;
 	
 	opterr = 0;
@@ -188,6 +189,11 @@ int main (int argc, char **argv)
 			{
 				log_add ("Sync Plugin terminated");
 				sync_state = false;
+				if (is_off && exec_request == 0)
+				{
+					is_off = false;
+					dgs_helper_power_off ();
+				}
 			}
 		}
 		else
@@ -205,6 +211,11 @@ int main (int argc, char **argv)
 			{
 				log_add ("Downloader Plugin terminated");
 				download_state = false;
+				if (is_off && exec_request == 0)
+				{
+					is_off = false;
+					dgs_helper_power_off ();
+				}
 			}
 		}
 		else
@@ -237,12 +248,22 @@ int main (int argc, char **argv)
 		{
 			if ((exec_request == 1) || (exec_request == 3))
 			{
+				if (dgs_helper_power_status () == -1)
+				{
+					dgs_helper_power_on ();
+					is_off = true;
+				}
 				dgs_helper_commander ("web_execute_plugin crossepg.downloader.plugin");
 				if (exec_request == 3) exec_request = 2;
 				else exec_request = 0;
 			}
 			else if (exec_request == 2)
 			{
+				if (dgs_helper_power_status () == -1)
+				{
+					dgs_helper_power_on ();
+					is_off = true;
+				}
 				dgs_helper_commander ("web_execute_plugin crossepg.sync.plugin");
 				exec_request = 0;
 			}

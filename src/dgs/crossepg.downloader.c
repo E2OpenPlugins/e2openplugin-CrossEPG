@@ -387,7 +387,7 @@ int plugin_main(int argc, char *argv[])
 {
 	char opentv_file[256];
 	int ch_id, otv_id;
-	bool is_off = false;
+	//bool is_off = false;
 	char step[256];
 	char dictionary[256];
 	int providers_count = 0;
@@ -422,9 +422,7 @@ int plugin_main(int argc, char *argv[])
 			log_add ("Cannot load translations");
 	}
 	_free (lang);
-	
-	ch_id = ch_watching_id (ch_mode_live); 
-	
+		
 	if (epgdb_open (config_get_db_root ())) log_add ("EPGDB opened");
 	else
 	{
@@ -451,9 +449,11 @@ int plugin_main(int argc, char *argv[])
 	step_count = (providers_count * 5) + 2 + importer_set_steps (DEFAULT_IMPORT_ROOT, step_next);
 	step_index = 1;
 	
-	if (dgs_helper_power_status () == -1) is_off = true;
+	//if (dgs_helper_power_status () == -1) is_off = true;
 
-	if (is_off) dgs_helper_power_on ();
+	//if (is_off) dgs_helper_power_on ();
+
+	ch_id = ch_watching_id (ch_mode_live); 
 
 	window_progress_init ();
 	window_progress_update ("", "", 0);
@@ -514,7 +514,7 @@ int plugin_main(int argc, char *argv[])
 	sleep (2);
 	window_progress_clean ();
 	
-	if (is_off) dgs_helper_power_off ();
+	//if (is_off) dgs_helper_power_off ();
 
 	log_add ("CrossEPG Downloader ended");
 

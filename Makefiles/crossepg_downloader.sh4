@@ -33,6 +33,7 @@ CFLAGS += -I../../include/modules
 CFLAGS += -I../../include/tools
 CFLAGS += -I../../include/st_drv
 CFLAGS += -Wall
+#CFLAGS += -DMEMORYMON
 #CFLAGS += -DSLEEP=2000
 
 LIBS +=

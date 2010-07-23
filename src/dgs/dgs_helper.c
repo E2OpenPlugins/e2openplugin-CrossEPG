@@ -420,6 +420,46 @@ void dgs_helper_commander (char *command)
 	}
 }
 
+bool dgs_helper_commander_with_output (char *command)
+{
+	FILE *fd;
+	char data[4096];
+	bool ret = false;
+	pid_t child_pid;
+
+	memset (data, 0, 4096);
+	child_pid = fork();
+	if (child_pid == 0)
+	{
+		sleep(1);
+		FILE *fd;
+		fd = fopen ("/dev/commander", "w");
+		if (fd != NULL)
+		{
+			fwrite (command, strlen (command), 1, fd);
+			fclose (fd);
+		}
+		exit (0);
+	}
+	else if (child_pid > 0)
+	{
+		prepare_fifo ();
+		fd = fopen ("/dev/weboutput", "r");
+		if (fd != NULL)
+		{
+			fread (data, 4096, 1, fd);
+			fclose (fd);
+			if (memcmp (data, "true", 4) == 0) ret = true;
+		}
+		else log_add ("Cannot read from /dev/weboutput");
+		release_fifo ();
+	}
+	else
+		log_add ("Cannot fork process!");
+	
+	return ret;
+}
+
 int _dgs_helper_add_scheduler_callback (void *p_data, int num_fields, char **p_fields, char **p_col_names)
 {
 	int *count = (int*)p_data;
@@ -546,14 +586,15 @@ void dgs_helper_live_boxed ()
 
 void dgs_helper_power_on ()
 {
-	dgs_helper_commander ("web_warm_on\n");
-	sleep (10);
+	dgs_helper_commander_with_output ("web_warm_on\n");
+	sleep (5);
 }
 
 void dgs_helper_power_off ()
 {
-	dgs_helper_commander ("web_warm_off\n");
-	sleep (10);
+	sleep (5);
+	dgs_helper_commander_with_output ("web_warm_off\n");
+	sleep (2);
 }
 
 // return 0 = power on
