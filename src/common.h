@@ -3,7 +3,7 @@
 
 typedef enum type_bool {false = 0, true} bool;
 
-#define RELEASE "0.4.1 (svn 45)"
+#define RELEASE "0.4.2 (svn 45)"
 
 #define MAX_OTV_LOOP_CYCLES			10000
 #define MAX_BAT_LOOP_CYCLES			200
@@ -26,6 +26,7 @@ typedef enum type_bool {false = 0, true} bool;
 #define DEFAULT_LAMEDB				"/etc/enigma2/lamedb"
 #elif DGS
 #define DEFAULT_HOME_DIRECTORY		"/var/crossepg/"
+#define DEFAULT_HOME_DIRECTORY_IMPORT	"/var/crossepg/import"
 #define DEFAULT_DB_ROOT				"/media/crossepg"
 #define DEFAULT_IMPORT_ROOT			"/media/crossepg/import"
 #elif E1

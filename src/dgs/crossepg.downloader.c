@@ -446,7 +446,7 @@ int plugin_main(int argc, char *argv[])
 		if (strlen (config_get_otv_provider (i)) > 0)
 			providers_count++;
 			
-	step_count = (providers_count * 5) + 2 + importer_set_steps (DEFAULT_IMPORT_ROOT, step_next);
+	step_count = (providers_count * 5) + 2 + importer_set_steps (DEFAULT_HOME_DIRECTORY_IMPORT, step_next) + importer_set_steps (DEFAULT_IMPORT_ROOT, step_next);
 	step_index = 1;
 	
 	//if (dgs_helper_power_status () == -1) is_off = true;
@@ -489,6 +489,7 @@ int plugin_main(int argc, char *argv[])
 	}
 	if ((ch_watching_id (ch_mode_live) != ch_id) && (ch_id > 0)) ch_change_fg (ch_mode_live, ch_id, NULL);
 
+	importer_parse_directory (DEFAULT_HOME_DIRECTORY_IMPORT, config_get_db_root (), simple_progress, import_progress, url_progress, &stop);
 	importer_parse_directory (DEFAULT_IMPORT_ROOT, config_get_db_root (), simple_progress, import_progress, url_progress, &stop);
 	
 	if (step_count > 2)
