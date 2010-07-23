@@ -357,7 +357,7 @@ void simple_progress (int value, int max)
 {
 	static int last = 0;
 	int now = (value*100)/max;
-	if (now != last)
+	if (now != last || (value == 0 && max == 0))
 	{
 		char step[256];
 		//char msg[256];

@@ -57,6 +57,29 @@ void importer_parse_csv (char *dir, char *filename, char *label)
 	if (_step_callback != NULL) _step_callback ();
 }
 
+void importer_parse_bin (char *dir, char *filename, char *label)
+{
+	//char file[256];
+
+	char file[256];
+	if (dir == NULL)
+		strcpy (file, filename);
+	else
+		sprintf (file, "%s/%s", dir, filename);
+		
+	if (dir != NULL)
+		chdir (dir);
+		
+	//sprintf (file, "%s/%s", dir, filename);
+	
+	log_add ("Importing data from '%s'...", label);
+	if (_file_callback != NULL) _file_callback (label);
+	if (bin_read (file, label, _progress_callback, _file_callback)) log_add ("Data imported");
+	else log_add ("Cannot import from bin file");
+	
+	if (_step_callback != NULL) _step_callback ();
+}
+
 void importer_parse_url (char *dir, char *filename, char *dbroot)
 {
 	FILE *fd;
@@ -175,6 +198,8 @@ int importer_set_steps (char *dir, void(*step_callback)())
 		{
 			if (importer_extension_check (ep->d_name, "csv"))
 				steps++;
+			else if (importer_extension_check (ep->d_name, "bin"))
+				steps++;
 			else if (importer_extension_check (ep->d_name, "url"))
 			{
 				char line[1024];
@@ -248,6 +273,11 @@ void importer_parse_directory (char *dir, char *dbroot,
 				sprintf (file, "%s/%s", dir, ep->d_name);
 				sprintf (new_file, "%s.imported", file);
 				rename (file, new_file);
+			}
+			else if (importer_extension_check (ep->d_name, "bin"))
+			{
+				strcpy (_file, ep->d_name);
+				importer_parse_bin (dir, ep->d_name, ep->d_name);
 			}
 			
 			else if (importer_extension_check (ep->d_name, "url"))
