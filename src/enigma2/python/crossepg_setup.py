@@ -111,7 +111,9 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		reload_plugins = False
 		self.config.providers = list()
 		
-		self.config.db_root = self.mountpoint[self.citems[0][1].getIndex()]
+		if len(self.mountdescription) > 0:
+			self.config.db_root = self.mountpoint[self.citems[0][1].getIndex()]
+			
 		self.config.lamedb = self.lamedbs[self.citems[1][1].getIndex()]
 		i = 2
 			
