@@ -403,53 +403,53 @@ class CrossEPG_Wrapper:
 	def lamedb(self, value):
 		print "[CrossEPG_Wrapper] -> LAMEDB %s" % (value)
 		cmd = "LAMEDB %s\n" % (value)
-		self.cmd.write(cmd, len(cmd))
+		self.cmd.write(cmd)
 		
 	def epgdat(self, value):
 		print "[CrossEPG_Wrapper] -> EPGDAT %s" % (value)
 		cmd = "EPGDAT %s\n" % (value)
-		self.cmd.write(cmd, len(cmd))
+		self.cmd.write(cmd)
 			
 	def demuxer(self, value):
 		print "[CrossEPG_Wrapper] -> DEMUXER %s" % (value)
 		cmd = "DEMUXER %s\n" % (value)
-		self.cmd.write(cmd, len(cmd))
+		self.cmd.write(cmd)
 
 	def download(self, provider):
 		print "[CrossEPG_Wrapper] -> DOWNLOAD %s" % (provider)
 		cmd = "DOWNLOAD %s\n" % (provider)
-		self.cmd.write(cmd, len(cmd))
+		self.cmd.write(cmd)
 		
 	def convert(self):
 		print "[CrossEPG_Wrapper] -> CONVERT"
 		self.__callCallbacks(self.EVENT_ACTION, _("Converting data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
-		self.cmd.write("CONVERT\n", 8)
+		self.cmd.write("CONVERT\n")
 		
 	def importx(self):
 		print "[CrossEPG_Wrapper] -> IMPORT"
-		self.cmd.write("IMPORT\n", 7)
+		self.cmd.write("IMPORT\n")
 		
 	def text(self):
 		print "[CrossEPG_Wrapper] -> TEXT"
 		self.__callCallbacks(self.EVENT_ACTION, _("Loading data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
-		self.cmd.write("TEXT\n", 5)
+		self.cmd.write("TEXT\n")
 			
 	def stop(self):
 		print "[CrossEPG_Wrapper] -> STOP"
-		self.cmd.write("STOP\n", 5)
+		self.cmd.write("STOP\n")
 
 	def save(self):
 		print "[CrossEPG_Wrapper] -> SAVE"
 		self.__callCallbacks(self.EVENT_ACTION, _("Saving data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
-		self.cmd.write("SAVE\n", 5)
+		self.cmd.write("SAVE\n")
 
 	def wait(self):
 		print "[CrossEPG_Wrapper] -> WAIT"
-		self.cmd.write("WAIT\n", 5)
+		self.cmd.write("WAIT\n")
 
 	def quit(self):
 		print "[CrossEPG_Wrapper] -> QUIT"
-		self.cmd.write("QUIT\n", 5)
+		self.cmd.write("QUIT\n")
