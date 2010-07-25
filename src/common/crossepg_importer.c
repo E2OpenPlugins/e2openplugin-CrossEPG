@@ -31,6 +31,7 @@
 static char db_root[256];
 static char homedir[256];
 static char import_root[256];
+static char import_homedir[256];
 
 static volatile bool stop = false;
 static volatile bool exec = false;
@@ -67,6 +68,7 @@ void *import (void *args)
 	interactive_send (ACTION_START);
 	interactive_send_text (ACTION_PROGRESS, "ON");
 	importer_parse_directory (import_root, db_root, progress_callback, url_callback, file_callback, &stop);
+	importer_parse_directory (import_homedir, db_root, progress_callback, url_callback, file_callback, &stop);
 	exec = false;
 	interactive_send_text (ACTION_PROGRESS, "OFF");
 	interactive_send (ACTION_END);
@@ -231,6 +233,8 @@ int main (int argc, char **argv)
 	while (db_root[strlen (db_root) - 1] == '/') db_root[strlen (db_root) - 1] = '\0';
 	while (import_root[strlen (import_root) - 1] == '/') import_root[strlen (import_root) - 1] = '\0';
 	
+	sprintf (import_homedir, "%s/import/", homedir);
+	
 	if (epgdb_open (db_root)) log_add ("EPGDB opened");
 	else
 	{
@@ -248,6 +252,7 @@ int main (int argc, char **argv)
 	{
 		volatile bool useless = false;
 		importer_parse_directory (import_root, db_root, NULL, NULL, NULL, &useless);
+		importer_parse_directory (import_homedir, db_root, NULL, NULL, NULL, &useless);
 		
 		log_add ("Saving data...");
 		if (epgdb_save (NULL)) log_add ("Data saved");
