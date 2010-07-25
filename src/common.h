@@ -3,7 +3,7 @@
 
 typedef enum type_bool {false = 0, true} bool;
 
-#define RELEASE "0.4.3 (svn 51)"
+#define RELEASE "0.4.4 (svn 52)"
 
 #define MAX_OTV_LOOP_CYCLES			10000
 #define MAX_BAT_LOOP_CYCLES			200
