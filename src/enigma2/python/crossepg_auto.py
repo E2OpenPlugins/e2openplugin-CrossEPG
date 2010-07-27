@@ -190,7 +190,11 @@ class CrossEPG_Auto(Screen):
 				self.scripts_index = 0;
 				self.__dailyStartScripts(session)
 			else:
-				self.session.open(CrossEPG_Converter, self.__dailyConvertEnded)
+				patchtype = getEPGPatchType()
+				if patchtype != 3:
+					session.open(CrossEPG_Converter, self.__callbackConverter)
+				else:
+					self.__callbackConverter(session, True)		# witch crossepg v2 patch skip the converter
 		else:
 			self.enabled = True
 	
@@ -203,7 +207,11 @@ class CrossEPG_Auto(Screen):
 
 	def __dailyImporterEnded(self, session, ret):
 		if ret:
-			self.session.open(CrossEPG_Converter, self.__dailyConvertEnded)
+			patchtype = getEPGPatchType()
+			if patchtype != 3:
+				session.open(CrossEPG_Converter, self.__callbackConverter)
+			else:
+				self.__callbackConverter(session, True)		# witch crossepg v2 patch skip the converter
 		else:
 			self.enabled = True
 	
@@ -214,7 +222,7 @@ class CrossEPG_Auto(Screen):
 			config.load()
 				
 			patchtype = getEPGPatchType()
-			if patchtype == 0 or patchtype == 1:
+			if patchtype == 0 or patchtype == 1 or patchtype == 3:
 				session.open(CrossEPG_Loader, self.__dailyLoaderEnded)
 			elif patchtype == 2 and config.auto_daily_reboot == 0:
 				session.open(CrossEPG_Loader, self.__dailyLoaderEnded)

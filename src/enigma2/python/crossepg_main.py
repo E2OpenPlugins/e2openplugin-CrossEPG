@@ -27,7 +27,11 @@ class CrossEPG_Main:
 				self.scripts_index = 0;
 				self.__startScripts(session)
 			else:
-				session.open(CrossEPG_Converter, self.__callbackConverter)
+				patchtype = getEPGPatchType()
+				if patchtype != 3:
+					session.open(CrossEPG_Converter, self.__callbackConverter)
+				else:
+					self.__callbackConverter(session, True)		# witch crossepg v2 patch skip the converter
 		else:
 			crossepg_auto.enable()
 	
@@ -40,7 +44,11 @@ class CrossEPG_Main:
 			
 	def __callbackImporter(self, session, ret):
 		if ret:
-			session.open(CrossEPG_Converter, self.__callbackConverter)
+			patchtype = getEPGPatchType()
+			if patchtype != 3:
+				session.open(CrossEPG_Converter, self.__callbackConverter)
+			else:
+				self.__callbackConverter(session, True)		# witch crossepg v2 patch skip the converter
 		else:
 			crossepg_auto.enable()
 			
@@ -49,7 +57,7 @@ class CrossEPG_Main:
 			config = CrossEPG_Config()
 			config.load()
 			patchtype = getEPGPatchType()
-			if patchtype == 0 or patchtype == 1:
+			if patchtype == 0 or patchtype == 1 or patchtype == 3:
 				session.open(CrossEPG_Loader, self.__callbackLoader)
 			elif patchtype == 2 and config.manual_reboot == 0:
 				session.open(CrossEPG_Loader, self.__callbackLoader)

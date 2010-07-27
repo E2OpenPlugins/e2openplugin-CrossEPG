@@ -59,6 +59,13 @@ class CrossEPG_Loader(Screen):
 		
 		# check for common patches
 		try:
+			self.xepgpatch = new.instancemethod(_enigma.eEPGCache_crossepgImportEPG,None,eEPGCache)
+			print "[CrossEPG_Loader] patch crossepg v2 found"
+		except Exception, e:
+			self.xepgpatch = None
+			print "[CrossEPG_Loader] patch crossepg v2 not found"
+			
+		try:
 			self.epgpatch = new.instancemethod(_enigma.eEPGCache_load,None,eEPGCache)
 			print "[CrossEPG_Loader] patch epgcache.load() found"
 		except Exception, e:
@@ -79,7 +86,12 @@ class CrossEPG_Loader(Screen):
 			self.oudeispatch = None
 			print "[CrossEPG_Loader] patch Oudeis not found"
 		
-		if self.epgpatch:
+		if self.xepgpatch:
+			self.timer = eTimer()
+			self.timer.callback.append(self.__loadEPG2)
+			self.timer.start(200, 1)
+
+		elif self.epgpatch:
 			self.timer = eTimer()
 			self.timer.callback.append(self.__loadEPG)
 			self.timer.start(200, 1)
@@ -123,6 +135,17 @@ class CrossEPG_Loader(Screen):
 			return
 			
 		self.__quit()
+
+	def __loadEPG2(self):
+		#cmd = "%s/crossepg_epgcopy %s/ext.epg.dat /hdd/epg.dat" % (self.home_directory, self.db_root)
+		#print "[CrossEPG_Loader] %s" % (cmd)
+		#os.system(cmd)
+		print "[CrossEPG_Loader] loading data with crossepg patch v2"
+		self.xepgpatch(eEPGCache.getInstance(), self.db_root)
+		self.hide()
+		if self.endCallback:
+			self.endCallback(self.session, True)
+		self.close()
 	
 	def __loadEPG(self):
 		cmd = "%s/crossepg_epgcopy %s/ext.epg.dat /hdd/epg.dat" % (self.home_directory, self.db_root)

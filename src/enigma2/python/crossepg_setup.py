@@ -35,7 +35,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		f.close()
 		Screen.__init__(self, session)
 		patchtype = getEPGPatchType()
-		if patchtype == 0 or patchtype == 1:
+		if patchtype == 0 or patchtype == 1 or patchtype == 3:
 			self.fastpatch = True
 		else:
 			self.fastpatch = False

@@ -16,6 +16,7 @@ import _enigma
 # 0 simple epgcache.load() patch
 # 1 edg nemesis patch
 # 2 oudeis patch
+# 3 crossepg v2 patch
 def getEPGPatchType():
 	try:
 		epgpatch = new.instancemethod(_enigma.eEPGCache_load,None,eEPGCache)
@@ -32,6 +33,12 @@ def getEPGPatchType():
 	try:
 		oudeispatch = new.instancemethod(_enigma.eEPGCache_importEvent,None,eEPGCache)
 		return 2
+	except Exception, e:
+		pass
+
+	try:
+		xepgpatch = new.instancemethod(_enigma.eEPGCache_crossepgImportEPG,None,eEPGCache)
+		return 3
 	except Exception, e:
 		pass
 		
@@ -407,7 +414,7 @@ class CrossEPG_Wrapper:
 	def lamedb(self, value):
 		print "[CrossEPG_Wrapper] -> LAMEDB %s" % (value)
 		cmd = "LAMEDB %s\n" % (value)
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write(cmd, len(cmd))
 		else:
 			self.cmd.write(cmd)
@@ -415,7 +422,7 @@ class CrossEPG_Wrapper:
 	def epgdat(self, value):
 		print "[CrossEPG_Wrapper] -> EPGDAT %s" % (value)
 		cmd = "EPGDAT %s\n" % (value)
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write(cmd, len(cmd))
 		else:
 			self.cmd.write(cmd)
@@ -423,7 +430,7 @@ class CrossEPG_Wrapper:
 	def demuxer(self, value):
 		print "[CrossEPG_Wrapper] -> DEMUXER %s" % (value)
 		cmd = "DEMUXER %s\n" % (value)
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write(cmd, len(cmd))
 		else:
 			self.cmd.write(cmd)
@@ -431,7 +438,7 @@ class CrossEPG_Wrapper:
 	def download(self, provider):
 		print "[CrossEPG_Wrapper] -> DOWNLOAD %s" % (provider)
 		cmd = "DOWNLOAD %s\n" % (provider)
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write(cmd, len(cmd))
 		else:
 			self.cmd.write(cmd)
@@ -440,14 +447,14 @@ class CrossEPG_Wrapper:
 		print "[CrossEPG_Wrapper] -> CONVERT"
 		self.__callCallbacks(self.EVENT_ACTION, _("Converting data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write("CONVERT\n", 8)
 		else:
 			self.cmd.write("CONVERT\n")
 		
 	def importx(self):
 		print "[CrossEPG_Wrapper] -> IMPORT"
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write("IMPORT\n", 7)
 		else:
 			self.cmd.write("IMPORT\n")
@@ -456,14 +463,14 @@ class CrossEPG_Wrapper:
 		print "[CrossEPG_Wrapper] -> TEXT"
 		self.__callCallbacks(self.EVENT_ACTION, _("Loading data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write("TEXT\n", 5)
 		else:
 			self.cmd.write("TEXT\n")
 			
 	def stop(self):
 		print "[CrossEPG_Wrapper] -> STOP"
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write("STOP\n", 5)
 		else:
 			self.cmd.write("STOP\n")
@@ -472,21 +479,21 @@ class CrossEPG_Wrapper:
 		print "[CrossEPG_Wrapper] -> SAVE"
 		self.__callCallbacks(self.EVENT_ACTION, _("Saving data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write("SAVE\n", 5)
 		else:
 			self.cmd.write("SAVE\n")
 
 	def wait(self):
 		print "[CrossEPG_Wrapper] -> WAIT"
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write("WAIT\n", 5)
 		else:
 			self.cmd.write("WAIT\n")
 
 	def quit(self):
 		print "[CrossEPG_Wrapper] -> QUIT"
-		if self.version < 20100718:
+		if self.version < 20100716:
 			self.cmd.write("QUIT\n", 5)
 		else:
 			self.cmd.write("QUIT\n")
