@@ -192,9 +192,9 @@ class CrossEPG_Auto(Screen):
 			else:
 				patchtype = getEPGPatchType()
 				if patchtype != 3:
-					session.open(CrossEPG_Converter, self.__callbackConverter)
+					session.open(CrossEPG_Converter, self.__convertEnded)
 				else:
-					self.__callbackConverter(session, True)		# witch crossepg v2 patch skip the converter
+					self.__convertEnded(session, True)		# witch crossepg v2 patch skip the converter
 		else:
 			self.enabled = True
 	
@@ -209,9 +209,9 @@ class CrossEPG_Auto(Screen):
 		if ret:
 			patchtype = getEPGPatchType()
 			if patchtype != 3:
-				session.open(CrossEPG_Converter, self.__callbackConverter)
+				session.open(CrossEPG_Converter, self.__convertEnded)
 			else:
-				self.__callbackConverter(session, True)		# witch crossepg v2 patch skip the converter
+				self.__convertEnded(session, True)		# witch crossepg v2 patch skip the converter
 		else:
 			self.enabled = True
 	
