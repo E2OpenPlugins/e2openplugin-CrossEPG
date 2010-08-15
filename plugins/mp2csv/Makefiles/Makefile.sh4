@@ -1,0 +1,35 @@
+CROSS = /opt/STM/STLinux-2.3/devkit/sh4/bin/sh4-linux-
+CC = $(CROSS)gcc
+STRIP = $(CROSS)strip
+
+OBJS += src/mp2csv.o
+OBJS += src/log.o
+OBJS += src/scheda.o
+
+CFLAGS += -I/opt/STM/STLinux-2.3/devkit/sh4/target/usr/include/
+CFLAGS += -I/opt/STM/STLinux-2.3/devkit/sh4/target/usr/include/libxml2/
+
+CFLAGS += -Wall
+
+CFLAGS += -DDEBUG
+CFLAGS += -DDEBUG_LEVEL=5
+
+LIBS += -lxml2 -lz -lm
+
+LDFLAGS +=
+
+OUTPUT = dgs/var/crossepg/import/mp2csv.bin
+
+all : clean $(OUTPUT)
+
+clean :
+	rm -f $(OUTPUT)
+	rm -f $(OBJS)
+
+$(OBJS) :
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
+
+$(OUTPUT) : $(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(STRIP) $@
+

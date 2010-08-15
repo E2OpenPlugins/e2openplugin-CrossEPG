@@ -1,0 +1,35 @@
+CROSS = /opt/dmm/dm800/build/tmp/cross/mipsel/bin/mipsel-oe-linux-
+CC = $(CROSS)gcc
+STRIP = $(CROSS)strip
+
+OBJS += src/mp2csv.o
+OBJS += src/log.o
+OBJS += src/scheda.o
+
+CFLAGS += -I/opt/dmm/dm800/build/tmp/staging/mipsel-oe-linux/usr/include
+CFLAGS += -I/opt/dmm/dm800/build/tmp/staging/mipsel-oe-linux/usr/include/libxml2
+
+CFLAGS += -Wall
+
+CFLAGS += -DDEBUG
+CFLAGS += -DDEBUG_LEVEL=5
+
+LIBS += -lxml2 -lz -lm
+
+LDFLAGS += -L/opt/dmm/dm800/build/tmp/staging/mipsel-oe-linux/usr/lib/
+
+OUTPUT = enigma2/mipsel/usr/crossepg/import/mp2csv.bin
+
+all : clean $(OUTPUT)
+
+clean :
+	rm -f $(OUTPUT)
+	rm -f $(OBJS)
+
+$(OBJS) :
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
+
+$(OUTPUT) : $(OBJS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(STRIP) $@
+

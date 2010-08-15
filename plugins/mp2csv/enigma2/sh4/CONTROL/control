@@ -1,0 +1,9 @@
+Package: mp2csv-crossepg-enigma2
+Section: extra
+Priority: optional
+Version: 0.1.0
+Architecture: sh4
+Maintainer: Sandro Cavazzoni (http://www.crossepg.com)
+Depends: crossepg-enigma2
+Description: Mediaset Premium plugin for crossepg (by met67)
+Source: none

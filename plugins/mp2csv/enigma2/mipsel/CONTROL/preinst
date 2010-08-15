@@ -1,0 +1,3 @@
+#!/bin/sh
+[ -d /usr/crossepg/import/mp2csv.bin ] && rm -f /usr/crossepg/import/mp2csv.bin
+exit 0
