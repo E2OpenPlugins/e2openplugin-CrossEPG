@@ -257,11 +257,10 @@ class CrossEPG_Wrapper:
 		
 		versionlist = getEnigmaVersionString().split("-");
 		
-		# remove the experimental prefix if exist
-		if versionlist[0][:12] = "experimental ":
-			versionlist[0] = versionlist[0][13:]
-		
-		self.version = int(versionlist[0]+versionlist[1]+versionlist[2])
+		if len(versionlist) >= 3:
+			self.version = int(versionlist[0]+versionlist[1]+versionlist[2])
+		else:
+			self.version = 20100716 # version syntax not recognized... probabilly is an experimental so i assume it's updated
 		
 		if pathExists("/usr/crossepg"):
 			self.home_directory = "/usr/crossepg"
