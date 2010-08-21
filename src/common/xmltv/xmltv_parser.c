@@ -377,6 +377,10 @@ static void processNode (xmlTextReaderPtr reader)
 	}
 }
 
+void xmltv_parser_set_iso639 (char *iso639)
+{
+	memcpy (preferred_iso639, iso639, 3);
+}
 
 bool xmltv_parser_import (char *filename)
 {
@@ -404,9 +408,9 @@ bool xmltv_parser_import (char *filename)
 	current_channel = NULL;
 	current_starttime = 0;
 	current_stoptime = 0;
-	preferred_iso639[0] = 'e';
-	preferred_iso639[1] = 'n';
-	preferred_iso639[2] = 'g';
+	//preferred_iso639[0] = 'e';
+	//preferred_iso639[1] = 'n';
+	//preferred_iso639[2] = 'g';
 	events_count = 0;
 	
 	ret = xmlTextReaderRead (reader);

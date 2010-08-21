@@ -38,6 +38,7 @@
 #include "epgdb/epgdb_titles.h"
 
 #include "xmltv/xmltv_channels.h"
+#include "xmltv/xmltv_parser.h"
 #include "xmltv/xmltv_downloader.h"
 
 buffer_t buffer[65536];
@@ -517,6 +518,7 @@ int main (int argc, char **argv)
 				xmltv_channels_init ();
 				if (xmltv_downloader_channels (providers_get_xmltv_channels (), db_root))
 				{
+					xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
 					if (xmltv_downloader_events (providers_get_xmltv_url (), db_root))
 						save = true;
 					else
