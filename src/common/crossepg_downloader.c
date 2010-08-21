@@ -37,6 +37,9 @@
 #include "epgdb/epgdb_channels.h"
 #include "epgdb/epgdb_titles.h"
 
+#include "xmltv/xmltv_channels.h"
+#include "xmltv/xmltv_downloader.h"
+
 buffer_t buffer[65536];
 unsigned short buffer_index;
 unsigned int buffer_size;
@@ -138,21 +141,22 @@ void download_opentv ()
 	int i;
 	dvb_t settings;
 	char dictionary[256];
-	char opentv_file[256];
+	//char opentv_file[256];
 
 	interactive_send (ACTION_START);
 	log_add ("Started OpenTV events download");
 
-	sprintf (opentv_file, "%s/providers/%s.conf", homedir, provider);
+	//sprintf (opentv_file, "%s/providers/%s.conf", homedir, provider);
 	sprintf (dictionary, "%s/providers/%s.dict", homedir, provider);
 	
+	/*
 	if (!providers_read (opentv_file))
 	{
 		interactive_send_text (ACTION_ERROR, "cannot load provider configuration");
 		log_add ("Cannot load provider configuration");
 		exec = false;
 		return;
-	}
+	}*/
 
 	opentv_init ();
 	if (huffman_read_dictionary (dictionary))
@@ -476,7 +480,7 @@ int main (int argc, char **argv)
 	
 	log_open (NULL, "CrossEPG Downloader");
 	
-	if (epgdb_open (db_root)) log_add ("EPGDB opened");
+	if (epgdb_open (db_root)) log_add ("EPGDB opened (root=%s)", db_root);
 	else
 	{
 		interactive_send_text (ACTION_ERROR, "error opening EPGDB");
@@ -492,9 +496,45 @@ int main (int argc, char **argv)
 	if (iactive) interactive_manager ();
 	else
 	{
-		download_opentv ();
-		if (epgdb_save (NULL)) log_add ("Data saved");
-		else log_add ("Error saving data");
+		char opentv_file[256];
+
+		sprintf (opentv_file, "%s/providers/%s.conf", homedir, provider);
+		if (providers_read (opentv_file))
+		{
+			bool save = false;
+			if (providers_get_protocol () == 1)
+			{
+				log_add ("Provider %s indentified as opentv", provider);
+				save = true;
+				download_opentv ();
+			}
+			else if (providers_get_protocol () == 2)
+			{
+				log_add ("Provider %s indentified as xmltv", provider);
+				log_add ("Channels url: %s", providers_get_xmltv_channels ());
+				log_add ("Events url: %s", providers_get_xmltv_url ());
+				log_add ("Preferred language: %s", providers_get_xmltv_plang ());
+				xmltv_channels_init ();
+				if (xmltv_downloader_channels (providers_get_xmltv_channels (), db_root))
+				{
+					if (xmltv_downloader_events (providers_get_xmltv_url (), db_root))
+						save = true;
+					else
+						log_add ("Error downloading/parsing events file");
+				}
+				else
+					log_add ("Error downloading/parsing channels file");
+					
+				xmltv_channels_cleanup ();
+			}
+			if (save)
+			{
+				if (epgdb_save (NULL)) log_add ("Data saved");
+				else log_add ("Error saving data");
+			}
+		}
+		else
+			log_add ("Cannot load provider configuration (%s)", opentv_file);
 	}
 	
 	epgdb_clean ();

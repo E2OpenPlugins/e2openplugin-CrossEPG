@@ -77,7 +77,7 @@ int main (int argc, char **argv)
 	
 	mkdir (db_root, S_IRWXU|S_IRWXG|S_IRWXO);
 	
-	if (epgdb_open (db_root)) log_add ("EPGDB opened");
+	if (epgdb_open (db_root)) log_add ("EPGDB opened (root=%s)", db_root);
 	else
 	{
 		log_add ("Error opening EPGDB");

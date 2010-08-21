@@ -142,6 +142,7 @@ bool xmltv_channels_load (char *filename)
  		log_add ("Unable to open %s", filename);
 		return false;
 	}
+	xmlAddEncodingAlias ("ISO-8859-1", "latin-1");
 	
 	isChannels = false;
 	isChannel = false;

@@ -117,7 +117,7 @@ bool http_get (char *host, char *page, int port, int tempfile, void(*progress_ca
 	memset (buf, 0, sizeof (buf));
 	bool htmlstart = false;
 	char *htmlcontent;
-	//log_add ("Downloading file...");
+	
 	bool error = false;
 	while ((tmpres = recv (sock, buf, BUFSIZ, 0)) > 0 && *stop == false)
 	{
@@ -181,8 +181,8 @@ bool http_get (char *host, char *page, int port, int tempfile, void(*progress_ca
 		log_add ("ERROR!! No data found");
 		error = true;
 	}
-	//else
-	//	log_add ("Download completed");
+	else
+		log_add ("Downloaded %d bytes", total_size);
 		
 	fclose (fd);
 	_free (get);
