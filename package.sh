@@ -3,7 +3,7 @@ sh ./clean.sh
 
 make -f Makefiles/crossepg.sh4
 make -f Makefiles/crossepgd.sh4
-make -f Makefiles/crossepg_alias.sh4
+#make -f Makefiles/crossepg_alias.sh4
 #make -f Makefiles/crossepg_alias.enigma2.sh4
 #make -f Makefiles/crossepg_alias.enigma2.mipsel
 #make -f Makefiles/crossepg_dbconverter.enigma2.sh4

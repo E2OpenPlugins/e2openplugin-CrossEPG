@@ -30,7 +30,7 @@
 
 #include "opentv/opentv.h"
 #include "opentv/huffman.h"
-#include "opentv/opentv_config.h"
+#include "providers/providers.h"
 
 #include "epgdb/epgdb.h"
 #include "epgdb/epgdb_index.h"
@@ -146,7 +146,7 @@ void download_opentv ()
 	sprintf (opentv_file, "%s/providers/%s.conf", homedir, provider);
 	sprintf (dictionary, "%s/providers/%s.dict", homedir, provider);
 	
-	if (!opentv_config_read (opentv_file))
+	if (!providers_read (opentv_file))
 	{
 		interactive_send_text (ACTION_ERROR, "cannot load provider configuration");
 		log_add ("Cannot load provider configuration");
@@ -159,8 +159,8 @@ void download_opentv ()
 	{
 		char size[256];
 		
-		settings.pids = opentv_config_get_channels_pids ();
-		settings.pids_count = opentv_config_get_channels_pids_count ();
+		settings.pids = providers_get_channels_pids ();
+		settings.pids_count = providers_get_channels_pids_count ();
 		settings.demuxer = demuxer;
 		settings.min_length = 11;
 		settings.buffer_size = 16 * 1024;
@@ -173,8 +173,8 @@ void download_opentv ()
 		log_add ("Read %d channels", opentv_channels_count ());
 		if (stop) goto opentv_stop;
 		
-		settings.pids = opentv_config_get_titles_pids ();
-		settings.pids_count = opentv_config_get_titles_pids_count ();
+		settings.pids = providers_get_titles_pids ();
+		settings.pids_count = providers_get_titles_pids_count ();
 		settings.demuxer = demuxer;
 		settings.min_length = 20;
 		settings.buffer_size = 16 * 1024;
@@ -219,8 +219,8 @@ void download_opentv ()
 		interactive_send_text (ACTION_PROGRESS, "OFF");
 		if (stop) goto opentv_stop;
 		
-		settings.pids = opentv_config_get_summaries_pids ();
-		settings.pids_count = opentv_config_get_summaries_pids_count ();
+		settings.pids = providers_get_summaries_pids ();
+		settings.pids_count = providers_get_summaries_pids_count ();
 		settings.demuxer = demuxer;
 		settings.min_length = 20;
 		settings.buffer_size = 16 * 1024;

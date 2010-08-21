@@ -1,7 +1,6 @@
 #!/bin/bash
 sh ./clean.sh
 
-make -f Makefiles/crossepg_alias.enigma2.mipsel
 make -f Makefiles/crossepg_dbconverter.enigma2.mipsel
 make -f Makefiles/crossepg_downloader.enigma2.mipsel
 make -f Makefiles/crossepg_dbinfo.enigma2.mipsel

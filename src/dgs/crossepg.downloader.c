@@ -24,7 +24,7 @@
 #include "../common/core/config.h"
 #include "../common/opentv/opentv.h"
 #include "../common/opentv/huffman.h"
-#include "../common/opentv/opentv_config.h"
+#include "../common/providers/providers.h"
 #include "../common/aliases/aliases.h"
 #include "../common/importer/importer.h"
 
@@ -106,7 +106,7 @@ static void opentv_download_channels ()
 	step_index++;
 	
 	int i;
-	for (i = 0; i < opentv_config_get_channels_pids_count (); i++)
+	for (i = 0; i < providers_get_channels_pids_count (); i++)
 	{
 		unsigned char filter[1];
 		unsigned char mask[1];
@@ -115,11 +115,11 @@ static void opentv_download_channels ()
 		dmx_t dmx = dmx_open (0);
 		filter[0] = 0x4a;
 		mask[0] = 0xff;
-		dmx_filter_set (dmx, opentv_config_get_channels_pids ()[i], filter, mask, 1);
+		dmx_filter_set (dmx, providers_get_channels_pids ()[i], filter, mask, 1);
 
 		sprintf (msg, intl (READING_CHANNELS), opentv_channels_count ());
 		window_progress_update (step, msg, 0);
-		log_add ("Reading BAT channels on table %x...", opentv_config_get_channels_pids ()[i]);
+		log_add ("Reading BAT channels on table %x...", providers_get_channels_pids ()[i]);
 		while ((errors < 15) && (cycles < MAX_BAT_LOOP_CYCLES) && (dmx_poll (dmx, 5000) == 1))
 		{
 			unsigned char buf[4*1024];	// 4K buffer size
@@ -159,7 +159,7 @@ static void opentv_download_titles ()
 	step_index++;
 	
 	int i;
-	for (i = 0; i < opentv_config_get_titles_pids_count (); i++)
+	for (i = 0; i < providers_get_titles_pids_count (); i++)
 	{
 		unsigned char filter[1];
 		unsigned char mask[1];
@@ -169,13 +169,13 @@ static void opentv_download_titles ()
 		dmx_t dmx = dmx_open (0);
 		filter[0] = 0xa0;
 		mask[0] = 0xfc;
-		dmx_filter_set (dmx, opentv_config_get_titles_pids ()[i], filter, mask, 1);
+		dmx_filter_set (dmx, providers_get_titles_pids ()[i], filter, mask, 1);
 		
 		format_size (size, titles_size);
 		sprintf (msg, intl (READING_TITLES), size);
-		window_progress_update (step, msg, i*(100/opentv_config_get_titles_pids_count ()));
+		window_progress_update (step, msg, i*(100/providers_get_titles_pids_count ()));
 		
-		log_add ("Reading titles on table %x...", opentv_config_get_titles_pids ()[i]);
+		log_add ("Reading titles on table %x...", providers_get_titles_pids ()[i]);
 		while ((cycles < MAX_OTV_LOOP_CYCLES) && (dmx_poll (dmx, 5000) == 1))
 		{
 			unsigned char buf[4*1024];	// 4K buffer size
@@ -206,7 +206,7 @@ static void opentv_download_titles ()
 		
 		format_size (size, titles_size);
 		sprintf (msg, intl (READING_TITLES), size);
-		window_progress_update (step, msg, i*(100/opentv_config_get_titles_pids_count ()));
+		window_progress_update (step, msg, i*(100/providers_get_titles_pids_count ()));
 		
 		log_add ("Terminated in %d cycles", cycles);
 	}
@@ -242,7 +242,7 @@ static void opentv_download_summaries ()
 	step_index++;
 	
 	int i;
-	for (i = 0; i < opentv_config_get_summaries_pids_count (); i++)
+	for (i = 0; i < providers_get_summaries_pids_count (); i++)
 	{
 		unsigned char filter[1];
 		unsigned char mask[1];
@@ -252,13 +252,13 @@ static void opentv_download_summaries ()
 		dmx_t dmx = dmx_open (0);
 		filter[0] = 0xa8;
 		mask[0] = 0xfc;
-		dmx_filter_set (dmx, opentv_config_get_summaries_pids ()[i], filter, mask, 1);
+		dmx_filter_set (dmx, providers_get_summaries_pids ()[i], filter, mask, 1);
 		
 		format_size (size, summaries_size);
 		sprintf (msg, intl (READING_SUMMARIES), size);
-		window_progress_update (step, msg, i*(100/opentv_config_get_titles_pids_count ()));
+		window_progress_update (step, msg, i*(100/providers_get_titles_pids_count ()));
 		
-		log_add ("Reading summaries on table %x...", opentv_config_get_summaries_pids ()[i]);
+		log_add ("Reading summaries on table %x...", providers_get_summaries_pids ()[i]);
 		while ((cycles < MAX_OTV_LOOP_CYCLES) && (dmx_poll (dmx, 5000) == 1))
 		{
 			unsigned char buf[4*1024];	// 4K buffer size
@@ -288,7 +288,7 @@ static void opentv_download_summaries ()
 		
 		format_size (size, summaries_size);
 		sprintf (msg, intl (READING_SUMMARIES), size);
-		window_progress_update (step, msg, i*(100/opentv_config_get_titles_pids_count ()));
+		window_progress_update (step, msg, i*(100/providers_get_titles_pids_count ()));
 		
 		log_add ("Terminated in %d cycles", cycles);
 	}
@@ -466,7 +466,7 @@ int plugin_main(int argc, char *argv[])
 		if (strlen (config_get_otv_provider (i)) > 0)
 		{
 			sprintf (opentv_file, "%s/providers/%s.conf", config_get_home_directory (), config_get_otv_provider (i));
-			if (!opentv_config_read (opentv_file))
+			if (!providers_read (opentv_file))
 			{
 				log_add ("Cannot load provider configuration");
 				show_message_box (intl (ERROR), intl (CANNOT_LOAD_PROVIDER), 0);
@@ -474,7 +474,7 @@ int plugin_main(int argc, char *argv[])
 			}
 			else
 			{
-				otv_id = dgs_helper_get_channel (opentv_config_get_nid (), opentv_config_get_tsid (), opentv_config_get_sid ());
+				otv_id = dgs_helper_get_channel (providers_get_nid (), providers_get_tsid (), providers_get_sid ());
 				if ((otv_id != ch_watching_id (ch_mode_live)) && (otv_id > 0))
 				{
 					ch_change_fg (ch_mode_live, otv_id, NULL);
