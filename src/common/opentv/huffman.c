@@ -40,9 +40,19 @@ bool huffman_read_dictionary (char *file)
 		memset (code, 0, sizeof (code));
 		
 		if (sscanf (line, "%c=%[^\n]\n", value, code) != 2)
+		{
 			if (sscanf (line, "%[^=]=%[^\n]\n", value, code) != 2)
+			{
 				if (sscanf (line, "=%[^\n]\n", code) != 1)
+				{
 					continue;
+				}
+				else
+				{
+					memset (value, 0, sizeof (value));
+				}
+			}
+		}
 
 		node = &huffman_root;
 		length = strlen (code);

@@ -1,7 +1,7 @@
 Package: crossepg-enigma2
 Section: extra
 Priority: optional
-Version: 0.5.0-svn-67
+Version: 0.5.0-svn-68
 Architecture: mipsel
 Maintainer: Sandro Cavazzoni (http://www.crossepg.com)
 Depends:
