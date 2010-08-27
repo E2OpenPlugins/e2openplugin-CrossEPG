@@ -282,7 +282,12 @@ opentv_stop:
 
 void *download (void *args)
 {
-	download_opentv ();
+	char opentv_file[256];
+
+	sprintf (opentv_file, "%s/providers/%s.conf", homedir, provider);
+	if (providers_read (opentv_file))
+		download_opentv ();
+		
 	return NULL;
 }
 
