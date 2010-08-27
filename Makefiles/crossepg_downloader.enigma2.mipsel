@@ -16,11 +16,15 @@ OBJS += src/common/epgdb/epgdb_index.o
 OBJS += src/common/epgdb/epgdb_channels.o
 OBJS += src/common/epgdb/epgdb_titles.o
 OBJS += src/common/epgdb/epgdb_aliases.o
+OBJS += src/common/xmltv/xmltv_channels.o
+OBJS += src/common/xmltv/xmltv_downloader.o
+OBJS += src/common/xmltv/xmltv_parser.o
 
 CFLAGS += -Wall
 CFLAGS += -DE2
+CFLAGS += -I/opt/dmm/dm800/build/tmp/staging/mipsel-oe-linux/usr/include/libxml2
 
-LIBS +=
+LIBS += -lxml2 -lz -lm
 
 LDFLAGS += -lpthread
 

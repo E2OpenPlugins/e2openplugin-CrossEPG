@@ -46,7 +46,7 @@ class CrossEPG_Auto(Screen):
 		config = CrossEPG_Config()
 		config.load()
 		providers = config.getAllProviders()
-		for provider in providers:
+		for provider in providers[0]:
 			self.providers.append(provider)
 			self.providers_id.append(config.getChannelID(provider))
 			self.providers_last.append(0)

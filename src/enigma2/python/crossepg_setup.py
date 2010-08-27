@@ -43,6 +43,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.providers = self.config.getAllProviders()
+		#self.providersdescs = self.config.getAllProvidersDescriptions()
 		self.lamedbs = self.config.getAllLamedbs()
 		self.lamedbs_desc = list()
 		self.citems = list()
@@ -76,8 +77,10 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 				
 		self.citems.append((_("Preferred lamedb"), ConfigSelection(self.lamedbs_desc, lamedbs_sel)))
 		
-		for provider in self.providers:
-			self.citems.append((_("Enable provider %s") % (provider), ConfigYesNo(self.config.providers.count(provider) > 0)))
+		i = 0
+		for provider in self.providers[0]:
+			self.citems.append((_("Enable provider %s") % (self.providers[1][i]), ConfigYesNo(self.config.providers.count(provider) > 0)))
+			i += 1
 		
 		self.citems.append((_("Enable csv import"), ConfigYesNo(self.config.enable_importer > 0)))
 		self.citems.append((_("Automatic load data on boot"), ConfigYesNo(self.config.auto_boot > 0)))
@@ -99,13 +102,17 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
 			"red": self.cancel,
-			"green": self.save,
+			"green": self.saveAndQuit,
 			"yellow": self.info,
 			"blue": self.extra,
-			"save": self.save,
+			"save": self.saveAndQuit,
 			"cancel": self.cancel,
-			"ok": self.save,
+			"ok": self.saveAndQuit,
 		}, -2)
+		
+	def saveAndQuit(self):
+		self.save()
+		self.close()
 		
 	def save(self):
 		reload_plugins = False
@@ -117,7 +124,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self.config.lamedb = self.lamedbs[self.citems[1][1].getIndex()]
 		i = 2
 			
-		for provider in self.providers:
+		for provider in self.providers[0]:
 			if self.citems[i][1].getValue() == True:
 				self.config.providers.append(provider)
 			i += 1
@@ -169,13 +176,16 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 				
 			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
 		
-		self.close()
-		
 	def info(self):
 		self.session.open(CrossEPG_Info)
 		
+	def _extraCallback(self, result):
+		if result:
+			self.save()
+			self.session.open(CrossEPG_Extra, self.auto_action)
+		
 	def extra(self):
-		self.session.open(CrossEPG_Extra, self.auto_action)
+		self.session.openWithCallback(self._extraCallback, MessageBox, _("Configuration must be saved before continue. Do it now?"))
 		
 	def cancel(self):
 		self.close()

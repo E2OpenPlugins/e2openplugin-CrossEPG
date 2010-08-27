@@ -5,7 +5,7 @@ typedef enum type_bool {false = 0, true} bool;
 
 #define RELEASE "0.5.0 (svn 59)"
 
-#define MAX_OTV_LOOP_CYCLES			10000
+#define MAX_OTV_LOOP_CYCLES			50000
 #define MAX_BAT_LOOP_CYCLES			200
 #define DEFAULT_LOG_FILE			"/media/crossepg.log"
 #define DEFAULT_DWNL_LOG_FILE		"/media/crossepg.downloader.log"

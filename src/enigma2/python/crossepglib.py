@@ -183,13 +183,35 @@ class CrossEPG_Config:
 		
 	def getAllProviders(self):
 		providers = list()
+		providersdesc = list()
 		cfiles = crawlDirectory("%s/providers/" % (self.home_directory), ".*\.conf$")
 		for cfile in cfiles:
 			providers.append(cfile[1].replace(".conf", ""))
-		
+			
 		providers.sort()
-		return providers
 		
+		for provider in providers:
+			try:
+				f = open("%s/providers/%s.conf" % (self.home_directory, provider), "r")
+				desc = re.compile(r"description=(.*)")
+				for line in f.readlines(): 
+					zdesc = re.findall(desc, line)
+					if zdesc:
+						providersdesc.append(zdesc[0])
+						added = True
+						break;
+
+				f.close()
+			except Exception, e:
+				print "[CrossEPG_Config] %s" % (e)
+				providersdesc.append(provider)
+				
+		#providers.sort()
+		ret = list()
+		ret.append(providers)
+		ret.append(providersdesc)
+		return ret
+			
 	def getAllLamedbs(self):
 		lamedbs = list()
 		cfiles = crawlDirectory("/etc/enigma2/", "^lamedb.*")

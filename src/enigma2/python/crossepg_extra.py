@@ -44,7 +44,7 @@ class CrossEPG_Extra(Screen):
 		menulist = list()
 		menulist.append(_("Start automated task"))
 		for provider in self.config.getAllProviders():
-			menulist.append(_("Download %s") % (provider))
+			menulist.append(_("Download %s") % (provider[1]))
 			self.providers_count += 1
 			
 		for script in self.scripts:
@@ -80,9 +80,9 @@ class CrossEPG_Extra(Screen):
 		else:
 			selected -= 1
 			if selected < self.providers_count: # download ...
-				service = self.config.getChannelID(self.config.getAllProviders()[selected])
+				service = self.config.getChannelID(self.config.getAllProviders()[0][selected])
 				if service:
-					self.provider_selected = self.config.getAllProviders()[selected]
+					self.provider_selected = self.config.getAllProviders()[0][selected]
 					self.old_service = self.session.nav.getCurrentlyPlayingServiceReference()
 					self.session.nav.playService(eServiceReference(service))
 			else:
