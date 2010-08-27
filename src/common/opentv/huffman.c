@@ -41,7 +41,8 @@ bool huffman_read_dictionary (char *file)
 		
 		if (sscanf (line, "%c=%[^\n]\n", value, code) != 2)
 			if (sscanf (line, "%[^=]=%[^\n]\n", value, code) != 2)
-				continue;
+				if (sscanf (line, "=%[^\n]\n", code) != 1)
+					continue;
 
 		node = &huffman_root;
 		length = strlen (code);
