@@ -192,6 +192,7 @@ class CrossEPG_Config:
 		
 		for provider in providers:
 			try:
+				added = False
 				f = open("%s/providers/%s.conf" % (self.home_directory, provider), "r")
 				desc = re.compile(r"description=(.*)")
 				for line in f.readlines(): 
@@ -202,14 +203,15 @@ class CrossEPG_Config:
 						break;
 
 				f.close()
+				
+				if not added:
+					providersdesc.append(provider)
+					
 			except Exception, e:
 				print "[CrossEPG_Config] %s" % (e)
 				providersdesc.append(provider)
 				
-		#providers.sort()
-		ret = list()
-		ret.append(providers)
-		ret.append(providersdesc)
+		ret = [providers, providersdesc]
 		return ret
 			
 	def getAllLamedbs(self):
