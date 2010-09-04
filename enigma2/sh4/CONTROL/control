@@ -1,7 +1,7 @@
 Package: crossepg-enigma2
 Section: extra
 Priority: optional
-Version: 0.5.0-svn-68
+Version: 0.5.0-svn-70
 Architecture: sh4
 Maintainer: Sandro Cavazzoni (http://www.crossepg.com)
 Depends:
