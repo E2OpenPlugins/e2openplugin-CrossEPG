@@ -70,7 +70,7 @@ static time_t iso8601totime (char *strtime)
 	time_t ret = time (NULL);
 
 	//memset (&timeinfo, 0, sizeof (struct tm));
-	timeinfo = localtime (&ret);
+	timeinfo = gmtime (&ret);
 
 	if (sscanf (strtime, "%4d%2d%2d%2d%2d%2d +%2d%2d", &timeinfo->tm_year, &timeinfo->tm_mon, &timeinfo->tm_mday, &timeinfo->tm_hour, &timeinfo->tm_min, &timeinfo->tm_sec, &gmt_hours, &gmt_minutes) == 8)
 	{
@@ -92,6 +92,7 @@ static time_t iso8601totime (char *strtime)
 	timeinfo->tm_mon -= 1;
 	timeinfo->tm_year -= 1900;
 	timeinfo->tm_isdst = 0;
+	//timeinfo->tm_gmtoff = gmt_offset;
 	
 	ret = mktime (timeinfo);
 	gmt_offset = (gmt_hours*60*60) + (gmt_minutes*60);
@@ -115,6 +116,15 @@ static int xmltv_parser_get_mjd (time_t value)
 
 static void xmltv_parser_add_event ()
 {
+	//time_t now = time(NULL);
+	//if (current_starttime < now)
+	//{
+	//	if (memcmp(current_title+1, "2030", 4) == 0)
+	//	{
+	//		log_add ("%d %s", current_starttime, current_title+1);
+	//	}
+	//}
+
 	xmltv_channel_t* channel = NULL;
 	
 	if (current_title_iso639[0] == '\0' && current_title_iso639[1] == '\0' && current_title_iso639[2] == '\0')
@@ -202,8 +212,9 @@ static void processNode (xmlTextReaderPtr reader)
 							if (title && is_title_selected)
 							{
 								if (current_title) _free (current_title); // theorically not neccessary.. but in case if
-								current_title = _malloc (strlen ((char*)title) + 1);
-								strcpy (current_title, (char*)title);
+								current_title = _malloc (strlen ((char*)title) + 2);
+								current_title[0] = 0x15; // this mean it's an utf-8 string
+								strcpy (current_title+1, (char*)title);
 							}
 						}
 					}
@@ -238,8 +249,9 @@ static void processNode (xmlTextReaderPtr reader)
 							if (desc && is_desc_selected)
 							{
 								if (current_desc) _free (current_desc); // theorically not neccessary.. but in case if
-								current_desc = _malloc (strlen ((char*)desc) + 1);
-								strcpy (current_desc, (char*)desc);
+								current_desc = _malloc (strlen ((char*)desc) + 2);
+								current_desc[0] = 0x15; // this mean it's an utf-8 string
+								strcpy (current_desc+1, (char*)desc);
 							}
 						}
 					}
@@ -361,7 +373,7 @@ static void processNode (xmlTextReaderPtr reader)
 
 					stoptime = xmlTextReaderGetAttribute (reader, xmlCharStrdup("stop"));
 					if (stoptime)
-						current_stoptime = iso8601totime ((char*)starttime);
+						current_stoptime = iso8601totime ((char*)stoptime);
 				
 					channel = xmlTextReaderGetAttribute (reader, xmlCharStrdup("channel"));
 					if (channel)
@@ -396,6 +408,8 @@ bool xmltv_parser_import (char *filename)
 		return false;
 	}
 	
+	setenv("TZ", "GMT0", 1);		// we must work on gmt+0
+
 	is_tv = false;
 	is_programme = false;
 	is_title = false;
