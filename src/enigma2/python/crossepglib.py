@@ -175,7 +175,7 @@ class CrossEPG_Config:
 				namespace = int(znamespace[0]);
 		
 		if nid == -1 or sid == -1 or tsid == -1:
-			print "[CrossEPG_Config] invalid configuration file"
+			#print "[CrossEPG_Config] invalid configuration file"
 			return
 		
 		f.close()

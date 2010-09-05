@@ -29,7 +29,7 @@
 #include "xmltv_downloader.h"
 
 static char _url[256];
-static volatile bool _stop = false;
+//static volatile bool _stop = false;
 
 #define BUFLEN      16384
 
@@ -62,7 +62,7 @@ static bool xmltv_downloader_extension_check (char *filename, char *extension)
 	return true;
 }
 
-bool xmltv_downloader_channels (char *url, char *dbroot)
+bool xmltv_downloader_channels (char *url, char *dbroot, void(*progress_callback)(int, int), void(*event_callback)(int, char*), volatile bool *stop)
 {
 	bool ret = false;
 	char host[256];
@@ -74,6 +74,9 @@ bool xmltv_downloader_channels (char *url, char *dbroot)
 	
 	strcpy (_url, url);
 	
+	if (event_callback) event_callback(2, _url);	// download message
+	if (event_callback) event_callback(0, NULL);	// turn on progress bar
+
 	memset (host, 0, sizeof (host));
 	memset (port, 0, sizeof (port));
 	memset (page, 0, sizeof (page));
@@ -108,17 +111,27 @@ bool xmltv_downloader_channels (char *url, char *dbroot)
 	sprintf (sfn, "%s/crossepg.tmp.XXXXXX", dbroot);
 	if ((fd = mkstemp (sfn)) == -1)
 	{
+		if (event_callback) event_callback(1, NULL);	// turn off progress bar
 		log_add ("Cannot get temp file (%s)", sfn);
 		return false;
 	}
 	char tmp_url[256];
 	sprintf (tmp_url, "http://%s/%s", host, page);
-	if (!http_get (host, page, atoi (port), fd, NULL, &_stop))
+	if (!http_get (host, page, atoi (port), fd, progress_callback, stop))
 	{
+		if (event_callback) event_callback(1, NULL);	// turn off progress bar
 		log_add ("Error downloading file %s", tmp_url);
 		return false;
 	}
 	
+	if (event_callback) event_callback(1, NULL);	// turn off progress bar
+
+	if (*stop)
+	{
+		unlink (sfn);
+		return false;
+	}
+
 	if (xmltv_downloader_extension_check (page, "gz"))
 	{
 		int fd2 = -1;
@@ -127,25 +140,30 @@ bool xmltv_downloader_channels (char *url, char *dbroot)
 		if ((fd2 = mkstemp (sfn2)) == -1) log_add ("Cannot get temp file");
 		else
 		{
+			if (event_callback) event_callback(3, NULL);	// deflating message
 			log_add ("Deflating %s", page);
 			FILE *dest = fdopen (fd2, "w");
 			if (!xmltv_downloader_gzip (sfn, dest)) log_add ("Error deflating file");
 			else log_add ("File deflated");
 			fclose (dest);
 			close (fd2);
+			if (event_callback) event_callback(4, NULL);	// reading message
 			ret = xmltv_channels_load (sfn2);
 			unlink (sfn2);
 		}
 	}
 	else
+	{
+		if (event_callback) event_callback(4, NULL);	// reading message
 		ret = xmltv_channels_load (sfn);
+	}
 	
 	unlink (sfn);
 
 	return ret;
 }
 
-bool xmltv_downloader_events (char *url, char *dbroot)
+bool xmltv_downloader_events (char *url, char *dbroot, void(*progress_callback)(int, int), void(*event_callback)(int, char*), volatile bool *stop)
 {
 	bool ret = false;
 	char host[256];
@@ -157,6 +175,9 @@ bool xmltv_downloader_events (char *url, char *dbroot)
 	
 	strcpy (_url, url);
 	
+	if (event_callback) event_callback(5, _url);	// download message
+	if (event_callback) event_callback(0, NULL);	// turn on progress bar
+
 	memset (host, 0, sizeof (host));
 	memset (port, 0, sizeof (port));
 	memset (page, 0, sizeof (page));
@@ -192,16 +213,26 @@ bool xmltv_downloader_events (char *url, char *dbroot)
 	if ((fd = mkstemp (sfn)) == -1)
 	{
 		log_add ("Cannot get temp file (%s)", sfn);
+		if (event_callback) event_callback(1, NULL);	// turn off progress bar
 		return false;
 	}
 	char tmp_url[256];
 	sprintf (tmp_url, "http://%s/%s", host, page);
-	if (!http_get (host, page, atoi (port), fd, NULL, &_stop))
+	if (!http_get (host, page, atoi (port), fd, progress_callback, stop))
 	{
 		log_add ("Error downloading file %s", tmp_url);
+		if (event_callback) event_callback(1, NULL);	// turn off progress bar
 		return false;
 	}
-	
+
+	if (event_callback) event_callback(1, NULL);	// turn off progress bar
+
+	if (*stop)
+	{
+		unlink (sfn);
+		return false;
+	}
+
 	if (xmltv_downloader_extension_check (page, "gz"))
 	{
 		int fd2 = -1;
@@ -210,18 +241,23 @@ bool xmltv_downloader_events (char *url, char *dbroot)
 		if ((fd2 = mkstemp (sfn2)) == -1) log_add ("Cannot get temp file");
 		else
 		{
+			if (event_callback) event_callback(6, NULL);	// deflating message
 			log_add ("Deflating %s", page);
 			FILE *dest = fdopen (fd2, "w");
 			if (!xmltv_downloader_gzip (sfn, dest)) log_add ("Error deflating file");
 			else log_add ("File deflated");
 			fclose (dest);
 			close (fd2);
-			ret = xmltv_parser_import (sfn2);
+			if (event_callback) event_callback(7, NULL);	// parsing events
+			ret = xmltv_parser_import (sfn2, progress_callback, stop);
 			unlink (sfn2);
 		}
 	}
 	else
-		ret = xmltv_parser_import (sfn);
+	{
+		if (event_callback) event_callback(7, NULL);	// parsing events
+		ret = xmltv_parser_import (sfn, progress_callback, stop);
+	}
 	
 	unlink (sfn);
 

@@ -394,13 +394,23 @@ void xmltv_parser_set_iso639 (char *iso639)
 	memcpy (preferred_iso639, iso639, 3);
 }
 
-bool xmltv_parser_import (char *filename)
+bool xmltv_parser_import (char *filename, void(*progress_callback)(int, int), volatile bool *stop)
 {
 	xmlTextReaderPtr reader;
 	int ret;
+	int filesize = 0;
+	FILE *fd;
 	
 	log_add ("Parsing %s", filename);
 	
+	fd = fopen (filename, "r");
+	if (fd)
+	{
+		fseek (fd, 0, SEEK_END);
+		filesize = ftell (fd);
+		fclose (fd);
+	}
+
 	reader = xmlReaderForFile (filename, NULL, 0);
 	if (!reader)
 	{
@@ -430,8 +440,15 @@ bool xmltv_parser_import (char *filename)
 	ret = xmlTextReaderRead (reader);
 	while (ret == 1)
 	{
+		if (*stop)
+		{
+			ret = -1;
+			continue;
+		}
 		processNode (reader);
 		ret = xmlTextReaderRead (reader);
+		if (progress_callback)
+			progress_callback (xmlTextReaderByteConsumed (reader), filesize);
 	}
 	
 	log_add ("Read %d events", events_count);

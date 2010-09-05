@@ -48,6 +48,7 @@ unsigned int buffer_size_last;
 bool huffman_debug_titles = false;
 bool huffman_debug_summaries = false;
 
+char *db_root = DEFAULT_DB_ROOT;
 char demuxer[256];
 char provider[256];
 char homedir[256];
@@ -124,7 +125,47 @@ bool opentv_summaries_callback (int size, unsigned char* data)
 	return !stop;
 }
 
-void save_progress_callback (int value, int max)
+void xmltv_event_callback (int type, char *arg)
+{
+	switch (type)
+	{
+	case 0:
+		interactive_send_text (ACTION_PROGRESS, "ON");
+		break;
+
+	case 1:
+		interactive_send_text (ACTION_PROGRESS, "OFF");
+		break;
+
+	case 2:
+		interactive_send_text (ACTION_TYPE, "DOWNLOADING CHANNELS LIST");
+		interactive_send_text (ACTION_URL, arg);
+		break;
+
+	case 3:
+		interactive_send_text (ACTION_TYPE, "DEFLATING CHANNELS LIST");
+		break;
+
+	case 4:
+		interactive_send_text (ACTION_TYPE, "PARSING CHANNELS LIST");
+		break;
+
+	case 5:
+		interactive_send_text (ACTION_TYPE, "DOWNLOADING EVENTS");
+		interactive_send_text (ACTION_URL, arg);
+		break;
+
+	case 6:
+		interactive_send_text (ACTION_TYPE, "DEFLATING EVENTS");
+		break;
+
+	case 7:
+		interactive_send_text (ACTION_TYPE, "PARSING EVENTS");
+		break;
+	}
+}
+
+void progress_callback (int value, int max)
 {
 	static int last = 0;
 	static time_t lasttime = 0;
@@ -285,9 +326,28 @@ void *download (void *args)
 	char opentv_file[256];
 
 	sprintf (opentv_file, "%s/providers/%s.conf", homedir, provider);
+
 	if (providers_read (opentv_file))
-		download_opentv ();
-		
+	{
+		if (providers_get_protocol () == 1)
+		{
+			download_opentv ();
+		}
+		else if (providers_get_protocol () == 2)
+		{
+			interactive_send (ACTION_START);
+			xmltv_channels_init ();
+			if (xmltv_downloader_channels (providers_get_xmltv_channels (), db_root, progress_callback, xmltv_event_callback, &stop))
+			{
+				xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
+				xmltv_downloader_events (providers_get_xmltv_url (), db_root, progress_callback, xmltv_event_callback, &stop);
+			}
+			xmltv_channels_cleanup ();
+			interactive_send (ACTION_END);
+		}
+	}
+
+
 	return NULL;
 }
 
@@ -356,7 +416,7 @@ void *interactive (void *args)
 				timeout_enable = false;
 				interactive_send (ACTION_START);
 				interactive_send_text (ACTION_PROGRESS, "ON");
-				if (!epgdb_save (save_progress_callback)) interactive_send_text (ACTION_ERROR, "cannot save data");
+				if (!epgdb_save (progress_callback)) interactive_send_text (ACTION_ERROR, "cannot save data");
 				interactive_send (ACTION_END);
 				interactive_send_text (ACTION_PROGRESS, "OFF");
 			}
@@ -409,7 +469,6 @@ void interactive_manager ()
 int main (int argc, char **argv)
 {
 	int c, i;
-	char *db_root = DEFAULT_DB_ROOT;
 	opterr = 0;
 	bool iactive = false;
 	
@@ -521,10 +580,10 @@ int main (int argc, char **argv)
 				log_add ("Events url: %s", providers_get_xmltv_url ());
 				log_add ("Preferred language: %s", providers_get_xmltv_plang ());
 				xmltv_channels_init ();
-				if (xmltv_downloader_channels (providers_get_xmltv_channels (), db_root))
+				if (xmltv_downloader_channels (providers_get_xmltv_channels (), db_root, NULL, NULL, &stop))
 				{
 					xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
-					if (xmltv_downloader_events (providers_get_xmltv_url (), db_root))
+					if (xmltv_downloader_events (providers_get_xmltv_url (), db_root, NULL, NULL, &stop))
 						save = true;
 					else
 						log_add ("Error downloading/parsing events file");
