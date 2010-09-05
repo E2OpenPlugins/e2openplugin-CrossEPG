@@ -50,10 +50,10 @@ class CrossEPG_Extra(Screen):
 		for script in self.scripts:
 			menulist.append(_("Execute import script %s" % (script)))
 			
-		menulist.append(_("Import data"))
-		menulist.append(_("Convert db"))
+		menulist.append(_("Import data from csv"))
+		menulist.append(_("Create ext.epg.dat"))
 		if getEPGPatchType() > -1:
-			menulist.append(_("Load data"))
+			menulist.append(_("Load data in enigma2 epg"))
 		
 		self["menu"] = MenuList(menulist)
 		
