@@ -16,6 +16,9 @@ chmod +x enigma2/mipsel/usr/crossepg/crossepg_epgcopy
 chmod +x enigma2/mipsel/usr/crossepg/crossepg_epgmove.sh
 chmod +x enigma2/mipsel/usr/crossepg/crossepg_importer
 
+mkdir enigma2/mipsel/usr/crossepg/providers
+cp providers/* enigma2/mipsel/usr/crossepg/providers
+
 cp src/enigma2/python/*.pyo enigma2/mipsel/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
 mkdir enigma2/mipsel/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
 cp src/enigma2/python/skins/*.xml enigma2/mipsel/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins

@@ -16,6 +16,9 @@ chmod +x enigma2/sh4/var/crossepg/crossepg_epgcopy
 chmod +x enigma2/sh4/var/crossepg/crossepg_epgmove.sh
 chmod +x enigma2/sh4/var/crossepg/crossepg_importer
 
+mkdir enigma2/sh4/var/crossepg/providers
+cp providers/* enigma2/sh4/var/crossepg/providers
+
 cp src/enigma2/python/*.pyc enigma2/sh4/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
 mkdir enigma2/sh4/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
 cp src/enigma2/python/skins/*.xml enigma2/sh4/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
