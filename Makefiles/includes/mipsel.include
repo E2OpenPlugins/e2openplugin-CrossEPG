@@ -1,5 +1,0 @@
-CROSS = /opt/dmm/dm800/build/tmp/cross/mipsel/bin/mipsel-oe-linux-
-CC = $(CROSS)gcc
-STRIP = $(CROSS)strip
-#CFLAGS += -I/opt/dmm/dm800/build/tmp/staging/i686-linux/include
-#LDFLAGS += -L/opt/dm7025/build/tmp/staging/mipsel-linux/lib
