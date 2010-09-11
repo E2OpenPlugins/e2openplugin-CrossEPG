@@ -27,7 +27,7 @@ cd contrib
 tar --exclude-vcs -zc po | tar -zx -C ../tmp/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
 cd ..
 
-python compileb.py
+python compile.py
 
 VERSION=`cat src/version.h | grep RELEASE | sed "s/.*RELEASE \"//" | sed "s/\"//" | sed "s/\ /-/" | sed "s/\ /-/" | sed "s/(//" | sed "s/)//"`
 echo "Version: $VERSION" >> tmp/CONTROL/control

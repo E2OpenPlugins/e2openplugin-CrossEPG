@@ -102,5 +102,8 @@ install:
 	install -m 755 bin/crossepg_epgcopy $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_importer $(D)/usr/crossepg/
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/usr/crossepg/
-	install -m 644 contrib/po/it/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES
+	install -m 644 providers/* $(D)/usr/crossepg/providers/
+	install -m 644 contrib/po/it/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES/
+	install -m 644 src/enigma2/python/skins/*.py $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
+	install -m 644 src/enigma2/python/skins/*.xml $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins/
 	
