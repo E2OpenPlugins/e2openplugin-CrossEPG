@@ -1,0 +1,7 @@
+Package: enigma2-plugin-systemplugins-crossepg
+Section: extra
+Priority: optional
+Maintainer: Sandro Cavazzoni (http://www.crossepg.com)
+Depends:
+Description: Read OpenTV epg from sat or import from xmltv or csv
+Source: none

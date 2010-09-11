@@ -6,7 +6,7 @@ try:
 		if len(file) > 3 and file[-3:] == ".py":
 			print file
 			py_compile.compile("src/enigma2/python/%s" % (file),
-								"src/enigma2/python/%sc" % (file),
+								"tmp/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/%sc" % (file),
 								"/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/%s" % (file))
 except Exception, e:
 	print e
