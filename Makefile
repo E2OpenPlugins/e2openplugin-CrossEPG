@@ -90,4 +90,17 @@ $(IMPORTER_BIN): $(OBJS) $(IMPORTER_OBJS)
 clean:
 	rm -f $(OBJS) $(CONVERTER_OBJS) $(DOWNLOADER_OBJS) $(EPGCOPY_OBJS) $(IMPORTER_OBJS) $(DBINFO_OBJS) $(CONVERTER_BIN) $(DBINFO_BIN) $(DOWNLOADER_BIN) $(EPGCOPY_BIN) $(IMPORTER_BIN) $(VERSION_HEADER)
 
-
+install:
+	install -d /usr/crossepg/aliases
+	install -d /usr/crossepg/import
+	install -d /usr/crossepg/providers
+	install -d /usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
+	install -d /usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES
+	install -m 755 bin/crossepg_dbconverter /usr/crossepg/
+	install -m 755 bin/crossepg_dbinfo /usr/crossepg/
+	install -m 755 bin/crossepg_downloader /usr/crossepg/
+	install -m 755 bin/crossepg_epgcopy /usr/crossepg/
+	install -m 755 bin/crossepg_importer /usr/crossepg/
+	install -m 755 contrib/crossepg_epgmove.sh /usr/crossepg/
+	install -m 644 contrib/po/it/LC_MESSAGES/CrossEPG.mo /usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES
+	
