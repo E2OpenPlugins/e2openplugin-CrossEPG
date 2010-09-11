@@ -1,9 +1,0 @@
-Package: crossepg-enigma2
-Section: extra
-Priority: optional
-Version: 0.5.0-svn-74
-Architecture: sh4
-Maintainer: Sandro Cavazzoni (http://www.crossepg.com)
-Depends:
-Description: An EPG downloader
-Source: none

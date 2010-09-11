@@ -1,9 +1,0 @@
-#!/bin/sh
-[ -d /usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG ] && rm -rf /usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG
-[ -f /usr/crossepg/crossepg_downloader ] && rm /usr/crossepg/crossepg_downloader
-[ -f /usr/crossepg/crossepg_dbconverter ] && rm /usr/crossepg/crossepg_dbconverter
-[ -f /usr/crossepg/crossepg_dbinfo ] && rm /usr/crossepg/crossepg_dbinfo
-[ -f /usr/crossepg/crossepg_importer ] && rm /usr/crossepg/crossepg_importer
-[ -f /usr/crossepg/crossepg_epgmove.sh ] && rm /usr/crossepg/crossepg_epgmove.sh
-[ -d /usr/crossepg/providers ] && rm -rf /usr/crossepg/providers
-exit 0
