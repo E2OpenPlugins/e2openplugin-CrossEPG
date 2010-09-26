@@ -342,6 +342,7 @@ void *download (void *args)
 				xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
 				xmltv_downloader_events (providers_get_xmltv_url (), db_root, progress_callback, xmltv_event_callback, &stop);
 			}
+			exec = false;
 			xmltv_channels_cleanup ();
 			interactive_send (ACTION_END);
 		}
