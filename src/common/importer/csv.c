@@ -15,6 +15,33 @@
 
 #define LINE_SIZE 32*1024	//32k
 
+static inline bool isUTF8 (char *text)
+{
+	bool useext = false;
+	bool utferr = false;
+	char *tmp = text;
+	while (tmp != NULL)
+	{
+		if (*tmp & 0x80)
+		{
+			useext = true;
+			if ((*tmp & 0xE0) != 0xC0 &&
+					(*tmp & 0xF0) != 0xE0 &&
+					(*tmp & 0xF8) != 0xF0 &&
+					(*tmp & 0xFC) != 0xF8 &&
+					(*tmp & 0xFE) != 0xFC)
+			{
+				utferr = true;
+			}
+		}
+		tmp++;
+	}
+	if (!utferr && useext)
+		return true;
+
+	return false;
+}
+
 char *csvtok (char *value, char separator)
 {
 	static char line[LINE_SIZE];
@@ -108,6 +135,7 @@ bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *st
 		int nid = atoi (csvtok (line, ','));
 		int tsid = atoi (csvtok (NULL, ','));
 		int sid = atoi (csvtok (NULL, ','));
+		char *tmp;
 		epgdb_channel_t *channel = epgdb_channels_add (nid, tsid, sid);
 		
 		epgdb_title_t *title = _malloc (sizeof (epgdb_title_t));
@@ -121,9 +149,30 @@ bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *st
 		title->iso_639_2 = 'n';
 		title->iso_639_3 = 'g';
 		title = epgdb_titles_add (channel, title);
-		
-		epgdb_titles_set_description (title, csvtok (NULL, ','));
-		epgdb_titles_set_long_description (title, csvtok (NULL, ','));
+
+		tmp = csvtok (NULL, ',');
+		if (isUTF8 (tmp))
+		{
+			char *tmp2 = malloc (strlen (tmp) + 2);
+			tmp2[0] = 0x15;
+			strcpy (tmp2+1, tmp);
+			epgdb_titles_set_description (title, tmp2);
+			free (tmp2);
+		}
+		else
+			epgdb_titles_set_description (title, tmp);
+
+		tmp = csvtok (NULL, ',');
+		if (isUTF8 (tmp))
+		{
+			char *tmp2 = malloc (strlen (tmp) + 2);
+			tmp2[0] = 0x15;
+			strcpy (tmp2+1, tmp);
+			epgdb_titles_set_long_description (title, tmp2);
+			free (tmp2);
+		}
+		else
+			epgdb_titles_set_long_description (title, tmp);
 		
 		char *iso639 = csvtok (NULL, ',');
 		if (strlen (iso639) >= 3)

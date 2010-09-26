@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 - crossepg\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-21 09:25+0100\n"
+"POT-Creation-Date: 2010-09-23 13:13+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Spaeleus <spaeleus@croci.org>\n"
 "Language-Team: www.linsat.net <spaeleus@croci.org>\n"
@@ -77,11 +77,11 @@ msgid "Version: %s"
 msgstr "Versione: %s"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_loader.py:37
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:434
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:492
 msgid "Loading data"
 msgstr "Caricamento dati..."
 
-#: /home/dario/Plugins/CrossEPG/crossepg_loader.py:201
+#: /home/dario/Plugins/CrossEPG/crossepg_loader.py:224
 #: /home/dario/Plugins/CrossEPG/crossepg_importer.py:118
 #: /home/dario/Plugins/CrossEPG/crossepg_downloader.py:147
 #: /home/dario/Plugins/CrossEPG/crossepg_converter.py:105
@@ -101,46 +101,46 @@ msgstr "Analisi..."
 msgid "Downloading"
 msgstr "Download..."
 
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:334
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:374
 msgid "Reading channels"
 msgstr "Lettura canali..."
 
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:337
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:377
 msgid "Reading titles"
 msgstr "Lettura titoli..."
 
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:340
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:380
 msgid "Parsing titles"
 msgstr "Analisi titoli..."
 
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:343
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:383
 msgid "Reading summaries"
 msgstr "Lettura sommari..."
 
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:346
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:386
 msgid "Parsing summaries"
 msgstr "Analisi sommari..."
 
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:348
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:388
 #, python-format
 msgid "%s channels"
 msgstr "%s canali"
 
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:352
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:392
 #, python-format
 msgid "Read %s"
 msgstr "Lettura %s"
 
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:354
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:394
 #, python-format
 msgid "%s of %s"
 msgstr "%s di %s"
 
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:424
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:476
 msgid "Converting data"
 msgstr "Conversione dati..."
 
-#: /home/dario/Plugins/CrossEPG/crossepglib.py:444
+#: /home/dario/Plugins/CrossEPG/crossepglib.py:508
 msgid "Saving data"
 msgstr "Salvataggio dati..."
 
@@ -162,74 +162,78 @@ msgstr "Automatismi di CrossEPG"
 msgid "Starting downloader"
 msgstr "Avvio download..."
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:64
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:65
 msgid "Save data on device"
 msgstr "Salvataggio dati su supporto"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:77
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:78
 msgid "Preferred lamedb"
 msgstr "lamedb preferito"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:80
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:82
 #, python-format
 msgid "Enable provider %s"
 msgstr "Abilitare il provider %s"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:82
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:85
 msgid "Enable csv import"
 msgstr "Abilitare importazione csv"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:83
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:86
 msgid "Automatic load data on boot"
 msgstr "Caricare automaticamente i dati all'avvio"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:84
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:87
 msgid "Automatic daily download"
 msgstr "Scaricamento automatico giornaliero"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:85
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:88
 msgid "Automatic daily download at"
 msgstr "Scaricamento automatico giornaliero alle"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:86
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:89
 msgid "Automatic download on tune"
 msgstr "Scaricamento automatico su sintonizzazione"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:87
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:90
 msgid "Show OSD for automatic download"
 msgstr "Mostrare OSD su scaricamento automatico"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:89
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:92
 msgid "Reboot after a daily download"
 msgstr "Riavviare dopo lo scaricamento giornaliero"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:90
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:93
 msgid "Reboot after a manual download"
 msgstr "Riavviare dopo uno scaricamento manuale"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:91
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:94
 msgid "Show as plugin"
 msgstr "Mostrare come plugin"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:92
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:95
 msgid "Show as extension"
 msgstr "Mostrare come estensione"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:95
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:98
 msgid "Cancel"
 msgstr "Annullare"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:96
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:99
 msgid "OK"
 msgstr "Ok"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:97
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:100
 msgid "Info"
 msgstr "Informazioni"
 
-#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:98
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:101
 msgid "Extra"
 msgstr "Extra"
+
+#: /home/dario/Plugins/CrossEPG/crossepg_setup.py:188
+msgid "Configuration must be saved before continue. Do it now?"
+msgstr "La configurazione deve essere salvata prima di continuare. Salvarla?"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_extra.py:45
 msgid "Start automated task"
@@ -246,18 +250,23 @@ msgid "Execute import script %s"
 msgstr "Eseguire script di importazione %s"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_extra.py:53
-msgid "Import data"
-msgstr "Importare dati"
+msgid "Import data from csv"
+msgstr "Importare dati da csv"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_extra.py:54
-msgid "Convert db"
-msgstr "Convertire db"
+msgid "Create ext.epg.dat"
+msgstr "Creare ext.epg.dat"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_extra.py:56
-msgid "Load data"
-msgstr "Caricare dati"
+msgid "Load data in enigma2 epg"
+msgstr "Caraicare i dati nell'epg di enigma2"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_converter.py:37
 msgid "Starting converter"
 msgstr "Avvio conversione..."
+
+#~ msgid "Convert db"
+#~ msgstr "Convertire db"
+#~ msgid "Load data"
+#~ msgstr "Caricare dati"
 
