@@ -41,4 +41,4 @@ sh ipkg-build -o root -g root tmp/
 
 [ ! -d out ] && mkdir out
 mv *.ipk out
-echo "look in out/ folder for your ipk"
+echo "Package moved in `pwd`/out folder"
