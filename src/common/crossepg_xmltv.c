@@ -32,7 +32,8 @@ void print_help ()
 	printf ("  -d db_root       crossepg db root folder\n");
 	printf ("                   default: %s\n", db_root);
 	printf ("  -k nice          see \"man nice\"\n");
-	printf ("  -h               show this help\n");
+	printf ("  -h               show this help\n\n");
+	printf ("NOTE: if you want download data from a provider please use crossepg_downloader\n");
 }
 
 
@@ -42,6 +43,7 @@ int main (int argc, char **argv)
 	opterr = 0;
 	char *channelsfile;
 	char *eventsfile;
+	bool useless = false;
 
 	sprintf (db_root, DEFAULT_DB_ROOT);
 	
@@ -89,9 +91,10 @@ int main (int argc, char **argv)
 	
 	xmltv_channels_init ();
 	xmltv_channels_load (channelsfile);
-	xmltv_parser_import (eventsfile);
+	xmltv_parser_set_iso639 ("eng");
+	xmltv_parser_import (eventsfile, NULL, &useless);
 	xmltv_channels_cleanup ();
-	
+
 	log_add ("Saving data");
 	if (epgdb_save (NULL)) log_add ("Data saved");
 	else log_add ("Error saving data");

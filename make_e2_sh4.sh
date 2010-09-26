@@ -4,6 +4,10 @@ CFLAGS+=-I/opt/STM/STLinux-2.3/devkit/sh4/target/usr/include/libxml2/ \
 CC=${CROSS}gcc \
 STRIP=${CROSS}strip \
 make
+if [ $? != 0 ]; then
+	echo compile error
+	exit 1
+fi
 
 [ -d tmp ] && rm -rf tmp
 

@@ -4,6 +4,10 @@ CFLAGS+=-I/opt/dmm/dm800/build/tmp/staging/mipsel-oe-linux/usr/include/libxml2 \
 CC=${CROSS}gcc \
 STRIP=${CROSS}strip \
 make
+if [ $? != 0 ]; then
+	echo compile error
+	exit 1
+fi
 
 [ -d tmp ] && rm -rf tmp
 
