@@ -65,17 +65,21 @@ class CrossEPG_Auto(Screen):
 		})
 		
 		if config.auto_boot == 1:
-			try:
-				f = open("%s/ext.epg.dat" % (db_root), "r")
-			except Exception, e:
-				self.converter = CrossEPG_Converter(self.session, self.__convertOnInitEnded)
-			else:
-				f.seek(4);
-				if f.read(13) == "ENIGMA_EPG_V7":
-					self.loader = CrossEPG_Loader(self.session, self.__loaderEnded)
-				else:
+			patchtype = getEPGPatchType()
+			if patchtype == 3:
+				self.loader = CrossEPG_Loader(self.session, self.__loaderEnded)
+			elif patchtype != -1:
+				try:
+					f = open("%s/ext.epg.dat" % (db_root), "r")
+				except Exception, e:
 					self.converter = CrossEPG_Converter(self.session, self.__convertOnInitEnded)
-				f.close()
+				else:
+					f.seek(4);
+					if f.read(13) == "ENIGMA_EPG_V7":
+						self.loader = CrossEPG_Loader(self.session, self.__loaderEnded)
+					else:
+						self.converter = CrossEPG_Converter(self.session, self.__convertOnInitEnded)
+					f.close()
 		
 		self.dailyStart()
 		if fileExists("/tmp/crossepg.standby"):
@@ -277,6 +281,11 @@ class CrossEPG_Auto(Screen):
 				self.loader = CrossEPG_Loader(self.session, self.__loaderEnded)
 	
 	def __loaderEnded(self, session, ret):
+		if fileExists("/tmp/crossepg.standby"):
+			os.system("rm -f /tmp/crossepg.standby")
+			print "[CrossEPG_Auto] coming back in standby in 2 seconds"
+			self.standbyTimer.start(2000, 1)
+
 		self.loader = None
 		
 	def __stopped(self):

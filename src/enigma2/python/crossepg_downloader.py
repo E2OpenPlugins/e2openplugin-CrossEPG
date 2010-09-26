@@ -98,7 +98,7 @@ class CrossEPG_Downloader(Screen):
 					self.timeout.start(60000, 1)
 					self.session.nav.playService(eServiceReference(service))
 			else:
-				self.wrapper.quit()
+				self.wrapper.download(self.config.providers[self.provider_index])
 	
 	def __wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.EVENT_READY:
@@ -123,10 +123,11 @@ class CrossEPG_Downloader(Screen):
 				
 		elif event == CrossEPG_Wrapper.EVENT_ACTION:
 			self["action"].text = param
+			self["status"].text = ""
 			
-		elif event == CrossEPG_Wrapper.EVENT_STATUS:
+		elif event == CrossEPG_Wrapper.EVENT_STATUS or event == CrossEPG_Wrapper.EVENT_URL:
 			self["status"].text = param
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESS:
 			self["progress"].setValue(param)
 			

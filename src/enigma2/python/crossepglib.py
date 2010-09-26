@@ -45,7 +45,7 @@ def getEPGPatchType():
 	return -1
 
 class CrossEPG_Config:
-	providers = [ "skyitalia" ]
+	providers = [ ]
 	db_root = "/hdd/crossepg"
 	lamedb = "lamedb"
 	home_directory = ""
@@ -369,21 +369,39 @@ class CrossEPG_Wrapper:
 		elif data.find("TYPE ") == 0:
 			ttype = data[5:]
 			print "[CrossEPG_Wrapper] <- TYPE %s" % (ttype)
-			if (ttype == "READ CHANNELS"):
+			if ttype == "READ CHANNELS":
 				self.type = 0;
 				self.__callCallbacks(self.EVENT_ACTION, _("Reading channels"))
-			elif (ttype == "READ TITLES"):
+			elif ttype == "READ TITLES":
 				self.type = 1;
 				self.__callCallbacks(self.EVENT_ACTION, _("Reading titles"))
-			elif (ttype == "PARSE TITLES"):
+			elif ttype == "PARSE TITLES":
 				self.type = 2;
 				self.__callCallbacks(self.EVENT_ACTION, _("Parsing titles"))
-			elif (ttype == "READ SUMMARIES"):
+			elif ttype == "READ SUMMARIES":
 				self.type = 3;
 				self.__callCallbacks(self.EVENT_ACTION, _("Reading summaries"))
-			elif (ttype == "PARSE SUMMARIES"):
+			elif ttype == "PARSE SUMMARIES":
 				self.type = 4;
 				self.__callCallbacks(self.EVENT_ACTION, _("Parsing summaries"))
+			elif ttype == "DOWNLOADING CHANNELS LIST":
+				self.type = 5;
+				self.__callCallbacks(self.EVENT_ACTION, _("Downloading channels list"))
+			elif ttype == "DEFLATING CHANNELS LIST":
+				self.type = 6;
+				self.__callCallbacks(self.EVENT_ACTION, _("Deflating channels list"))
+			elif ttype == "PARSING CHANNELS LIST":
+				self.type = 7;
+				self.__callCallbacks(self.EVENT_ACTION, _("Parsing channels list"))
+			elif ttype == "DOWNLOADING EVENTS":
+				self.type = 8;
+				self.__callCallbacks(self.EVENT_ACTION, _("Downloading events"))
+			elif ttype == "DEFLATING EVENTS":
+				self.type = 9;
+				self.__callCallbacks(self.EVENT_ACTION, _("Deflating events"))
+			elif ttype == "PARSING EVENTS":
+				self.type = 10;
+				self.__callCallbacks(self.EVENT_ACTION, _("Parsing events"))
 		elif data.find("CHANNELS ") == 0:
 			self.__callCallbacks(self.EVENT_STATUS, _("%s channels") % (data[9:]))
 		elif data.find("SIZE ") == 0:

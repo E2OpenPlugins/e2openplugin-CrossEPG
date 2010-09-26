@@ -256,7 +256,9 @@ bool xmltv_downloader_events (char *url, char *dbroot, void(*progress_callback)(
 	else
 	{
 		if (event_callback) event_callback(7, NULL);	// parsing events
+		if (event_callback) event_callback(0, NULL);	// turn on progress bar
 		ret = xmltv_parser_import (sfn, progress_callback, stop);
+		if (event_callback) event_callback(1, NULL);	// turn off progress bar
 	}
 	
 	unlink (sfn);
