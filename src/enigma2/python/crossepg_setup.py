@@ -34,6 +34,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+
 		patchtype = getEPGPatchType()
 		if patchtype == 0 or patchtype == 1 or patchtype == 3:
 			self.fastpatch = True
@@ -56,12 +57,15 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		default = None
 		
 		for partition in harddiskmanager.getMountedPartitions():
-			if partition.mountpoint != "/":
+			if partition.mountpoint != "/" and self.isMountedInRW(partition.mountpoint):
 				if partition.mountpoint + "/crossepg/" == self.config.db_root:
 					default = partition.description
 				self.mountdescription.append(partition.description)
 				self.mountpoint.append(partition.mountpoint + "/crossepg/")
 				
+		if len(self.mountpoint) == 0:
+			self.onFirstExecBegin.append(self.noDisksFound)
+
 		self.citems.append((_("Save data on device"), ConfigSelection(self.mountdescription, default)))
 		
 		for lamedb in self.lamedbs:
@@ -95,6 +99,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		self.citems.append((_("Show as extension"), ConfigYesNo(self.config.show_extension > 0)))
 			
 		ConfigListScreen.__init__(self, self.citems)
+
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button(_("Info"))
@@ -110,6 +115,23 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 			"ok": self.saveAndQuit,
 		}, -2)
 		
+	def isMountedInRW(self, mountpoint):
+		try:
+			mounts = open("/proc/mounts")
+		except IOError:
+			return False
+
+		lines = mounts.readlines()
+		mounts.close()
+
+		for line in lines:
+			if line.split(' ')[1] == mountpoint and line.split(' ')[3] == "rw":
+				return True
+		return False
+
+	def noDisksFound(self):
+		self.session.openWithCallback(self.close, MessageBox, _("No writable drive found. You cannot use crossepg without any writable partition."), type = MessageBox.TYPE_ERROR)
+
 	def saveAndQuit(self):
 		self.save()
 		self.close()
