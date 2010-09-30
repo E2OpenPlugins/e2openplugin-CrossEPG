@@ -148,7 +148,7 @@ msgstr "Salvataggio dati..."
 #: /home/dario/Plugins/CrossEPG/plugin.py:23
 #: /home/dario/Plugins/CrossEPG/plugin.py:28
 msgid "An EPG downloader"
-msgstr "Downloader EPG"
+msgstr "Un downloader EPG"
 
 #: /home/dario/Plugins/CrossEPG/plugin.py:33
 msgid "CrossEPG setup panel"
@@ -168,12 +168,12 @@ msgstr "Salvataggio dati su supporto"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_setup.py:78
 msgid "Preferred lamedb"
-msgstr "lamedb preferito"
+msgstr "Lamedb preferito"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_setup.py:82
 #, python-format
 msgid "Enable provider %s"
-msgstr "Abilitare il provider %s"
+msgstr "Abilitare %s"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_setup.py:85
 msgid "Enable csv import"
@@ -185,15 +185,15 @@ msgstr "Caricare automaticamente i dati all'avvio"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_setup.py:87
 msgid "Automatic daily download"
-msgstr "Scaricamento automatico giornaliero"
+msgstr "Scaricare automaticamente ogni giorno"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_setup.py:88
 msgid "Automatic daily download at"
-msgstr "Scaricamento automatico giornaliero alle"
+msgstr "Scaricare automaticamente alle"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_setup.py:89
 msgid "Automatic download on tune"
-msgstr "Scaricamento automatico su sintonizzazione"
+msgstr "Scaricare automaticamente su sintonizzazione"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_setup.py:90
 msgid "Show OSD for automatic download"
@@ -259,14 +259,9 @@ msgstr "Creare ext.epg.dat"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_extra.py:56
 msgid "Load data in enigma2 epg"
-msgstr "Caraicare i dati nell'epg di enigma2"
+msgstr "Caricare i dati nell'epg di enigma2"
 
 #: /home/dario/Plugins/CrossEPG/crossepg_converter.py:37
 msgid "Starting converter"
 msgstr "Avvio conversione..."
-
-#~ msgid "Convert db"
-#~ msgstr "Convertire db"
-#~ msgid "Load data"
-#~ msgstr "Caricare dati"
 
