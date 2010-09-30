@@ -57,7 +57,7 @@ class CrossEPG_Setup(ConfigListScreen,Screen):
 		default = None
 		
 		for partition in harddiskmanager.getMountedPartitions():
-			if partition.mountpoint != "/" and self.isMountedInRW(partition.mountpoint):
+			if partition.mountpoint != "/": # and self.isMountedInRW(partition.mountpoint):
 				if partition.mountpoint + "/crossepg/" == self.config.db_root:
 					default = partition.description
 				self.mountdescription.append(partition.description)
