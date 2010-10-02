@@ -47,5 +47,5 @@ sh ipkg-build -o root -g root tmp/
 mv *.ipk out
 echo "Package moved in `pwd`/out folder"
 cd tmp
-tar zcf ../out/enigma2-plugin-systemplugins-crossepg_$VERSION_sh4.tar.gz usr var
+tar zcf ../out/enigma2-plugin-systemplugins-crossepg_${VERSION}_sh4.tar.gz usr var
 cd ..
