@@ -1,4 +1,4 @@
-<screen position="360,150" size="560,400" title="CrossEPG Info">
+<screen position="360,150" size="560,400" title="CrossEPG - DB Info">
 	<widget name="version" position="10,10" size="540,25" font="Regular;20" />
 	<widget name="create" position="10,40" size="540,25" font="Regular;20" />
 	<widget name="last_update" position="10,70" size="540,25" font="Regular;20" />

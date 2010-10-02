@@ -1,6 +1,15 @@
-<screen position="360,150" size="560,400" title="CrossEPG - Configuration">
-	<widget name="config" position="5,5" size="550,250" scrollbarMode="showOnDemand" zPosition="1"/>
-	<widget name="information" position="5,250" size="550,100" halign="center" valign="center" font="Regular;18" />
+<screen position="360,150" size="560,400" title="CrossEPG - Providers">
+	<widget source="list" render="Listbox" position="0,0" size="560,360" scrollbarMode="showOnDemand">
+		<convert type="TemplatedMultiContent">
+			{"template": [
+				MultiContentEntryText(pos = (12, 1), size = (440, 32), font=0, flags = RT_HALIGN_LEFT|RT_VALIGN_TOP, text = 0),
+				MultiContentEntryPixmapAlphaTest(pos = (480, 0), size = (40, 40), png = 1),
+				],
+				"fonts": [gFont("Regular", 18)],
+				"itemHeight": 30
+			}
+		</convert>
+	</widget>
 
 	<widget name="key_red" position="0,360" size="140,40" valign="center" halign="center" zPosition="5" transparent="1" foregroundColor="white" font="Regular;18"/>
 	<widget name="key_green" position="140,360" size="140,40" valign="center" halign="center" zPosition="5" transparent="1" foregroundColor="white" font="Regular;18"/>

@@ -1,0 +1,13 @@
+<screen position="360,170" size="560,360" title="CrossEPG">
+	<widget source="list" render="Listbox" position="0,0" size="560,360" scrollbarMode="showOnDemand">
+		<convert type="TemplatedMultiContent">
+			{"template": [
+				MultiContentEntryPixmapAlphaTest(pos = (12, 4), size = (32, 32), png = 0),
+				MultiContentEntryText(pos = (58, 5), size = (440, 38), font=0, flags = RT_HALIGN_LEFT|RT_VALIGN_TOP, text = 1),
+				],
+				"fonts": [gFont("Regular", 22)],
+				"itemHeight": 40
+			}
+		</convert>
+	</widget>	
+</screen>

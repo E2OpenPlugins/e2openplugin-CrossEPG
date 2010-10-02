@@ -1,5 +1,6 @@
-<screen position="400,460" size="280,75" title="CrossEPG">
-	<widget name="action" halign="center" valign="center" position="5,2" size="270,20" font="Regular;16" />
-	<widget name="status" halign="center" valign="center" position="5,25" size="270,20" font="Regular;15" />
-	<widget name="progress" position="5,55" size="270,15" borderWidth="1" />
+<screen position="330,450" size="350,80" title="CrossEPG" flags="wfNoBorder">
+	<widget name="background" position="0,0" size="350,80" zPosition="-1" />
+	<widget name="action" halign="center" valign="center" position="65,10" size="270,20" font="Regular;15" />
+	<widget name="status" halign="center" valign="center" position="65,30" size="270,20" font="Regular;15" />
+	<widget name="progress" position="65,55" size="270,5" borderWidth="1" />
 </screen>

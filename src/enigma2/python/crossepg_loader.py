@@ -1,45 +1,39 @@
-from enigma import getDesktop, iPlayableService, eTimer, eServiceReference, eEPGCache
-from crossepglib import *
-from crossepg_locale import _
-from Screens.Screen import Screen
+from enigma import getDesktop, eTimer
+
 from Components.Label import Label
+from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
-from Components.ServiceEventTracker import ServiceEventTracker
 from Components.ActionMap import NumberActionMap
-from Components.config import config
-from Plugins.Plugin import PluginDescriptor
-from ServiceReference import ServiceReference
-from threading import Thread
-from Components.ActionMap import ActionMap
-from Tools import Notifications
+
+from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 
-import Screens.Standby
+from crossepglib import *
+from crossepg_locale import _
 
-import os
-import re
 import _enigma
-import new
-import time
+import os
 import sys
 
 class CrossEPG_Loader(Screen):
-	def __init__(self, session, endCallback = None):
+	def __init__(self, session, pcallback = None):
 		self.session = session
 		if (getDesktop(0).size().width() < 800):
-			skin = "%s/skins/downloader_sd.xml" % (os.path.dirname(sys.modules[__name__].__file__))
+			skin = "%s/skins/downloader_sd.xml" % os.path.dirname(sys.modules[__name__].__file__)
 		else:
-			skin = "%s/skins/downloader_hd.xml" % (os.path.dirname(sys.modules[__name__].__file__))
+			skin = "%s/skins/downloader_hd.xml" % os.path.dirname(sys.modules[__name__].__file__)
 		f = open(skin, "r")
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+
+		self["background"] = Pixmap()
 		self["action"] = Label(_("Loading data"))
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
 		
-		self.ret = True	
+		self.retValue = True	
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.db_root = self.config.db_root
@@ -47,8 +41,11 @@ class CrossEPG_Loader(Screen):
 			if not createDir(self.db_root):
 				self.db_root = "/hdd/crossepg"
 				
-		self.endCallback = endCallback
+		self.pcallback = pcallback
 		self.wrapper = None
+
+		self.pcallbacktimer = eTimer()
+		self.pcallbacktimer.callback.append(self.doCallback)
 		
 		if pathExists("/usr/crossepg"):
 			self.home_directory = "/usr/crossepg"
@@ -63,55 +60,51 @@ class CrossEPG_Loader(Screen):
 			print "[CrossEPG_Loader] patch crossepg v2 found"
 		except Exception, e:
 			self.xepgpatch = None
-			print "[CrossEPG_Loader] patch crossepg v2 not found"
 			
 		try:
 			self.epgpatch = new.instancemethod(_enigma.eEPGCache_load,None,eEPGCache)
 			print "[CrossEPG_Loader] patch epgcache.load() found"
 		except Exception, e:
 			self.epgpatch = None
-			print "[CrossEPG_Loader] patch epgcache.load() not found"
 			
 		try:
 			self.edgpatch = new.instancemethod(_enigma.eEPGCache_reloadEpg,None,eEPGCache)
 			print "[CrossEPG_Loader] patch EDG NEMESIS found"
 		except Exception, e:
 			self.edgpatch = None
-			print "[CrossEPG_Loader] patch EDG NEMESIS not found"
 			
 		try:
 			self.oudeispatch = new.instancemethod(_enigma.eEPGCache_importEvent,None,eEPGCache)
 			print "[CrossEPG_Loader] patch Oudeis found"
 		except Exception, e:
 			self.oudeispatch = None
-			print "[CrossEPG_Loader] patch Oudeis not found"
 		
 		if self.xepgpatch:
 			self.timer = eTimer()
-			self.timer.callback.append(self.__loadEPG2)
+			self.timer.callback.append(self.loadEPG2)
 			self.timer.start(200, 1)
 
 		elif self.epgpatch:
 			self.timer = eTimer()
-			self.timer.callback.append(self.__loadEPG)
+			self.timer.callback.append(self.loadEPG)
 			self.timer.start(200, 1)
 			
 		elif self.edgpatch:
 			self.timer = eTimer()
-			self.timer.callback.append(self.__loadEDG)
+			self.timer.callback.append(self.loadEDG)
 			self.timer.start(200, 1)
 			
 		elif self.oudeispatch:
 			self["actions"] = NumberActionMap(["WizardActions", "InputActions"],
 			{
-				"back": self.__quit
+				"back": self.quit
 			}, -1)
 			
 			self.wrapper = CrossEPG_Wrapper()
-			self.wrapper.addCallback(self.__wrapperCallback)
+			self.wrapper.addCallback(self.wrapperCallback)
 			
 			self.timeout = eTimer()
-			self.timeout.callback.append(self.__quit)
+			self.timeout.callback.append(self.quit)
 			
 			self.hideprogress = eTimer()
 			self.hideprogress.callback.append(self["progress"].hide)
@@ -125,49 +118,33 @@ class CrossEPG_Loader(Screen):
 			self.wrapper.init(CrossEPG_Wrapper.CMD_CONVERTER, self.db_root)
 		else:
 			print "No patch found... please reboot enigma2 manually"
-			self.hide()
-			if self.endCallback:
-				self.endCallback(self.session, True)
-			self.close()
-	
-	def quit(self):
-		if self.epgpatch or self.edgpatch:
-			return
-			
-		self.__quit()
+			self.closeAndCallback(True)
 
-	def __loadEPG2(self):
-		#cmd = "%s/crossepg_epgcopy %s/ext.epg.dat /hdd/epg.dat" % (self.home_directory, self.db_root)
-		#print "[CrossEPG_Loader] %s" % (cmd)
-		#os.system(cmd)
+		self.onFirstExecBegin.append(self.firstExec)
+
+	def firstExec(self):
+		self["background"].instance.setPixmapFromFile("%s/images/background.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+
+	def loadEPG2(self):
 		print "[CrossEPG_Loader] loading data with crossepg patch v2"
 		self.xepgpatch(eEPGCache.getInstance(), self.db_root)
-		self.hide()
-		if self.endCallback:
-			self.endCallback(self.session, True)
-		self.close()
+		self.closeAndCallback(True)
 	
-	def __loadEPG(self):
+	def loadEPG(self):
 		cmd = "%s/crossepg_epgcopy %s/ext.epg.dat /hdd/epg.dat" % (self.home_directory, self.db_root)
 		print "[CrossEPG_Loader] %s" % (cmd)
 		os.system(cmd)
 		self.epgpatch(eEPGCache.getInstance())
-		self.hide()
-		if self.endCallback:
-			self.endCallback(self.session, True)
-		self.close()
+		self.closeAndCallback(True)
 		
-	def __loadEDG(self):
+	def loadEDG(self):
 		cmd = "%s/crossepg_epgcopy %s/ext.epg.dat %s/epg.dat" % (self.home_directory, self.db_root, config.nemepg.path.value)
 		print "[CrossEPG_Loader] %s" % (cmd)
 		os.system(cmd)
 		self.edgpatch(eEPGCache.getInstance())
-		self.hide()
-		if self.endCallback:
-			self.endCallback(self.session, True)
-		self.close()
+		self.closeAndCallback(True)
 		
-	def __wrapperCallback(self, event, param):
+	def wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.EVENT_READY:
 			self.wrapper.text()
 			
@@ -215,24 +192,28 @@ class CrossEPG_Loader(Screen):
 			if self.epg_channel:
 				if len(self.epg_tuple) > 0:
 					self.oudeispatch(eEPGCache.getInstance(), self.epg_channel, self.epg_tuple)
-			self.hide()
-			if self.endCallback:
-				self.endCallback(self.session, self.ret)
-			self.close()
+			self.closeAndCallback(self.retValue)
 			
 		elif event == CrossEPG_Wrapper.EVENT_ERROR:
 			self.session.open(MessageBox, _("CrossEPG error: %s") % (param), type = MessageBox.TYPE_INFO, timeout = 20)
-			self.ret = False
+			self.retValue = False
 			self.quit()
 			
-	def __quit(self):
+	def quit(self):
 		if self.wrapper:
 			if self.wrapper.running():
-				self.ret = False
+				self.retValue = False
 				self.wrapper.quit()
 				return
-				
-		self.hide()
-		if self.endCallback:
-			self.endCallback(self.session, False)
-		self.close()
+
+		self.closeAndCallback(False)
+
+	def closeAndCallback(self, ret):
+		self.retValue = ret
+		self.close(ret)
+		self.pcallbacktimer.start(0, 1)
+
+	def doCallback(self):
+		if self.pcallback:
+			self.pcallback(self.retValue)
+

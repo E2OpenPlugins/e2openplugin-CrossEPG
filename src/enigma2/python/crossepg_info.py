@@ -1,28 +1,16 @@
-from enigma import getDesktop, iPlayableService, eTimer, eServiceReference, eEPGCache
+from enigma import getDesktop
+
+from Screens.Screen import Screen
+
+from Components.Label import Label
+from Components.Button import Button
+from Components.ActionMap import ActionMap
+
 from crossepglib import *
 from crossepg_locale import _
-from Screens.Screen import Screen
-from Components.Label import Label
-from Components.Pixmap import Pixmap
-from Components.ProgressBar import ProgressBar
-from Components.ServiceEventTracker import ServiceEventTracker
-from Components.ActionMap import NumberActionMap
-from Components.Button import Button
-from Plugins.Plugin import PluginDescriptor
-from ServiceReference import ServiceReference
-from threading import Thread
-from Components.ActionMap import ActionMap
-from Tools import Notifications
-from Screens.MessageBox import MessageBox
-
-import Screens.Standby
 
 import os
-import re
-import _enigma
-import new
-import time
-import os
+import sys
 
 class CrossEPG_Info(Screen):
 	def __init__(self, session):
@@ -34,7 +22,7 @@ class CrossEPG_Info(Screen):
 		f = open(skin, "r")
 		self.skin = f.read()
 		f.close()
-		self.skin_path = "%s/skins/" % (os.path.dirname(sys.modules[__name__].__file__))
+
 		Screen.__init__(self, session)
 		
 		self.config = CrossEPG_Config()
@@ -57,10 +45,10 @@ class CrossEPG_Info(Screen):
 			"cancel": self.quit
 		}, -2)
 		
-		self["key_red"] = Button(_("Exit"))
-		self["key_green"] = Button(" ")
-		self["key_yellow"] = Button(" ")
-		self["key_blue"] = Button(" ")
+		self["key_red"] = Button(_("Back"))
+		self["key_green"] = Button("")
+		self["key_yellow"] = Button("")
+		self["key_blue"] = Button("")
 		
 		self.wrapper = CrossEPG_Wrapper()
 		self.wrapper.addCallback(self.__wrapperCallback)

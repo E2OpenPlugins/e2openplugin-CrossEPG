@@ -16,11 +16,15 @@ mkdir -p tmp/var/crossepg/aliases
 mkdir -p tmp/var/crossepg/providers
 mkdir -p tmp/var/crossepg/import
 mkdir -p tmp/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
+mkdir -p tmp/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/images
+mkdir -p tmp/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES
 
 cp bin/* tmp/var/crossepg/
 
 cp providers/* tmp/var/crossepg/providers/
 cp src/enigma2/python/skins/*.xml tmp/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins/
+cp src/enigma2/python/images/*.png tmp/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/images/
+cp contrib/po/it/LC_MESSAGES/CrossEPG.mo tmp/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES/
 cp contrib/crossepg_epgmove.sh tmp/var/crossepg/
 cp contrib/control tmp/CONTROL/
 

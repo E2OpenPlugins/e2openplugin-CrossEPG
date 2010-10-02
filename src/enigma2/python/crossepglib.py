@@ -19,6 +19,12 @@ import _enigma
 # 3 crossepg v2 patch
 def getEPGPatchType():
 	try:
+		xepgpatch = new.instancemethod(_enigma.eEPGCache_crossepgImportEPG,None,eEPGCache)
+		return 3
+	except Exception, e:
+		pass
+
+	try:
 		epgpatch = new.instancemethod(_enigma.eEPGCache_load,None,eEPGCache)
 		return 0
 	except Exception, e:
@@ -36,12 +42,6 @@ def getEPGPatchType():
 	except Exception, e:
 		pass
 
-	try:
-		xepgpatch = new.instancemethod(_enigma.eEPGCache_crossepgImportEPG,None,eEPGCache)
-		return 3
-	except Exception, e:
-		pass
-		
 	return -1
 
 class CrossEPG_Config:
@@ -50,17 +50,19 @@ class CrossEPG_Config:
 	lamedb = "lamedb"
 	home_directory = ""
 	
-	auto_boot = 1
-	auto_daily = 0
-	auto_daily_hours = 4
-	auto_daily_minutes = 0
-	auto_daily_reboot = 1
-	auto_tune = 1
-	auto_tune_osd = 0
-	manual_reboot = 1
-	enable_importer = 0
+	force_load_on_boot = 0
+	download_daily_enabled = 0
+	download_daily_hours = 4
+	download_daily_minutes = 0
+	download_daily_reboot = 1
+	download_tune_enabled = 1
+	download_standby_enabled = 1
+	download_manual_reboot = 0
+	csv_import_enabled = 0
 	show_plugin = 1
 	show_extension = 1
+	last_partial_download_timestamp = 0
+	last_full_download_timestamp = 0
 	
 	def __init__(self):
 		if pathExists("/usr/crossepg"):
@@ -74,7 +76,7 @@ class CrossEPG_Config:
 		try:
 			f = open("%s/crossepg.config" % (self.home_directory), "r")
 		except Exception, e:
-			print "[CrossEPG_Config] %s" % (e)
+			#print "[CrossEPG_Config] %s" % (e)
 			return
 			
 		commentRe = re.compile(r"#(.*)")
@@ -91,33 +93,40 @@ class CrossEPG_Config:
 						self.db_root = value
 					if key == "lamedb":
 						self.lamedb = value
-					elif key == "otv_provider":
-						self.providers = value.split("|")
-					elif key == "auto_boot":
-						self.auto_boot = int(value);
-					elif key == "auto_daily":
-						self.auto_daily = int(value);
-					elif key == "auto_daily_hours":
-						self.auto_daily_hours = int(value);
-					elif key == "auto_daily_minutes":
-						self.auto_daily_minutes = int(value);
-					elif key == "auto_tune":
-						self.auto_tune = int(value);
-					elif key == "auto_tune_osd":
-						self.auto_tune_osd = int(value);
-					elif key == "auto_daily_reboot":
-						self.auto_daily_reboot = int(value);
-					elif key == "manual_reboot":
-						self.manual_reboot = int(value);
-					elif key == "enable_importer":
-						self.enable_importer = int(value);
+					elif key == "providers":
+						self.providers = []
+						tmp = value.split("|")
+						for p in tmp:
+							if len(p) > 0:
+								self.providers.append(p)
+					elif key == "force_load_on_boot":
+						self.force_load_on_boot = int(value);
+					elif key == "download_daily_enabled":
+						self.download_daily_enabled = int(value);
+					elif key == "download_daily_hours":
+						self.download_daily_hours = int(value);
+					elif key == "download_daily_minutes":
+						self.download_daily_minutes = int(value);
+					elif key == "download_tune_enabled":
+						self.download_tune_enabled = int(value);
+					elif key == "download_daily_reboot":
+						self.download_daily_reboot = int(value);
+					elif key == "download_manual_reboot":
+						self.download_manual_reboot = int(value);
+					elif key == "download_standby_enabled":
+						self.download_standby_enabled = int(value);
+					elif key == "last_partial_download_timestamp":
+						self.last_partial_download_timestamp = int(value);
+					elif key == "last_full_download_timestamp":
+						self.last_full_download_timestamp = int(value);
+					elif key == "csv_import_enabled":
+						self.csv_import_enabled = int(value);
 					elif key == "show_plugin":
 						self.show_plugin = int(value);
 					elif key == "show_extension":
 						self.show_extension = int(value);
 						
 		f.close()
-		#print "[CrossEPG_Config] configuration loaded"
 		
 	def save(self):
 		try:
@@ -125,24 +134,31 @@ class CrossEPG_Config:
 		except Exception, e:
 			print "[CrossEPG_Config] %s" % (e)
 			return
+
+		tmp = []
+		for p in self.providers:
+			if len(p) > 0:
+					tmp.append(p)
+		self.providers = tmp
 		
 		f.write("db_root=%s\n" % (self.db_root))
 		f.write("lamedb=%s\n" % (self.lamedb))
-		f.write("otv_provider=%s\n" % ("|".join(self.providers)))
-		f.write("auto_boot=%d\n" % (self.auto_boot))
-		f.write("auto_daily=%d\n" % (self.auto_daily))
-		f.write("auto_daily_hours=%d\n" % (self.auto_daily_hours))
-		f.write("auto_daily_minutes=%d\n" % (self.auto_daily_minutes))
-		f.write("auto_tune=%d\n" % (self.auto_tune))
-		f.write("auto_tune_osd=%d\n" % (self.auto_tune_osd))
-		f.write("auto_daily_reboot=%d\n" % (self.auto_daily_reboot))
-		f.write("manual_reboot=%d\n" % (self.manual_reboot))
-		f.write("enable_importer=%d\n" % (self.enable_importer))
+		f.write("providers=%s\n" % ("|".join(self.providers)))
+		f.write("force_load_on_boot=%d\n" % (self.force_load_on_boot))
+		f.write("download_daily_enabled=%d\n" % (self.download_daily_enabled))
+		f.write("download_daily_hours=%d\n" % (self.download_daily_hours))
+		f.write("download_daily_minutes=%d\n" % (self.download_daily_minutes))
+		f.write("download_daily_reboot=%d\n" % (self.download_daily_reboot))
+		f.write("download_tune_enabled=%d\n" % (self.download_tune_enabled))
+		f.write("download_manual_reboot=%d\n" % (self.download_manual_reboot))
+		f.write("download_standby_enabled=%d\n" % (self.download_standby_enabled))
+		f.write("last_full_download_timestamp=%d\n" % (self.last_full_download_timestamp))
+		f.write("last_partial_download_timestamp=%d\n" % (self.last_partial_download_timestamp))
+		f.write("csv_import_enabled=%d\n" % (self.csv_import_enabled))
 		f.write("show_plugin=%d\n" % (self.show_plugin))
 		f.write("show_extension=%d\n" % (self.show_extension))
 		
 		f.close()
-		#print "[CrossEPG_Config] configuration saved"
 		
 	def getChannelID(self, provider):
 		try:
@@ -175,7 +191,6 @@ class CrossEPG_Config:
 				namespace = int(znamespace[0]);
 		
 		if nid == -1 or sid == -1 or tsid == -1:
-			#print "[CrossEPG_Config] invalid configuration file"
 			return
 		
 		f.close()
@@ -184,6 +199,7 @@ class CrossEPG_Config:
 	def getAllProviders(self):
 		providers = list()
 		providersdesc = list()
+		providersproto = list()
 		cfiles = crawlDirectory("%s/providers/" % (self.home_directory), ".*\.conf$")
 		for cfile in cfiles:
 			providers.append(cfile[1].replace(".conf", ""))
@@ -192,26 +208,39 @@ class CrossEPG_Config:
 		
 		for provider in providers:
 			try:
-				added = False
+				descadded = False
+				protoadded = False
 				f = open("%s/providers/%s.conf" % (self.home_directory, provider), "r")
 				desc = re.compile(r"description=(.*)")
+				proto = re.compile(r"protocol=(.*)")
 				for line in f.readlines(): 
 					zdesc = re.findall(desc, line)
 					if zdesc:
-						providersdesc.append(zdesc[0])
-						added = True
-						break;
+						providersdesc.append(zdesc[0].strip())
+						descadded = True
+
+					zproto = re.findall(proto, line)
+					if zproto:
+						providersproto.append(zproto[0].strip())
+						protoadded = True
+
+					if descadded and protoadded:
+						break
 
 				f.close()
 				
-				if not added:
+				if not descadded:
 					providersdesc.append(provider)
+
+				if not protoadded:
+					providersproto.append(None)
 					
 			except Exception, e:
 				print "[CrossEPG_Config] %s" % (e)
 				providersdesc.append(provider)
+				providersproto.append(None)
 				
-		ret = [providers, providersdesc]
+		ret = [providers, providersdesc, providersproto]
 		return ret
 			
 	def getAllLamedbs(self):
@@ -221,18 +250,6 @@ class CrossEPG_Config:
 			lamedbs.append(cfile[1])
 			
 		return lamedbs
-		
-	def getAllImportScripts(self):
-		scripts = list()
-		importdir = "%s/import_scripts/" % (self.db_root)
-		if not pathExists(importdir):
-			importdir = "/hdd/crossepg/import_scripts/"
-		
-		cfiles = crawlDirectory(importdir, ".*")
-		for cfile in cfiles:
-			scripts.append(cfile[1])
-			
-		return scripts
 
 class CrossEPG_Wrapper:
 	EVENT_READY				= 0
@@ -299,14 +316,14 @@ class CrossEPG_Wrapper:
 				dbdir = "/hdd/crossepg"
 				
 		if cmd == self.CMD_DOWNLOADER:
-			x = "%s/crossepg_downloader -k 19 -r -d %s" % (self.home_directory, dbdir)
+			x = "%s/crossepg_downloader -r -d %s" % (self.home_directory, dbdir)
 		elif cmd == self.CMD_CONVERTER:
-			x = "%s/crossepg_dbconverter -k 19 -r -d %s" % (self.home_directory, dbdir)
+			x = "%s/crossepg_dbconverter -r -d %s" % (self.home_directory, dbdir)
 		elif cmd == self.CMD_INFO:
-			x = "%s/crossepg_dbinfo -k 19 -r -d %s" % (self.home_directory, dbdir)
+			x = "%s/crossepg_dbinfo -r -d %s" % (self.home_directory, dbdir)
 		elif cmd == self.CMD_IMPORTER:
 			importdir = "%s/import/" % (dbdir)
-			x = "%s/crossepg_importer -k 19 -r -i %s -d %s" % (self.home_directory, importdir, dbdir)
+			x = "%s/crossepg_importer -r -i %s -d %s" % (self.home_directory, importdir, dbdir)
 		else:
 			print "[CrossEPG_Wrapper] unknow command on init"
 			return

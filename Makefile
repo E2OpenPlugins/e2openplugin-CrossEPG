@@ -37,6 +37,7 @@ IMPORTER_BIN = bin/crossepg_importer
 XMLTV_BIN = bin/crossepg_xmltv
 
 VERSION_HEADER = src/version.h
+VERSION_PYTHON = src/enigma2/python/version.py
 
 SVN=$(shell sh get_svn_version.sh)
 VERSION=$(shell cat VERSION)
@@ -50,6 +51,7 @@ $(BIN_DIR):
 	
 $(VERSION_HEADER):
 	echo "#define RELEASE \"$(VERSION) (svn $(SVN))\"" > $(VERSION_HEADER)
+	echo "version = \"$(VERSION) (svn $(SVN))\"" > $(VERSION_PYTHON)
 
 $(OBJS): $(VERSION_HEADER) $(BIN_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
@@ -104,6 +106,7 @@ install:
 	install -d $(D)/usr/crossepg/import
 	install -d $(D)/usr/crossepg/providers
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
+	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/images
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES
 	install -m 755 bin/crossepg_dbconverter $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_dbinfo $(D)/usr/crossepg/
@@ -116,4 +119,5 @@ install:
 	install -m 644 contrib/po/it/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES/
 	install -m 644 src/enigma2/python/*.py $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
 	install -m 644 src/enigma2/python/skins/*.xml $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins/
+	install -m 644 src/enigma2/python/images/*.png $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/images/
 	

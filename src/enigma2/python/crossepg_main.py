@@ -4,76 +4,75 @@ from crossepg_downloader import CrossEPG_Downloader
 from crossepg_importer import CrossEPG_Importer
 from crossepg_converter import CrossEPG_Converter
 from crossepg_loader import CrossEPG_Loader
-from crossepg_exec import CrossEPG_Exec
 from crossepg_setup import CrossEPG_Setup
+from crossepg_menu import CrossEPG_Menu
 from crossepg_auto import crossepg_auto
 
 class CrossEPG_Main:
 	def __init__(self):
-		pass
+		self.config = CrossEPG_Config()
+		self.patchtype = getEPGPatchType()
 		
 	def downloader(self, session, **kwargs):
+		self.session = session
+		crossepg_auto.lock = True
 		crossepg_auto.stop()
-		crossepg_auto.disable()
-		session.open(CrossEPG_Downloader, self.__callbackDownloader)
+		self.config.load()
+		self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, self.config.providers)
 
-	def __callbackDownloader(self, session, ret):
+	def downloadCallback(self, ret):
 		if ret:
-			config = CrossEPG_Config()
-			config.load()
-			if config.enable_importer == 1:
-				#session.open(CrossEPG_Importer, self.__callbackImporter)
-				self.scripts = config.getAllImportScripts()
-				self.scripts_index = 0;
-				self.__startScripts(session)
+			if self.config.csv_import_enabled == 1:
+				self.importer()
 			else:
-				patchtype = getEPGPatchType()
-				if patchtype != 3:
-					session.open(CrossEPG_Converter, self.__callbackConverter)
+				if self.patchtype != 3:
+					self.converter()
 				else:
-					self.__callbackConverter(session, True)		# witch crossepg v2 patch skip the converter
+					self.loader()
 		else:
-			crossepg_auto.enable()
-	
-	def __startScripts(self, session):
-		if len(self.scripts) > self.scripts_index:
-			session.open(CrossEPG_Exec, self.scripts[self.scripts_index], False, self.__startScripts)
-			self.scripts_index += 1
-		else:
-			session.open(CrossEPG_Importer, self.__callbackImporter)
-			
-	def __callbackImporter(self, session, ret):
-		if ret:
-			patchtype = getEPGPatchType()
-			if patchtype != 3:
-				session.open(CrossEPG_Converter, self.__callbackConverter)
-			else:
-				self.__callbackConverter(session, True)		# witch crossepg v2 patch skip the converter
-		else:
-			crossepg_auto.enable()
-			
-	def __callbackConverter(self, session, ret):
-		if ret:
-			config = CrossEPG_Config()
-			config.load()
-			patchtype = getEPGPatchType()
-			if patchtype == 0 or patchtype == 1 or patchtype == 3:
-				session.open(CrossEPG_Loader, self.__callbackLoader)
-			elif patchtype == 2 and config.manual_reboot == 0:
-				session.open(CrossEPG_Loader, self.__callbackLoader)
-			elif config.manual_reboot == 1:
-				from Screens.Standby import TryQuitMainloop
-				session.open(TryQuitMainloop, 3)
-			else:
-				crossepg_auto.enable()
-		else:
-			crossepg_auto.enable()
+			crossepg_auto.lock = False
 
-	def __callbackLoader(self, session, ret):
-		crossepg_auto.enable()
+	def importer(self):
+		self.session.openWithCallback(self.importerCallback, CrossEPG_Importer)
+
+	def importerCallback(self, ret):
+		if ret:
+			if self.patchtype != 3:
+				self.converter()
+			else:
+				self.loader()
+		else:
+			crossepg_auto.lock = False
+
+	def converter(self):
+		self.session.openWithCallback(self.converterCallback, CrossEPG_Converter)
+
+	def converterCallback(self, ret):
+		if ret:
+			if self.patchtype != -1:
+				self.loader()
+			else:
+				if self.config.download_manual_reboot:
+					from Screens.Standby import TryQuitMainloop
+					session.open(TryQuitMainloop, 3)
+				else:
+					crossepg_auto.lock = False
+		else:
+			crossepg_auto.lock = False
+
+	def loader(self):
+		self.session.openWithCallback(self.loaderCallback, CrossEPG_Loader)
+
+	def loaderCallback(self, ret):
+		crossepg_auto.lock = False
 
 	def setup(self, session, **kwargs):
-		session.open(CrossEPG_Setup, self.downloader)
+		crossepg_auto.lock = True
+		crossepg_auto.stop()
+		session.openWithCallback(self.setupCallback, CrossEPG_Menu)
+
+	def setupCallback(self):
+		crossepg_auto.lock = False
 
 	def autostart(self, reason, session):
 		crossepg_auto.init(session)

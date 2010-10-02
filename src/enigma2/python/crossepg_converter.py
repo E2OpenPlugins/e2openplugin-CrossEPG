@@ -1,49 +1,42 @@
-from enigma import getDesktop, iPlayableService, eTimer, eServiceReference, eEPGCache
-from crossepglib import *
-from crossepg_locale import _
-from Screens.Screen import Screen
+from enigma import getDesktop, eTimer
+
 from Components.Label import Label
+from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
-from Components.ServiceEventTracker import ServiceEventTracker
 from Components.ActionMap import NumberActionMap
-from Plugins.Plugin import PluginDescriptor
-from ServiceReference import ServiceReference
-from threading import Thread
-from Components.ActionMap import ActionMap
-from Tools import Notifications
+
+from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 
-import Screens.Standby
+from crossepglib import *
+from crossepg_locale import _
 
 import os
-import re
-import _enigma
-import new
-import time
-import os
+import sys
 
 class CrossEPG_Converter(Screen):
-	def __init__(self, session, endCallback = None):
+	def __init__(self, session, pcallback = None):
 		self.session = session
 		if (getDesktop(0).size().width() < 800):
-			skin = "%s/skins/downloader_sd.xml" % (os.path.dirname(sys.modules[__name__].__file__))
+			skin = "%s/skins/downloader_sd.xml" % os.path.dirname(sys.modules[__name__].__file__)
 		else:
-			skin = "%s/skins/downloader_hd.xml" % (os.path.dirname(sys.modules[__name__].__file__))
+			skin = "%s/skins/downloader_hd.xml" % os.path.dirname(sys.modules[__name__].__file__)
 		f = open(skin, "r")
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
 		
+		self["background"] = Pixmap()
 		self["action"] = Label(_("Starting converter"))
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
 		self["actions"] = NumberActionMap(["WizardActions", "InputActions"],
 		{
-			"back": self.__quit
+			"back": self.quit
 		}, -1)
 		
-		self.ret = True	
+		self.retValue = True	
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.lamedb = self.config.lamedb
@@ -52,31 +45,33 @@ class CrossEPG_Converter(Screen):
 			if not createDir(self.db_root):
 				self.db_root = "/hdd/crossepg"
 				
-		self.endCallback = endCallback
+		self.pcallback = pcallback
 		
 		self.wrapper = CrossEPG_Wrapper()
-		self.wrapper.addCallback(self.__wrapperCallback)
+		self.wrapper.addCallback(self.wrapperCallback)
 		
 		self.hideprogress = eTimer()
 		self.hideprogress.callback.append(self["progress"].hide)
 		
+		self.pcallbacktimer = eTimer()
+		self.pcallbacktimer.callback.append(self.doCallback)
+
+		self.onFirstExecBegin.append(self.firstExec)
+
+	def firstExec(self):
+		self["background"].instance.setPixmapFromFile("%s/images/background.png" % (os.path.dirname(sys.modules[__name__].__file__)))
 		self.wrapper.init(CrossEPG_Wrapper.CMD_CONVERTER, self.db_root)
 	
-	def quit(self):
-		self.__quit()
-	
-	def __wrapperCallback(self, event, param):
+	def wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.EVENT_READY:
 			self.wrapper.epgdat("%s/ext.epg.dat" % (self.db_root))
 			self.wrapper.lamedb("/etc/enigma2/%s" % (self.lamedb))
 			self.wrapper.convert()
 			
 		elif event == CrossEPG_Wrapper.EVENT_END:
-			self.wrapper.delCallback(self.__wrapperCallback)
+			self.wrapper.delCallback(self.wrapperCallback)
 			self.wrapper.quit()
-			if self.endCallback:
-				self.endCallback(self.session, self.ret)
-			self.close()
+			self.closeAndCallback(self.retValue)
 				
 		elif event == CrossEPG_Wrapper.EVENT_ACTION:
 			self["action"].text = param
@@ -97,20 +92,26 @@ class CrossEPG_Converter(Screen):
 				self.hideprogress.start(500, 1)
 				
 		elif event == CrossEPG_Wrapper.EVENT_QUIT:
-			if self.endCallback:
-				self.endCallback(self.session, self.ret)
-			self.close()
+			self.closeAndCallback(self.retValue)
 			
 		elif event == CrossEPG_Wrapper.EVENT_ERROR:
 			self.session.open(MessageBox, _("CrossEPG error: %s") % (param), type = MessageBox.TYPE_INFO, timeout = 20)
-			self.ret = False
+			self.retValue = False
 			self.quit()
 			
-	def __quit(self):
+	def quit(self):
 		if self.wrapper.running():
-			self.ret = False
+			self.retValue = False
 			self.wrapper.quit()
 		else:
-			if self.endCallback:
-				self.endCallback(self.session, False)
-			self.close()
+			self.closeAndCallback(False)
+
+	def closeAndCallback(self, ret):
+		self.retValue = ret
+		self.close(ret)
+		self.pcallbacktimer.start(0, 1)
+
+	def doCallback(self):
+		if self.pcallback:
+			self.pcallback(self.retValue)
+
