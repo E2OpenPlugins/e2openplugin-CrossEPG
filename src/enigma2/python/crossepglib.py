@@ -252,7 +252,6 @@ class CrossEPG_Config:
 		return lamedbs
 	
 	def isQBOXHD(self):
-		cat /proc/stb/info/model
 		try:
 			ret = False
 			f = open("/proc/stb/info/model", "r")
