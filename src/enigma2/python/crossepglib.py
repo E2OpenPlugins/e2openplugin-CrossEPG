@@ -250,6 +250,19 @@ class CrossEPG_Config:
 			lamedbs.append(cfile[1])
 			
 		return lamedbs
+	
+	def isQBOXHD(self):
+		cat /proc/stb/info/model
+		try:
+			ret = False
+			f = open("/proc/stb/info/model", "r")
+			model = f.read().strip()
+			if model == "qboxhd" or model == "qboxhd-mini":
+				ret = True
+			f.close()
+			return ret
+		except Exception, e:
+			return False
 
 class CrossEPG_Wrapper:
 	EVENT_READY				= 0
@@ -298,10 +311,15 @@ class CrossEPG_Wrapper:
 		
 		versionlist = getEnigmaVersionString().split("-");
 		
+		self.oldapi = False
 		if len(versionlist) >= 3:
 			self.version = int(versionlist[0]+versionlist[1]+versionlist[2])
-		else:
-			self.version = 20100716 # version syntax not recognized... probabilly is an experimental so i assume it's updated
+			if self.version < 20100716:
+				self.oldapi = True
+				
+		config = CrossEPG_Config()
+		if config.isQBOXHD():
+				self.oldapi = True
 		
 		if pathExists("/usr/crossepg"):
 			self.home_directory = "/usr/crossepg"
@@ -477,7 +495,7 @@ class CrossEPG_Wrapper:
 	def lamedb(self, value):
 		print "[CrossEPG_Wrapper] -> LAMEDB %s" % (value)
 		cmd = "LAMEDB %s\n" % (value)
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write(cmd, len(cmd))
 		else:
 			self.cmd.write(cmd)
@@ -485,7 +503,7 @@ class CrossEPG_Wrapper:
 	def epgdat(self, value):
 		print "[CrossEPG_Wrapper] -> EPGDAT %s" % (value)
 		cmd = "EPGDAT %s\n" % (value)
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write(cmd, len(cmd))
 		else:
 			self.cmd.write(cmd)
@@ -493,7 +511,7 @@ class CrossEPG_Wrapper:
 	def demuxer(self, value):
 		print "[CrossEPG_Wrapper] -> DEMUXER %s" % (value)
 		cmd = "DEMUXER %s\n" % (value)
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write(cmd, len(cmd))
 		else:
 			self.cmd.write(cmd)
@@ -501,7 +519,7 @@ class CrossEPG_Wrapper:
 	def download(self, provider):
 		print "[CrossEPG_Wrapper] -> DOWNLOAD %s" % (provider)
 		cmd = "DOWNLOAD %s\n" % (provider)
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write(cmd, len(cmd))
 		else:
 			self.cmd.write(cmd)
@@ -510,14 +528,14 @@ class CrossEPG_Wrapper:
 		print "[CrossEPG_Wrapper] -> CONVERT"
 		self.__callCallbacks(self.EVENT_ACTION, _("Converting data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write("CONVERT\n", 8)
 		else:
 			self.cmd.write("CONVERT\n")
 		
 	def importx(self):
 		print "[CrossEPG_Wrapper] -> IMPORT"
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write("IMPORT\n", 7)
 		else:
 			self.cmd.write("IMPORT\n")
@@ -526,14 +544,14 @@ class CrossEPG_Wrapper:
 		print "[CrossEPG_Wrapper] -> TEXT"
 		self.__callCallbacks(self.EVENT_ACTION, _("Loading data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write("TEXT\n", 5)
 		else:
 			self.cmd.write("TEXT\n")
 			
 	def stop(self):
 		print "[CrossEPG_Wrapper] -> STOP"
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write("STOP\n", 5)
 		else:
 			self.cmd.write("STOP\n")
@@ -542,21 +560,21 @@ class CrossEPG_Wrapper:
 		print "[CrossEPG_Wrapper] -> SAVE"
 		self.__callCallbacks(self.EVENT_ACTION, _("Saving data"))
 		self.__callCallbacks(self.EVENT_STATUS, "")
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write("SAVE\n", 5)
 		else:
 			self.cmd.write("SAVE\n")
 
 	def wait(self):
 		print "[CrossEPG_Wrapper] -> WAIT"
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write("WAIT\n", 5)
 		else:
 			self.cmd.write("WAIT\n")
 
 	def quit(self):
 		print "[CrossEPG_Wrapper] -> QUIT"
-		if self.version < 20100716:
+		if self.oldapi:
 			self.cmd.write("QUIT\n", 5)
 		else:
 			self.cmd.write("QUIT\n")

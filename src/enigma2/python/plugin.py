@@ -28,11 +28,17 @@ def Plugins(**kwargs):
 										description=_("An EPG downloader"),
 										where = PluginDescriptor.WHERE_PLUGINMENU,
 										fnc = crossepg_main.downloader))
-										
-	plugins.append(PluginDescriptor(name="CrossEPG",
-									description=_("CrossEPG setup panel"),
-									where = PluginDescriptor.WHERE_MENU,
-									fnc = setup))
+	
+	if config.isQBOXHD():
+		plugins.append(PluginDescriptor(name="CrossEPG",
+										description=_("CrossEPG setup panel"),
+										where = PluginDescriptor.WHERE_PLUGINMENU,
+										fnc = crossepg_main.setup))
+	else:
+		plugins.append(PluginDescriptor(name="CrossEPG",
+										description=_("CrossEPG setup panel"),
+										where = PluginDescriptor.WHERE_MENU,
+										fnc = setup))
 										
 	plugins.append(PluginDescriptor(name="CrossEPG Auto",
 									description = _("CrossEPG automatic actions"),
