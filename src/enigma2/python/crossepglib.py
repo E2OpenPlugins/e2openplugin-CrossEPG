@@ -16,7 +16,7 @@ import _enigma
 # 0 simple epgcache.load() patch
 # 1 edg nemesis patch
 # 2 oudeis patch
-# 3 crossepg v2 patch
+# 3 crossepg v2.1 patch
 def getEPGPatchType():
 	try:
 		xepgpatch = new.instancemethod(_enigma.eEPGCache_crossepgImportEPGv21,None,eEPGCache)

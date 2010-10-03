@@ -59,11 +59,15 @@ epgdb_title_t *epgdb_titles_set_description (epgdb_title_t *title, char *descrip
 	int length = strlen (description);
 	uint32_t crc = crc32 ((unsigned char*)description, length);
 	if (title->description_length == length && title->description_crc == crc) return title;
-	title->changed = true;
+	if (!title->changed)
+	{
+		title->changed = true;
+		title->revision++;
+	}
 	title->description_length = length;
 	title->description_crc = crc;
 	epgdb_index_t *index = epgdb_index_add (title->description_crc, title->description_length, &added);
-	
+
 	if (added)
 	{
 		FILE *fd = epgdb_get_fdd ();
@@ -87,7 +91,11 @@ epgdb_title_t *epgdb_titles_set_long_description (epgdb_title_t *title, char *de
 	uint32_t crc = crc32 ((unsigned char*)description, length);
 	
 	if (title->description_length == length && title->description_crc == crc) return title;
-	title->changed = true;
+	if (!title->changed)
+	{
+		title->changed = true;
+		title->revision++;
+	}
 	title->long_description_length = length;
 	title->long_description_crc = crc;
 	epgdb_index_t *index = epgdb_index_add (title->long_description_crc, title->long_description_length, &added);
@@ -194,6 +202,7 @@ epgdb_title_t *epgdb_titles_add (epgdb_channel_t *channel, epgdb_title_t *title)
 	title->long_description_crc = 0;
 	title->long_description_seek = 0;
 	title->changed = true;
+	title->revision = 0;
 	
 	/* add into list */				
 	if (channel->title_first == NULL)
@@ -212,7 +221,6 @@ epgdb_title_t *epgdb_titles_add (epgdb_channel_t *channel, epgdb_title_t *title)
 			{
 				if (tmp->length != title->length ||
 					tmp->event_id != title->event_id ||
-					tmp->length != title->length ||
 					tmp->genre_id != title->genre_id)
 				{
 					tmp->event_id = title->event_id;
@@ -222,6 +230,7 @@ epgdb_title_t *epgdb_titles_add (epgdb_channel_t *channel, epgdb_title_t *title)
 					tmp->iso_639_2 = title->iso_639_2;
 					tmp->iso_639_3 = title->iso_639_3;
 					tmp->changed = 1;
+					tmp->revision++;
 				}
 				_free (title);
 				title = tmp;
