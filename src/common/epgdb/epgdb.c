@@ -23,35 +23,37 @@
 
 typedef struct epgdb_channel_header_s
 {
-	unsigned short int		nid;
-	unsigned short int 		tsid;
-	unsigned short int		sid;
+	uint16_t	nid;
+	uint16_t	tsid;
+	uint16_t	sid;
 } epgdb_channel_header_t;
 
 typedef struct epgdb_title_header_s
 {
-	unsigned short int		event_id;
-	time_t					start_time;
-	unsigned short int		mjd;
-	unsigned short int		length;
-	unsigned char			genre_id;
-	unsigned char			genre_sub_id;
-	uint32_t				description_crc;
-	unsigned short int		description_length;
-	unsigned int			description_seek;
-	uint32_t				long_description_crc;
-	unsigned short int		long_description_length;
-	unsigned int			long_description_seek;
-	unsigned char			iso_639_1;
-	unsigned char			iso_639_2;
-	unsigned char			iso_639_3;
+	uint16_t	event_id;
+	uint16_t	mjd;
+	time_t		start_time;
+	uint16_t	length;
+	uint8_t		genre_id;
+	uint8_t		flags;
+	uint32_t	description_crc;
+	uint32_t	description_seek;
+	uint32_t	long_description_crc;
+	uint32_t	long_description_seek;
+	uint16_t	description_length;
+	uint16_t	long_description_length;
+	uint8_t		iso_639_1;
+	uint8_t		iso_639_2;
+	uint8_t		iso_639_3;
+	uint8_t		revision;
+
 } epgdb_title_header_t;
 
 typedef struct epgdb_index_header_s
 {
-	uint32_t			crc;
-	unsigned short int	length;
-	unsigned int		seek;
+	uint32_t	crc;
+	uint32_t	seek;
+	uint16_t	length;
 } epgdb_index_header_t;
 
 static FILE *fd_h = NULL;
@@ -282,7 +284,7 @@ bool epgdb_load ()
 	char tmp[256];
 	unsigned char revision;
 	int channels_count, i, j, aliases_groups_count, indexes_count;
-	time_t min = time (NULL) - (60*60*6);
+	time_t now = time (NULL);
 	
 	epgdb_index_init ();
 	
@@ -331,7 +333,7 @@ bool epgdb_load ()
 		{
 			epgdb_title_t *title = _malloc (sizeof (epgdb_title_t));
 			fread (title, sizeof (epgdb_title_header_t), 1, fd_h);
-			if (title->start_time > min)
+			if (title->start_time > (now - (60*60*48)))
 			{
 				title->prev = NULL;
 				title->next = NULL;

@@ -116,15 +116,6 @@ static int xmltv_parser_get_mjd (time_t value)
 
 static void xmltv_parser_add_event ()
 {
-	//time_t now = time(NULL);
-	//if (current_starttime < now)
-	//{
-	//	if (memcmp(current_title+1, "2030", 4) == 0)
-	//	{
-	//		log_add ("%d %s", current_starttime, current_title+1);
-	//	}
-	//}
-
 	xmltv_channel_t* channel = NULL;
 	
 	if (current_title_iso639[0] == '\0' && current_title_iso639[1] == '\0' && current_title_iso639[2] == '\0')
@@ -150,7 +141,8 @@ static void xmltv_parser_add_event ()
 		title->mjd = xmltv_parser_get_mjd (current_starttime);
 		title->length = current_stoptime - current_starttime;
 		title->genre_id = 0;
-		title->genre_sub_id = 0;
+		title->flags = 0;
+		SET_UTF8(title->flags);
 		title->iso_639_1 = current_title_iso639[0];
 		title->iso_639_2 = current_title_iso639[1];
 		title->iso_639_3 = current_title_iso639[2];
@@ -212,9 +204,9 @@ static void processNode (xmlTextReaderPtr reader)
 							if (title && is_title_selected)
 							{
 								if (current_title) _free (current_title); // theorically not neccessary.. but in case if
-								current_title = _malloc (strlen ((char*)title) + 2);
-								current_title[0] = 0x15; // this mean it's an utf-8 string
-								strcpy (current_title+1, (char*)title);
+								current_title = _malloc (strlen ((char*)title) + 1);
+								//current_title[0] = 0x15; // this mean it's an utf-8 string
+								strcpy (current_title, (char*)title);
 							}
 						}
 					}
@@ -249,9 +241,9 @@ static void processNode (xmlTextReaderPtr reader)
 							if (desc && is_desc_selected)
 							{
 								if (current_desc) _free (current_desc); // theorically not neccessary.. but in case if
-								current_desc = _malloc (strlen ((char*)desc) + 2);
-								current_desc[0] = 0x15; // this mean it's an utf-8 string
-								strcpy (current_desc+1, (char*)desc);
+								current_desc = _malloc (strlen ((char*)desc) + 1);
+								//current_desc[0] = 0x15; // this mean it's an utf-8 string
+								strcpy (current_desc, (char*)desc);
 							}
 						}
 					}

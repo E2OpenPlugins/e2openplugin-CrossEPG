@@ -143,7 +143,8 @@ bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *st
 		title->start_time = atoi (csvtok (NULL, ','));
 		title->length = atoi (csvtok (NULL, ','));
 		title->genre_id = 0;
-		title->genre_sub_id = 0;
+		title->flags = 0;
+		//title->genre_sub_id = 0;
 		title->mjd = get_mjd (title->start_time);
 		title->iso_639_1 = 'e';		// default language... if different we set it later
 		title->iso_639_2 = 'n';
@@ -152,28 +153,14 @@ bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *st
 
 		tmp = csvtok (NULL, ',');
 		if (isUTF8 (tmp))
-		{
-			char *tmp2 = malloc (strlen (tmp) + 2);
-			tmp2[0] = 0x15;
-			strcpy (tmp2+1, tmp);
-			epgdb_titles_set_description (title, tmp2);
-			free (tmp2);
-		}
-		else
-			epgdb_titles_set_description (title, tmp);
+			SET_UTF8(title->flags);
+		epgdb_titles_set_description (title, tmp);
 
 		tmp = csvtok (NULL, ',');
 		if (isUTF8 (tmp))
-		{
-			char *tmp2 = malloc (strlen (tmp) + 2);
-			tmp2[0] = 0x15;
-			strcpy (tmp2+1, tmp);
-			epgdb_titles_set_long_description (title, tmp2);
-			free (tmp2);
-		}
-		else
-			epgdb_titles_set_long_description (title, tmp);
-		
+			SET_UTF8(title->flags);
+		epgdb_titles_set_long_description (title, tmp);
+
 		char *iso639 = csvtok (NULL, ',');
 		if (strlen (iso639) >= 3)
 		{
@@ -210,6 +197,7 @@ bool bin_read (char *file, char *label, void(*progress_callback)(int, int), void
 	
 	while (fgets (line, sizeof(line), fd)) 
 	{
+		char *tmp;
 		char nlabel[256];
 		int nid = atoi (csvtok (line, ','));
 		int tsid = atoi (csvtok (NULL, ','));
@@ -223,15 +211,23 @@ bool bin_read (char *file, char *label, void(*progress_callback)(int, int), void
 		title->start_time = atoi (csvtok (NULL, ','));
 		title->length = atoi (csvtok (NULL, ','));
 		title->genre_id = 0;
-		title->genre_sub_id = 0;
+		title->flags = 0;
+		//title->genre_sub_id = 0;
 		title->mjd = get_mjd (title->start_time);
 		title->iso_639_1 = 'e';		// default language... if different we set it later
 		title->iso_639_2 = 'n';
 		title->iso_639_3 = 'g';
 		title = epgdb_titles_add (channel, title);
 
-		epgdb_titles_set_description (title, csvtok (NULL, ','));
-		epgdb_titles_set_long_description (title, csvtok (NULL, ','));
+		tmp = csvtok (NULL, ',');
+		if (isUTF8 (tmp))
+			SET_UTF8(title->flags);
+		epgdb_titles_set_description (title, tmp);
+
+		tmp = csvtok (NULL, ',');
+		if (isUTF8 (tmp))
+			SET_UTF8(title->flags);
+		epgdb_titles_set_long_description (title, tmp);
 		
 		char *iso639 = csvtok (NULL, ',');
 		if (strlen (iso639) >= 3)

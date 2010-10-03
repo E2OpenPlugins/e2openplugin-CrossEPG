@@ -154,7 +154,8 @@ void opentv_read_titles (unsigned char *data, unsigned int length, bool huffman_
 				title->mjd = mjd_time;
 				title->length = ((data[offset + 4] << 9) | (data[offset + 5] << 1));
 				title->genre_id = data[offset + 6];
-				title->genre_sub_id = 0;
+				title->flags = 0;
+				//title->genre_sub_id = 0;
 				title->iso_639_1 = 'e';		// TODO: load language from provider configuration
 				title->iso_639_2 = 'n';
 				title->iso_639_3 = 'g';

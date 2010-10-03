@@ -3,27 +3,34 @@
 
 #include <stdint.h>
 
-#define DB_REVISION	0x06
+#define DB_REVISION	0x07
+
+#define FLAG_UTF8 0x01 // 0000 0001
+
+#define SET_UTF8(x)		(x |= FLAG_UTF8)
+#define UNSET_UTF8(x)	(x &= (~FLAG_UTF8))
+#define IS_UTF8(x)		(x & FLAG_UTF8)
 
 typedef struct epgdb_title_s
 {
-	/* same element of epgdb_title_header_t */
-	unsigned short int		event_id;
-	time_t					start_time;
-	unsigned short int		mjd;
-	unsigned short int		length;
-	unsigned char			genre_id;
-	unsigned char			genre_sub_id;
-	uint32_t				description_crc;
-	unsigned short int		description_length;
-	unsigned int			description_seek;
-	uint32_t				long_description_crc;
-	unsigned short int		long_description_length;
-	unsigned int			long_description_seek;
-	unsigned char			iso_639_1;
-	unsigned char			iso_639_2;
-	unsigned char			iso_639_3;
-	
+	/* same elements of epgdb_title_header_t */
+	uint16_t	event_id;
+	uint16_t	mjd;
+	time_t		start_time;
+	uint16_t	length;
+	uint8_t		genre_id;
+	uint8_t		flags;
+	uint32_t	description_crc;
+	uint32_t	description_seek;
+	uint32_t	long_description_crc;
+	uint32_t	long_description_seek;
+	uint16_t	description_length;
+	uint16_t	long_description_length;
+	uint8_t		iso_639_1;
+	uint8_t		iso_639_2;
+	uint8_t		iso_639_3;
+	uint8_t		revision;
+
 	/* other elements */
 	bool					changed;
 	struct epgdb_title_s	*prev;
@@ -33,9 +40,9 @@ typedef struct epgdb_title_s
 typedef struct epgdb_index_s
 {
 	/* same element of epgdb_index_header_t */
-	uint32_t			crc;
-	unsigned short int	length;
-	unsigned int		seek;
+	uint32_t	crc;
+	uint32_t	seek;
+	uint16_t	length;
 
 	/* other elements */
 	unsigned char			used;
@@ -45,17 +52,17 @@ typedef struct epgdb_index_s
 
 typedef struct epgdb_alias_s
 {
-	unsigned short int		nid;
-	unsigned short int		tsid;
-	unsigned short int		sid;
+	uint16_t	nid;
+	uint16_t	tsid;
+	uint16_t	sid;
 } epgdb_alias_t;
 
 typedef struct epgdb_channel_s
 {
 	/* same element of epgdb_channel_header_t */
-	unsigned short int		nid;
-	unsigned short int		tsid;
-	unsigned short int		sid;
+	uint16_t	nid;
+	uint16_t	tsid;
+	uint16_t	sid;
 
 	/* other elements */
 	struct epgdb_channel_s	*prev;
