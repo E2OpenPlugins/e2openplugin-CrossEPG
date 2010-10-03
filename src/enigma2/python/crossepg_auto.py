@@ -211,7 +211,7 @@ class CrossEPG_Auto(Screen):
 						os.system("rm /tmp/crossepg.standby")
 					print "[CrossEPG_Auto] rebooting"
 					from Screens.Standby import TryQuitMainloop
-					session.open(TryQuitMainloop, 3)
+					self.session.open(TryQuitMainloop, 3)
 				else:
 					self.timer.start(self.POLL_TIMER, 1)
 		else:

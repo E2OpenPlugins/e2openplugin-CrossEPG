@@ -54,7 +54,7 @@ class CrossEPG_Main:
 			else:
 				if self.config.download_manual_reboot:
 					from Screens.Standby import TryQuitMainloop
-					session.open(TryQuitMainloop, 3)
+					self.session.open(TryQuitMainloop, 3)
 				else:
 					crossepg_auto.lock = False
 		else:
