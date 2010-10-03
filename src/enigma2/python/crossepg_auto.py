@@ -42,6 +42,10 @@ class CrossEPG_Auto(Screen):
 			os.system("rm -f /tmp/crossepg.standby")
 			print "[CrossEPG_Auto] coming back in standby in 30 seconds"
 			self.standbyTimer.start(30000, 1)
+			
+		self.config.load()
+		if self.config.force_load_on_boot:
+			self.loader()
 
 	def init(self, session):
 		self.session = session
