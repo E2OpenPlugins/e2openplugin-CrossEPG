@@ -19,7 +19,7 @@ import _enigma
 # 3 crossepg v2 patch
 def getEPGPatchType():
 	try:
-		xepgpatch = new.instancemethod(_enigma.eEPGCache_crossepgImportEPG,None,eEPGCache)
+		xepgpatch = new.instancemethod(_enigma.eEPGCache_crossepgImportEPGv21,None,eEPGCache)
 		return 3
 	except Exception, e:
 		pass

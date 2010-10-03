@@ -56,7 +56,7 @@ class CrossEPG_Loader(Screen):
 		
 		# check for common patches
 		try:
-			self.xepgpatch = new.instancemethod(_enigma.eEPGCache_crossepgImportEPG,None,eEPGCache)
+			self.xepgpatch = new.instancemethod(_enigma.eEPGCache_crossepgImportEPGv21,None,eEPGCache)
 			print "[CrossEPG_Loader] patch crossepg v2 found"
 		except Exception, e:
 			self.xepgpatch = None
