@@ -1,5 +1,6 @@
 from enigma import getDesktop, eTimer
 
+from Components.config import config
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar

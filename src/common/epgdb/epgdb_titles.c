@@ -16,24 +16,11 @@
 #include "epgdb_index.h"
 #include "epgdb_titles.h"
 
-/*
-static int _get_mjd (time_t value)
-{
-	struct tm valuetm;
-	int l = 0;
-	gmtime_r (&value, &valuetm);
-	if (valuetm.tm_mon <= 1)	// Jan or Feb
-		l = 1;
-	return (14956 + valuetm.tm_mday + ((valuetm.tm_year - l) * 365.25) + ((valuetm.tm_mon + 2 + l * 12) * 30.6001));
-}
-*/
-
 char *epgdb_read_description (epgdb_title_t *title)
 {
 	char *ret = _malloc (title->description_length + 1);
 	memset (ret, '\0', title->description_length + 1);
-	//epgdb_index_t *index = epgdb_index_get_by_crc_length (title->description_crc, title->description_length);
-	//if (index == NULL) return ret;
+
 	if (epgdb_get_fdd () == NULL) return ret;
 	fseek (epgdb_get_fdd (), title->description_seek, SEEK_SET);
 	fread (ret, title->description_length, 1, epgdb_get_fdd ());
@@ -44,8 +31,7 @@ char *epgdb_read_long_description (epgdb_title_t *title)
 {
 	char *ret = _malloc (title->long_description_length + 1);
 	memset (ret, '\0', title->long_description_length + 1);
-	//epgdb_index_t *index = epgdb_index_get_by_crc_length (title->long_description_crc, title->long_description_length);
-	//if (index == NULL) return ret;
+
 	if (epgdb_get_fdd () == NULL) return ret;
 	
 	fseek (epgdb_get_fdd (), title->long_description_seek, SEEK_SET);
