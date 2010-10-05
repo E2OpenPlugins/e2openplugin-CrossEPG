@@ -166,9 +166,13 @@ static void write_titles (epgdb_channel_t *channel, FILE *fd)
 		if (strlen (ldescription) > 0)
 		{
 			if (IS_UTF8(title->flags))
+			{
 				if (strlen (ldescription) > (245*16)) ldescription[245*16] = '\0';
+			}
 			else
+			{
 				if (strlen (ldescription) > (246*16)) ldescription[246*16] = '\0';
+			}
 			ldesc_t *ldesc = long_desc (ldescription, title->iso_639_1, title->iso_639_2, title->iso_639_3, IS_UTF8(title->flags));
 			
 			for (i=0; i<ldesc->count; i++)
