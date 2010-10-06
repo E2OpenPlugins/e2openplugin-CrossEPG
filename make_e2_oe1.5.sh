@@ -1,8 +1,10 @@
 #!/bin/sh
 CROSS=/opt/dmm/dm800/build/tmp/cross/mipsel/bin/mipsel-oe-linux-
-CFLAGS+=-I/opt/dmm/dm800/build/tmp/staging/mipsel-oe-linux/usr/include/libxml2 \
+CFLAGS+="-I/opt/dmm/dm800/build/tmp/staging/mipsel-oe-linux/usr/include/libxml2 \
+	-I/opt/dmm/dm800/build/tmp/staging/mipsel-oe-linux/usr/include/python2.6" \
 CC=${CROSS}gcc \
 STRIP=${CROSS}strip \
+SWIG=/opt/dmm/dm800/build/tmp/staging/i686-linux/usr/bin/swig \
 make
 if [ $? != 0 ]; then
 	echo compile error

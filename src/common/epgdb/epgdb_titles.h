@@ -1,7 +1,9 @@
 #ifndef _EPGDB_TITLES_H_
 #define _EPGDB_TITLES_H_
 
-//void epgdb_title__free (epgdb_title_t *title);
+epgdb_title_t *epgdb_title_alloc ();
+void epgdb_title_free (epgdb_title_t *title);
+int epgdb_calculate_mjd (time_t value);
 int epgdb_titles_count (epgdb_channel_t *channel);
 char *epgdb_read_description (epgdb_title_t *title);
 char *epgdb_read_long_description (epgdb_title_t *title);

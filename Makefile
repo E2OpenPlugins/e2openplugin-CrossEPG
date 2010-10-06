@@ -38,6 +38,9 @@ IMPORTER_BIN = bin/crossepg_importer
 EXPORTER_BIN = bin/crossepg_exporter
 XMLTV_BIN = bin/crossepg_xmltv
 
+SWIGS_OBJS = src/common/crossepg_wrap.o
+SWIGS_LIBS = bin/_crossepg.so
+
 VERSION_HEADER = src/version.h
 VERSION_PYTHON = src/enigma2/python/version.py
 
@@ -50,7 +53,7 @@ FTP_HOST = 172.16.1.139
 FTP_USER = root
 FTP_PASSWORD = sifteam
 
-all: clean $(CONVERTER_BIN) $(DBINFO_BIN) $(DOWNLOADER_BIN) $(EPGCOPY_BIN) $(IMPORTER_BIN) $(EXPORTER_BIN) $(XMLTV_BIN)
+all: clean $(CONVERTER_BIN) $(DBINFO_BIN) $(DOWNLOADER_BIN) $(EPGCOPY_BIN) $(IMPORTER_BIN) $(EXPORTER_BIN) $(XMLTV_BIN) $(SWIGS_LIBS)
 
 $(BIN_DIR):
 	mkdir -p $@
@@ -59,8 +62,12 @@ $(VERSION_HEADER):
 	echo "#define RELEASE \"$(VERSION) (svn $(SVN))\"" > $(VERSION_HEADER)
 	echo "version = \"$(VERSION) (svn $(SVN))\"" > $(VERSION_PYTHON)
 
+$(SWIGS_OBJS):
+	$(SWIG) -threads -python $(@:_wrap.o=.i)
+	$(CC) $(CFLAGS) -c -fpic -o $@ $(@:.o=.c)
+	
 $(OBJS): $(VERSION_HEADER) $(BIN_DIR)
-	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
+	$(CC) $(CFLAGS) -c -fpic -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
 
 $(CONVERTER_OBJS):
 	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
@@ -80,6 +87,9 @@ $(EXPORTER_OBJS):
 $(XMLTV_OBJS):
 	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
 
+$(SWIGS_LIBS): $(SWIGS_OBJS)
+	$(CC) $(LDFLAGS) -shared -o $@ $(OBJS) $(SWIGS_OBJS) -lxml2 -lz -lm -lpthread
+	
 $(DBINFO_OBJS):
 	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
 
@@ -112,7 +122,10 @@ $(XMLTV_BIN): $(OBJS) $(XMLTV_OBJS)
 	$(STRIP) $@
 	
 clean:
-	rm -f $(OBJS) $(CONVERTER_OBJS) $(DOWNLOADER_OBJS) $(EPGCOPY_OBJS) $(IMPORTER_OBJS) $(EXPORTER_OBJS) $(XMLTV_OBJS) $(DBINFO_OBJS) $(CONVERTER_BIN) $(DBINFO_BIN) $(DOWNLOADER_BIN) $(EPGCOPY_BIN) $(IMPORTER_BIN) $(EXPORTER_BIN) $(XMLTV_BIN) $(VERSION_HEADER)
+	rm -f $(OBJS) $(CONVERTER_OBJS) $(DOWNLOADER_OBJS) $(EPGCOPY_OBJS) $(IMPORTER_OBJS) \
+	$(EXPORTER_OBJS) $(XMLTV_OBJS) $(DBINFO_OBJS) $(CONVERTER_BIN) $(DBINFO_BIN) $(DOWNLOADER_BIN) \
+	$(EPGCOPY_BIN) $(IMPORTER_BIN) $(EXPORTER_BIN) $(XMLTV_BIN) $(VERSION_HEADER) \
+	$(SWIGS_OBJS) $(SWIGS_LIBS)
 
 install:
 	install -d $(D)/usr/crossepg/aliases
@@ -121,6 +134,7 @@ install:
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/images
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES
+	install -d $(D)/usr/lib/python2.6/lib-dynload
 	install -m 755 bin/crossepg_dbconverter $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_dbinfo $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_downloader $(D)/usr/crossepg/
@@ -134,8 +148,13 @@ install:
 	install -m 644 src/enigma2/python/*.py $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
 	install -m 644 src/enigma2/python/skins/*.xml $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins/
 	install -m 644 src/enigma2/python/images/*.png $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/images/
+	install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.6
+	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.6/lib-dynload
 
 remote-install:
+	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/lib/python2.6 src/common/crossepg.py
+	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/lib/python2.6/lib-dynload bin/_crossepg.so
+
 	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/crossepg bin/crossepg_dbconverter
 	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/crossepg bin/crossepg_dbinfo
 	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/crossepg bin/crossepg_downloader

@@ -1,8 +1,11 @@
 #!/bin/sh
 CROSS=/opt/STM/STLinux-2.3/devkit/sh4/bin/sh4-linux-
 CFLAGS+=-I/opt/STM/STLinux-2.3/devkit/sh4/target/usr/include/libxml2/ \
+CFLAGS+="-I/opt/STM/STLinux-2.3/devkit/sh4/target/usr/include/libxml2 \
+	-I/opt/STM/STLinux-2.3/devkit/sh4/target/usr/include/python2.6" \
 CC=${CROSS}gcc \
 STRIP=${CROSS}strip \
+SWIG=swig \
 make
 if [ $? != 0 ]; then
 	echo compile error
