@@ -1,87 +1,82 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma2 - crossepg\n"
+"Project-Id-Version: enigma2 - CrossEPG\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-06 12:54+0100\n"
+"POT-Creation-Date: 2010-10-06 13:03+0100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Spaeleus <spaeleus@croci.org>\n"
-"Language-Team: www.linsat.net <spaeleus@croci.org>\n"
+"Last-Translator: \n"
+"Language-Team: SIFTeam <http://forum.sifteam.eu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Italian\n"
-"X-Poedit-Country: ITALY\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Basepath: .../src\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-SearchPath-0: .../src\n"
 
 #: .../src/enigma2/python/crossepg_info.py:48
 #: .../src/enigma2/python/crossepg_providers.py:41
 #: .../src/enigma2/python/crossepg_about.py:45
 #: .../src/enigma2/python/crossepg_setup.py:83
 msgid "Back"
-msgstr "Indietro"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:63
 #, python-format
 msgid "Headers db size: %s"
-msgstr "Dimensioni db headers: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:65
 #, python-format
 msgid "Descriptors db size: %s"
-msgstr "Dimensioni db descrizioni: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:67
 #, python-format
 msgid "Indexes db size: %s"
-msgstr "Dimensioni db indici: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:69
 #, python-format
 msgid "Aliases db size: %s"
-msgstr "Dimensioni db alias: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:71
 #, python-format
 msgid "Total size: %s"
-msgstr "Dimensioni totali: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:73
 #, python-format
 msgid "Channels count: %s"
-msgstr "Numero canali: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:75
 #, python-format
 msgid "Events count: %s"
-msgstr "Numero eventi: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:77
 #, python-format
 msgid "Hashes count: %s"
-msgstr "Numero chiavi: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:79
 #, python-format
 msgid "Creation time: %s"
-msgstr "Ora di creazione: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:81
 #, python-format
 msgid "Last update time: %s"
-msgstr "Ora ultimo aggiornamento: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_info.py:83
 #, python-format
 msgid "Version: %s"
-msgstr "Versione: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_loader.py:32
 #: .../src/enigma2/python/crossepglib.py:544
 msgid "Loading data"
-msgstr "Caricamento dati..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_loader.py:199
 #: .../src/enigma2/python/crossepg_importer.py:110
@@ -89,99 +84,99 @@ msgstr "Caricamento dati..."
 #: .../src/enigma2/python/crossepg_converter.py:98
 #, python-format
 msgid "CrossEPG error: %s"
-msgstr "Errore CrossEPG: %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_providers.py:42
 #: .../src/enigma2/python/crossepg_providers.py:90
 msgid "Enable"
-msgstr "Abilitare"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_providers.py:43
 msgid "Download"
-msgstr "Download"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_providers.py:88
 msgid "Disable"
-msgstr "Disabilitare"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_importer.py:30
 msgid "Starting importer"
-msgstr "Avvio importazione..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_importer.py:81
 msgid "Parsing"
-msgstr "Analisi..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_importer.py:85
 msgid "Downloading"
-msgstr "Download..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:408
 msgid "Reading channels"
-msgstr "Lettura canali..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:411
 msgid "Reading titles"
-msgstr "Lettura titoli..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:414
 msgid "Parsing titles"
-msgstr "Analisi titoli..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:417
 msgid "Reading summaries"
-msgstr "Lettura sommari..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:420
 msgid "Parsing summaries"
-msgstr "Analisi sommari..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:423
 msgid "Downloading channels list"
-msgstr "Download elenco canali"
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:426
 msgid "Deflating channels list"
-msgstr "Espansione elenco canali"
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:429
 msgid "Parsing channels list"
-msgstr "Analisi elenco canali"
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:432
 msgid "Downloading events"
-msgstr "Download eventi"
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:435
 msgid "Deflating events"
-msgstr "Espansione eventi"
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:438
 msgid "Parsing events"
-msgstr "Analisi eventi"
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:440
 #, python-format
 msgid "%s channels"
-msgstr "%s canali"
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:444
 #, python-format
 msgid "Read %s"
-msgstr "Lettura %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:446
 #, python-format
 msgid "%s of %s"
-msgstr "%s di %s"
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:528
 msgid "Converting data"
-msgstr "Conversione dati..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepglib.py:560
 msgid "Saving data"
-msgstr "Salvataggio dati..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_about.py:55
 #, python-format
@@ -194,135 +189,120 @@ msgid ""
 "\n"
 "For XMLTV sources many thanks to:"
 msgstr ""
-"SIFTeam CrossEPG %s (c) 2009-2010 Sandro Cavazzoni\n"
-"http://code.google.com/p/crossepg/\n"
-"\n"
-"Per le traduzioni, si ringrazia:\n"
-"Spaeleus (italiano)\n"
-"\n"
-"Per i sorgenti XMLTV si ringrazia:"
 
 #: .../src/enigma2/python/crossepg_about.py:56
 msgid ""
 "Rytec (http://www.rytec.be)\n"
 "19 xmltv providers for many countries"
 msgstr ""
-"Rytec (http://www.rytec.be)\n"
-"19 provider xmltv per molti Paesi"
 
 #: .../src/enigma2/python/crossepg_about.py:57
 msgid ""
 "Isakota (http://www.krkadoni.com/)\n"
 "Provider for Ex Yugoslavia"
 msgstr ""
-"Isakota (http://www.krkadoni.com/)\n"
-"Provider per la ex Yugoslavia"
 
 #: .../src/enigma2/python/plugin.py:18
 #: .../src/enigma2/python/plugin.py:23
 #: .../src/enigma2/python/plugin.py:28
 msgid "An EPG downloader"
-msgstr "Un downloader EPG"
+msgstr ""
 
 #: .../src/enigma2/python/plugin.py:34
 #: .../src/enigma2/python/plugin.py:39
 msgid "CrossEPG setup panel"
-msgstr "Pannello di configurazione CrossEPG"
+msgstr ""
 
 #: .../src/enigma2/python/plugin.py:44
 msgid "CrossEPG automatic actions"
-msgstr "Automatismi di CrossEPG"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_downloader.py:32
 msgid "Starting downloader"
-msgstr "Avvio download..."
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:57
 msgid "Internal flash"
-msgstr "Flash interna"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:75
 #: .../src/enigma2/python/crossepg_setup.py:154
 msgid "disabled"
-msgstr "Disabilitato"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:76
 #: .../src/enigma2/python/crossepg_setup.py:152
 msgid "once a day"
-msgstr "Una volta al giorno"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:77
 #: .../src/enigma2/python/crossepg_setup.py:150
 msgid "every hour (only in standby)"
-msgstr "Ogni ora (solo se in standby)"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:144
 msgid "main lamedb"
-msgstr "Lamedb principale"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:156
 msgid "Storage device"
-msgstr "Dispositivo per l'archiviazione"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:158
 msgid "Preferred lamedb"
-msgstr "Lamedb preferito"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:160
 msgid "Enable csv import"
-msgstr "Abilitare importazione csv"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:161
 msgid "Force epg reload on boot"
-msgstr "Forzare il caricamento epg all'avvio"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:162
 msgid "Download on tune"
-msgstr "Download su sintonia"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:163
 msgid "Scheduled download"
-msgstr "Download programmato"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:168
 msgid "Scheduled download at"
-msgstr "Download programmato alle"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:171
 msgid "Reboot after a scheduled download"
-msgstr "Riavviare dopo un download programmato"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:172
 msgid "Reboot after a manual download"
-msgstr "Riavviare dopo uno scaricamento manuale"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:173
 msgid "Show as plugin"
-msgstr "Mostrare come plugin"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:174
 msgid "Show as extension"
-msgstr "Mostrare come estensione"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:180
 msgid "No disk found. Please install an hard drive or an usb memory storage and try again."
-msgstr "Nessun disco trovato. Installare un hdd o un dispositivo di archiviazione usb e riprovare."
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:238
 msgid ""
 "Drive where you save data.\n"
 "The drive MUST be mounted in rw"
 msgstr ""
-"Supporto su cui salvare i dati.\n"
-"Il supporto DEVE essere montato in modalità rw"
 
 #: .../src/enigma2/python/crossepg_setup.py:240
 msgid ""
 "Lamedb used for epg.dat conversion.\n"
 "This option doesn't work with crossepg patch v2"
 msgstr ""
-"Lamedb usato per la conversione di epg.dat.\n"
-"Questa opzione non funziona con la patch crossepg v2"
 
 #: .../src/enigma2/python/crossepg_setup.py:242
 #, python-format
@@ -330,98 +310,90 @@ msgid ""
 "Import *.csv and *.bin from %s/import or %s/import\n"
 "(*.bin are binaries with a csv as stdout)"
 msgstr ""
-"Importare *.csv e *.bin da %s/import o da %s/import\n"
-"(*.bin sono file binari con un csv come stdout)"
 
 #: .../src/enigma2/python/crossepg_setup.py:244
 msgid ""
 "Reload epg at every boot.\n"
 "Normally it's not necessary but recover epg after an enigma2 crash"
 msgstr ""
-"Ricaricare l'epg a ogni riavvio.\n"
-"Normalmente non necessario, ricostruisce l'epg in caso di crash di enigma2"
 
 #: .../src/enigma2/python/crossepg_setup.py:246
 msgid ""
 "Only for opentv providers.\n"
 "If you zap on channel used from a provider it download the epg in background"
 msgstr ""
-"Solo per provider opentv.\n"
-"In caso di sintonia sul canale previsto, il download dell'epg avverrà in background"
 
 #: .../src/enigma2/python/crossepg_setup.py:249
 msgid ""
 "When the decoder is in standby opentv providers will be automatically downloaded every hour.\n"
 "XMLTV providers will be always downloaded only once a day"
 msgstr ""
-"Se il decoder si trova in standby, il download dell'epg di provider opentv verrà effettuato ogni ora.\n"
-"Il download dei dati di provider XMLTV verrà in ogni caso effettuato solo una volta al giorno"
 
 #: .../src/enigma2/python/crossepg_setup.py:251
 msgid "Download epg once a day"
-msgstr "Scaricare l'epg una volta al giorno"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:253
 msgid "Scheduled download disabled"
-msgstr "Download programmato disabilitato"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:255
 msgid "Time for scheduled daily download"
-msgstr "Ora per il download programmato"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:257
 msgid "Automatically reboot the decoder after a scheduled download"
-msgstr "Riavviare automaticamente il decoder dopo un download programmato"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:259
 msgid "Automatically reboot the decoder after a manual download"
-msgstr "Riavviare dopo un download manuale"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:261
 msgid "Show crossepg in plugin menu"
-msgstr "Mostrare nel menu plugin"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:263
 msgid "Show crossepg in extensions menu"
-msgstr "Mostrare nel menu estensioni"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:53
 msgid "Configure"
-msgstr "Configurazione"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:54
 msgid "XMLTV providers"
-msgstr "Provider XMLTV"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:55
 msgid "OpenTV providers"
-msgstr "Provider OpenTV"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:56
 msgid "Download now"
-msgstr "Download"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:57
 msgid "Force csv import now"
-msgstr "Forzare l'importazione csv"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:58
 msgid "Force epg.dat conversion now"
-msgstr "Forzare la conversione di epg.dat"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:59
 msgid "Force epg reload"
-msgstr "Forzare il caricamento epg"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:60
 msgid "Info about database"
-msgstr "Info sul database"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:61
 msgid "About"
-msgstr "Info"
+msgstr ""
 
 #: .../src/enigma2/python/crossepg_converter.py:30
 msgid "Starting converter"
-msgstr "Avvio conversione..."
+msgstr ""
 
