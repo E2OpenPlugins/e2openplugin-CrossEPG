@@ -35,18 +35,25 @@
             this.listViewTitles = new System.Windows.Forms.ListView();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonLoadDecoder = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSplitButtonLoadFile = new System.Windows.Forms.ToolStripSplitButton();
+            this.useLamedbFromDecoderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useLamedbFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonConfiguration = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonUTC = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonLocal = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabelCreation = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabelUpdate = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -117,61 +124,115 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
+            this.toolStripButtonLoadDecoder,
+            this.toolStripSplitButtonLoadFile,
             this.toolStripSeparator1,
-            this.toolStripButton2,
+            this.toolStripButtonConfiguration,
             this.toolStripSeparator2,
-            this.toolStripButton3});
+            this.toolStripButtonUTC,
+            this.toolStripButtonLocal});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(817, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // toolStripButtonLoadDecoder
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(112, 22);
-            this.toolStripButton1.Text = "Load from decoder";
+            this.toolStripButtonLoadDecoder.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonLoadDecoder.Image")));
+            this.toolStripButtonLoadDecoder.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonLoadDecoder.Name = "toolStripButtonLoadDecoder";
+            this.toolStripButtonLoadDecoder.Size = new System.Drawing.Size(128, 22);
+            this.toolStripButtonLoadDecoder.Text = "Load from decoder";
+            this.toolStripButtonLoadDecoder.Click += new System.EventHandler(this.toolStripButtonLoadDecoder_Click);
+            // 
+            // toolStripSplitButtonLoadFile
+            // 
+            this.toolStripSplitButtonLoadFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.useLamedbFromDecoderToolStripMenuItem,
+            this.useLamedbFromFileToolStripMenuItem});
+            this.toolStripSplitButtonLoadFile.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButtonLoadFile.Image")));
+            this.toolStripSplitButtonLoadFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButtonLoadFile.Name = "toolStripSplitButtonLoadFile";
+            this.toolStripSplitButtonLoadFile.Size = new System.Drawing.Size(113, 22);
+            this.toolStripSplitButtonLoadFile.Text = "Load from file";
+            this.toolStripSplitButtonLoadFile.ButtonClick += new System.EventHandler(this.toolStripSplitButtonLoadFile_ButtonClick);
+            // 
+            // useLamedbFromDecoderToolStripMenuItem
+            // 
+            this.useLamedbFromDecoderToolStripMenuItem.Name = "useLamedbFromDecoderToolStripMenuItem";
+            this.useLamedbFromDecoderToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.useLamedbFromDecoderToolStripMenuItem.Text = "Use lamedb from decoder";
+            this.useLamedbFromDecoderToolStripMenuItem.Click += new System.EventHandler(this.useLamedbFromDecoderToolStripMenuItem_Click);
+            // 
+            // useLamedbFromFileToolStripMenuItem
+            // 
+            this.useLamedbFromFileToolStripMenuItem.Name = "useLamedbFromFileToolStripMenuItem";
+            this.useLamedbFromFileToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.useLamedbFromFileToolStripMenuItem.Text = "Use lamedb from file";
+            this.useLamedbFromFileToolStripMenuItem.Click += new System.EventHandler(this.useLamedbFromFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripButton2
+            // toolStripButtonConfiguration
             // 
-            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(85, 22);
-            this.toolStripButton2.Text = "Load from file";
+            this.toolStripButtonConfiguration.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonConfiguration.Image")));
+            this.toolStripButtonConfiguration.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonConfiguration.Name = "toolStripButtonConfiguration";
+            this.toolStripButtonConfiguration.Size = new System.Drawing.Size(101, 22);
+            this.toolStripButtonConfiguration.Text = "Configuration";
+            this.toolStripButtonConfiguration.Click += new System.EventHandler(this.toolStripButtonConfiguration_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripButton3
+            // toolStripButtonUTC
             // 
-            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
-            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton3.Name = "toolStripButton3";
-            this.toolStripButton3.Size = new System.Drawing.Size(85, 22);
-            this.toolStripButton3.Text = "Configuration";
+            this.toolStripButtonUTC.Checked = true;
+            this.toolStripButtonUTC.CheckOnClick = true;
+            this.toolStripButtonUTC.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripButtonUTC.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonUTC.Image")));
+            this.toolStripButtonUTC.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonUTC.Name = "toolStripButtonUTC";
+            this.toolStripButtonUTC.Size = new System.Drawing.Size(72, 22);
+            this.toolStripButtonUTC.Text = "Utc time";
+            this.toolStripButtonUTC.CheckStateChanged += new System.EventHandler(this.toolStripButtonUTC_CheckStateChanged);
+            // 
+            // toolStripButtonLocal
+            // 
+            this.toolStripButtonLocal.CheckOnClick = true;
+            this.toolStripButtonLocal.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonLocal.Image")));
+            this.toolStripButtonLocal.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonLocal.Name = "toolStripButtonLocal";
+            this.toolStripButtonLocal.Size = new System.Drawing.Size(82, 22);
+            this.toolStripButtonLocal.Text = "Local time";
+            this.toolStripButtonLocal.CheckStateChanged += new System.EventHandler(this.toolStripButtonLocal_CheckStateChanged);
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabelCreation,
+            this.toolStripStatusLabelUpdate});
             this.statusStrip1.Location = new System.Drawing.Point(0, 474);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(817, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelCreation
+            // 
+            this.toolStripStatusLabelCreation.Name = "toolStripStatusLabelCreation";
+            this.toolStripStatusLabelCreation.Size = new System.Drawing.Size(0, 17);
+            // 
+            // toolStripStatusLabelUpdate
+            // 
+            this.toolStripStatusLabelUpdate.Name = "toolStripStatusLabelUpdate";
+            this.toolStripStatusLabelUpdate.Size = new System.Drawing.Size(0, 17);
             // 
             // FormMain
             // 
@@ -183,7 +244,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
-            this.Text = "CrossEPG Explorer";
+            this.Text = "SIFTeam CrossEPG Explorer";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -194,6 +255,8 @@
             this.tableLayoutPanel1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,11 +271,17 @@
         private System.Windows.Forms.TextBox textBoxDescription;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonLoadDecoder;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton toolStripButtonConfiguration;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButtonLoadFile;
+        private System.Windows.Forms.ToolStripMenuItem useLamedbFromDecoderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem useLamedbFromFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripButton toolStripButtonUTC;
+        private System.Windows.Forms.ToolStripButton toolStripButtonLocal;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelCreation;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelUpdate;
     }
 }
 

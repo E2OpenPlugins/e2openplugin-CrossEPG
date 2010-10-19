@@ -1,7 +1,24 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CrossEPG_Explorer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="device_ip" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.1.99</Value>
+    </Setting>
+    <Setting Name="device_username" Type="System.String" Scope="User">
+      <Value Profile="(Default)">root</Value>
+    </Setting>
+    <Setting Name="device_password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="lamedb_path" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/etc/enigma2/lamedb</Value>
+    </Setting>
+    <Setting Name="crossepg_path" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/hdd/crossepg</Value>
+    </Setting>
+    <Setting Name="need_upgrade" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

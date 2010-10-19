@@ -6,6 +6,7 @@ using System.Net;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 
 namespace CrossEPG_Explorer
 {
@@ -71,6 +72,7 @@ namespace CrossEPG_Explorer
 
         public bool LoadLameDBFromFTP(Uri lamedbUri, string username, string password)
         {
+            byte[] data;
             if (lamedbUri.Scheme != Uri.UriSchemeFtp)
                 return false;
 
@@ -79,47 +81,84 @@ namespace CrossEPG_Explorer
             request.Credentials = new NetworkCredential(username, password);
             try
             {
-                byte[] newFileData = request.DownloadData(lamedbUri.ToString());
-                string fileString = System.Text.Encoding.UTF8.GetString(newFileData);
-                string[] rows = fileString.Split('\n');
-                int count = 0;
-                while (count < rows.Length)
-                {
-                    string[] tmp = rows[count].Split(':');
-                    count++;
-
-                    if (tmp.Length != 6)
-                        continue;
-
-                    try
-                    {
-                        if (rows[count].Trim().Length > 0)
-                            channels.Add(new EpgChannelEntry(rows[count].Trim(),
-                                                UInt16.Parse(tmp[3], NumberStyles.AllowHexSpecifier),
-                                                UInt16.Parse(tmp[2], NumberStyles.AllowHexSpecifier),
-                                                UInt16.Parse(tmp[0], NumberStyles.AllowHexSpecifier)));
-                    }
-                    catch (FormatException e)
-                    {
-                        Debug.WriteLine(e.ToString());
-                    }
-
-                    count++;
-                }
+                data = request.DownloadData(lamedbUri.ToString());
             }
             catch (WebException e)
             {
                 MessageBox.Show(e.ToString(), "Error reading lamedb", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            ParseLamedb(data);
+            return true;
+        }
+
+        public bool LoadLameDBFromFile(string filename)
+        {
+            FileStream lamedb;
+            try
+            {
+                lamedb = File.Open(filename, FileMode.Open, FileAccess.Read);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Error reading lamedb", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            byte[] data = new byte[lamedb.Length];
+            int numBytesToRead = (int)lamedb.Length;
+            int numBytesRead = 0;
+
+            while (numBytesToRead > 0)
+            {
+                int n = lamedb.Read(data, numBytesRead, numBytesToRead);
+
+                if (n == 0)
+                    break;
+
+                numBytesRead += n;
+                numBytesToRead -= n;
+            }
+
+            ParseLamedb(data);
+            return true;
+        }
+
+        private void ParseLamedb(byte[] data)
+        {
+            string[] rows = Encoding.UTF8.GetString(data).Split('\n');
+            int count = 0;
+            while (count < rows.Length)
+            {
+                string[] tmp = rows[count].Split(':');
+                count++;
+                
+                if (tmp.Length != 6)
+                    continue;
+                
+                try
+                {
+                    if (rows[count].Trim().Length > 0)
+                        channels.Add(new EpgChannelEntry(rows[count].Trim(),
+                                        UInt16.Parse(tmp[3], NumberStyles.AllowHexSpecifier),
+                                        UInt16.Parse(tmp[2], NumberStyles.AllowHexSpecifier),
+                                        UInt16.Parse(tmp[0], NumberStyles.AllowHexSpecifier)));
+                }
+                catch (FormatException e)
+                {
+                    Debug.WriteLine(e.ToString());
+                }
+                
+                count++;
             }
 
             channels.Sort(new EpgChannelEntrySorter());
-            return true;
         }
 
         public bool LoadCrossEPGDBFromFTP(Uri headersUri, Uri descriptorsUri, string username, string password)
         {
             byte[] headersData, descriptorsData;
-            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-EN");
 
             if (headersUri.Scheme != Uri.UriSchemeFtp || descriptorsUri.Scheme != Uri.UriSchemeFtp)
                 return false;
@@ -138,6 +177,62 @@ namespace CrossEPG_Explorer
                 return false;
             }
 
+            return ParseCrossEPGDB(headersData, descriptorsData);
+        }
+
+        public bool LoadCrossEPGDBFromDir(string path)
+        {
+            byte[] headersData, descriptorsData;
+
+            FileStream headers, descriptors;
+            try
+            {
+                headers = File.Open(String.Format("{0}/crossepg.headers.db", path), FileMode.Open, FileAccess.Read);
+                descriptors = File.Open(String.Format("{0}/crossepg.descriptors.db", path), FileMode.Open, FileAccess.Read);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Error reading lamedb", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            headersData = new byte[headers.Length];
+            int numBytesToRead = (int)headers.Length;
+            int numBytesRead = 0;
+
+            while (numBytesToRead > 0)
+            {
+                int n = headers.Read(headersData, numBytesRead, numBytesToRead);
+
+                if (n == 0)
+                    break;
+
+                numBytesRead += n;
+                numBytesToRead -= n;
+            }
+
+            descriptorsData = new byte[descriptors.Length];
+            numBytesToRead = (int)descriptors.Length;
+            numBytesRead = 0;
+
+            while (numBytesToRead > 0)
+            {
+                int n = descriptors.Read(descriptorsData, numBytesRead, numBytesToRead);
+
+                if (n == 0)
+                    break;
+
+                numBytesRead += n;
+                numBytesToRead -= n;
+            }
+
+            return ParseCrossEPGDB(headersData, descriptorsData);
+        }
+
+        public bool ParseCrossEPGDB(byte[] headersData, byte[] descriptorsData)
+        {
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-EN");
+
             if (Encoding.ASCII.GetString(headersData, 0, 13) != "_xEPG_HEADERS")
             {
                 MessageBox.Show("Invalid db header", "Error reading crossepgdb", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -146,9 +241,10 @@ namespace CrossEPG_Explorer
 
             if (headersData[13] != 0x07)
             {
-                MessageBox.Show("Invalid db revision", "Error reading crossepgdb", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Invalid db revision (you need crossepg 0.5.9999 or newer)", "Error reading crossepgdb", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
+
             CreationTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             UpdateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 

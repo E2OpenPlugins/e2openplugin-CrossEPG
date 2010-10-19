@@ -52,7 +52,7 @@
 	<summary>
 		<codepage>1252</codepage>
 		<title>Installation Database</title>
-		<subject/>
+		<subject></subject>
 		<author>##ID_STRING3##</author>
 		<keywords>Installer,MSI,Database</keywords>
 		<comments>Contact:  Your local administrator</comments>
@@ -1057,12 +1057,13 @@
 		<col def="S0">Target</col>
 		<col def="I4">ExtendedType</col>
 		<col def="S255">ISComments</col>
-		<row><td>ISPreventDowngrade</td><td>19</td><td/><td>[IS_PREVENT_DOWNGRADE_EXIT]</td><td/><td>Exits install when a newer version of this product is found</td></row>
+		<row><td>ISPreventDowngrade</td><td>19</td><td/><td>[IS_PREVENT_DOWNGRADE_EXIT]</td><td/><td/></row>
 		<row><td>ISPrint</td><td>1</td><td>SetAllUsers.dll</td><td>PrintScrollableText</td><td/><td>Prints the contents of a ScrollableText control on a dialog.</td></row>
 		<row><td>ISRunSetupTypeAddLocalEvent</td><td>1</td><td>ISExpHlp.dll</td><td>RunSetupTypeAddLocalEvent</td><td/><td>Run the AddLocal events associated with the Next button on the Setup Type dialog.</td></row>
 		<row><td>ISSelfRegisterCosting</td><td>1</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterCosting</td><td/><td/></row>
 		<row><td>ISSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFiles</td><td/><td/></row>
 		<row><td>ISSelfRegisterFinalize</td><td>1</td><td>ISSELFREG.DLL</td><td>ISSelfRegisterFinalize</td><td/><td/></row>
+		<row><td>ISSetAllUsers</td><td>257</td><td>SetAllUsers.dll</td><td>SetAllUsers</td><td/><td/></row>
 		<row><td>ISUnSelfRegisterFiles</td><td>3073</td><td>ISSELFREG.DLL</td><td>ISUnSelfRegisterFiles</td><td/><td/></row>
 		<row><td>SetARPINSTALLLOCATION</td><td>51</td><td>ARPINSTALLLOCATION</td><td>[INSTALLDIR]</td><td/><td/></row>
 		<row><td>SetAllUsersProfileNT</td><td>51</td><td>ALLUSERSPROFILE</td><td>[%SystemRoot]\Profiles\All Users</td><td/><td/></row>
@@ -1142,7 +1143,7 @@
 		<row><td>ISMyProductDir</td><td>ISMyCompanyDir</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>ISYourDataBaseDir</td><td>INSTALLDIR</td><td>Database</td><td/><td>0</td><td/></row>
 		<row><td>LocalAppDataFolder</td><td>TARGETDIR</td><td>.:LocalA~1|LocalAppData</td><td/><td>0</td><td/></row>
-		<row><td>MY_PRODUCT_NAME</td><td>ProgramFilesFolder</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
+		<row><td>MY_PRODUCT_NAME</td><td>ProgramFilesFolder</td><td>CROSSE~1|CrossEPG Explorer</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
 		<row><td>NetHoodFolder</td><td>TARGETDIR</td><td>.:NetHood</td><td/><td>0</td><td/></row>
 		<row><td>PersonalFolder</td><td>TARGETDIR</td><td>.:Personal</td><td/><td>0</td><td/></row>
@@ -1163,8 +1164,6 @@
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
-		<row><td>crosse_1_crossepg_explorer_setup</td><td>sandro_1_sandro_cavazzoni</td><td>CROSSE~1|CrossEPG Explorer Setup</td><td/><td>1</td><td/></row>
-		<row><td>sandro_1_sandro_cavazzoni</td><td>ProgramMenuFolder</td><td>SANDRO~1|Sandro Cavazzoni</td><td/><td>1</td><td/></row>
 	</table>
 
 	<table name="DrLocator">
@@ -2717,6 +2716,7 @@
 		<col def="I2">Order</col>
 		<col def="I2">ISSetupLocation</col>
 		<col def="S255">ISReleaseFlags</col>
+		<row><td>_59858472_C454_409D_8878_F84AD73016FF_</td><td>&lt;ISProductFolder&gt;\SetupPrerequisites\Microsoft .NET Framework 4.0 Client (Web Download).prq</td><td/><td/><td/></row>
 	</table>
 
 	<table name="ISSetupType">
@@ -3561,7 +3561,7 @@
 		<row><td>IDS_PROGMSG_XML_REMOVE_FILE</td><td>1033</td><td>Removing XML file %s...</td><td>0</td><td/><td>-1658949151</td></row>
 		<row><td>IDS_PROGMSG_XML_ROLLBACK_FILES</td><td>1033</td><td>Rolling back XML file changes...</td><td>0</td><td/><td>-1658949151</td></row>
 		<row><td>IDS_PROGMSG_XML_UPDATE_FILE</td><td>1033</td><td>Updating XML file %s...</td><td>0</td><td/><td>-1658949151</td></row>
-		<row><td>IDS_SHORTCUT_DISPLAY_NAME4</td><td>1033</td><td>Launch |Built</td><td>0</td><td/><td>-1658918143</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME4</td><td>1033</td><td>CrossEPG Explorer</td><td>0</td><td/><td>-1524736896</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>-1658949151</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>-1658949151</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>-1658949151</td></row>
@@ -3955,6 +3955,20 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\setupicon.ico</td><td>0</td></row>
+		<row><td>_12C72FC5AE534FCC91E390BC0D748C40.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_50F4E0E7CB334FE69CA2706D77D968A3.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_57254FEEED8541AFB54AAE9F250BECEA.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_59FE0C961D8949E5A1273C37B36E9DA2.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_79456E74224A4BCEB8400D73B61CEBE0.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_85EA67BD84594885B65FBA4BF088A565.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_8D8CDDEDAB2F4580A02F1F15DE8293C1.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_8E99F1EE73FD44A1AFA9352703678517.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_97BDB79EC5B944F1A99CAAE876342D0D.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_BE4E0AFA649A4FA7B29E9BA682F0C57D.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_D5625935054A42588473F1EEC9167950.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_E670AA976F1B422680DED6FADEAF0C7E.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_E8F2473D9C274D2B8503483FF0FDE959.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_FEB014A881DF41EFA4C4E95E0B62589D.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -3995,11 +4009,12 @@
 		<row><td>DuplicateFiles</td><td/><td>4210</td><td>DuplicateFiles</td><td/></row>
 		<row><td>FileCost</td><td/><td>900</td><td>FileCost</td><td/></row>
 		<row><td>FindRelatedProducts</td><td>NOT ISSETUPDRIVEN</td><td>420</td><td>FindRelatedProducts</td><td/></row>
-		<row><td>ISPreventDowngrade</td><td>ISFOUNDNEWERPRODUCTVERSION</td><td>450</td><td>ISPreventDowngrade</td><td/></row>
+		<row><td>ISPreventDowngrade</td><td>ISFOUNDNEWERPRODUCTVERSION</td><td>450</td><td/><td/></row>
 		<row><td>ISRunSetupTypeAddLocalEvent</td><td>Not Installed And Not ISRUNSETUPTYPEADDLOCALEVENT</td><td>1050</td><td>ISRunSetupTypeAddLocalEvent</td><td/></row>
 		<row><td>ISSelfRegisterCosting</td><td/><td>2201</td><td/><td/></row>
 		<row><td>ISSelfRegisterFiles</td><td/><td>5601</td><td/><td/></row>
 		<row><td>ISSelfRegisterFinalize</td><td/><td>6601</td><td/><td/></row>
+		<row><td>ISSetAllUsers</td><td>Not Installed</td><td>10</td><td/><td/></row>
 		<row><td>ISUnSelfRegisterFiles</td><td/><td>2202</td><td/><td/></row>
 		<row><td>InstallFiles</td><td/><td>4000</td><td>InstallFiles</td><td/></row>
 		<row><td>InstallFinalize</td><td/><td>6600</td><td>InstallFinalize</td><td/></row>
@@ -4031,7 +4046,7 @@
 		<row><td>RegisterUser</td><td/><td>6000</td><td>RegisterUser</td><td/></row>
 		<row><td>RemoveDuplicateFiles</td><td/><td>3400</td><td>RemoveDuplicateFiles</td><td/></row>
 		<row><td>RemoveEnvironmentStrings</td><td/><td>3300</td><td>RemoveEnvironmentStrings</td><td/></row>
-		<row><td>RemoveExistingProducts</td><td/><td>1410</td><td>RemoveExistingProducts</td><td/></row>
+		<row><td>RemoveExistingProducts</td><td/><td>1500</td><td>RemoveExistingProducts</td><td/></row>
 		<row><td>RemoveFiles</td><td/><td>3500</td><td>RemoveFiles</td><td/></row>
 		<row><td>RemoveFolders</td><td/><td>3600</td><td>RemoveFolders</td><td/></row>
 		<row><td>RemoveIniValues</td><td/><td>3100</td><td>RemoveIniValues</td><td/></row>
@@ -4086,7 +4101,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{3E293845-CF2D-45A5-8BBE-2DD5D6E08499}</td></row>
 		<row><td>ISUSSignature</td><td>{A4E3B13F-88D4-4C40-9C9F-F97BBDE3AF45}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewSetupDesign,viewUpdateService,viewUpgradePaths,viewProject,viewRealSetupDesign,viewSetupTypes,viewDependencies,viewObjects,viewShortcuts,viewUI,viewAppV,viewDesignPatches,viewRelease</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4115,7 +4130,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ExecuteAction</td><td/><td>1300</td><td>ExecuteAction</td><td/></row>
 		<row><td>FileCost</td><td/><td>900</td><td>FileCost</td><td/></row>
 		<row><td>FindRelatedProducts</td><td/><td>430</td><td>FindRelatedProducts</td><td/></row>
-		<row><td>ISPreventDowngrade</td><td>ISFOUNDNEWERPRODUCTVERSION</td><td>450</td><td>ISPreventDowngrade</td><td/></row>
+		<row><td>ISPreventDowngrade</td><td>ISFOUNDNEWERPRODUCTVERSION</td><td>450</td><td/><td/></row>
+		<row><td>ISSetAllUsers</td><td>Not Installed</td><td>10</td><td/><td/></row>
 		<row><td>InstallWelcome</td><td>Not Installed</td><td>1210</td><td>InstallWelcome</td><td/></row>
 		<row><td>IsolateComponents</td><td/><td>950</td><td>IsolateComponents</td><td/></row>
 		<row><td>LaunchConditions</td><td>Not Installed</td><td>410</td><td>LaunchConditions</td><td/></row>
@@ -4473,10 +4489,10 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SERIALNUMBER</td><td/><td/></row>
 		<row><td>SERIALNUMVALSUCCESSRETVAL</td><td>1</td><td/></row>
 		<row><td>SHOWLAUNCHPROGRAM</td><td>-1</td><td/></row>
-		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR</td><td/></row>
+		<row><td>SecureCustomProperties</td><td>USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;ISFOUNDNEWERPRODUCTVERSION</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
-		<row><td>UpgradeCode</td><td>{D68FE3BA-BFA3-4B47-924D-027EC4FB5A6E}</td><td/></row>
+		<row><td>UpgradeCode</td><td>{2B523C4C-7FEE-4F58-B907-ABBB3C90D4C1}</td><td/></row>
 		<row><td>_IsMaintenance</td><td>Change</td><td/></row>
 		<row><td>_IsSetupTypeMin</td><td>Typical</td><td/></row>
 	</table>
@@ -4538,7 +4554,6 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="i2">InstallMode</col>
 		<row><td>FileKey1</td><td>CrossEPG_Explorer.Primary_output</td><td/><td>sandro_1_sandro_cavazzoni</td><td>2</td></row>
 		<row><td>FileKey2</td><td>CrossEPG_Explorer.Primary_output</td><td/><td>crosse_1_crossepg_explorer_setup</td><td>2</td></row>
-		<row><td>_Built</td><td>CrossEPG_Explorer.Primary_output</td><td/><td>crosse_1_crossepg_explorer_setup</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4624,7 +4639,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>_Built</td><td>crosse_1_crossepg_explorer_setup</td><td>##IDS_SHORTCUT_DISPLAY_NAME4##</td><td>CrossEPG_Explorer.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>_Built</td><td>ProgramMenuFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME4##</td><td>CrossEPG_Explorer.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
