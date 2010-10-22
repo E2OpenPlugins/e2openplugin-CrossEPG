@@ -52,7 +52,7 @@
 	<summary>
 		<codepage>1252</codepage>
 		<title>Installation Database</title>
-		<subject></subject>
+		<subject>CrossEPG Explorer</subject>
 		<author>##ID_STRING3##</author>
 		<keywords>Installer,MSI,Database</keywords>
 		<comments>Contact:  Your local administrator</comments>
@@ -340,6 +340,7 @@
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>CrossEPG_Explorer.Primary_output</td><td>{4360CFB6-A8A1-4F61-95F5-6FFBAF915405}</td><td>INSTALLDIR</td><td>2</td><td/><td>crossepg_explorer.primary_ou</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{585AB0FE-9A2F-488C-97FE-F0C6DF4F3256}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1048,6 +1049,7 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1856,6 +1858,7 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>CrossEPG_Explorer.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 	</table>
 
 	<table name="File">
@@ -2128,6 +2131,7 @@
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
 		<row><td>CrossEPG_Explorer.Primary_output</td><td/><td/><td>_C654D130_4AF1_47CB_AA99_83E4742F2B07_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_587DDE03_E82A_4630_BAD2_5AC3FB5EEC35_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -2750,7 +2754,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>Sandro Cavazzoni</td><td>0</td><td/><td>-1658928447</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>Sandro Cavazzoni</td><td>0</td><td/><td>-1256316489</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-1658949151</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-1658949151</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40CLIENT</td><td>1033</td><td>Microsoft .NET Framework 4.0 Client Package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>-1658936607</td></row>
@@ -3851,8 +3855,8 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-1658949151</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-1658949151</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>-1658945055</td></row>
-		<row><td>ID_STRING2</td><td>1033</td><td>http://code.google.com/p/crossepg/</td><td>0</td><td/><td>-1658971359</td></row>
-		<row><td>ID_STRING3</td><td>1033</td><td>Sandro Cavazzoni</td><td>0</td><td/><td>-1658928447</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>http://code.google.com/p/crossepg</td><td>0</td><td/><td>-1256302121</td></row>
+		<row><td>ID_STRING3</td><td>1033</td><td>Sandro Cavazzoni</td><td>0</td><td/><td>-1256316489</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>-1658949151</td></row>
 	</table>
 
@@ -3955,19 +3959,37 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\setupicon.ico</td><td>0</td></row>
+		<row><td>_017B7CB9695B44E0BF605472AD4E19D3.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_019A39B77A7149949E4E045CFB9B64E0.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_12C72FC5AE534FCC91E390BC0D748C40.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_229227702B2E4594A55D8F2719E665B7.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_2BD1561CE601464EA9A2F4D682E64DD1.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_38AB26BD229047A89F31BA9DED551F2B.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_3A1184925E0147F5A6B3B5C973884436.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_3D7AD0F1D90D4D13BEA92884ED6E2CFE.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_4D9DAA0F03464752AFAB5B2CD01F7810.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_50F4E0E7CB334FE69CA2706D77D968A3.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_57254FEEED8541AFB54AAE9F250BECEA.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_59FE0C961D8949E5A1273C37B36E9DA2.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_5D6651432BEF4AFE87574B0585DA32AB.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_6AE53D2A3246442CA628EB03B2AC8474.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_72F87560433541D996D333FA7DD15028.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_79456E74224A4BCEB8400D73B61CEBE0.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_7D63CD8E5F3D4661AA7CABD58D64F17D.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_85EA67BD84594885B65FBA4BF088A565.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_8D8CDDEDAB2F4580A02F1F15DE8293C1.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_8E99F1EE73FD44A1AFA9352703678517.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_97BDB79EC5B944F1A99CAAE876342D0D.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_A660223718C849A6B20DEB31EDF013F3.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_AA3D98D0A2CB45C994E8265B81202734.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_B8558258E8CF478BBA155FE23056736A.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_BE4E0AFA649A4FA7B29E9BA682F0C57D.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_BE992310DF5F494AAA5D6FA4928941C7.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_C8B8ACBA3CF7421B81259F83CB221EC5.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_D5625935054A42588473F1EEC9167950.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_E670AA976F1B422680DED6FADEAF0C7E.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_E8F2473D9C274D2B8503483FF0FDE959.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Debug\CrossEPG Explorer.exe</td><td>0</td></row>
+		<row><td>_F571967475F74D29A1869C622C9B8658.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 		<row><td>_FEB014A881DF41EFA4C4E95E0B62589D.exe</td><td/><td>C:\Users\skaman\Documents\Visual Studio 2010\Projects\CrossEPG Explorer\CrossEPG Explorer\obj\Release\CrossEPG Explorer.exe</td><td>0</td></row>
 	</table>
 
@@ -4101,7 +4123,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{3E293845-CF2D-45A5-8BBE-2DD5D6E08499}</td></row>
 		<row><td>ISUSSignature</td><td>{A4E3B13F-88D4-4C40-9C9F-F97BBDE3AF45}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewSetupDesign,viewUpdateService,viewUpgradePaths,viewProject,viewRealSetupDesign,viewSetupTypes,viewDependencies,viewObjects,viewShortcuts,viewUI,viewAppV,viewDesignPatches,viewRelease</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewSetupDesign,viewUpdateService,viewUpgradePaths,viewProject,viewRealSetupDesign,viewSetupTypes,viewDependencies,viewObjects,viewShortcuts,viewUI,viewAppV,viewDesignPatches,viewRelease,viewRegistry,viewIniFiles,viewTextFiles,viewXMLConfig,viewFileExtensions,viewEnvironmentVariables,viewVRoots,viewSQLServer,viewComponentServices,viewBillboards,viewTextMessages,viewSystemSearch,viewInstallScriptStd,viewCustomActions,viewSupportFiles</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4474,9 +4496,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKAPPPOOLS</td><td>##IDS_PROGMSG_IIS_ROLLBACKAPPPOOLS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
-		<row><td>ProductCode</td><td>{CE450E75-2CA8-4ACC-B552-E08DF2B64E75}</td><td/></row>
-		<row><td>ProductName</td><td>CrossEPG Explorer Setup</td><td/></row>
-		<row><td>ProductVersion</td><td>1.00.0000</td><td/></row>
+		<row><td>ProductCode</td><td>{9944CEF1-FA9D-455C-AF28-0BDDB877355D}</td><td/></row>
+		<row><td>ProductName</td><td>CrossEPG Explorer</td><td/></row>
+		<row><td>ProductVersion</td><td>1.00.0001</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4489,7 +4511,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SERIALNUMBER</td><td/><td/></row>
 		<row><td>SERIALNUMVALSUCCESSRETVAL</td><td>1</td><td/></row>
 		<row><td>SHOWLAUNCHPROGRAM</td><td>-1</td><td/></row>
-		<row><td>SecureCustomProperties</td><td>USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;ISFOUNDNEWERPRODUCTVERSION</td><td/></row>
+		<row><td>SecureCustomProperties</td><td>USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;ISACTIONPROP1;ISFOUNDNEWERPRODUCTVERSION</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
 		<row><td>UpgradeCode</td><td>{2B523C4C-7FEE-4F58-B907-ABBB3C90D4C1}</td><td/></row>
@@ -4762,6 +4784,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">ActionProperty</col>
 		<col def="S72">ISDisplayName</col>
 		<row><td>{00000000-0000-0000-0000-000000000000}</td><td>***ALL_VERSIONS***</td><td></td><td></td><td>2</td><td/><td>ISFOUNDNEWERPRODUCTVERSION</td><td>ISPreventDowngrade</td></row>
+		<row><td>{2B523C4C-7FEE-4F58-B907-ABBB3C90D4C1}</td><td>1.00.0000</td><td>1.00.0000</td><td>1033</td><td>0</td><td/><td>ISACTIONPROP1</td><td>1.x</td></row>
 	</table>
 
 	<table name="Verb">
