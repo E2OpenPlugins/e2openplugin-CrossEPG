@@ -2,7 +2,8 @@
 	<widget name="about" position="10,10" size="540,190" font="Regular;18" />
 	<widget name="rytec_pix" position="10,200" size="70,70" />
 	<widget name="rytec_text" position="90,205" size="430,50" font="Regular;18" />
-	<widget name="isakota_text" position="90,285" size="430,50" font="Regular;18" />
+	<widget name="krkadoni_pix" position="10,295" size="70,22" />
+	<widget name="krkadoni_text" position="90,285" size="430,50" font="Regular;18" />
 
 	<widget name="key_red" position="0,360" size="140,40" valign="center" halign="center" zPosition="5" transparent="1" foregroundColor="white" font="Regular;18"/>
 	<widget name="key_green" position="140,360" size="140,40" valign="center" halign="center" zPosition="5" transparent="1" foregroundColor="white" font="Regular;18"/>

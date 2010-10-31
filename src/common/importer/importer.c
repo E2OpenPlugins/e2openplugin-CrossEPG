@@ -22,7 +22,7 @@
 #include "../aliases/aliases.h"
 #include "../epgdb/epgdb.h"
 #include "../net/http.h"
-#include "gzip.h"
+#include "../gzip/gzip.h"
 #include "csv.h"
 
 static void(*_progress_callback)(int, int) = NULL;

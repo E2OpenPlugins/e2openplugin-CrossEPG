@@ -53,6 +53,8 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("Configure"), "configure.png"))
 		l.append(self.buildListEntry(_("XMLTV providers"), "xmltv.png"))
 		l.append(self.buildListEntry(_("OpenTV providers"), "opentv.png"))
+		l.append(self.buildListEntry(_("XEPGDB providers"), "xepgdb.png"))
+		l.append(self.buildListEntry(_("Scripts providers"), "scripts.png"))
 		l.append(self.buildListEntry(_("Download now"), "download.png"))
 		l.append(self.buildListEntry(_("Force csv import now"), "csv.png"))
 		l.append(self.buildListEntry(_("Force epg.dat conversion now"), "conversion.png"))
@@ -89,16 +91,20 @@ class CrossEPG_Menu(Screen):
 		elif index == 2:
 			self.session.open(CrossEPG_Providers, "opentv")
 		elif index == 3:
-			self.downloader()
+			self.session.open(CrossEPG_Providers, "xepgdb")
 		elif index == 4:
-			self.importer()
+			self.session.open(CrossEPG_Providers, "scripts")
 		elif index == 5:
-			self.converter()
+			self.downloader()
 		elif index == 6:
-			self.loader()
+			self.importer()
 		elif index == 7:
-			self.session.open(CrossEPG_Info)
+			self.converter()
 		elif index == 8:
+			self.loader()
+		elif index == 9:
+			self.session.open(CrossEPG_Info)
+		elif index == 10:
 			self.session.open(CrossEPG_About)
 		
 	def quit(self):

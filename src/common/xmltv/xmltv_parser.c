@@ -62,6 +62,40 @@ static time_t current_starttime = 0;
 static time_t current_stoptime = 0;
 static int events_count = 0;
 
+static time_t mkgmtime(t)
+register struct tm	*t;
+{
+	register short	month, year;
+	register time_t	result;
+	static int	m_to_d[12] =
+		{0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
+
+	month = t->tm_mon;
+	year = t->tm_year + month / 12 + 1900;
+	month %= 12;
+	if (month < 0)
+	{
+		year -= 1;
+		month += 12;
+	}
+	result = (year - 1970) * 365 + (year - 1969) / 4 + m_to_d[month];
+	result = (year - 1970) * 365 + m_to_d[month];
+	if (month <= 1)
+		year -= 1;
+	result += (year - 1968) / 4;
+	result -= (year - 1900) / 100;
+	result += (year - 1600) / 400;
+	result += t->tm_mday;
+	result -= 1;
+	result *= 24;
+	result += t->tm_hour;
+	result *= 60;
+	result += t->tm_min;
+	result *= 60;
+	result += t->tm_sec;
+	return(result);
+}
+
 static time_t iso8601totime (char *strtime)
 {
 	int gmt_hours, gmt_minutes, gmt_offset;
@@ -94,7 +128,7 @@ static time_t iso8601totime (char *strtime)
 	timeinfo->tm_isdst = 0;
 	//timeinfo->tm_gmtoff = gmt_offset;
 	
-	ret = mktime (timeinfo);
+	ret = mkgmtime (timeinfo);
 	gmt_offset = (gmt_hours*60*60) + (gmt_minutes*60);
 	if (positivesign)
 		ret -= gmt_offset;
@@ -102,16 +136,6 @@ static time_t iso8601totime (char *strtime)
 		ret += gmt_offset;
 
 	return ret;
-}
-
-static int xmltv_parser_get_mjd (time_t value)
-{
-	struct tm valuetm;
-	int l = 0;
-	gmtime_r (&value, &valuetm);
-	if (valuetm.tm_mon <= 1)	// Jan or Feb
-		l = 1;
-	return (14956 + valuetm.tm_mday + ((valuetm.tm_year - l) * 365.25) + ((valuetm.tm_mon + 2 + l * 12) * 30.6001));
 }
 
 static void xmltv_parser_add_event ()
@@ -138,7 +162,7 @@ static void xmltv_parser_add_event ()
 		epgdb_title_t *title = _malloc (sizeof (epgdb_title_t));
 		title->event_id = events_count;
 		title->start_time = current_starttime;
-		title->mjd = xmltv_parser_get_mjd (current_starttime);
+		title->mjd = epgdb_calculate_mjd (current_starttime);
 		title->length = current_stoptime - current_starttime;
 		title->genre_id = 0;
 		title->flags = 0;
@@ -410,8 +434,6 @@ bool xmltv_parser_import (char *filename, void(*progress_callback)(int, int), vo
 		return false;
 	}
 	
-	setenv("TZ", "GMT0", 1);		// we must work on gmt+0
-
 	is_tv = false;
 	is_programme = false;
 	is_title = false;
@@ -424,9 +446,6 @@ bool xmltv_parser_import (char *filename, void(*progress_callback)(int, int), vo
 	current_channel = NULL;
 	current_starttime = 0;
 	current_stoptime = 0;
-	//preferred_iso639[0] = 'e';
-	//preferred_iso639[1] = 'n';
-	//preferred_iso639[2] = 'g';
 	events_count = 0;
 	
 	ret = xmlTextReaderRead (reader);

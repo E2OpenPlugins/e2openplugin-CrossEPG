@@ -21,8 +21,10 @@ class CrossEPG_Loader(Screen):
 		self.session = session
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/downloader_sd.xml" % os.path.dirname(sys.modules[__name__].__file__)
+			self.isHD = 0
 		else:
 			skin = "%s/skins/downloader_hd.xml" % os.path.dirname(sys.modules[__name__].__file__)
+			self.isHD = 1
 		f = open(skin, "r")
 		self.skin = f.read()
 		f.close()
@@ -124,7 +126,10 @@ class CrossEPG_Loader(Screen):
 		self.onFirstExecBegin.append(self.firstExec)
 
 	def firstExec(self):
-		self["background"].instance.setPixmapFromFile("%s/images/background.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+		if self.isHD:
+			self["background"].instance.setPixmapFromFile("%s/images/background_hd.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+		else:
+			self["background"].instance.setPixmapFromFile("%s/images/background.png" % (os.path.dirname(sys.modules[__name__].__file__)))
 
 	def loadEPG2(self):
 		print "[CrossEPG_Loader] loading data with crossepg patch v2"

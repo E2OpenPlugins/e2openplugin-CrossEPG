@@ -17,5 +17,7 @@ bool providers_read (char *read);
 char *providers_get_xmltv_channels ();
 char *providers_get_xmltv_url ();
 char *providers_get_xmltv_plang ();
+char *providers_get_xepgdb_headers_url ();
+char *providers_get_xepgdb_descriptors_url ();
 
 #endif // _OPENTV_PROVIDERS_H_

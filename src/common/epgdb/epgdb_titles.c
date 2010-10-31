@@ -31,12 +31,7 @@ void epgdb_title_free (epgdb_title_t *title)
 
 int epgdb_calculate_mjd (time_t value)
 {
-	struct tm valuetm;
-	int l = 0;
-	gmtime_r (&value, &valuetm);
-	if (valuetm.tm_mon <= 1)	// Jan or Feb
-		l = 1;
-	return (14956 + valuetm.tm_mday + ((valuetm.tm_year - l) * 365.25) + ((valuetm.tm_mon + 2 + l * 12) * 30.6001));
+	return 40587 + ((value) / 86400.0);
 }
 
 char *epgdb_read_description (epgdb_title_t *title)

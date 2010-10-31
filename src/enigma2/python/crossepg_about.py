@@ -32,9 +32,10 @@ class CrossEPG_About(Screen):
 		self.config.load()
 		
 		self["about"] = Label("")
-		self["rytec_pix"] = Pixmap();
+		self["rytec_pix"] = Pixmap()
 		self["rytec_text"] = Label("")
-		self["isakota_text"] = Label("")
+		self["krkadoni_pix"] = Pixmap()
+		self["krkadoni_text"] = Label("")
 
 		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
 		{
@@ -54,12 +55,13 @@ class CrossEPG_About(Screen):
 
 		self["about"].setText(_("SIFTeam CrossEPG %s (c) 2009-2010 Sandro Cavazzoni\nhttp://code.google.com/p/crossepg/\n\nFor translations many thanks to:\nSpaeleus (italian translations)\n\nFor XMLTV sources many thanks to:") % version)
 		self["rytec_text"].setText(_("Rytec (http://www.rytec.be)\n19 xmltv providers for many countries"))
-		self["isakota_text"].setText(_("Isakota (http://www.krkadoni.com/)\nProvider for Ex Yugoslavia"))
+		self["krkadoni_text"].setText(_("Krkadoni (http://www.krkadoni.com/)\nProvider for Ex Yugoslavia"))
 
 		self.onFirstExecBegin.append(self.setImages)
 
 	def setImages(self):
 		self["rytec_pix"].instance.setPixmapFromFile("%s/images/rytec.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+		self["krkadoni_pix"].instance.setPixmapFromFile("%s/images/krkadoni.png" % (os.path.dirname(sys.modules[__name__].__file__)))
 
 	def quit(self):
 		self.close()

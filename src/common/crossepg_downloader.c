@@ -41,6 +41,8 @@
 #include "xmltv/xmltv_parser.h"
 #include "xmltv/xmltv_downloader.h"
 
+#include "dbmerge/dbmerge.h"
+
 buffer_t buffer[65536];
 unsigned short buffer_index;
 unsigned int buffer_size;
@@ -125,7 +127,7 @@ bool opentv_summaries_callback (int size, unsigned char* data)
 	return !stop;
 }
 
-void xmltv_event_callback (int type, char *arg)
+void event_callback (int type, char *arg)
 {
 	switch (type)
 	{
@@ -161,6 +163,19 @@ void xmltv_event_callback (int type, char *arg)
 
 	case 7:
 		interactive_send_text (ACTION_TYPE, "PARSING EVENTS");
+		break;
+
+	case 8:
+		interactive_send_text (ACTION_TYPE, "DOWNLOADING XEPGDB");
+		interactive_send_text (ACTION_URL, arg);
+		break;
+
+	case 9:
+		interactive_send_text (ACTION_TYPE, "PARSING XEPGDB");
+		break;
+
+	case 10:
+		interactive_send_text (ACTION_TYPE, "DEFLATING XEPGDB");
 		break;
 	}
 }
@@ -337,17 +352,21 @@ void *download (void *args)
 		{
 			interactive_send (ACTION_START);
 			xmltv_channels_init ();
-			if (xmltv_downloader_channels (providers_get_xmltv_channels (), db_root, progress_callback, xmltv_event_callback, &stop))
-			{
-				xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
-				xmltv_downloader_events (providers_get_xmltv_url (), db_root, progress_callback, xmltv_event_callback, &stop);
-			}
+			xmltv_downloader_channels (providers_get_xmltv_channels (), db_root, progress_callback, event_callback, &stop);
+			xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
+			xmltv_downloader_events (providers_get_xmltv_url (), db_root, progress_callback, event_callback, &stop);
 			exec = false;
 			xmltv_channels_cleanup ();
 			interactive_send (ACTION_END);
 		}
+		else if (providers_get_protocol () == 3)
+		{
+			interactive_send (ACTION_START);
+			dbmerge_downloader (providers_get_xepgdb_headers_url (), providers_get_xepgdb_descriptors_url (), db_root, progress_callback, event_callback, &stop);
+			exec = false;
+			interactive_send (ACTION_END);
+		}
 	}
-
 
 	return NULL;
 }
@@ -581,18 +600,27 @@ int main (int argc, char **argv)
 				log_add ("Events url: %s", providers_get_xmltv_url ());
 				log_add ("Preferred language: %s", providers_get_xmltv_plang ());
 				xmltv_channels_init ();
-				if (xmltv_downloader_channels (providers_get_xmltv_channels (), db_root, NULL, NULL, &stop))
-				{
-					xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
-					if (xmltv_downloader_events (providers_get_xmltv_url (), db_root, NULL, NULL, &stop))
-						save = true;
-					else
-						log_add ("Error downloading/parsing events file");
-				}
-				else
+				if (!xmltv_downloader_channels (providers_get_xmltv_channels (), db_root, NULL, NULL, &stop))
 					log_add ("Error downloading/parsing channels file");
+
+				xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
+				if (xmltv_downloader_events (providers_get_xmltv_url (), db_root, NULL, NULL, &stop))
+					save = true;
+				else
+					log_add ("Error downloading/parsing events file");
 					
 				xmltv_channels_cleanup ();
+			}
+			else if (providers_get_protocol () == 3)
+			{
+				log_add ("Provider %s indentified as xepgdb", provider);
+				log_add ("Headers url: %s", providers_get_xepgdb_headers_url ());
+				log_add ("Descriptors url: %s", providers_get_xepgdb_descriptors_url ());
+
+				if (dbmerge_downloader (providers_get_xepgdb_headers_url (), providers_get_xepgdb_descriptors_url (), db_root, NULL, NULL, &stop))
+					save = true;
+				else
+					log_add ("Error downloading/parsing xepgdb files");
 			}
 			if (save)
 			{

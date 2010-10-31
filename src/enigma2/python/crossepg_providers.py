@@ -60,6 +60,10 @@ class CrossEPG_Providers(Screen):
 			self.setTitle("CrossEPG - XMLTV providers")
 		elif self.protocol == "opentv":
 			self.setTitle("CrossEPG - OpenTV providers")
+		elif self.protocol == "xepgdb":
+			self.setTitle("CrossEPG - XEPGDB providers")
+		elif self.protocol == "scripts":
+			self.setTitle("CrossEPG - Scripts providers")
 
 	def buildList(self):
 		self.list = []

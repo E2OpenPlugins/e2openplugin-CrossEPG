@@ -99,17 +99,6 @@ char *csvtok (char *value, char separator)
 	return field;
 }
 
-static int get_mjd (time_t value)
-{
-	struct tm *time = gmtime(&value);
-	
-	int l = 0;
-	int month = time->tm_mon + 1;
-	if (month == 1 || month == 2)
-		l = 1;
-	return 14956 + time->tm_mday + (int)((time->tm_year - l) * 365.25) + (int)((month + 1 + l*12) * 30.6001);
-}
-
 bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *stop)
 {
 	char line[LINE_SIZE];
@@ -145,7 +134,7 @@ bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *st
 		title->genre_id = 0;
 		title->flags = 0;
 		//title->genre_sub_id = 0;
-		title->mjd = get_mjd (title->start_time);
+		title->mjd = epgdb_calculate_mjd (title->start_time);
 		title->iso_639_1 = 'e';		// default language... if different we set it later
 		title->iso_639_2 = 'n';
 		title->iso_639_3 = 'g';
@@ -213,7 +202,7 @@ bool bin_read (char *file, char *label, void(*progress_callback)(int, int), void
 		title->genre_id = 0;
 		title->flags = 0;
 		//title->genre_sub_id = 0;
-		title->mjd = get_mjd (title->start_time);
+		title->mjd = epgdb_calculate_mjd (title->start_time);
 		title->iso_639_1 = 'e';		// default language... if different we set it later
 		title->iso_639_2 = 'n';
 		title->iso_639_3 = 'g';

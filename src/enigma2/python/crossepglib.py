@@ -8,7 +8,6 @@ import os
 import re
 import time
 import new
-import mutex
 import _enigma
 
 # return value
@@ -264,12 +263,12 @@ class CrossEPG_Config:
 			return False
 
 class CrossEPG_Wrapper:
-	EVENT_READY				= 0
-	EVENT_OK				= 1
-	EVENT_START				= 2
-	EVENT_END				= 3
-	EVENT_QUIT				= 4
-	EVENT_ERROR				= 5
+	EVENT_READY			= 0
+	EVENT_OK			= 1
+	EVENT_START			= 2
+	EVENT_END			= 3
+	EVENT_QUIT			= 4
+	EVENT_ERROR			= 5
 	EVENT_ACTION			= 6
 	EVENT_STATUS			= 7
 	EVENT_PROGRESS			= 8
@@ -277,10 +276,10 @@ class CrossEPG_Wrapper:
 	EVENT_CHANNEL			= 10
 	EVENT_STARTTIME			= 11
 	EVENT_LENGTH			= 12
-	EVENT_NAME				= 13
+	EVENT_NAME			= 13
 	EVENT_DESCRIPTION		= 14
-	EVENT_FILE				= 15
-	EVENT_URL				= 16
+	EVENT_FILE			= 15
+	EVENT_URL			= 16
 	
 	INFO_HEADERSDB_SIZE		= 50
 	INFO_DESCRIPTORSDB_SIZE	= 51
@@ -436,6 +435,15 @@ class CrossEPG_Wrapper:
 			elif ttype == "PARSING EVENTS":
 				self.type = 10;
 				self.__callCallbacks(self.EVENT_ACTION, _("Parsing events"))
+			elif ttype == "DOWNLOADING XEPGDB":
+				self.type = 11;
+				self.__callCallbacks(self.EVENT_ACTION, _("Downloading XEPGDB"))
+			elif ttype == "PARSING XEPGDB":
+				self.type = 12;
+				self.__callCallbacks(self.EVENT_ACTION, _("Merging XEPGDB"))
+			elif ttype == "DEFLATING XEPGDB":
+				self.type = 13;
+				self.__callCallbacks(self.EVENT_ACTION, _("Deflating XEPGDB"))
 		elif data.find("CHANNELS ") == 0:
 			self.__callCallbacks(self.EVENT_STATUS, _("%s channels") % (data[9:]))
 		elif data.find("SIZE ") == 0:

@@ -23,6 +23,7 @@
 #include "../aliases/aliases.h"
 #include "../epgdb/epgdb.h"
 #include "../net/http.h"
+#include "../gzip/gzip.h"
 
 #include "xmltv_channels.h"
 #include "xmltv_parser.h"
@@ -32,27 +33,6 @@ static char _url[256];
 //static volatile bool _stop = false;
 
 #define BUFLEN      16384
-
-static bool xmltv_downloader_gzip (char *source, FILE *dest)
-{
-	char buf[BUFLEN];
-	int len, err;
-	gzFile in = gzopen (source, "rb");
-	for (;;)
-	{
-		len = gzread(in, buf, sizeof (buf));
-		if (len < 0)
-		{
-			log_add ("%s", gzerror (in, &err));
-			gzclose (in);
-			return false;
-		}
-		if (len == 0) break;
-		fwrite (buf, 1, len, dest);
-	}
-	gzclose (in);
-	return true;
-}
 
 static bool xmltv_downloader_extension_check (char *filename, char *extension)
 {
@@ -143,7 +123,7 @@ bool xmltv_downloader_channels (char *url, char *dbroot, void(*progress_callback
 			if (event_callback) event_callback(3, NULL);	// deflating message
 			log_add ("Deflating %s", page);
 			FILE *dest = fdopen (fd2, "w");
-			if (!xmltv_downloader_gzip (sfn, dest)) log_add ("Error deflating file");
+			if (!gzip_inf (sfn, dest)) log_add ("Error deflating file");
 			else log_add ("File deflated");
 			fclose (dest);
 			close (fd2);
@@ -244,7 +224,7 @@ bool xmltv_downloader_events (char *url, char *dbroot, void(*progress_callback)(
 			if (event_callback) event_callback(6, NULL);	// deflating message
 			log_add ("Deflating %s", page);
 			FILE *dest = fdopen (fd2, "w");
-			if (!xmltv_downloader_gzip (sfn, dest)) log_add ("Error deflating file");
+			if (!gzip_inf (sfn, dest)) log_add ("Error deflating file");
 			else log_add ("File deflated");
 			fclose (dest);
 			close (fd2);

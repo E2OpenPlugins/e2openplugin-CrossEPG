@@ -4,6 +4,7 @@ OBJS += src/common/core/interactive.o
 OBJS += src/common/dvb/dvb.o
 OBJS += src/common/aliases/aliases.o
 OBJS += src/common/net/http.o
+OBJS += src/common/gzip/gzip.o
 OBJS += src/common/opentv/opentv.o
 OBJS += src/common/opentv/huffman.o
 OBJS += src/common/providers/providers.o
@@ -16,10 +17,10 @@ OBJS += src/common/epgdb/epgdb_search.o
 OBJS += src/common/xmltv/xmltv_channels.o
 OBJS += src/common/xmltv/xmltv_downloader.o
 OBJS += src/common/xmltv/xmltv_parser.o
+OBJS += src/common/dbmerge/dbmerge.o
 OBJS += src/enigma2/enigma2_hash.o
 OBJS += src/enigma2/enigma2_lamedb.o
 OBJS += src/common/importer/csv.o
-OBJS += src/common/importer/gzip.o
 OBJS += src/common/importer/importer.o
 
 CONVERTER_OBJS += src/enigma2/crossepg_dbconverter.o
@@ -89,6 +90,7 @@ $(XMLTV_OBJS):
 
 $(SWIGS_LIBS): $(SWIGS_OBJS)
 	$(CC) $(LDFLAGS) -shared -o $@ $(OBJS) $(SWIGS_OBJS) -lxml2 -lz -lm -lpthread
+	$(STRIP) $@
 	
 $(DBINFO_OBJS):
 	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
@@ -127,14 +129,20 @@ clean:
 	$(EPGCOPY_BIN) $(IMPORTER_BIN) $(EXPORTER_BIN) $(XMLTV_BIN) $(VERSION_HEADER) \
 	$(SWIGS_OBJS) $(SWIGS_LIBS)
 
-install:
+install-python:
+	install -d $(D)/usr/lib/python2.6/lib-dynload
+	install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.6
+	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.6/lib-dynload
+
+install-python-2.5:
+	install -d $(D)/usr/lib/python2.5/lib-dynload
+	install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.5
+	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.5/lib-dynload
+
+install-standalone:
 	install -d $(D)/usr/crossepg/aliases
 	install -d $(D)/usr/crossepg/import
 	install -d $(D)/usr/crossepg/providers
-	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
-	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/images
-	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES
-	install -d $(D)/usr/lib/python2.6/lib-dynload
 	install -m 755 bin/crossepg_dbconverter $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_dbinfo $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_downloader $(D)/usr/crossepg/
@@ -144,12 +152,33 @@ install:
 	install -m 755 bin/crossepg_xmltv $(D)/usr/crossepg/
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/usr/crossepg/
 	install -m 644 providers/* $(D)/usr/crossepg/providers/
+
+install-standalone-var:
+	install -d $(D)/var/crossepg/aliases
+	install -d $(D)/var/crossepg/import
+	install -d $(D)/var/crossepg/providers
+	install -m 755 bin/crossepg_dbconverter $(D)/var/crossepg/
+	install -m 755 bin/crossepg_dbinfo $(D)/var/crossepg/
+	install -m 755 bin/crossepg_downloader $(D)/var/crossepg/
+	install -m 755 bin/crossepg_epgcopy $(D)/var/crossepg/
+	install -m 755 bin/crossepg_importer $(D)/var/crossepg/
+	install -m 755 bin/crossepg_exporter $(D)/var/crossepg/
+	install -m 755 bin/crossepg_xmltv $(D)/var/crossepg/
+	install -m 755 contrib/crossepg_epgmove.sh $(D)/var/crossepg/
+	install -m 644 providers/* $(D)/var/crossepg/providers/
+
+install-plugin:
+	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
+	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/images
+	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES
 	install -m 644 contrib/po/it/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES/
 	install -m 644 src/enigma2/python/*.py $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
 	install -m 644 src/enigma2/python/skins/*.xml $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins/
 	install -m 644 src/enigma2/python/images/*.png $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/images/
-	install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.6
-	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.6/lib-dynload
+
+install: install-python install-standalone install-plugin
+install-var: install-python install-standalone-var install-plugin
+install-py25: install-python-2.5 install-standalone install-plugin
 
 remote-install:
 	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/lib/python2.6 src/common/crossepg.py

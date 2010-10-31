@@ -333,7 +333,7 @@ bool epgdb_load ()
 		{
 			epgdb_title_t *title = _malloc (sizeof (epgdb_title_t));
 			fread (title, sizeof (epgdb_title_header_t), 1, fd_h);
-			if (title->start_time > (now - (60*60*48)))
+			if ((title->start_time + title->length) > now)
 			{
 				title->prev = NULL;
 				title->next = NULL;
