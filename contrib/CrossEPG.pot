@@ -2,19 +2,35 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 - CrossEPG\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-06 13:03+0100\n"
+"POT-Creation-Date: 2010-11-04 01:30+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: SIFTeam <http://forum.sifteam.eu>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
+#: .../src/enigma2/python/plugin.py:18
+#: .../src/enigma2/python/plugin.py:23
+#: .../src/enigma2/python/plugin.py:28
+msgid "An EPG downloader"
+msgstr ""
+
+#: .../src/enigma2/python/plugin.py:34
+#: .../src/enigma2/python/plugin.py:39
+msgid "CrossEPG setup panel"
+msgstr ""
+
+#: .../src/enigma2/python/plugin.py:44
+msgid "CrossEPG automatic actions"
+msgstr ""
+
 #: .../src/enigma2/python/crossepg_info.py:48
-#: .../src/enigma2/python/crossepg_providers.py:41
-#: .../src/enigma2/python/crossepg_about.py:45
 #: .../src/enigma2/python/crossepg_setup.py:83
+#: .../src/enigma2/python/crossepg_about.py:46
+#: .../src/enigma2/python/crossepg_providers.py:41
 msgid "Back"
 msgstr ""
 
@@ -73,152 +89,16 @@ msgstr ""
 msgid "Version: %s"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_loader.py:32
-#: .../src/enigma2/python/crossepglib.py:544
-msgid "Loading data"
+#: .../src/enigma2/python/crossepg_downloader.py:34
+msgid "Starting downloader"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_loader.py:199
-#: .../src/enigma2/python/crossepg_importer.py:110
-#: .../src/enigma2/python/crossepg_downloader.py:140
-#: .../src/enigma2/python/crossepg_converter.py:98
+#: .../src/enigma2/python/crossepg_downloader.py:145
+#: .../src/enigma2/python/crossepg_importer.py:115
+#: .../src/enigma2/python/crossepg_loader.py:204
+#: .../src/enigma2/python/crossepg_converter.py:103
 #, python-format
 msgid "CrossEPG error: %s"
-msgstr ""
-
-#: .../src/enigma2/python/crossepg_providers.py:42
-#: .../src/enigma2/python/crossepg_providers.py:90
-msgid "Enable"
-msgstr ""
-
-#: .../src/enigma2/python/crossepg_providers.py:43
-msgid "Download"
-msgstr ""
-
-#: .../src/enigma2/python/crossepg_providers.py:88
-msgid "Disable"
-msgstr ""
-
-#: .../src/enigma2/python/crossepg_importer.py:30
-msgid "Starting importer"
-msgstr ""
-
-#: .../src/enigma2/python/crossepg_importer.py:81
-msgid "Parsing"
-msgstr ""
-
-#: .../src/enigma2/python/crossepg_importer.py:85
-msgid "Downloading"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:408
-msgid "Reading channels"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:411
-msgid "Reading titles"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:414
-msgid "Parsing titles"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:417
-msgid "Reading summaries"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:420
-msgid "Parsing summaries"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:423
-msgid "Downloading channels list"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:426
-msgid "Deflating channels list"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:429
-msgid "Parsing channels list"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:432
-msgid "Downloading events"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:435
-msgid "Deflating events"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:438
-msgid "Parsing events"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:440
-#, python-format
-msgid "%s channels"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:444
-#, python-format
-msgid "Read %s"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:446
-#, python-format
-msgid "%s of %s"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:528
-msgid "Converting data"
-msgstr ""
-
-#: .../src/enigma2/python/crossepglib.py:560
-msgid "Saving data"
-msgstr ""
-
-#: .../src/enigma2/python/crossepg_about.py:55
-#, python-format
-msgid ""
-"SIFTeam CrossEPG %s (c) 2009-2010 Sandro Cavazzoni\n"
-"http://code.google.com/p/crossepg/\n"
-"\n"
-"For translations many thanks to:\n"
-"Spaeleus (italian translations)\n"
-"\n"
-"For XMLTV sources many thanks to:"
-msgstr ""
-
-#: .../src/enigma2/python/crossepg_about.py:56
-msgid ""
-"Rytec (http://www.rytec.be)\n"
-"19 xmltv providers for many countries"
-msgstr ""
-
-#: .../src/enigma2/python/crossepg_about.py:57
-msgid ""
-"Isakota (http://www.krkadoni.com/)\n"
-"Provider for Ex Yugoslavia"
-msgstr ""
-
-#: .../src/enigma2/python/plugin.py:18
-#: .../src/enigma2/python/plugin.py:23
-#: .../src/enigma2/python/plugin.py:28
-msgid "An EPG downloader"
-msgstr ""
-
-#: .../src/enigma2/python/plugin.py:34
-#: .../src/enigma2/python/plugin.py:39
-msgid "CrossEPG setup panel"
-msgstr ""
-
-#: .../src/enigma2/python/plugin.py:44
-msgid "CrossEPG automatic actions"
-msgstr ""
-
-#: .../src/enigma2/python/crossepg_downloader.py:32
-msgid "Starting downloader"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_setup.py:57
@@ -357,6 +237,18 @@ msgstr ""
 msgid "Show crossepg in extensions menu"
 msgstr ""
 
+#: .../src/enigma2/python/crossepg_importer.py:32
+msgid "Starting importer"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_importer.py:86
+msgid "Parsing"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_importer.py:90
+msgid "Downloading"
+msgstr ""
+
 #: .../src/enigma2/python/crossepg_menu.py:53
 msgid "Configure"
 msgstr ""
@@ -370,30 +262,159 @@ msgid "OpenTV providers"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:56
-msgid "Download now"
+msgid "XEPGDB providers"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:57
-msgid "Force csv import now"
+msgid "Scripts providers"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:58
-msgid "Force epg.dat conversion now"
+msgid "Download now"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:59
-msgid "Force epg reload"
+msgid "Force csv import now"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:60
-msgid "Info about database"
+msgid "Force epg.dat conversion now"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:61
+msgid "Force epg reload"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_menu.py:62
+msgid "Info about database"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_menu.py:63
 msgid "About"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_converter.py:30
+#: .../src/enigma2/python/crossepg_loader.py:34
+#: .../src/enigma2/python/crossepglib.py:552
+msgid "Loading data"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:407
+msgid "Reading channels"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:410
+msgid "Reading titles"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:413
+msgid "Parsing titles"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:416
+msgid "Reading summaries"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:419
+msgid "Parsing summaries"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:422
+msgid "Downloading channels list"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:425
+msgid "Deflating channels list"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:428
+msgid "Parsing channels list"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:431
+msgid "Downloading events"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:434
+msgid "Deflating events"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:437
+msgid "Parsing events"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:440
+msgid "Downloading XEPGDB"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:443
+msgid "Merging XEPGDB"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:446
+msgid "Deflating XEPGDB"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:448
+#, python-format
+msgid "%s channels"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:452
+#, python-format
+msgid "Read %s"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:454
+#, python-format
+msgid "%s of %s"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:536
+msgid "Converting data"
+msgstr ""
+
+#: .../src/enigma2/python/crossepglib.py:568
+msgid "Saving data"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_converter.py:32
 msgid "Starting converter"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_about.py:56
+#, python-format
+msgid ""
+"SIFTeam CrossEPG %s (c) 2009-2010 Sandro Cavazzoni\n"
+"http://code.google.com/p/crossepg/\n"
+"\n"
+"For translations many thanks to:\n"
+"Spaeleus (italian translations)\n"
+"\n"
+"For XMLTV sources many thanks to:"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_about.py:57
+msgid ""
+"Rytec (http://www.rytec.be)\n"
+"19 xmltv providers for many countries"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_about.py:58
+msgid ""
+"Krkadoni (http://www.krkadoni.com/)\n"
+"Provider for Ex Yugoslavia"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_providers.py:42
+#: .../src/enigma2/python/crossepg_providers.py:94
+msgid "Enable"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_providers.py:43
+msgid "Download"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_providers.py:92
+msgid "Disable"
 msgstr ""
 
