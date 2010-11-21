@@ -82,49 +82,52 @@ class CrossEPG_Config:
 		entryRe = re.compile(r"(.*)=(.*)")
 		
 		for line in f.readlines(): 
-			comment = re.findall(commentRe, line)
-			if not comment:
-				entry = re.findall(entryRe, line)
-				if entry:
-					key = entry[0][0].strip()
-					value = entry[0][1].strip()
-					if key == "db_root":
-						self.db_root = value
-					if key == "lamedb":
-						self.lamedb = value
-					elif key == "providers":
-						self.providers = []
-						tmp = value.split("|")
-						for p in tmp:
-							if len(p) > 0:
-								self.providers.append(p)
-					elif key == "force_load_on_boot":
-						self.force_load_on_boot = int(value);
-					elif key == "download_daily_enabled":
-						self.download_daily_enabled = int(value);
-					elif key == "download_daily_hours":
-						self.download_daily_hours = int(value);
-					elif key == "download_daily_minutes":
-						self.download_daily_minutes = int(value);
-					elif key == "download_tune_enabled":
-						self.download_tune_enabled = int(value);
-					elif key == "download_daily_reboot":
-						self.download_daily_reboot = int(value);
-					elif key == "download_manual_reboot":
-						self.download_manual_reboot = int(value);
-					elif key == "download_standby_enabled":
-						self.download_standby_enabled = int(value);
-					elif key == "last_partial_download_timestamp":
-						self.last_partial_download_timestamp = int(value);
-					elif key == "last_full_download_timestamp":
-						self.last_full_download_timestamp = int(value);
-					elif key == "csv_import_enabled":
-						self.csv_import_enabled = int(value);
-					elif key == "show_plugin":
-						self.show_plugin = int(value);
-					elif key == "show_extension":
-						self.show_extension = int(value);
-						
+			try:
+				comment = re.findall(commentRe, line)
+				if not comment:
+					entry = re.findall(entryRe, line)
+					if entry:
+						key = entry[0][0].strip()
+						value = entry[0][1].strip()
+						if key == "db_root":
+							self.db_root = value
+						if key == "lamedb":
+							self.lamedb = value
+						elif key == "providers":
+							self.providers = []
+							tmp = value.split("|")
+							for p in tmp:
+								if len(p) > 0:
+									self.providers.append(p)
+						elif key == "force_load_on_boot":
+							self.force_load_on_boot = int(value);
+						elif key == "download_daily_enabled":
+							self.download_daily_enabled = int(value);
+						elif key == "download_daily_hours":
+							self.download_daily_hours = int(value);
+						elif key == "download_daily_minutes":
+							self.download_daily_minutes = int(value);
+						elif key == "download_tune_enabled":
+							self.download_tune_enabled = int(value);
+						elif key == "download_daily_reboot":
+							self.download_daily_reboot = int(value);
+						elif key == "download_manual_reboot":
+							self.download_manual_reboot = int(value);
+						elif key == "download_standby_enabled":
+							self.download_standby_enabled = int(value);
+						elif key == "last_partial_download_timestamp":
+							self.last_partial_download_timestamp = int(value);
+						elif key == "last_full_download_timestamp":
+							self.last_full_download_timestamp = int(value);
+						elif key == "csv_import_enabled":
+							self.csv_import_enabled = int(value);
+						elif key == "show_plugin":
+							self.show_plugin = int(value);
+						elif key == "show_extension":
+							self.show_extension = int(value);
+			except Exception:
+				pass
+
 		f.close()
 		
 	def save(self):

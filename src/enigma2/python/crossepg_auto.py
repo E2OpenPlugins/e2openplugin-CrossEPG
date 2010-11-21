@@ -16,6 +16,7 @@ import os
 class CrossEPG_Auto(Screen):
 	POLL_TIMER = 1800000	# poll every 30 minutes
 	#POLL_TIMER = 18000
+	POLL_TIMER_FAST = 10000	# poll every 10 seconds
 
 	def __init__(self):
 		self.session = None
@@ -51,13 +52,17 @@ class CrossEPG_Auto(Screen):
 		self.session = session
 		self.timer.start(self.POLL_TIMER, 1)
 
+	def forcePoll(self):
+		self.timer.stop()
+		self.timer.start(self.POLL_TIMER_FAST, 1)
+		
 	def poll(self):
 		from Screens.Standby import inStandby
 		self.config.load()
 
 		if self.lock:
 			print "[CrossEPG_Auto] poll"
-			self.timer.start(self.POLL_TIMER, 1)
+			self.timer.start(self.POLL_TIMER_FAST, 1)
 		elif self.session.nav.RecordTimer.isRecording():	# if record in progress we poll and skip
 			print "[CrossEPG_Auto] poll"
 			self.timer.start(self.POLL_TIMER, 1)
@@ -106,7 +111,8 @@ class CrossEPG_Auto(Screen):
 				self.download(self.config.providers)
 			elif stime < now + (self.POLL_TIMER / 1000) and self.config.last_full_download_timestamp != stime:
 				print "[CrossEPG_Auto] poll"
-				self.timer.start(((stime - now) + 5)*1000, 1)	# 5 seconds offset
+				delta = int(stime - now);
+				self.timer.start((delta + 5)*1000, 1)	# 5 seconds offset
 			else:
 				print "[CrossEPG_Auto] poll"
 				self.timer.start(self.POLL_TIMER, 1)
@@ -151,7 +157,7 @@ class CrossEPG_Auto(Screen):
 		if self.osd:
 			self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, providers)
 		else:
-			self.pdownloader = CrossEPG_Downloader(self.session, providers, self.downloadCallback)
+			self.pdownloader = CrossEPG_Downloader(self.session, providers, self.downloadCallback, True)
 
 	def downloadCallback(self, ret):
 		self.pdownloader = None
@@ -176,7 +182,7 @@ class CrossEPG_Auto(Screen):
 		if self.osd:
 			self.session.openWithCallback(self.importerCallback, CrossEPG_Importer)
 		else:
-			self.pimporter = CrossEPG_Importer(self.session, self.importerCallback)
+			self.pimporter = CrossEPG_Importer(self.session, self.importerCallback, True)
 
 	def importerCallback(self, ret):
 		self.pimporter = None
@@ -194,7 +200,7 @@ class CrossEPG_Auto(Screen):
 		if self.osd:
 			self.session.openWithCallback(self.converterCallback, CrossEPG_Converter)
 		else:
-			self.pconverter = CrossEPG_Converter(self.session, self.converterCallback)
+			self.pconverter = CrossEPG_Converter(self.session, self.converterCallback, True)
 
 	def converterCallback(self, ret):
 		self.pconverter = None
@@ -221,7 +227,7 @@ class CrossEPG_Auto(Screen):
 		if self.osd:
 			self.session.openWithCallback(self.loaderCallback, CrossEPG_Loader)
 		else:
-			self.ploader = CrossEPG_Loader(self.session, self.loaderCallback)
+			self.ploader = CrossEPG_Loader(self.session, self.loaderCallback, True)
 
 	def loaderCallback(self, ret):
 		self.ploader = None

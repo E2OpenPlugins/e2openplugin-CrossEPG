@@ -16,7 +16,7 @@ import os
 import sys
 
 class CrossEPG_Downloader(Screen):
-	def __init__(self, session, providers, pcallback = None):
+	def __init__(self, session, providers, pcallback = None, noosd = False):
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/downloader_sd.xml" % os.path.dirname(sys.modules[__name__].__file__)
 			self.isHD = 0
@@ -70,8 +70,11 @@ class CrossEPG_Downloader(Screen):
 		self.wrappertimer = eTimer()
 		self.wrappertimer.callback.append(self.initWrapper)
 
-		self.onFirstExecBegin.append(self.firstExec)
-
+		if noosd:
+			self.wrappertimer.start(100, 1)
+		else:
+			self.onFirstExecBegin.append(self.firstExec)
+			
 	def firstExec(self):
 		if self.isHD:
 			self["background"].instance.setPixmapFromFile("%s/images/background_hd.png" % (os.path.dirname(sys.modules[__name__].__file__)))

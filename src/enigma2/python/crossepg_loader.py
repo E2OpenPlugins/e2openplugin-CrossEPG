@@ -17,7 +17,7 @@ import os
 import sys
 
 class CrossEPG_Loader(Screen):
-	def __init__(self, session, pcallback = None):
+	def __init__(self, session, pcallback = None, noosd = False):
 		self.session = session
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/downloader_sd.xml" % os.path.dirname(sys.modules[__name__].__file__)
@@ -123,7 +123,8 @@ class CrossEPG_Loader(Screen):
 			print "No patch found... please reboot enigma2 manually"
 			self.closeAndCallback(True)
 
-		self.onFirstExecBegin.append(self.firstExec)
+		if not noosd:
+			self.onFirstExecBegin.append(self.firstExec)
 
 	def firstExec(self):
 		if self.isHD:

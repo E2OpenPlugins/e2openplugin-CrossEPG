@@ -17,6 +17,7 @@ from Plugins.Plugin import PluginDescriptor
 
 from crossepglib import *
 from crossepg_locale import _
+from crossepg_auto import crossepg_auto
 
 from time import *
 
@@ -263,6 +264,8 @@ class CrossEPG_Setup(Screen):
 			self["information"].setText(_("Show crossepg in extensions menu"))
 		
 	def quit(self):
+		self.config.last_full_download_timestamp = 0
+		self.config.last_partial_download_timestamp = 0
 		self.config.save()
 		if self.show_extension != self.config.show_extension or self.show_plugin != self.config.show_plugin:
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU):
@@ -274,5 +277,7 @@ class CrossEPG_Setup(Screen):
 					plugins.removePlugin(plugin)
 				
 			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
+			
+		crossepg_auto.forcePoll()
 		self.close()
 

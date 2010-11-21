@@ -15,7 +15,7 @@ import os
 import sys
 
 class CrossEPG_Importer(Screen):
-	def __init__(self, session, pcallback = None):
+	def __init__(self, session, pcallback = None, noosd = False):
 		self.session = session
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/downloader_sd.xml" % os.path.dirname(sys.modules[__name__].__file__)
@@ -60,13 +60,21 @@ class CrossEPG_Importer(Screen):
 
 		self.status = 0
 
-		self.onFirstExecBegin.append(self.firstExec)
+		if noosd:
+			self.wrappertimer = eTimer()
+			self.wrappertimer.callback.append(self.startWrapper)
+			self.wrappertimer.start(100, 1)
+		else:
+			self.onFirstExecBegin.append(self.firstExec)
 
 	def firstExec(self):
 		if self.isHD:
 			self["background"].instance.setPixmapFromFile("%s/images/background_hd.png" % (os.path.dirname(sys.modules[__name__].__file__)))
 		else:
 			self["background"].instance.setPixmapFromFile("%s/images/background.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+		self.startWrapper()
+
+	def startWrapper(self):
 		self.wrapper.init(CrossEPG_Wrapper.CMD_IMPORTER, self.db_root)
 	
 	def wrapperCallback(self, event, param):
