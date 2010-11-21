@@ -17,6 +17,7 @@ class CrossEPG_Auto(Screen):
 	POLL_TIMER = 1800000	# poll every 30 minutes
 	#POLL_TIMER = 18000
 	POLL_TIMER_FAST = 10000	# poll every 10 seconds
+	POLL_TIMER_BOOT = 60000	# poll every 1 minute
 
 	def __init__(self):
 		self.session = None
@@ -45,15 +46,29 @@ class CrossEPG_Auto(Screen):
 			self.standbyTimer.start(30000, 1)
 			
 		self.config.load()
+		
+		# date cache for daily download
+		ttime = localtime(time())
+		self.cacheYear = ttime[0]
+		self.cacheMonth = ttime[1]
+		self.cacheDay = ttime[2]
+
 		if self.config.force_load_on_boot:
 			self.loader()
 
 	def init(self, session):
 		self.session = session
-		self.timer.start(self.POLL_TIMER, 1)
+		self.timer.start(self.POLL_TIMER_BOOT, 1)
 
 	def forcePoll(self):
 		self.timer.stop()
+		
+		# date cache for daily download
+		ttime = localtime(time())
+		self.cacheYear = ttime[0]
+		self.cacheMonth = ttime[1]
+		self.cacheDay = ttime[2]
+
 		self.timer.start(self.POLL_TIMER_FAST, 1)
 		
 	def poll(self):
@@ -99,7 +114,7 @@ class CrossEPG_Auto(Screen):
 		elif self.config.download_daily_enabled:
 			now = time()
 			ttime = localtime(now)
-			ltime = (ttime[0], ttime[1], ttime[2], self.config.download_daily_hours, self.config.download_daily_minutes, 0, ttime[6], ttime[7], ttime[8])
+			ltime = (self.cacheYear, self.cacheMonth, self.cacheDay, self.config.download_daily_hours, self.config.download_daily_minutes, 0, ttime[6], ttime[7], ttime[8])
 			stime = mktime(ltime)
 			if stime < now and self.config.last_full_download_timestamp != stime:
 				from Screens.Standby import inStandby
@@ -108,6 +123,10 @@ class CrossEPG_Auto(Screen):
 				self.config.last_full_download_timestamp = stime
 				self.config.last_partial_download_timestamp = stime
 				self.config.save()
+				ttime = localtime(now+8640)	# 24 hours in future
+				self.cacheYear = ttime[0]
+				self.cacheMonth = ttime[1]
+				self.cacheDay = ttime[2]
 				self.download(self.config.providers)
 			elif stime < now + (self.POLL_TIMER / 1000) and self.config.last_full_download_timestamp != stime:
 				print "[CrossEPG_Auto] poll"
