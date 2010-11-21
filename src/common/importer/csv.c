@@ -20,21 +20,22 @@ static inline bool isUTF8 (char *text)
 	bool useext = false;
 	bool utferr = false;
 	char *tmp = text;
-	while (tmp != NULL)
+	int i;
+	for (i = 0; i<sizeof(tmp); i++)
 	{
-		if (*tmp & 0x80)
+		char test = tmp[i];
+		if (test & 0x80)
 		{
 			useext = true;
-			if ((*tmp & 0xE0) != 0xC0 &&
-					(*tmp & 0xF0) != 0xE0 &&
-					(*tmp & 0xF8) != 0xF0 &&
-					(*tmp & 0xFC) != 0xF8 &&
-					(*tmp & 0xFE) != 0xFC)
+			if ((test & 0xE0) != 0xC0 &&
+					(test & 0xF0) != 0xE0 &&
+					(test & 0xF8) != 0xF0 &&
+					(test & 0xFC) != 0xF8 &&
+					(test & 0xFE) != 0xFC)
 			{
 				utferr = true;
 			}
 		}
-		tmp++;
 	}
 	if (!utferr && useext)
 		return true;
@@ -42,61 +43,57 @@ static inline bool isUTF8 (char *text)
 	return false;
 }
 
-char *csvtok (char *value, char separator)
-{
-	static char line[LINE_SIZE];
-	static char field[LINE_SIZE];
-	static int pos;
-	static bool quotes;
-	static bool ended;
-	int i, z;
-	
-	if (value != NULL)
+parsing_line *createParsingLine (char *value) {
+	parsing_line *line = _malloc(sizeof(parsing_line));
+	line->pos = 0;
+	line->line = value;
+	line->field = _malloc(LINE_SIZE);
+	line->quotes = false;
+	line->ended = false;
+	return line;
+}
+
+char *csvtok (parsing_line *value, char separator)
+{	int i, z;		
+	z = 0;
+	for (i=value->pos; i<strlen (value->line); i++)
 	{
-		strcpy (line, value);
-		pos = 0;
-		quotes = false;
-		ended = false;
-	}
-	z=0;
-	for (i=pos; i<strlen (line); i++)
-	{
-		if ((i == pos) && (line[i] == '"'))
+		if ((i == value->pos) && (value->line[i] == '"'))
 		{
-			quotes = true;
+			value->quotes = true;
 			continue;
 		}
-		if (quotes)
+		if (value->quotes)
 		{
-			if (line[i] == '"') quotes = false;
-			else if (line[i] == '\\')
+			if (value->line[i] == '"') value->quotes = false;
+			else if (value->line[i] == '\\')
 			{
 				i++;
-				field[z] = line[i];
+				value->field[z] = value->line[i];
 				z++;
 			}
 			else
 			{
-				field[z] = line[i];
+				value->field[z] = value->line[i];
 				z++;
 			}
 		}
 		else
 		{
-			if (line[i] == separator) break;
-			field[z] = line[i];
+			if (value->line[i] == separator) break;
+			value->field[z] = value->line[i];
 			z++;
 		}
 	}
-	pos = i+1;
+	value->pos = i+1;
 	if (z == 0)
 	{
-		ended = true;
+		value->ended = true;
 		return "";
 	}
 	
-	field[z] = '\0';
-	return field;
+	value->field[z] = '\0';
+	return value->field;
 }
 
 bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *stop)
@@ -115,22 +112,25 @@ bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *st
 	}
 
 	while (fgets (line, sizeof(line), fd)) rows++;
+	log_add ("Processing %d lines", rows);
 
 	fseek (fd, 0, SEEK_SET);
 
 	count = 0;
+
 	while (fgets (line, sizeof(line), fd) && *stop == false) 
 	{
-		int nid = atoi (csvtok (line, ','));
-		int tsid = atoi (csvtok (NULL, ','));
-		int sid = atoi (csvtok (NULL, ','));
+		parsing_line *input = createParsingLine(line);
+		int nid = atoi (csvtok (input, ','));
+		int tsid = atoi (csvtok (input, ','));
+		int sid = atoi (csvtok (input, ','));
 		char *tmp;
 		epgdb_channel_t *channel = epgdb_channels_add (nid, tsid, sid);
 		
 		epgdb_title_t *title = _malloc (sizeof (epgdb_title_t));
 		title->event_id = event_id;
-		title->start_time = atoi (csvtok (NULL, ','));
-		title->length = atoi (csvtok (NULL, ','));
+		title->start_time = atoi (csvtok (input, ','));
+		title->length = atoi (csvtok (input, ','));
 		title->genre_id = 0;
 		title->flags = 0;
 		//title->genre_sub_id = 0;
@@ -140,17 +140,17 @@ bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *st
 		title->iso_639_3 = 'g';
 		title = epgdb_titles_add (channel, title);
 
-		tmp = csvtok (NULL, ',');
+		tmp = csvtok (input, ',');
 		if (isUTF8 (tmp))
 			SET_UTF8(title->flags);
 		epgdb_titles_set_description (title, tmp);
 
-		tmp = csvtok (NULL, ',');
+		tmp = csvtok (input, ',');
 		if (isUTF8 (tmp))
 			SET_UTF8(title->flags);
 		epgdb_titles_set_long_description (title, tmp);
 
-		char *iso639 = csvtok (NULL, ',');
+		char *iso639 = csvtok (input, ',');
 		if (strlen (iso639) >= 3)
 		{
 			title->iso_639_1 = iso639[0];
@@ -161,6 +161,7 @@ bool csv_read (char *file, void(*progress_callback)(int, int), volatile bool *st
 		
 		count++;
 		if (progress_callback != NULL) progress_callback (count, rows);
+		log_add("Parsed: %d line of %d", count, rows);
 	}
 	
 	fclose (fd);
@@ -182,23 +183,26 @@ bool bin_read (char *file, char *label, void(*progress_callback)(int, int), void
 		return false;
 	}
 
-	if (progress_callback != NULL) progress_callback (0, 0);
+	int max = 1500;
+
+	if (progress_callback != NULL) progress_callback (0, max);
 	
 	while (fgets (line, sizeof(line), fd)) 
 	{
+		parsing_line *input = createParsingLine(line);
 		char *tmp;
 		char nlabel[256];
-		int nid = atoi (csvtok (line, ','));
-		int tsid = atoi (csvtok (NULL, ','));
-		int sid = atoi (csvtok (NULL, ','));
+		int nid = atoi (csvtok (input, ','));
+		int tsid = atoi (csvtok (input, ','));
+		int sid = atoi (csvtok (input, ','));
 		epgdb_channel_t *channel = epgdb_channels_add (nid, tsid, sid);
 
 		//log_add (line);
 		
 		epgdb_title_t *title = _malloc (sizeof (epgdb_title_t));
 		title->event_id = event_id;
-		title->start_time = atoi (csvtok (NULL, ','));
-		title->length = atoi (csvtok (NULL, ','));
+		title->start_time = atoi (csvtok (input, ','));
+		title->length = atoi (csvtok (input, ','));
 		title->genre_id = 0;
 		title->flags = 0;
 		//title->genre_sub_id = 0;
@@ -208,17 +212,17 @@ bool bin_read (char *file, char *label, void(*progress_callback)(int, int), void
 		title->iso_639_3 = 'g';
 		title = epgdb_titles_add (channel, title);
 
-		tmp = csvtok (NULL, ',');
+		tmp = csvtok (input, ',');
 		if (isUTF8 (tmp))
 			SET_UTF8(title->flags);
 		epgdb_titles_set_description (title, tmp);
 
-		tmp = csvtok (NULL, ',');
+		tmp = csvtok (input, ',');
 		if (isUTF8 (tmp))
 			SET_UTF8(title->flags);
 		epgdb_titles_set_long_description (title, tmp);
 		
-		char *iso639 = csvtok (NULL, ',');
+		char *iso639 = csvtok (input, ',');
 		if (strlen (iso639) >= 3)
 		{
 			title->iso_639_1 = iso639[0];
@@ -228,10 +232,14 @@ bool bin_read (char *file, char *label, void(*progress_callback)(int, int), void
 		event_id++;
 		
 		count++;
+
+		if (count > max)
+			max++;
 		
 		sprintf (nlabel, "%s - %d rows parsed", label, count);
 		if (file_callback != NULL) file_callback (nlabel);
-		if (progress_callback != NULL) progress_callback (0, 0);
+		if (progress_callback != NULL) progress_callback (count, max);
+		log_add("%s", nlabel);
 	}
 	
 	pclose (fd);
