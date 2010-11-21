@@ -57,18 +57,17 @@ class CrossEPG_Auto(Screen):
 
 	def forcePoll(self):
 		self.timer.stop()
-		
 		self.resetDailyDownloadDateCache()
-		
 		self.timer.start(self.POLL_TIMER_FAST, 1)
 		
 	def resetDailyDownloadDateCache(self):
+		self.config.load()
 		now = time()
 		ttime = localtime(now)
 		ltime = (ttime[0], ttime[1], ttime[2], self.config.download_daily_hours, self.config.download_daily_minutes, 0, ttime[6], ttime[7], ttime[8])
 		stime = mktime(ltime)
 		if stime < now:
-			ttime = localtime(stime+8640)	# 24 hours in future
+			ttime = localtime(stime+86400)	# 24 hours in future
 			self.cacheYear = ttime[0]
 			self.cacheMonth = ttime[1]
 			self.cacheDay = ttime[2]
@@ -129,7 +128,7 @@ class CrossEPG_Auto(Screen):
 				self.config.last_full_download_timestamp = stime
 				self.config.last_partial_download_timestamp = stime
 				self.config.save()
-				ttime = localtime(stime+8640)	# 24 hours in future
+				ttime = localtime(stime+86400)	# 24 hours in future
 				self.cacheYear = ttime[0]
 				self.cacheMonth = ttime[1]
 				self.cacheDay = ttime[2]
