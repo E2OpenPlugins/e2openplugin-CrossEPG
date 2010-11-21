@@ -313,10 +313,13 @@ class CrossEPG_Wrapper:
 		versionlist = getEnigmaVersionString().split("-");
 		
 		self.oldapi = False
-		if len(versionlist) >= 3:
-			self.version = int(versionlist[0]+versionlist[1]+versionlist[2])
-			if self.version < 20100716:
-				self.oldapi = True
+		try:
+			if len(versionlist) >= 3:
+				self.version = int(versionlist[0]+versionlist[1]+versionlist[2])
+				if self.version < 20100716:
+					self.oldapi = True
+		except Exception:
+			pass
 				
 		config = CrossEPG_Config()
 		if config.isQBOXHD():
