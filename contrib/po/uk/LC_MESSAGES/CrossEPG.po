@@ -1,0 +1,358 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: enigma2 - crossepg\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-11-10 23:12+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: bodyan <bodyan_ua@hotmail.com>\n"
+"Language-Team: sat-ukraine.info <bodyan_ua@hotmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Ukrainian\n"
+"X-Poedit-Country: UKRAINE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: /home/dario/Plugins/src\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: /home/dario/Plugins/src\n"
+
+msgid "%s channels"
+msgstr "%s канали"
+
+msgid "%s of %s"
+msgstr "%s з %s"
+
+msgid "Aliases db size: %s"
+msgstr "Розмір псевдонімів бд: %s"
+
+msgid "An EPG downloader"
+msgstr "Завантажувач ЕПГ"
+
+msgid "Automatic daily download"
+msgstr "Автоматичне щоденне завантаження"
+
+msgid "Automatic daily download at"
+msgstr "Автоматично щоденно завантажувати до"
+
+msgid "Automatic download on tune"
+msgstr "Автозавантаження при настройці"
+
+msgid "Automatic load data on boot"
+msgstr "Автоматично завантажувати дані при старті"
+
+msgid "Cancel"
+msgstr "Скасувати"
+
+msgid "Channels count: %s"
+msgstr "Кількість каналів: %s"
+
+msgid "Configuration must be saved before continue. Do it now?"
+msgstr "Щоб продовжити, необхідно зберегти конфігурацію. Виконати це зараз?"
+
+msgid "Converting data"
+msgstr "Конвертування даних"
+
+msgid "Create ext.epg.dat"
+msgstr "Створити ext.epg.dat"
+
+msgid "Creation time: %s"
+msgstr "Час створення: %s"
+
+msgid "CrossEPG automatic actions"
+msgstr "Авто дії CrossEPG"
+
+msgid "CrossEPG error: %s"
+msgstr "Помилка CrossEPG: %s"
+
+msgid "CrossEPG setup panel"
+msgstr "Панель конфігурації CrossEPG"
+
+msgid "Descriptors db size: %s"
+msgstr "Розмір бд: %s"
+
+msgid "Download %s"
+msgstr "Завантажити %s"
+
+msgid "Downloading"
+msgstr "Завантаження"
+
+msgid "Enable csv import"
+msgstr "Увімкнути імпорт csv"
+
+msgid "Enable provider %s"
+msgstr "Провайдери %s"
+
+msgid "Events count: %s"
+msgstr "Кількість подiй: %s"
+
+msgid "Execute import script %s"
+msgstr "Виконати скрипт імпорту %s"
+
+msgid "Exit"
+msgstr "Вихід"
+
+msgid "Extra"
+msgstr "Екстра"
+
+msgid "Hashes count: %s"
+msgstr "Кількість ключів: %s"
+
+msgid "Headers db size: %s"
+msgstr "Розмір загловків бд: %s"
+
+msgid "Import data from csv"
+msgstr "Імпортувати дані з csv"
+
+msgid "Indexes db size: %s"
+msgstr "Розмір індексів бд: %s"
+
+msgid "Info"
+msgstr "Інформація"
+
+msgid "Last update time: %s"
+msgstr "Останнє оновлення: %s"
+
+msgid "Load data in enigma2 epg"
+msgstr "Завантажити дані до епг enigma2"
+
+msgid "Loading data"
+msgstr "Завантаження даних ..."
+
+msgid "OK"
+msgstr "Ok"
+
+msgid "Parsing"
+msgstr "Обробка"
+
+msgid "Parsing summaries"
+msgstr "Обробка загалом ..."
+
+msgid "Parsing titles"
+msgstr "Обробка заголовків"
+
+msgid "Preferred lamedb"
+msgstr "Переважає Lamedb "
+
+msgid "Read %s"
+msgstr "Читання %s"
+
+msgid "Reading channels"
+msgstr "Читання каналів ..."
+
+msgid "Reading summaries"
+msgstr "Читання загалом"
+
+msgid "Reading titles"
+msgstr "Читання заголовків ..."
+
+msgid "Reboot after a daily download"
+msgstr "Перезавантажити після щоденного завантаження"
+
+msgid "Reboot after a manual download"
+msgstr "Перезавантажити після ручного завантаження"
+
+msgid "Save data on device"
+msgstr "Місце збереження даних"
+
+msgid "Saving data"
+msgstr "Збереження даних ..."
+
+msgid "Show OSD for automatic download"
+msgstr "Відображ. меню автозавантаження"
+
+msgid "Show as extension"
+msgstr "Відображати як розширення"
+
+msgid "Show as plugin"
+msgstr "Відображати як додаток"
+
+msgid "Start automated task"
+msgstr "Старт автоматичних завдань"
+
+msgid "Starting converter"
+msgstr "Початок"
+
+msgid "Starting downloader"
+msgstr "Початок завантаження"
+
+msgid "Starting importer"
+msgstr "Початок імпортування"
+
+msgid "Total size: %s"
+msgstr "Загальний розмір: %s"
+
+msgid "Version: %s"
+msgstr "Версія: %s"
+
+msgid "About"
+msgstr "Про ..."
+
+msgid "Automatically reboot the decoder after a manual download"
+msgstr "Автоматично перезавантажити після ручного завантаження"
+
+msgid "Automatically reboot the decoder after a scheduled download"
+msgstr "Автоматично перезавантажити після запланованого завантаження"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Configure"
+msgstr "Конфігурація"
+
+msgid "Deflating channels list"
+msgstr "Розгорнути список каналів"
+
+msgid "Deflating events"
+msgstr "Розгортання подій"
+
+msgid "Disable"
+msgstr "Вимкнути"
+
+msgid "Download epg once a day"
+msgstr "Завантажувати епг один раз на день"
+
+msgid "Download now"
+msgstr "Завантажити"
+
+msgid "Downloading channels list"
+msgstr "Завантаження списку каналів"
+
+msgid "Downloading events"
+msgstr "Завантаження подій"
+
+msgid ""
+"Drive where you save data.\n"
+"The drive MUST be mounted in rw"
+msgstr ""
+"Місце збереження даних.\n"
+"Пристрій повинен містити права запису rw"
+
+msgid "Enable"
+msgstr "Увімкнути"
+
+msgid "Force csv import now"
+msgstr "Примусовий імпорт csv"
+
+msgid "Force epg reload"
+msgstr "Примусове перезавантаження епг"
+
+msgid "Force epg reload on boot"
+msgstr "Виконати рестарт епг при старті"
+
+msgid "Force epg.dat conversion now"
+msgstr "Виконати конвертування epg.dat"
+
+msgid ""
+"Import *.csv and *.bin from %s/import or %s/import\n"
+"(*.bin are binaries with a csv as stdout)"
+msgstr ""
+"Імпорт *.csv і *.bin з %s/import або %s/import\n"
+"(*.bin sono file binari con un csv come stdout)"
+
+msgid "Info about database"
+msgstr "Інформація про БД"
+
+msgid "Internal flash"
+msgstr "Внутрішня флеш"
+
+msgid ""
+"Isakota (http://www.krkadoni.com/)\n"
+"Provider for Ex Yugoslavia"
+msgstr ""
+"Isakota (http://www.krkadoni.com/)\n"
+"Провайдер для ex Yugoslavia"
+
+msgid ""
+"Lamedb used for epg.dat conversion.\n"
+"This option doesn't work with crossepg patch v2"
+msgstr ""
+"Lamedb використовується для конвертування epg.dat.\n"
+"Ця опція не працює з патчем crossepg v2"
+
+msgid "No disk found. Please install an hard drive or an usb memory storage and try again."
+msgstr "Диск не знайдено. Будь-ласка встановіть жорсткий диск або usb-носій і повторіть спробу."
+
+msgid ""
+"Only for opentv providers.\n"
+"If you zap on channel used from a provider it download the epg in background"
+msgstr ""
+"Тільки для провайдерів opentv.\n"
+"При переключенні на канал що використовується провайдером,епг завантажиться у фоні"
+
+msgid "Parsing channels list"
+msgstr "Обробка списку каналів"
+
+msgid "Parsing events"
+msgstr "Обробка подій"
+
+msgid "Reboot after a scheduled download"
+msgstr "Перезавантажити після запланованого завантаження"
+
+msgid ""
+"Reload epg at every boot.\n"
+"Normally it's not necessary but recover epg after an enigma2 crash"
+msgstr ""
+"Перезавантажувати епг при кожному старті.\n"
+"Зазвичай це не потрібно, проте відновлює еепг після падіння enigma2"
+
+msgid ""
+"Rytec (http://www.rytec.be)\n"
+"19 xmltv providers for many countries"
+msgstr ""
+"Rytec (http://www.rytec.be)\n"
+"19 провайдерів xmltv для багатьох країн"
+
+msgid ""
+"SIFTeam CrossEPG %s (c) 2009-2010 Sandro Cavazzoni\n"
+"http://code.google.com/p/crossepg/\n"
+"\n"
+"For translations many thanks to:\n"
+"Spaeleus (italian translations)\n"
+"\n"
+"For XMLTV sources many thanks to:"
+msgstr ""
+"SIFTeam CrossEPG %s (c) 2009-2010 Sandro Cavazzoni\n"
+"http://code.google.com/p/crossepg/\n"
+"\n"
+"Per le traduzioni, si ringrazia:\n"
+"Spaeleus (italiano)\n"
+"\n"
+"За ресурси XMLTV величезна подяка:"
+
+msgid "Scheduled download"
+msgstr "Завантажити планово"
+
+msgid "Scheduled download disabled"
+msgstr "Планове завантаження вимкнуте"
+
+msgid "Show crossepg in extensions menu"
+msgstr "Відображати crossepg в меню розширень"
+
+msgid "Show crossepg in plugin menu"
+msgstr "Відображати crossepg в меню додатків"
+
+msgid "Time for scheduled daily download"
+msgstr "Час запланованого щоденного завантаження"
+
+msgid ""
+"When the decoder is in standby opentv providers will be automatically downloaded every hour.\n"
+"XMLTV providers will be always downloaded only once a day"
+msgstr ""
+"Коли приймач знаходиться у деж. режимі, провайдери opentv будуть автоматично завантажуватись щогодини.\n"
+"XMLTV провайдери будуть завжди завантажуватись один раз на день"
+
+msgid "XMLTV providers"
+msgstr "Провайдери XMLTV"
+
+msgid "disabled"
+msgstr "вимкнути"
+
+msgid "every hour (only in standby)"
+msgstr "щогодини (тільки у деж. режимі)"
+
+msgid "main lamedb"
+msgstr "основний Lamedb"
+
+msgid "once a day"
+msgstr "один раз на день"
+
