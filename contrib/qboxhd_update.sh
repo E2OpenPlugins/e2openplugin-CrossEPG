@@ -70,15 +70,17 @@ SRC_DIR="/mnt/update_fs/qboxhd_update"
 mkdir $DST_DIR/var/crossepg
 
 # Copy CrossEPG python plugin .... #
-cp -rf $SRC_DIR/var/crossepg/* $DST_DIR/var/crossepg/
-cp -rf $SRC_DIR/var/addons/uninstall/* $DST_DIR/addons/uninstall/
+cp -af $SRC_DIR/var/crossepg $DST_DIR/var/
+cp -af $SRC_DIR/var/addons/uninstall $DST_DIR/var/addons/
 
-cp -arf $SRC_DIR/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG $DST_DIR/usr/lib/enigma2/python/Plugins/SystemPlugins/
+cp -af $SRC_DIR/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG $DST_DIR/usr/local/lib/enigma2/python/Plugins/SystemPlugins/
+cp -af $SRC_DIR/usr/local/lib/python2.6/* $DST_DIR/usr/local/lib/python2.6
+
 
 # Permissions...#
 chmod 755 $DST_DIR/var/crossepg/*
 chmod 755 $DST_DIR/var/addons/uninstall/*
-chmod 755 $DST_DIR/usr/lib/enigma2/python/Components/Converter/*
+chmod 755 $DST_DIR/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/*.py
 
 # Rename the dir qboxhd_update to done_qboxhd_update
 mv /mnt/update_fs/qboxhd_update /mnt/update_fs/done_qboxhd_update
