@@ -123,7 +123,7 @@ class CrossEPG_Auto(Screen):
 				self.config.last_full_download_timestamp = stime
 				self.config.last_partial_download_timestamp = stime
 				self.config.save()
-				ttime = localtime(now+8640)	# 24 hours in future
+				ttime = localtime(stime+8640)	# 24 hours in future
 				self.cacheYear = ttime[0]
 				self.cacheMonth = ttime[1]
 				self.cacheDay = ttime[2]
