@@ -46,13 +46,8 @@ class CrossEPG_Auto(Screen):
 			self.standbyTimer.start(30000, 1)
 			
 		self.config.load()
+		self.resetDailyDownloadDateCache()
 		
-		# date cache for daily download
-		ttime = localtime(time())
-		self.cacheYear = ttime[0]
-		self.cacheMonth = ttime[1]
-		self.cacheDay = ttime[2]
-
 		if self.config.force_load_on_boot:
 			self.loader()
 
@@ -63,14 +58,25 @@ class CrossEPG_Auto(Screen):
 	def forcePoll(self):
 		self.timer.stop()
 		
-		# date cache for daily download
-		ttime = localtime(time())
-		self.cacheYear = ttime[0]
-		self.cacheMonth = ttime[1]
-		self.cacheDay = ttime[2]
-
+		self.resetDailyDownloadDateCache()
+		
 		self.timer.start(self.POLL_TIMER_FAST, 1)
 		
+	def resetDailyDownloadDateCache(self):
+		now = time()
+		ttime = localtime(now)
+		ltime = (ttime[0], ttime[1], ttime[2], self.config.download_daily_hours, self.config.download_daily_minutes, 0, ttime[6], ttime[7], ttime[8])
+		stime = mktime(ltime)
+		if stime < now:
+			ttime = localtime(stime+8640)	# 24 hours in future
+			self.cacheYear = ttime[0]
+			self.cacheMonth = ttime[1]
+			self.cacheDay = ttime[2]
+		else:
+			self.cacheYear = ttime[0]
+			self.cacheMonth = ttime[1]
+			self.cacheDay = ttime[2]
+			
 	def poll(self):
 		from Screens.Standby import inStandby
 		self.config.load()
@@ -78,7 +84,7 @@ class CrossEPG_Auto(Screen):
 		if self.lock:
 			print "[CrossEPG_Auto] poll"
 			self.timer.start(self.POLL_TIMER_FAST, 1)
-		elif self.session.nav.RecordTimer.isRecording():	# if record in progress we poll and skip
+		elif self.session.nav.RecordTimer.isRecording() or abs(self.session.nav.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(self.session.nav.RecordTimer.getNextZapTime() - time()) <= 900:
 			print "[CrossEPG_Auto] poll"
 			self.timer.start(self.POLL_TIMER, 1)
 		elif self.config.download_standby_enabled and inStandby:
