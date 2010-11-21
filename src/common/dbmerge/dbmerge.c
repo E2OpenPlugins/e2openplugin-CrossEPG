@@ -196,7 +196,8 @@ bool dbmerge_merge (FILE *fd_h, FILE *fd_d, void(*progress_callback)(int, int))
 			_free (ldesc);
 		}
 
-		progress_callback (i, channels_count);
+		if (progress_callback)
+			progress_callback (i, channels_count);
 	}
 
 
