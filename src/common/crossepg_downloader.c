@@ -172,10 +172,12 @@ void event_callback (int type, char *arg)
 
 	case 9:
 		interactive_send_text (ACTION_TYPE, "PARSING XEPGDB");
+		interactive_send_text (ACTION_URL, arg);
 		break;
 
 	case 10:
 		interactive_send_text (ACTION_TYPE, "DEFLATING XEPGDB");
+		interactive_send_text (ACTION_URL, arg);
 		break;
 	}
 }

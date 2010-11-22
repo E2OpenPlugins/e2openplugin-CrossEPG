@@ -245,7 +245,7 @@ bool dbmerge_downloader (char *hashes_url, char *descriptors_url, char *dbroot, 
 		}
 		else
 		{
-			if (event_callback) event_callback(10, NULL);	// deflating message
+			if (event_callback) event_callback(10, hashes_url);	// deflating message
 			log_add ("Deflating %s", sfn);
 			FILE *dest = fdopen (fdtmp, "w");
 			if (!gzip_inf (sfn, dest)) log_add ("Error deflating file");
@@ -269,7 +269,7 @@ bool dbmerge_downloader (char *hashes_url, char *descriptors_url, char *dbroot, 
 		}
 		else
 		{
-			if (event_callback) event_callback(10, NULL);	// deflating message
+			if (event_callback) event_callback(10, descriptors_url);	// deflating message
 			log_add ("Deflating %s", sfn2);
 			FILE *dest = fdopen (fdtmp, "w");
 			if (!gzip_inf (sfn2, dest)) log_add ("Error deflating file");
@@ -296,7 +296,7 @@ bool dbmerge_downloader (char *hashes_url, char *descriptors_url, char *dbroot, 
 		goto error;
 	}
 
-	if (event_callback) event_callback(9, NULL);	// parsing xepgdb
+	if (event_callback) event_callback(9, hashes_url);	// parsing xepgdb
 	if (event_callback) event_callback(0, NULL);	// turn on progress bar
 	ret = dbmerge_merge(fd_h, fd_d, progress_callback);
 	if (event_callback) event_callback(1, NULL);	// turn off progress bar
