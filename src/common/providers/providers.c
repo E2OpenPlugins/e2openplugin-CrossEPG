@@ -27,6 +27,7 @@ static char url[256];
 static char xepgdb_headers_url[256];
 static char xepgdb_descriptors_url[256];
 static char preferred_language[4];
+static char script_filename[256];
 
 int  *providers_get_channels_pids			()	{ return channels_pids;			}
 int  *providers_get_titles_pids				()	{ return titles_pids;			}
@@ -45,6 +46,7 @@ char *providers_get_xmltv_url				()	{ return url;					}
 char *providers_get_xmltv_plang				()	{ return preferred_language;	}
 char *providers_get_xepgdb_headers_url		()	{ return xepgdb_headers_url;	}
 char *providers_get_xepgdb_descriptors_url	()	{ return xepgdb_descriptors_url;}
+char *providers_get_script_filename			()	{ return script_filename;		}
 
 static char *providers_trim_spaces (char *text)
 {
@@ -164,6 +166,8 @@ bool providers_read (char *read)
 			strcpy (xepgdb_headers_url, tmp_value);
 		else if (strcmp ("descriptors_url", tmp_key) == 0)
 			strcpy (xepgdb_descriptors_url, tmp_value);
+		else if (strcmp ("filename", tmp_key) == 0)
+			strcpy (script_filename, tmp_value);
 	}
 	
 	fclose (fd);

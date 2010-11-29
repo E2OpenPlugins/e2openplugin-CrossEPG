@@ -200,23 +200,12 @@ void download_opentv ()
 	int i;
 	dvb_t settings;
 	char dictionary[256];
-	//char opentv_file[256];
 
 	interactive_send (ACTION_START);
 	log_add ("Started OpenTV events download");
 
-	//sprintf (opentv_file, "%s/providers/%s.conf", homedir, provider);
 	sprintf (dictionary, "%s/providers/%s.dict", homedir, provider);
 	
-	/*
-	if (!providers_read (opentv_file))
-	{
-		interactive_send_text (ACTION_ERROR, "cannot load provider configuration");
-		log_add ("Cannot load provider configuration");
-		exec = false;
-		return;
-	}*/
-
 	opentv_init ();
 	if (huffman_read_dictionary (dictionary))
 	{
@@ -368,9 +357,54 @@ void *download (void *args)
 			exec = false;
 			interactive_send (ACTION_END);
 		}
+		else if (providers_get_protocol () == 4)
+		{
+			char filename[256];
+			interactive_send (ACTION_START);
+			interactive_send_text (ACTION_TYPE, "RUNNING SCRIPT");
+			interactive_send_text (ACTION_URL, providers_get_script_filename ());
+			sprintf (filename, "%s/scripts/%s", homedir, providers_get_script_filename ());
+			if (system (filename) != 0)
+				interactive_send_text (ACTION_ERROR, "script returned an error");
+			exec = false;
+			interactive_send (ACTION_END);
+		}
+		else
+		{
+			interactive_send_text (ACTION_ERROR, "invalid provider");
+			exec = false;
+		}
+	}
+	else
+	{
+		interactive_send_text (ACTION_ERROR, "cannot read provider");
+		exec = false;
 	}
 
 	return NULL;
+}
+
+bool db_load ()
+{
+	if (epgdb_open (db_root)) log_add ("EPGDB opened (root=%s)", db_root);
+	else
+	{
+		interactive_send_text (ACTION_ERROR, "error opening EPGDB");
+		log_add ("Error opening EPGDB");
+		epgdb_close ();
+		return false;
+	}
+	epgdb_load ();
+
+	aliases_make (homedir);
+	return true;
+}
+
+void db_close ()
+{
+	epgdb_clean ();
+	epgdb_close ();
+	log_add ("EPGDB closed");
 }
 
 void *interactive (void *args)
@@ -391,11 +425,23 @@ void *interactive (void *args)
 			buffer[i] = byte; 
 			i++;
 		}
-		//buffer[i+1] = '\0';
+
 		if (memcmp (buffer, CMD_QUIT, strlen (CMD_QUIT)) == 0 || quit || size == 0)
 		{
 			run = false;
 			stop = true;
+		}
+		else if (memcmp (buffer, CMD_OPEN, strlen (CMD_OPEN)) == 0)
+		{
+			if (!db_load ())
+				interactive_send_text (ACTION_ERROR, "cannot open crossepg database");
+			else
+				interactive_send (ACTION_OK);
+		}
+		else if (memcmp (buffer, CMD_CLOSE, strlen (CMD_CLOSE)) == 0)
+		{
+			db_close ();
+			interactive_send (ACTION_OK);
 		}
 		else if (memcmp (buffer, CMD_DEMUXER, strlen (CMD_DEMUXER)) == 0)
 		{
@@ -567,19 +613,6 @@ int main (int argc, char **argv)
 	
 	log_open (NULL, "CrossEPG Downloader");
 	
-	if (epgdb_open (db_root)) log_add ("EPGDB opened (root=%s)", db_root);
-	else
-	{
-		interactive_send_text (ACTION_ERROR, "error opening EPGDB");
-		log_add ("Error opening EPGDB");
-		epgdb_close ();
-		log_close ();
-		return 0;
-	}
-	epgdb_load ();
-	
-	aliases_make (homedir);
-	
 	if (iactive) interactive_manager ();
 	else
 	{
@@ -588,56 +621,76 @@ int main (int argc, char **argv)
 		sprintf (opentv_file, "%s/providers/%s.conf", homedir, provider);
 		if (providers_read (opentv_file))
 		{
-			bool save = false;
 			if (providers_get_protocol () == 1)
 			{
-				log_add ("Provider %s indentified as opentv", provider);
-				save = true;
+				log_add ("Provider %s identified as opentv", provider);
+				if (!db_load ())
+					goto error;
 				download_opentv ();
+				if (epgdb_save (NULL)) log_add ("Data saved");
+				else log_add ("Error saving data");
+				db_close ();
 			}
 			else if (providers_get_protocol () == 2)
 			{
-				log_add ("Provider %s indentified as xmltv", provider);
+				log_add ("Provider %s identified as xmltv", provider);
 				log_add ("Channels url: %s", providers_get_xmltv_channels ());
 				log_add ("Events url: %s", providers_get_xmltv_url ());
 				log_add ("Preferred language: %s", providers_get_xmltv_plang ());
+				if (!db_load ())
+					goto error;
 				xmltv_channels_init ();
 				if (!xmltv_downloader_channels (providers_get_xmltv_channels (), db_root, NULL, NULL, &stop))
 					log_add ("Error downloading/parsing channels file");
 
 				xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
 				if (xmltv_downloader_events (providers_get_xmltv_url (), db_root, NULL, NULL, &stop))
-					save = true;
+				{
+					if (epgdb_save (NULL)) log_add ("Data saved");
+					else log_add ("Error saving data");
+				}
 				else
 					log_add ("Error downloading/parsing events file");
 					
 				xmltv_channels_cleanup ();
+				db_close ();
 			}
 			else if (providers_get_protocol () == 3)
 			{
-				log_add ("Provider %s indentified as xepgdb", provider);
+				log_add ("Provider %s identified as xepgdb", provider);
 				log_add ("Headers url: %s", providers_get_xepgdb_headers_url ());
 				log_add ("Descriptors url: %s", providers_get_xepgdb_descriptors_url ());
 
+				if (!db_load ())
+					goto error;
 				if (dbmerge_downloader (providers_get_xepgdb_headers_url (), providers_get_xepgdb_descriptors_url (), db_root, NULL, NULL, &stop))
-					save = true;
+				{
+					if (epgdb_save (NULL)) log_add ("Data saved");
+					else log_add ("Error saving data");
+				}
 				else
 					log_add ("Error downloading/parsing xepgdb files");
+				db_close ();
 			}
-			if (save)
+			else if (providers_get_protocol () == 4)
 			{
-				if (epgdb_save (NULL)) log_add ("Data saved");
-				else log_add ("Error saving data");
+				char filename[256];
+				log_add ("Provider %s identified as script", provider);
+				log_add ("Script file name: %s", providers_get_script_filename ());
+
+				sprintf (filename, "%s/scripts/%s", homedir, providers_get_script_filename ());
+
+				log_add ("Executing script %s ...", filename);
+				system (filename);
+				log_add ("Script terminated");
 			}
 		}
 		else
 			log_add ("Cannot load provider configuration (%s)", opentv_file);
 	}
 	
-	epgdb_clean ();
-	epgdb_close ();
-	log_add ("EPGDB closed");
 	memory_stats ();
+error:
 	log_close ();
 	return 0;
 }

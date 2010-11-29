@@ -59,7 +59,10 @@ class CrossEPG_Setup(Screen):
 			self.mountpoint.append("/var/crossepg/data")
 		for partition in harddiskmanager.getMountedPartitions():
 			if partition.mountpoint != "/": # and self.isMountedInRW(partition.mountpoint):
-				self.mountdescription.append(partition.description)
+				if partition.description and len(partition.description) == 0:
+					self.mountdescription.append(partition.description)
+				else:
+					self.mountdescription.append(partition.mountpoint)
 				self.mountpoint.append(partition.mountpoint + "/crossepg")
 				
 		if len(self.mountpoint) == 0:

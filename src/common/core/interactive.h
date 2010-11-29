@@ -12,6 +12,8 @@
 #define CMD_TEXT "TEXT"
 #define CMD_WAIT "WAIT"
 #define CMD_STOP "STOP"
+#define CMD_OPEN "OPEN"
+#define CMD_CLOSE "CLOSE"
 
 #define ACTION_OK		"OK"
 #define ACTION_START	"START"

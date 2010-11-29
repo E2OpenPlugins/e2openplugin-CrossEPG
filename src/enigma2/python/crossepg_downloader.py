@@ -47,7 +47,9 @@ class CrossEPG_Downloader(Screen):
 		
 		self.retValue = True
 		self.provider_index = 0
-		self.status = 0	
+		self.status = 0
+		self.open = False
+		self.saved = False
 		self.tune_enabled = False
 		self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
 		self.config = CrossEPG_Config()
@@ -89,6 +91,18 @@ class CrossEPG_Downloader(Screen):
 			self.wrapper.init(CrossEPG_Wrapper.CMD_DOWNLOADER, self.config.db_root)
 	
 	def download(self):
+		if self.config.getChannelProtocol(self.providers[self.provider_index]) != "script":
+			if not self.open:
+				self.wrapper.open()
+				self.open = True
+				self.saved = False
+		else:
+			if self.open:
+				self.wrapper.save()
+				self.saved = True
+				self.provider_index -= 1
+				return
+			
 		service = self.config.getChannelID(self.providers[self.provider_index])
 		try:
 			cservice = self.session.nav.getCurrentlyPlayingServiceReference().toString()
@@ -112,6 +126,10 @@ class CrossEPG_Downloader(Screen):
 			self.download()
 			
 		elif event == CrossEPG_Wrapper.EVENT_END:
+			if self.saved:
+				self.wrapper.close()
+				self.open = False
+				
 			if self.status == 0:
 				self.provider_index += 1
 				if self.provider_index < len(self.providers):
@@ -120,8 +138,13 @@ class CrossEPG_Downloader(Screen):
 					self.status = 1
 					if self.oldService:
 						self.session.nav.playService(self.oldService)
-					self.wrapper.save()
+					if self.open:
+						self.wrapper.save()
+					else:
+						self.wrapper.quit()
 			else:
+				if self.open:
+					self.wrapper.close()
 				self.wrapper.quit()
 				
 		elif event == CrossEPG_Wrapper.EVENT_ACTION:

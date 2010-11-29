@@ -19,5 +19,6 @@ char *providers_get_xmltv_url ();
 char *providers_get_xmltv_plang ();
 char *providers_get_xepgdb_headers_url ();
 char *providers_get_xepgdb_descriptors_url ();
+char *providers_get_script_filename ();
 
 #endif // _OPENTV_PROVIDERS_H_

@@ -162,6 +162,23 @@ class CrossEPG_Config:
 		
 		f.close()
 		
+	def getChannelProtocol(self, provider):
+		try:
+			f = open("%s/providers/%s.conf" % (self.home_directory, provider), "r")
+		except Exception, e:
+			print "[CrossEPG_Config] %s" % (e)
+			return
+			
+		proto = re.compile(r"protocol=(.*)")
+		for line in f.readlines(): 
+			zproto = re.findall(proto, line)
+			if zproto:
+				f.close()
+				return zproto[0].strip()
+		
+		f.close()
+		return ""
+	
 	def getChannelID(self, provider):
 		try:
 			f = open("%s/providers/%s.conf" % (self.home_directory, provider), "r")
@@ -181,13 +198,13 @@ class CrossEPG_Config:
 		for line in f.readlines(): 
 			znid = re.findall(nidRe, line)
 			if znid:
-				nid = int(znid[0]);
+				nid = int(znid[0])
 			zsid = re.findall(sidRe, line)
 			if zsid:
-				sid = int(zsid[0]);
+				sid = int(zsid[0])
 			ztsid = re.findall(tsidRe, line)	
 			if ztsid:
-				tsid = int(ztsid[0]);
+				tsid = int(ztsid[0])
 			znamespace = re.findall(namespaceRe, line)	
 			if znamespace:
 				namespace = int(znamespace[0]);
@@ -450,6 +467,9 @@ class CrossEPG_Wrapper:
 			elif ttype == "DEFLATING XEPGDB":
 				self.type = 13;
 				self.__callCallbacks(self.EVENT_ACTION, _("Deflating XEPGDB"))
+			elif ttype == "RUNNING SCRIPT":
+				self.type = 14;
+				self.__callCallbacks(self.EVENT_ACTION, _("Running script"))
 		elif data.find("CHANNELS ") == 0:
 			self.__callCallbacks(self.EVENT_STATUS, _("%s channels") % (data[9:]))
 		elif data.find("SIZE ") == 0:
@@ -591,3 +611,17 @@ class CrossEPG_Wrapper:
 			self.cmd.write("QUIT\n", 5)
 		else:
 			self.cmd.write("QUIT\n")
+
+	def open(self):
+		print "[CrossEPG_Wrapper] -> OPEN"
+		if self.oldapi:
+			self.cmd.write("OPEN\n", 5)
+		else:
+			self.cmd.write("OPEN\n")
+
+	def close(self):
+		print "[CrossEPG_Wrapper] -> CLOSE"
+		if self.oldapi:
+			self.cmd.write("CLOSE\n", 5)
+		else:
+			self.cmd.write("CLOSE\n")

@@ -93,7 +93,7 @@ class CrossEPG_Menu(Screen):
 		elif index == 3:
 			self.session.open(CrossEPG_Providers, "xepgdb")
 		elif index == 4:
-			self.session.open(CrossEPG_Providers, "scripts")
+			self.session.open(CrossEPG_Providers, "script")
 		elif index == 5:
 			self.downloader()
 		elif index == 6:
