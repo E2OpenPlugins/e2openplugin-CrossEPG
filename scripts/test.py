@@ -15,8 +15,13 @@ def main():
 
 	log_add("START TEST SCRIPT")
 
+	# get install path
+	instdir = epgdb_get_installroot()
+	log_add("Install dir : %s" % instdir)
+
 	# get dbroot path
 	dbroot = epgdb_get_dbroot()
+	log_add("Database dir : %s" % dbroot)
 
 	# open epgdb
 	if epgdb_open(dbroot):
@@ -25,6 +30,11 @@ def main():
 		log_add("Error opening EPGDB");
 		epgdb_close();
 		return
+
+	# close epgdb
+	log_add("EPGDB closing")
+	epgdb_close();
+
 
 	log_add("END TEST SCRIPT")
 

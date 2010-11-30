@@ -29,19 +29,25 @@ typedef unsigned int time_t;
 import os
 import re
 
-def epgdb_get_dbroot():
+def epgdb_get_installroot():
 	if os.path.exists("/usr/crossepg"):
-		homedir = "/usr/crossepg"
+		return("/usr/crossepg")
 	elif os.path.exists("/var/crossepg"):
-		homedir = "/var/crossepg"
+		return("/var/crossepg")
 	else:
 		return False
-		
-	dbroot = "/hdd/crossepg"
+
+def epgdb_get_dbroot():
+	
+	homedir = epgdb_get_installroot()
+
+	if homedir == False:
+		return False
+
 	try:
 		f = open("%s/crossepg.config" % (homedir), "r")
 	except Exception, e:
-		return dbroot
+		return False
 		
 	entryRe = re.compile(r"db_root=(.*)")
 		
