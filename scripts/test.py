@@ -1,3 +1,6 @@
+#!/usr/local/bin/python
+# above is Python location into QboxHD
+
 # aleambro 30-Nov-2010
 # this test.py program simply do nothing
 
