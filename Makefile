@@ -158,7 +158,7 @@ install-standalone:
 	install -m 755 bin/crossepg_xmltv $(D)/usr/crossepg/
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/usr/crossepg/
 	install -m 644 providers/* $(D)/usr/crossepg/providers/
-    install -m 755 scripts/* $(D)/usr/crossepg/scripts/
+	install -m 755 scripts/* $(D)/usr/crossepg/scripts/
 
 install-standalone-var:
 	install -d $(D)/var/crossepg/aliases
@@ -174,7 +174,7 @@ install-standalone-var:
 	install -m 755 bin/crossepg_xmltv $(D)/var/crossepg/
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/var/crossepg/
 	install -m 644 providers/* $(D)/var/crossepg/providers/
-    install -m 755 scripts/* $(D)/var/crossepg/scripts/
+	install -m 755 scripts/* $(D)/var/crossepg/scripts/
 
 install-plugin:
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
