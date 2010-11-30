@@ -32,7 +32,7 @@ import re
 def epgdb_get_dbroot():
 	if os.path.exists("/usr/crossepg"):
 		homedir = "/usr/crossepg"
-	elif os.path.exists("/usr/crossepg"):
+	elif os.path.exists("/var/crossepg"):
 		homedir = "/var/crossepg"
 	else:
 		return False
