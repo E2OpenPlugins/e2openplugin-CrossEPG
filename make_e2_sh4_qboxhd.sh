@@ -28,6 +28,7 @@ VERSION=`cat src/version.h | grep RELEASE | sed "s/.*RELEASE \"//" | sed "s/\"//
 # make qboxhd_update
 cp contrib/qboxhd_update.sh tmp/qboxhd_update/update.sh
 chmod 755 tmp/qboxhd_update/update.sh
+chown -R root:root tmp/*
 cd tmp
 tar zcf ../out/crossepg-${VERSION}-qboxhd_update.tar.gz *
 cd ..
