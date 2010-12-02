@@ -57,13 +57,15 @@ class CrossEPG_Setup(Screen):
 		if self.config.isQBOXHD():
 			self.mountdescription.append(_("Internal flash"))
 			self.mountpoint.append("/var/crossepg/data")
+
 		for partition in harddiskmanager.getMountedPartitions():
-			if partition.mountpoint != "/": # and self.isMountedInRW(partition.mountpoint):
-				if partition.description and len(partition.description) == 0:
+			if (partition.mountpoint != '/') and (partition.mountpoint != ''): # and self.isMountedInRW(partition.mountpoint):
+				self.mountpoint.append(partition.mountpoint + "/crossepg")
+
+				if partition.description != '':
 					self.mountdescription.append(partition.description)
 				else:
 					self.mountdescription.append(partition.mountpoint)
-				self.mountpoint.append(partition.mountpoint + "/crossepg")
 				
 		if len(self.mountpoint) == 0:
 			self.onFirstExecBegin.append(self.noDisksFound)
