@@ -73,7 +73,7 @@ class CrossEPG_Setup(Screen):
 		# make lamedb entries
 		for lamedb in self.lamedbs:
 			if lamedb == "lamedb":
-				self.lamedbs_desc.append("main lamedb")
+				self.lamedbs_desc.append(_("main lamedb"))
 			else:
 				self.lamedbs_desc.append(lamedb.replace("lamedb.", "").replace(".", " "))
 				
