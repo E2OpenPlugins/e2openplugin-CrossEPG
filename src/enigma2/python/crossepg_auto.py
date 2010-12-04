@@ -58,6 +58,7 @@ class CrossEPG_Auto(Screen):
 			
 		if time() < 1262325600:		# if before 2010 probably the clock isn't yet updated
 			self.delayedInitTimer(60000, 1)	#initialization delayed of 1 minute
+			return
 			
 		self.resetDailyDownloadDateCache()
 		self.timer.start(self.POLL_TIMER_BOOT, 1)
