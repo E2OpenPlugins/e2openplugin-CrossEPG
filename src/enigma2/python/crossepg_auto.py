@@ -24,9 +24,11 @@ class CrossEPG_Auto(Screen):
 
 		self.timer = eTimer()
 		self.standbyTimer = eTimer()
+		self.delayedInitTimer = eTimer()
 
 		self.timer.callback.append(self.poll)
 		self.standbyTimer.callback.append(self.backToStandby)
+		self.delayedInitTimer.callback.append(self.init)
 
 		self.config = CrossEPG_Config()
 		self.patchtype = getEPGPatchType()
@@ -46,13 +48,18 @@ class CrossEPG_Auto(Screen):
 			self.standbyTimer.start(30000, 1)
 			
 		self.config.load()
-		self.resetDailyDownloadDateCache()
 		
 		if self.config.force_load_on_boot:
 			self.loader()
 
-	def init(self, session):
-		self.session = session
+	def init(self, session = None):
+		if session != None:
+			self.session = session
+			
+		if time() < 1262325600:		# if before 2010 probably the clock isn't yet updated
+			self.delayedInitTimer(60000, 1)	#initialization delayed of 1 minute
+			
+		self.resetDailyDownloadDateCache()
 		self.timer.start(self.POLL_TIMER_BOOT, 1)
 
 	def forcePoll(self):
@@ -68,13 +75,15 @@ class CrossEPG_Auto(Screen):
 		stime = mktime(ltime)
 		if stime < now:
 			ttime = localtime(stime+86400)	# 24 hours in future
-			self.cacheYear = ttime[0]
-			self.cacheMonth = ttime[1]
-			self.cacheDay = ttime[2]
-		else:
-			self.cacheYear = ttime[0]
-			self.cacheMonth = ttime[1]
-			self.cacheDay = ttime[2]
+
+		# to avoid problems with internal clock (big changes on date/time)
+		# we step forward of 24 hours until the new time is greater than now
+		while ttime < now:
+			ttime = ttime+86400	# 24 hours in future
+		
+		self.cacheYear = ttime[0]
+		self.cacheMonth = ttime[1]
+		self.cacheDay = ttime[2]
 			
 	def poll(self):
 		from Screens.Standby import inStandby
