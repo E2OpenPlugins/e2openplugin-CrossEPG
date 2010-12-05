@@ -1,42 +1,72 @@
-#!/usr/local/bin/python
-# above is Python location into QboxHD
+#!/usr/bin/python
+# above is Python interpreter location
 
-# aleambro 30-Nov-2010
+# ambrosa 05-Dec-2010
 # this test.py program simply do nothing
 
 
-# import Enigma2 functions
-from crossepg import *
+import os
+import sys
 
+# import CrossEPG module
+import crossepg
+
+# python local modules under "scripts/" directory
+crossepg_instroot = crossepg.epgdb_get_installroot()
+if crossepg_instroot == False:
+	print "ERROR: cannot find CrossEPG installation directory"
+	sys.exit(1)
+scriptlib = os.path.join(crossepg_instroot , 'scripts/lib')
+sys.path.append(scriptlib)
+
+# import local modules under 'scripts/lib'
+import stuff
 
 # -------------------------------------------------
 # this is the main function
 def main():
 
-	log_add("START TEST SCRIPT")
+	# log_add() print to stdout a text message
+	crossepg.log_add("START EXAMPLE TEST SCRIPT")
 
-	# get install path
-	instdir = epgdb_get_installroot()
-	log_add("Install dir : %s" % instdir)
+	# get installation dir
+	instdir = crossepg.epgdb_get_installroot()
+	if instdir == False:
+		crossepg.log_add("ERROR: cannot find CrossEPG installation directory")
+		sys.exit(1)
+
+	crossepg.log_add("Installation dir : %s" % instdir)
+
 
 	# get dbroot path
-	dbroot = epgdb_get_dbroot()
-	log_add("Database dir : %s" % dbroot)
+	dbroot = crossepg.epgdb_get_dbroot()
+	if dbroot == False:
+		crossepg.log_add("ERROR: cannot find CrossEPG database directory")
+		sys.exit(1)
 
-	# open epgdb
-	if epgdb_open(dbroot):
-		log_add("EPGDB opened (root=%s)" % dbroot);
+	crossepg.log_add("Database dir : %s" % dbroot)
+
+
+	# open CrossEPG internal database
+	if crossepg.epgdb_open(dbroot):
+		crossepg.log_add("EPGDB opened successfully (root = %s)" % dbroot);
 	else:
-		log_add("Error opening EPGDB");
-		epgdb_close();
-		return
+		crossepg.log_add("Error opening EPGDB");
+		crossepg.epgdb_close();
+		sys.exit(1)
 
-	# close epgdb
-	log_add("EPGDB closing")
-	epgdb_close();
+	crossepg.log_add("Closing EPGDB");
+	crossepg.epgdb_close();
 
 
-	log_add("END TEST SCRIPT")
+	delta_timezone = stuff.delta_utc()
+	crossepg.log_add("GMT vs. LocalTime difference (in seconds): %d" % delta_timezone)
+	delta_daylight = stuff.delta_dst()
+	crossepg.log_add("DayLight Saving (DST) difference now: %d" % delta_daylight)
+	
+	
+
+	crossepg.log_add("END EXAMPLE TEST SCRIPT")
 
 # -------------------------------------------------
 # run main() function
