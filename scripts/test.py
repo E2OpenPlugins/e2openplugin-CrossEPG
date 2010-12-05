@@ -11,7 +11,8 @@ import sys
 # import CrossEPG module
 import crossepg
 
-# python local modules under "scripts/" directory
+# python local modules under "scripts/lib" directory
+# and add it to sys.path()
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	print "ERROR: cannot find CrossEPG installation directory"
@@ -27,7 +28,7 @@ import stuff
 def main():
 
 	# log_add() print to stdout a text message
-	crossepg.log_add("START EXAMPLE TEST SCRIPT")
+	crossepg.log_add("---- START EXAMPLE TEST SCRIPT ----")
 
 	# get installation dir
 	instdir = crossepg.epgdb_get_installroot()
@@ -66,7 +67,7 @@ def main():
 	
 	
 
-	crossepg.log_add("END EXAMPLE TEST SCRIPT")
+	crossepg.log_add("---- END EXAMPLE TEST SCRIPT ----")
 
 # -------------------------------------------------
 # run main() function

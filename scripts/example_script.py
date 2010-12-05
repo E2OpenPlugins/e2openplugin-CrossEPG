@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# Author: Skaman
+# Date: October 2010
+
 from crossepg import *
 
 def dump_title(title):
