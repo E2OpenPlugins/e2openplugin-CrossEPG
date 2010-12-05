@@ -82,6 +82,11 @@ chmod 755 $DST_DIR/var/crossepg/*
 chmod 755 $DST_DIR/var/addons/uninstall/*
 chmod 755 $DST_DIR/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/*.py
 
+# link to python interpreter (usually in /usr/bin/)
+cd $DST_DIR/usr/bin
+ln -sf ../local/bin/python python
+cd /
+
 # Rename the dir qboxhd_update to done_qboxhd_update
 mv /mnt/update_fs/qboxhd_update /mnt/update_fs/done_qboxhd_update
 

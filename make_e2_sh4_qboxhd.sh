@@ -38,11 +38,13 @@ rm -f tmp/qboxhd_update/update.sh
 mkdir -p tmp/qboxhd_update/var/addons/uninstall
 cp contrib/qboxhd_uninstall.sh tmp/qboxhd_update/var/addons/uninstall/crossepg_delfile.sh
 chmod 755 tmp/qboxhd_update/var/addons/uninstall/crossepg_delfile.sh
-cd tmp
-cd qboxhd_update
+mkdir tmp/qboxhd_update/usr/bin 
+mkdir tmp/qboxhd_update/usr/local/bin 
+cd tmp/qboxhd_update/usr/bin
+ln -sf ../local/bin/python python
+cd ../..
 tar zcf ../../out/crossepg-${VERSION}-qboxhd_addon.tar.gz *
-cd ..
-cd ..
+cd ../..
 
 
 echo "Package moved in `pwd`/out folder"
