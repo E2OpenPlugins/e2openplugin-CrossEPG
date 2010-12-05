@@ -120,6 +120,20 @@ epgdb_title_t *epgdb_titles_set_long_description (epgdb_title_t *title, char *de
 	return title;
 }
 
+epgdb_title_t *epgdb_titles_set_long_description_unicode (epgdb_title_t *title, wchar_t *description)
+{
+	epgdb_title_t *tmp = epgdb_titles_set_long_description(title, (char*)description);
+	SET_UTF8(tmp->flags);
+	return tmp;
+}
+
+epgdb_title_t *epgdb_titles_set_description_unicode (epgdb_title_t *title, wchar_t *description)
+{
+	epgdb_title_t *tmp = epgdb_titles_set_description(title, (char*)description);
+	SET_UTF8(tmp->flags);
+	return tmp;
+}
+
 int epgdb_titles_count (epgdb_channel_t *channel)
 {
 	int count = 0;
