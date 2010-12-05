@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # above is Python interpreter location
 
-# ambrosa 05-Dec-2010
+# ambrosa 05-Dec-2010 http://www.ambrosa.net
 # this test.py program simply do nothing
 
 

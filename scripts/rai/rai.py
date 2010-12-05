@@ -4,7 +4,6 @@
 # derived from E2_LOADEPG
 
 __author__ = "ambrosa http://www.ambrosa.net"
-__version__ = "0.01 beta CrossEPG"
 __copyright__ = "Copyright (C) 2008-2010 Alessandro Ambrosini"
 __license__ = "CreativeCommons by-nc-sa http://creativecommons.org/licenses/by-nc-sa/3.0/"
 
@@ -21,7 +20,7 @@ import ConfigParser
 # import CrossEPG functions
 import crossepg
 
-# location of local python modules under "scripts/" dir.
+# location of local python modules under "scripts/lib" dir.
 # add it to sys.path()
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
@@ -110,34 +109,34 @@ class Titolo_parser(sgmllib.SGMLParser):
 # =================================================================
 
 
-
 class main:
 
 	# main config file
 	CONF_CONFIGFILENAME = "rai.conf"
 
 	# log file
-	CONF_LOGFILENAME = "rai.log.txt"
+	CONF_LOGFILENAME = "log.txt"
 
 	# Network socket timeout (in seconds)
 	CONF_SOCKET_TIMEOUT = 20
 
 	# retry number if HTTP error
-	HTTP_ERROR_RETRY = 4
+	HTTP_ERROR_RETRY = 3
 	# seconds to wait between retries
-	HTTP_ERROR_WAIT_RETRY = 3
+	HTTP_ERROR_WAIT_RETRY = 5
 
 	# random time delay (in seconds) between access to remote web pages
 	CONF_RANDOM_MIN = 1.0
-	CONF_RANDOM_MAX = 2.0
+	CONF_RANDOM_MAX = 3.0
 
 	# unicode used in epg data
-	EPG_CHARSET = 'iso-8859-15'
+	# EPG_CHARSET = 'iso-8859-15'
 
 	TODAY = ''
 	DAYCACHE = []
 	FIELD_SEPARATOR = '###'
 	CHANNELLIST = {}
+	CROSSEPG_DBROOT = ''
 
 	def log(self,s):
 		crossepg.log_add(s)
@@ -168,7 +167,7 @@ class main:
 
 		self.CONF_GMT_ZONE = config.get("global","GMT_ZONE")
 		if self.CONF_GMT_ZONE.strip(' ').lower() == 'equal':
-			self.DELTA_UTC = -stuff.delta_utc() # return negative if timezone is east of GMT (like Italy)
+			self.DELTA_UTC = -stuff.delta_utc() # return negative if timezone is east of GMT (like Italy), invert sign
 		else:
 			self.DELTA_UTC = float(self.CONF_GMT_ZONE)*3600.0
 			if self.DELTA_UTC >= 0:
@@ -177,7 +176,7 @@ class main:
 				self.DELTA_UTC = self.DELTA_UTC - stuff.delta_dst()
 
 		self.DELTA_UTC = int(self.DELTA_UTC)
-		self.log("Delta UTC = %d seconds" % self.DELTA_UTC)
+		self.log("Website timezone - UTC = %d seconds" % self.DELTA_UTC)
 
 		if not os.path.exists(self.CONF_CACHEDIR):
 			self.log("Creating \'%s\' directory for caching" % self.CONF_CACHEDIR)
@@ -188,7 +187,7 @@ class main:
 
 		# create a dictionary (Python array) with index = channel ID
 		for i in temp:
-			self.CHANNELLIST[i[0]]=unicode(i[1],'utf-8')
+			self.CHANNELLIST[i[0]] = unicode(i[1],'utf-8')
 
 		if len(self.CHANNELLIST) == 0 :
 			self.log("ERROR: [channels] section empty ?")
@@ -200,17 +199,16 @@ class main:
 		# initialize random generator
 		random.seed()
 
-		# create a list filled with dates (format AAAAMMDD) from today to today+ MAX_DAY_EPG
-		self.TODAY=time.strftime("%Y%m%d")
+		# today date (format AAAAMMDD)
+		self.TODAY = time.strftime("%Y%m%d")
 
-		# create a list filled with dates (format _AAAA_MM_DD) from today to today+ MAX_DAY_EPG
-		self.TODAYRS=time.strftime("_%Y_%m_%d")
-
+		# create a list filled with dates (format AAAAMMDD) from today to today+MAX_DAY_EPG
 		self.DAYCACHE=[self.TODAY]
 		for day in range(1,self.CONF_MAX_DAY_EPG):
 			self.DAYCACHE.append(time.strftime("%Y%m%d",time.localtime(time.time()+86400*day)))
 
-# ---------
+
+# ----------------------------------------------------------------------
 
 
 	def download_and_cache(self):
@@ -229,7 +227,7 @@ class main:
 			self.guidatoday = []
 			self.guidatomorrow = []
 
-			# get cacheopt
+			# get cache option
 			#  0 : don't download/cache
 			#  1 : download and cache (optional 1,new_name )
 			#  2 : always download overwriting existing files (optional 2,new_name )
@@ -275,7 +273,7 @@ class main:
 
 				i = self.HTTP_ERROR_RETRY
 				while i > 0  :
-					# to avoid overloading URL website, wait randomly
+					# to avoid overloading website, wait randomly
 					time.sleep(random.uniform(self.CONF_RANDOM_MIN, self.CONF_RANDOM_MAX))
 
 					try:
@@ -321,16 +319,18 @@ class main:
 							event_title = event_title.replace('\r','')
 							event_title = event_title.replace('\n',' ')
 							event_title = event_title.strip(' ')
-							#event_title=event_title.encode('ascii','replace')
+							#event_title = event_title.encode('ascii','replace')
 
 							event_description = ''
-
 							#event_description=event_description.encode('ascii','replace')
 
 							fd.write(event_starttime + self.FIELD_SEPARATOR + event_startime_unix_gmt + self.FIELD_SEPARATOR + event_title + self.FIELD_SEPARATOR + event_description + '\n')
 
 
 						fd.close()
+
+
+# ----------------------------------------------------------------------
 
 
 	def process_cache(self):
@@ -361,20 +361,25 @@ class main:
 				self.log("processed \'%s\'" % f)
 
 				for c in channels_name:
+					# a channel can have zero or more SID (different channel with same name)
+					# return the list [0e1f:00820000:0708:00c8:1:0 , 1d20:00820000:2fa8:013e:1:0 , ..... ]
+					# return [] if channel name is not in lamedb
 					sidbyname = lamedb.get_sid_byname(c.strip(' \n').lower())
-					if len(sidbyname) == 0:
-						continue
 
+					# process every SID
 					for s in sidbyname:
+						# convert "0e1f:00820000:0708:00c8:1:0" to sid,tsid,onid
 						# return the list [sid,tsid,onid]
 						ch_sid = lamedb.convert_sid(s)
 
-						# add channel into db and get a reference to the structure
+						# add channel into db 
 						# doesn't matter if the channel already exist... epgdb do all the work
 						crossdb.add_channel(ch_sid)
 
 						i = 0
 						L = len(events) - 1
+
+						# process events
 						for e in events:
 
 							e_starttime = int(e.split(self.FIELD_SEPARATOR)[1])
@@ -392,7 +397,7 @@ class main:
 							e_summarie = ' '
 
 							# add_event(start_time , duration , title , summarie , ISO639_language_code , using_UTF8 )
-							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', False)
+							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True)
 
 				if f == '***END***':
 					break
@@ -405,17 +410,20 @@ class main:
 			if f == previous_f:
 				# read events and insert them in events list
 				fd = codecs.open(os.path.join(self.CONF_CACHEDIR, f),"r","utf-8")
-				temp = fd.readlines()
+				lines = fd.readlines()
 				fd.close()
 				if channels_name == '':
-					channels_name = temp[0].split(self.FIELD_SEPARATOR)[1].split('|')
-				events.extend(temp[2:])
+					# first line has channel data (id,name,provider,date)
+					channels_name = lines[0].split(self.FIELD_SEPARATOR)[1].split('|')
+				# the second line is only a remark
+				# add events starting from third line
+				events.extend(lines[2:])
 
-
+		# end process, close CrossEPG DB saving data
 		crossdb.close_db()
 
-# ****************************************************************************************************************************
 
+# ****************************************************************************************************************************
 
 # MAIN CODE: SCRIPT START HERE
 
@@ -426,13 +434,17 @@ if crossepg_instroot == False:
 	sys.exit(1)
 scriptlocation = os.path.join(crossepg_instroot , 'scripts/rai/')
 
-# get where CrossEPG save data and use it as script cache repository
+# get where CrossEPG save data (dbroot) and use it as script cache repository
 crossepg_dbroot = crossepg.epgdb_get_dbroot()
 if crossepg_dbroot == False:
 	sys.exit(1)
 
-# run script class
+# initialize script class
 script_class = main(scriptlocation , crossepg_dbroot)
+
+# download data and cache them
 script_class.download_and_cache()
+
+# read cached date and push into CrossEPG database
 script_class.process_cache()
 

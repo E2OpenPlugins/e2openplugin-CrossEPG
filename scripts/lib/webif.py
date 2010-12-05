@@ -2,6 +2,7 @@
 
 # webif.py  by Ambrosa http://www.ambrosa.net
 # this module is used for manage Web Interface
+# not tested with CrossEPG
 
 __author__ = "ambrosa http://www.ambrosa.net"
 __version__ = "0.53 beta E2_LOADEPG"

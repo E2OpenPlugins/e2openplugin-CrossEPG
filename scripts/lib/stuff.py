@@ -3,7 +3,6 @@
 # derived from E2_LOADEPG
 
 __author__ = "ambrosa http://www.ambrosa.net"
-__version__ = "0.01 beta CrossEPG"
 __copyright__ = "Copyright (C) 2008-2010 Alessandro Ambrosini"
 __license__ = "CreativeCommons by-nc-sa http://creativecommons.org/licenses/by-nc-sa/3.0/"
 
@@ -79,6 +78,7 @@ def delta_utc():
 	else:
 		# return (localtime - gmtime - DST)
 		return time.altzone
+
 
 # return DST time difference (in seconds)
 def delta_dst():
