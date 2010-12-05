@@ -394,7 +394,7 @@ class main:
 							e_title = e.split(self.FIELD_SEPARATOR)[2]
 
 							# RAI website HAVE NOT long description. (bleah !)
-							e_summarie = ' '
+							e_summarie = u' '
 
 							# add_event(start_time , duration , title , summarie , ISO639_language_code , using_UTF8 )
 							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True)

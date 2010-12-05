@@ -284,8 +284,11 @@ class crossepg_db_class:
 		# if the event already exist epgdb update it and automatically destroy the new structure
 		event_ref = crossepg.epgdb_titles_add(self.db_channel_ref, event_ref)
 
-		# now we need to add title and summarie
 
+		print("DEBUG , title DATA TYPE: \'%s\'" % type(title).__name__ )
+		print("DEBUG , summarie DATA TYPE: \'%s\'" % type(summarie).__name__ )
+
+		# now we need to add title and summarie
 		if utf8 == False:
 			# TITLE
 			crossepg.epgdb_titles_set_description(event_ref, title);
