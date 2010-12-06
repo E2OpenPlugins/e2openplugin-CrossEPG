@@ -245,7 +245,7 @@ class crossepg_db_class:
 		# load database structures (hash, ....)
 		crossepg.epgdb_load()
 
-	def close_db(self,dbroot):
+	def close_db(self):
 		# save data
 		if crossepg.epgdb_save(None):
 			print("CrossEPG data saved")
@@ -265,13 +265,21 @@ class crossepg_db_class:
 		self.event_id = 1
 
 	# add an EPG event
-	def add_event(self, start_time, duration, title=' ', summarie=' ', language='eng', utf8=False ):
-		event_ref = crossepg.epgdb_title_alloc() # alloc title structure in memory
+	def add_event(self, start_time, duration, title=' ', summarie=' ', language='eng'):
+
+		if (duration < 0) or (duration > 65535) :
+			# duration must be >= 0 or < 65536 , skip this event (it's an error)
+			print("DEBUG: error duration %d" % duration)
+			return
+
+		event_ref = crossepg.epgdb_title_alloc() # alloc title structure in memory		
 		event_ref.event_id = self.event_id  # event_id is unique inside a channel
 		self.event_id += 1
 
 		event_ref.start_time = start_time	# Unix timestamp, always referred to gmt+0 without daylight saving
 		event_ref.mjd = crossepg.epgdb_calculate_mjd(event_ref.start_time)	# Modified Julian Date. if you don't know it you can calulate it with epgdb_calculate_mjd()
+	
+		# print("       title %s , starttime %s , duration %f" % (title, start_time, duration))
 		event_ref.length = duration  # event duration in seconds
 
 		# ISO 639 language code. http://en.wikipedia.org/wiki/ISO_639
@@ -285,18 +293,23 @@ class crossepg_db_class:
 		event_ref = crossepg.epgdb_titles_add(self.db_channel_ref, event_ref)
 
 
-		print("DEBUG , title DATA TYPE: \'%s\'" % type(title).__name__ )
-		print("DEBUG , summarie DATA TYPE: \'%s\'" % type(summarie).__name__ )
+		#print("DEBUG , title DATA TYPE: \'%s\'" % type(title).__name__ )
+		#print("DEBUG , summarie DATA TYPE: \'%s\'" % type(summarie).__name__ )
 
-		# now we need to add title and summarie
-		if utf8 == False:
-			# TITLE
+		if type(title).__name__ == "str" :
 			crossepg.epgdb_titles_set_description(event_ref, title);
-			# SUMMARIE
-			crossepg.epgdb_titles_set_long_description(event_ref, summarie);
-		else:
-			# TITLE
+		elif type(title).__name__ == "unicode" :
 			crossepg.epgdb_titles_set_description_unicode(event_ref, title);
-			# SUMMARIE
+		else:
+			print("ERROR: \'title\' var type not recognized")
+			sys.exit(1)
+
+		if type(summarie).__name__ == "str" :
+			crossepg.epgdb_titles_set_long_description(event_ref, summarie);
+		elif type(summarie).__name__ == "unicode" :
 			crossepg.epgdb_titles_set_long_description_unicode(event_ref, summarie);
+		else:
+			print("ERROR: \'summarie\' var type not recognized")
+			sys.exit(1)
+
 

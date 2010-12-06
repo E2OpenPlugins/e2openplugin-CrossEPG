@@ -81,10 +81,10 @@ class Titolo_parser(sgmllib.SGMLParser):
 
 			if self.start_orario == True:
 
-				if int(time.strftime("%H",time.strptime(data,"%H:%M"))) > 19 and self.sera == False:
+				if int(time.strftime("%H",time.strptime(data,"%H:%M"))) >= 11 and self.sera == False:
 					self.sera = True
 
-				if int(time.strftime("%H",time.strptime(data,"%H:%M"))) < 8 and self.sera == True:
+				if int(time.strftime("%H",time.strptime(data,"%H:%M"))) < 11 and self.sera == True:
 					self.day = self.daynext
 					self.tomorrow = True
 
@@ -126,11 +126,11 @@ class main:
 	HTTP_ERROR_WAIT_RETRY = 5
 
 	# random time delay (in seconds) between access to remote web pages
-	CONF_RANDOM_MIN = 1.0
-	CONF_RANDOM_MAX = 3.0
+	CONF_RANDOM_MIN = 0.0
+	CONF_RANDOM_MAX = 2.0
 
 	# unicode used in epg data
-	# EPG_CHARSET = 'iso-8859-15'
+	EPG_CHARSET = 'iso-8859-15'
 
 	TODAY = ''
 	DAYCACHE = []
@@ -346,7 +346,7 @@ class main:
 		crossdb.open_db(self.CROSSEPG_DBROOT)
 
 		events = []
-		previous_f = ''
+		previous_id = ''
 		channels_name = ''
 
 		self.log("Start data processing")
@@ -354,11 +354,12 @@ class main:
 		filelist.append('***END***')
 
 		for f in filelist :
-			if previous_f == '':
-				previous_f = f
+			id = f.split(self.FIELD_SEPARATOR)[0]
+			if previous_id == '':
+				previous_id = id
 
-			if f != previous_f :
-				self.log("processed \'%s\'" % f)
+			if id != previous_id :
+				self.log("processing \'%s\' , nr. events %d" % (previous_id,len(events)))
 
 				for c in channels_name:
 					# a channel can have zero or more SID (different channel with same name)
@@ -372,7 +373,7 @@ class main:
 						# return the list [sid,tsid,onid]
 						ch_sid = lamedb.convert_sid(s)
 
-						# add channel into db 
+						# add channel into db
 						# doesn't matter if the channel already exist... epgdb do all the work
 						crossdb.add_channel(ch_sid)
 
@@ -391,23 +392,23 @@ class main:
 								e_length = 5400
 							i += 1
 
-							e_title = e.split(self.FIELD_SEPARATOR)[2]
+							e_title = e.split(self.FIELD_SEPARATOR)[2].encode(self.EPG_CHARSET,'replace')
 
 							# RAI website HAVE NOT long description. (bleah !)
-							e_summarie = u' '
+							e_summarie = ' '
 
-							# add_event(start_time , duration , title , summarie , ISO639_language_code , using_UTF8 )
-							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True)
+							# add_event(start_time , duration , title , summarie , ISO639_language_code )
+							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita')
 
 				if f == '***END***':
 					break
 
 				events = []
-				previous_f = f
+				previous_id = id
 				channels_name = ''
 
-
-			if f == previous_f:
+			if id == previous_id:
+				self.log("Reading  \'%s\'" % f)
 				# read events and insert them in events list
 				fd = codecs.open(os.path.join(self.CONF_CACHEDIR, f),"r","utf-8")
 				lines = fd.readlines()
