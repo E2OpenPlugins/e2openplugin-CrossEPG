@@ -149,6 +149,8 @@ install-standalone:
 	install -d $(D)/usr/crossepg/import
 	install -d $(D)/usr/crossepg/providers
 	install -d $(D)/usr/crossepg/scripts
+	install -d $(D)/usr/crossepg/scripts/lib
+	install -d $(D)/usr/crossepg/scripts/rai
 	install -m 755 bin/crossepg_dbconverter $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_dbinfo $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_downloader $(D)/usr/crossepg/
@@ -158,13 +160,17 @@ install-standalone:
 	install -m 755 bin/crossepg_xmltv $(D)/usr/crossepg/
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/usr/crossepg/
 	install -m 644 providers/* $(D)/usr/crossepg/providers/
-	install -m 755 scripts/* $(D)/usr/crossepg/scripts/
+	install -m 755 scripts/*.py $(D)/usr/crossepg/scripts/
+	install -m 755 scripts/lib/* $(D)/var/crossepg/scripts/lib/
+	install -m 755 scripts/rai/* $(D)/var/crossepg/scripts/rai/
 
 install-standalone-var:
 	install -d $(D)/var/crossepg/aliases
 	install -d $(D)/var/crossepg/import
 	install -d $(D)/var/crossepg/providers
 	install -d $(D)/var/crossepg/scripts
+	install -d $(D)/var/crossepg/scripts/lib
+	install -d $(D)/var/crossepg/scripts/rai
 	install -m 755 bin/crossepg_dbconverter $(D)/var/crossepg/
 	install -m 755 bin/crossepg_dbinfo $(D)/var/crossepg/
 	install -m 755 bin/crossepg_downloader $(D)/var/crossepg/
@@ -174,7 +180,9 @@ install-standalone-var:
 	install -m 755 bin/crossepg_xmltv $(D)/var/crossepg/
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/var/crossepg/
 	install -m 644 providers/* $(D)/var/crossepg/providers/
-	install -m 755 scripts/* $(D)/var/crossepg/scripts/
+	install -m 755 scripts/*.py $(D)/var/crossepg/scripts/
+	install -m 755 scripts/lib/* $(D)/var/crossepg/scripts/lib/
+	install -m 755 scripts/rai/* $(D)/var/crossepg/scripts/rai/
 
 install-plugin:
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
