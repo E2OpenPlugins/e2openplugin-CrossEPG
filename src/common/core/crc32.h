@@ -1,7 +1,7 @@
 #ifndef _CRC32_H_
 #define _CRC32_H_
 
-static inline uint32_t crc32 (unsigned char *value, unsigned char length)
+static inline uint32_t crc32 (unsigned char *value, unsigned short length)
 {
 	const uint32_t crc32_table[256] = {
 		0, 0x4C11DB7, 0x9823B6E, 0xD4326D9,

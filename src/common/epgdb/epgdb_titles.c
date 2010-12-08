@@ -247,7 +247,7 @@ epgdb_title_t *epgdb_titles_add (epgdb_channel_t *channel, epgdb_title_t *title)
 					tmp->iso_639_1 = title->iso_639_1;
 					tmp->iso_639_2 = title->iso_639_2;
 					tmp->iso_639_3 = title->iso_639_3;
-					tmp->changed = 1;
+					tmp->changed = true;
 					tmp->revision++;
 				}
 				_free (title);

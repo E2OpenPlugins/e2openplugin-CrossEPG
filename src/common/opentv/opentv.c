@@ -210,8 +210,8 @@ void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffm
 				epgdb_title_t *title = epgdb_titles_get_by_id_and_mjd (channels[channel_id], event_id, mjd_time);
 				if (title != NULL)
 				{
-					if (title->changed)
-					{
+//					if (title->changed)
+//					{
 						char tmp[4096];
 						if (!huffman_decode (data + offset + 2, description_length, tmp, 4096, huffman_debug))
 							tmp[0] = '\0';
@@ -226,7 +226,7 @@ void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffm
 						}
 						
 						epgdb_titles_set_long_description (title, tmp);
-					}
+//					}
 				}
 			}
 			
