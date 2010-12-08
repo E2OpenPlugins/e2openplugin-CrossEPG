@@ -97,7 +97,7 @@ class CrossEPG_Config:
 							self.providers = []
 							tmp = value.split("|")
 							for p in tmp:
-								if len(p) > 0:
+								if len(p) > 0 and os.path.exists("%s/providers/%s.conf" % (self.home_directory, p)):
 									self.providers.append(p)
 						elif key == "force_load_on_boot":
 							self.force_load_on_boot = int(value);
