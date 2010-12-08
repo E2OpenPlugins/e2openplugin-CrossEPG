@@ -161,8 +161,8 @@ install-standalone:
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/usr/crossepg/
 	install -m 644 providers/* $(D)/usr/crossepg/providers/
 	install -m 755 scripts/*.py $(D)/usr/crossepg/scripts/
-	install -m 755 scripts/lib/* $(D)/var/crossepg/scripts/lib/
-	install -m 755 scripts/rai/* $(D)/var/crossepg/scripts/rai/
+	install -m 755 scripts/lib/* $(D)/usr/crossepg/scripts/lib/
+	install -m 755 scripts/rai/* $(D)/usr/crossepg/scripts/rai/
 
 install-standalone-var:
 	install -d $(D)/var/crossepg/aliases
