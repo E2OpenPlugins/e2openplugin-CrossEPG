@@ -445,5 +445,6 @@ void epgdb_clean ()
 		
 		_free (tmp);
 	}
+	epgdb_channels_reset ();
 	epgdb_index_clean ();
 }

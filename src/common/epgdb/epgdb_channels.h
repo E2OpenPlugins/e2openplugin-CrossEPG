@@ -7,5 +7,6 @@ void epgdb_channels_set_first (epgdb_channel_t *channel);
 void epgdb_channels_set_last (epgdb_channel_t *channel);
 epgdb_channel_t *epgdb_channels_get_by_freq (unsigned short int nid, unsigned short int tsid, unsigned short int sid);
 epgdb_channel_t *epgdb_channels_add (unsigned short int nid, unsigned short int tsid, unsigned short int sid);
+void epgdb_channels_reset ();
 
 #endif // _EPGDB_CHANNELS_H_

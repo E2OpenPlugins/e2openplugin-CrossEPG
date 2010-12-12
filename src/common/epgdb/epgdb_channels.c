@@ -12,6 +12,12 @@
 static epgdb_channel_t *channel_first = NULL;
 static epgdb_channel_t *channel_last = NULL;
 
+void epgdb_channels_reset ()
+{
+	channel_first = NULL;
+	channel_last = NULL;
+}
+
 int epgdb_channels_count ()
 {
 	int count = 0;
