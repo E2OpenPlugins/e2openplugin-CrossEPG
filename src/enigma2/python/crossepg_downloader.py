@@ -126,7 +126,7 @@ class CrossEPG_Downloader(Screen):
 			self.download()
 			
 		elif event == CrossEPG_Wrapper.EVENT_END:
-			if self.saved:
+			if self.saved and self.open:
 				self.wrapper.close()
 				self.open = False
 				
