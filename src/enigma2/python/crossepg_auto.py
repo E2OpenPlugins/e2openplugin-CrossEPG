@@ -139,6 +139,10 @@ class CrossEPG_Auto(Screen):
 				self.config.last_partial_download_timestamp = stime
 				self.config.save()
 				ttime = localtime(stime+86400)	# 24 hours in future
+				# to avoid problems with internal clock (big changes on date/time)
+				# we step forward of 24 hours until the new time is greater than now
+				while ttime < now:
+					ttime = ttime+86400	# 24 hours in future
 				self.cacheYear = ttime[0]
 				self.cacheMonth = ttime[1]
 				self.cacheDay = ttime[2]
