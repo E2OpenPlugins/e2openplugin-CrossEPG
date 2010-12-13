@@ -115,7 +115,7 @@ class CrossEPG_Auto(Screen):
 						if providers[2][i] == "opentv":
 							self.providers.append(provider)
 						else:
-							print "[CrossEPG_Auto] skip xmltv provider %s (we download it only one time a day)" % provider
+							print "[CrossEPG_Auto] is not OpenTV : skip provider %s (we download it only one time a day)" % provider
 					i += 1
 
 			if len(self.providers) == 0:

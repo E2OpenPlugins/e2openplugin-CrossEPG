@@ -43,9 +43,9 @@ class Titolo_parser(sgmllib.SGMLParser):
 
 	def __init__(self, day_get, verbose=0):
 		sgmllib.SGMLParser.__init__(self, verbose)
-		self.daynow=day_get
-		self.daynext=time.strftime("%Y%m%d",time.localtime(time.mktime(time.strptime(day_get,"%Y%m%d"))+86400))
-		self.day=self.daynow
+		self.daynow = day_get
+		self.daynext = time.strftime("%Y%m%d",time.localtime(time.mktime(time.strptime(day_get,"%Y%m%d"))+86400))
+		self.day = self.daynow
 		self.guidatoday = []
 		self.guidatomorrow = []
 		self.sera = False
@@ -81,10 +81,8 @@ class Titolo_parser(sgmllib.SGMLParser):
 
 			if self.start_orario == True:
 
-				if int(time.strftime("%H",time.strptime(data,"%H:%M"))) >= 11 and self.sera == False:
-					self.sera = True
-
-				if int(time.strftime("%H",time.strptime(data,"%H:%M"))) < 11 and self.sera == True:
+				# if time < 06:00 is a next day event
+				if int(time.strftime("%H",time.strptime(data,"%H:%M"))) < 6 :
 					self.day = self.daynext
 					self.tomorrow = True
 
@@ -129,8 +127,8 @@ class main:
 	CONF_RANDOM_MIN = 0.0
 	CONF_RANDOM_MAX = 2.0
 
-	# unicode used in epg data
-	EPG_CHARSET = 'iso-8859-15'
+	# charset used in remote website epg data
+	REMOTE_EPG_CHARSET = 'utf-8'
 
 	TODAY = ''
 	DAYCACHE = []
@@ -212,11 +210,11 @@ class main:
 
 
 	def download_and_cache(self):
-
+		self.log("--- START DOWNLOAD AND CACHE DATA ---")
 		self.log("Removing old cached files")
 		stuff.cleanup_oldcachedfiles(self.CONF_CACHEDIR, self.FIELD_SEPARATOR)
 
-		self.log("Start downloading HTML data from \'%s\'" % self.CONF_URL)
+		#self.log("Start downloading HTML data from \'%s\'" % self.CONF_URL)
 
 		chlist = self.CHANNELLIST
 
@@ -305,6 +303,7 @@ class main:
 
 
 						self.log("  writing in cache \'%s\'" % eventfilename)
+						# write data in cache file using UTF-8 encoding
 						fd = codecs.open(eventfilepath, "w", 'utf-8')
 						fd.write(str(c) + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + channel_provider + self.FIELD_SEPARATOR + day + '\n')
 						fd.write("Local Time (human readeable)###Unix GMT Time###Event Title###Event Description\n")
@@ -315,14 +314,14 @@ class main:
 							event_starttime = dataora
 							event_startime_unix_gmt=str(int(time.mktime(time.strptime(event_starttime,"%Y-%m-%d %H:%M"))) - self.DELTA_UTC )
 
-							event_title = unicode(titolo,"utf-8")
-							event_title = event_title.replace('\r','')
-							event_title = event_title.replace('\n',' ')
-							event_title = event_title.strip(' ')
-							#event_title = event_title.encode('ascii','replace')
+							# convert remote data (RAI website use UTF-8) in Python Unicode (UCS2)
+							event_title = unicode(titolo,self.REMOTE_EPG_CHARSET)
 
-							event_description = ''
-							#event_description=event_description.encode('ascii','replace')
+							event_title = event_title.replace('\r','')
+							event_title = event_title.replace('\n',u' ')
+							event_title = event_title.strip(u' ')
+
+							event_description = u''
 
 							fd.write(event_starttime + self.FIELD_SEPARATOR + event_startime_unix_gmt + self.FIELD_SEPARATOR + event_title + self.FIELD_SEPARATOR + event_description + '\n')
 
@@ -334,6 +333,7 @@ class main:
 
 
 	def process_cache(self):
+		self.log("--- START PROCESSING CACHE ---")
 		if not os.path.exists(self.CONF_CACHEDIR):
 			self.log("ERROR: %s not present" % self.CONF_CACHEDIR)
 			sys.exit(1)
@@ -348,6 +348,7 @@ class main:
 		events = []
 		previous_id = ''
 		channels_name = ''
+		total_events = 0
 
 		self.log("Start data processing")
 		filelist = sorted(os.listdir(self.CONF_CACHEDIR))
@@ -359,7 +360,8 @@ class main:
 				previous_id = id
 
 			if id != previous_id :
-				self.log("processing \'%s\' , nr. events %d" % (previous_id,len(events)))
+				self.log("  ...processing \'%s\' , nr. events %d" % (previous_id,len(events)))
+				total_events += len(events)
 
 				for c in channels_name:
 					# a channel can have zero or more SID (different channel with same name)
@@ -392,13 +394,16 @@ class main:
 								e_length = 5400
 							i += 1
 
-							e_title = e.split(self.FIELD_SEPARATOR)[2].encode(self.EPG_CHARSET,'replace')
+							# extract title and encode Python Unicode with UTF-8
+							e_title = e.split(self.FIELD_SEPARATOR)[2].encode('utf-8')
 
-							# RAI website HAVE NOT long description. (bleah !)
-							e_summarie = ' '
-
-							# add_event(start_time , duration , title , summarie , ISO639_language_code )
-							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita')
+							# RAI website HAVE NOT long description. (bleah !).
+							e_summarie = u' '
+							# encode Python Unicode in UTF-8
+							e_summarie = e_summarie.encode('utf-8')
+							
+							# add_event(start_time , duration , title , summarie , ISO639_language_code , strings_encoded_with_UTF-8)
+							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True )
 
 				if f == '***END***':
 					break
@@ -409,7 +414,7 @@ class main:
 
 			if id == previous_id:
 				self.log("Reading  \'%s\'" % f)
-				# read events and insert them in events list
+				# read events from cache file using UTF-8 and insert them in events list
 				fd = codecs.open(os.path.join(self.CONF_CACHEDIR, f),"r","utf-8")
 				lines = fd.readlines()
 				fd.close()
@@ -422,6 +427,9 @@ class main:
 
 		# end process, close CrossEPG DB saving data
 		crossdb.close_db()
+		self.log("TOTAL EPG EVENTS PROCESSED: %d" % total_events)
+		self.log("--- END ---")
+
 
 
 # ****************************************************************************************************************************

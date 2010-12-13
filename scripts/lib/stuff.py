@@ -265,11 +265,11 @@ class crossepg_db_class:
 		self.event_id = 1
 
 	# add an EPG event
-	def add_event(self, start_time, duration, title=' ', summarie=' ', language='eng'):
+	def add_event(self, start_time, duration, title=' ', summarie=' ', language='eng', utf8=False):
 
 		if (duration < 0) or (duration > 65535) :
 			# duration must be >= 0 or < 65536 , skip this event (it's an error)
-			print("DEBUG: error duration %d" % duration)
+			print("DEBUG: length error %d" % duration)
 			return
 
 		event_ref = crossepg.epgdb_title_alloc() # alloc title structure in memory		
@@ -296,20 +296,11 @@ class crossepg_db_class:
 		#print("DEBUG , title DATA TYPE: \'%s\'" % type(title).__name__ )
 		#print("DEBUG , summarie DATA TYPE: \'%s\'" % type(summarie).__name__ )
 
-		if type(title).__name__ == "str" :
+		if utf8 == False :
 			crossepg.epgdb_titles_set_description(event_ref, title);
-		elif type(title).__name__ == "unicode" :
-			crossepg.epgdb_titles_set_description_unicode(event_ref, title);
-		else:
-			print("ERROR: \'title\' var type not recognized")
-			sys.exit(1)
-
-		if type(summarie).__name__ == "str" :
 			crossepg.epgdb_titles_set_long_description(event_ref, summarie);
-		elif type(summarie).__name__ == "unicode" :
-			crossepg.epgdb_titles_set_long_description_unicode(event_ref, summarie);
 		else:
-			print("ERROR: \'summarie\' var type not recognized")
-			sys.exit(1)
+			crossepg.epgdb_titles_set_description_utf8(event_ref, title);
+			crossepg.epgdb_titles_set_long_description_utf8(event_ref, summarie);
 
 
