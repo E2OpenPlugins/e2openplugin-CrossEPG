@@ -85,6 +85,12 @@ class Titolo_parser(sgmllib.SGMLParser):
 				if int(time.strftime("%H",time.strptime(data,"%H:%M"))) < 6 :
 					self.day = self.daynext
 					self.tomorrow = True
+				else:
+					if self.tomorrow == True:
+						self.inside_a_titolo = False
+						self.start_titolo = False
+						self.inside_palinsesto = False
+						return
 
 				self.dataoraevento = time.strftime("%Y-%m-%d %H:%M",time.strptime(self.day+'-'+data,"%Y%m%d-%H:%M"))
 				self.start_orario = False
@@ -253,7 +259,11 @@ class main:
 				if chlist[c].split(",")[2] != '' :
 					channel_provider = chlist[c].split(",")[2].strip(' ').lower()
 
+			exit_for_loop = False
 			for day in self.DAYCACHE:
+				if exit_for_loop == True:
+					break
+
 				day_get = time.strftime("%Y_%m_%d",time.strptime(day,"%Y%m%d"))
 				xmlfile = "?%s_%s" % (c,day_get)
 
@@ -262,16 +272,20 @@ class main:
 
 				eventfilename = stuff.fn_escape(str(c) + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + day)
 				eventfilepath = os.path.join(self.CONF_CACHEDIR, eventfilename)
-				if (cacheopt == 1) and  os.path.exists(eventfilepath):
+				if (cacheopt == 1) and os.path.exists(eventfilepath):
 					continue
 				if (cacheopt == 3) and os.path.exists(eventfilepath) and (day != self.TODAY):
+					continue
+				if (cacheopt != 1) and (cacheopt != 2) and (cacheopt != 3):
+					self.log("Warning: unknown cache option " + str(cacheopt))
+					exit_for_loop = True
 					continue
 
 				self.log("Download HTML data from \'%s\'" % (self.CONF_URL + xmlfile))
 
 				i = self.HTTP_ERROR_RETRY
 				while i > 0  :
-					# to avoid overloading website, wait randomly
+					#  wait randomly to avoid overloading website
 					time.sleep(random.uniform(self.CONF_RANDOM_MIN, self.CONF_RANDOM_MAX))
 
 					try:
@@ -299,8 +313,13 @@ class main:
 						dtparser.parse(data)
 						self.guida = self.guidatomorrow
 						(self.guidatoday, self.guidatomorrow) = dtparser.get_guida()
-						self.guida = self.guida + self.guidatoday
 
+						# if no data, quit for loop and stop downloading
+						if len(self.guidatoday) == 0:
+							exit_for_loop = True
+							break
+
+						self.guida = self.guida + self.guidatoday
 
 						self.log("  writing in cache \'%s\'" % eventfilename)
 						# write data in cache file using UTF-8 encoding
@@ -324,7 +343,6 @@ class main:
 							event_description = u''
 
 							fd.write(event_starttime + self.FIELD_SEPARATOR + event_startime_unix_gmt + self.FIELD_SEPARATOR + event_title + self.FIELD_SEPARATOR + event_description + '\n')
-
 
 						fd.close()
 
@@ -401,7 +419,7 @@ class main:
 							e_summarie = u' '
 							# encode Python Unicode in UTF-8
 							e_summarie = e_summarie.encode('utf-8')
-							
+
 							# add_event(start_time , duration , title , summarie , ISO639_language_code , strings_encoded_with_UTF-8)
 							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True )
 
@@ -436,12 +454,13 @@ class main:
 
 # MAIN CODE: SCRIPT START HERE
 
+SCRIPT_DIR = 'scripts/rai/'
 
 # get CrossEPG installation dir.
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	sys.exit(1)
-scriptlocation = os.path.join(crossepg_instroot , 'scripts/rai/')
+scriptlocation = os.path.join(crossepg_instroot , SCRIPT_DIR)
 
 # get where CrossEPG save data (dbroot) and use it as script cache repository
 crossepg_dbroot = crossepg.epgdb_get_dbroot()
@@ -454,6 +473,6 @@ script_class = main(scriptlocation , crossepg_dbroot)
 # download data and cache them
 script_class.download_and_cache()
 
-# read cached date and push into CrossEPG database
+# read cached data and inject into CrossEPG database
 script_class.process_cache()
 
