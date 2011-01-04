@@ -220,8 +220,8 @@ class lamedb_class:
 		# SID:ns:TSID:ONID:stype:unused
 		tmp = sid.split(":")
 		s.append(int(tmp[0],0x10))  # SID
-		s.append(int(tmp[2],16))    # TSID
-		s.append(int(tmp[3],16))    # ONID
+		s.append(int(tmp[2],0X10))  # TSID
+		s.append(int(tmp[3],0X10))  # ONID
 
 		return(s)
 
@@ -266,6 +266,8 @@ class crossepg_db_class:
 
 	# add an EPG event
 	def add_event(self, start_time, duration, title=' ', summarie=' ', language='eng', utf8=False):
+		start_time = int(start_time)
+		duration = int(duration)
 
 		if (duration < 0) or (duration > 65535) :
 			# duration must be >= 0 or < 65536 , skip this event (it's an error)
