@@ -4,7 +4,7 @@
 # derived from E2_LOADEPG
 
 __author__ = "ambrosa http://www.ambrosa.net"
-__copyright__ = "Copyright (C) 2008-2010 Alessandro Ambrosini"
+__copyright__ = "Copyright (C) 2008-2011 Alessandro Ambrosini"
 __license__ = "CreativeCommons by-nc-sa http://creativecommons.org/licenses/by-nc-sa/3.0/"
 
 import os
@@ -143,8 +143,8 @@ class main:
 	CROSSEPG_DBROOT = ''
 
 	def log(self,s):
-		crossepg.log_add(s)
-		self.logging.log2file(s)
+		crossepg.log_add(str(s))
+		self.logging.log2file(str(s))
 
 
 	def __init__(self,confdir,dbroot):
@@ -171,7 +171,8 @@ class main:
 
 		self.CONF_GMT_ZONE = config.get("global","GMT_ZONE")
 		if self.CONF_GMT_ZONE.strip(' ').lower() == 'equal':
-			self.DELTA_UTC = -stuff.delta_utc() # return negative if timezone is east of GMT (like Italy), invert sign
+			#self.DELTA_UTC = -stuff.delta_utc() # return negative if timezone is east of GMT (like Italy), invert sign
+			self.DELTA_UTC = 0
 		else:
 			self.DELTA_UTC = float(self.CONF_GMT_ZONE)*3600.0
 			if self.DELTA_UTC >= 0:
@@ -180,7 +181,7 @@ class main:
 				self.DELTA_UTC = self.DELTA_UTC - stuff.delta_dst()
 
 		self.DELTA_UTC = int(self.DELTA_UTC)
-		self.log("Website timezone - UTC = %d seconds" % self.DELTA_UTC)
+		#self.log("Website timezone - UTC = %d seconds" % self.DELTA_UTC)
 
 		if not os.path.exists(self.CONF_CACHEDIR):
 			self.log("Creating \'%s\' directory for caching" % self.CONF_CACHEDIR)
@@ -331,7 +332,10 @@ class main:
 						for event in self.guida:
 							(dataora,titolo) = event
 							event_starttime = dataora
-							event_startime_unix_gmt=str(int(time.mktime(time.strptime(event_starttime,"%Y-%m-%d %H:%M"))) - self.DELTA_UTC )
+							# time.mktime return Unix time inside GMT timezone
+							event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y-%m-%d %H:%M"))) - self.DELTA_UTC )
+							#event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y-%m-%d %H:%M")))  )
+							#self.log(event_starttime + " , " + str(self.DELTA_UTC) + " , " + str(int(time.mktime(time.strptime(event_starttime,"%Y-%m-%d %H:%M")))) + " , " + event_startime_unix_gmt )
 
 							# convert remote data (RAI website use UTF-8) in Python Unicode (UCS2)
 							event_title = unicode(titolo,self.REMOTE_EPG_CHARSET)
