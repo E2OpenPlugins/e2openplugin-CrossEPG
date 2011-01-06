@@ -124,6 +124,10 @@ class main:
 	# Network socket timeout (in seconds)
 	CONF_SOCKET_TIMEOUT = 20
 
+	# log text
+	CONF_LOG_SCRIPT_NAME = "RAI (Italy)"
+	CONF_LOG_PREFIX = "RAI: "
+
 	# retry number if HTTP error
 	HTTP_ERROR_RETRY = 3
 	# seconds to wait between retries
@@ -142,21 +146,29 @@ class main:
 	CHANNELLIST = {}
 	CROSSEPG_DBROOT = ''
 
-	def log(self,s):
-		crossepg.log_add(str(s))
-		self.logging.log2file(str(s))
+
+	def log(self,s,video=0):
+		self.logging.log(self.CONF_LOG_PREFIX + str(s))
+		if video == 1:
+			self.log2video(str(s))
+
+	def log2video(self,s):
+		self.logging.log2video_status(str(s))
 
 
 	def __init__(self,confdir,dbroot):
 
 		self.CROSSEPG_DBROOT = dbroot
 
-		LOG_FILE = os.path.join(confdir, self.CONF_LOGFILENAME)
-		self.logging = stuff.logging_class(LOG_FILE)
+		# initialize logging
+		self.logging = stuff.logging_class(dbroot)
+		# write to video OSD the script name
+		self.logging.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
+
 
 		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
 		if not os.path.exists(CONF_FILE) :
-			self.log("ERROR: %s not present" % CONF_FILE)
+			self.log("ERROR: %s not present" % CONF_FILE,1)
 			sys.exit(1)
 
 		config = ConfigParser.ConfigParser()
@@ -195,7 +207,7 @@ class main:
 			self.CHANNELLIST[i[0]] = unicode(i[1],'utf-8')
 
 		if len(self.CHANNELLIST) == 0 :
-			self.log("ERROR: [channels] section empty ?")
+			self.log("ERROR: [channels] section empty ?",1)
 			sys.exit(1)
 
 		# set network socket timeout
@@ -218,6 +230,8 @@ class main:
 
 	def download_and_cache(self):
 		self.log("--- START DOWNLOAD AND CACHE DATA ---")
+		self.log2video("STARTING DOWNLOAD")
+
 		self.log("Removing old cached files")
 		stuff.cleanup_oldcachedfiles(self.CONF_CACHEDIR, self.FIELD_SEPARATOR)
 
@@ -252,7 +266,7 @@ class main:
 
 			# if channel name is not present as option, quit with error
 			if channel_name == '':
-				self.log("ERROR ! ID=%s channel name not present" % c)
+				self.log("ERROR ! ID=%s channel name not present" % c, 1)
 				sys.exit(1)
 
 			channel_provider = self.CONF_DEFAULT_PROVIDER
@@ -283,6 +297,7 @@ class main:
 					continue
 
 				self.log("Download HTML data from \'%s\'" % (self.CONF_URL + xmlfile))
+				self.log2video("Download " + c)
 
 				i = self.HTTP_ERROR_RETRY
 				while i > 0  :
@@ -356,8 +371,9 @@ class main:
 
 	def process_cache(self):
 		self.log("--- START PROCESSING CACHE ---")
+		self.log2video("START PROCESSING CACHE")
 		if not os.path.exists(self.CONF_CACHEDIR):
-			self.log("ERROR: %s not present" % self.CONF_CACHEDIR)
+			self.log("ERROR: %s not present" % self.CONF_CACHEDIR,1)
 			sys.exit(1)
 
 		self.log("Loading lamedb")
@@ -382,8 +398,9 @@ class main:
 				previous_id = id
 
 			if id != previous_id :
-				self.log("  ...processing \'%s\' , nr. events %d" % (previous_id,len(events)))
 				total_events += len(events)
+				self.log("  ...processing \'%s\' , nr. events %d" % (previous_id,len(events)))
+				self.log2video("processed %d events ..." % total_events )
 
 				for c in channels_name:
 					# a channel can have zero or more SID (different channel with same name)
@@ -451,6 +468,7 @@ class main:
 		crossdb.close_db()
 		self.log("TOTAL EPG EVENTS PROCESSED: %d" % total_events)
 		self.log("--- END ---")
+		self.log2video("END , events processed: %d" % total_events)
 
 
 
