@@ -622,6 +622,6 @@ class CrossEPG_Wrapper:
 	def close(self):
 		print "[CrossEPG_Wrapper] -> CLOSE"
 		if self.oldapi:
-			self.cmd.write("CLOSE\n", 5)
+			self.cmd.write("CLOSE\n", 6)
 		else:
 			self.cmd.write("CLOSE\n")
