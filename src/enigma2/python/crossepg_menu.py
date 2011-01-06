@@ -9,6 +9,7 @@ from crossepg_downloader import CrossEPG_Downloader
 from crossepg_importer import CrossEPG_Importer
 from crossepg_converter import CrossEPG_Converter
 from crossepg_loader import CrossEPG_Loader
+from crossepg_ordering import CrossEPG_Ordering
 from crossepg_locale import _
 
 from Screens.Screen import Screen
@@ -55,6 +56,7 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("OpenTV providers"), "opentv.png"))
 		l.append(self.buildListEntry(_("XEPGDB providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Scripts providers"), "scripts.png"))
+		l.append(self.buildListEntry(_("Providers start order"), "reorder.png"))
 		l.append(self.buildListEntry(_("Download now"), "download.png"))
 		l.append(self.buildListEntry(_("Force csv import now"), "csv.png"))
 		l.append(self.buildListEntry(_("Force epg.dat conversion now"), "conversion.png"))
@@ -95,18 +97,20 @@ class CrossEPG_Menu(Screen):
 		elif index == 4:
 			self.session.open(CrossEPG_Providers, "script")
 		elif index == 5:
+			self.session.open(CrossEPG_Ordering)
+		elif index == 6:
 			self.config.load()
 			self.config.deleteLog()
 			self.downloader()
-		elif index == 6:
-			self.importer()
 		elif index == 7:
-			self.converter()
+			self.importer()
 		elif index == 8:
-			self.loader()
+			self.converter()
 		elif index == 9:
-			self.session.open(CrossEPG_Info)
+			self.loader()
 		elif index == 10:
+			self.session.open(CrossEPG_Info)
+		elif index == 11:
 			self.session.open(CrossEPG_About)
 		
 	def quit(self):
