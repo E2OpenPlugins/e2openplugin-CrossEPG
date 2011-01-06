@@ -428,37 +428,58 @@ void *interactive (void *args)
 
 		if (memcmp (buffer, CMD_QUIT, strlen (CMD_QUIT)) == 0 || quit || size == 0)
 		{
+			log_add ("Interactive: QUIT cmd received");
 			run = false;
 			stop = true;
 		}
 		else if (memcmp (buffer, CMD_OPEN, strlen (CMD_OPEN)) == 0)
 		{
+			log_add ("Interactive: OPEN cmd received");
 			if (!db_load ())
+			{
 				interactive_send_text (ACTION_ERROR, "cannot open crossepg database");
+				log_add ("Interactive: ERROR action sent (cannot open crossepg database)");
+			}
 			else
+			{
 				interactive_send (ACTION_OK);
+				log_add ("Interactive: OK action sent");
+			}
 		}
 		else if (memcmp (buffer, CMD_CLOSE, strlen (CMD_CLOSE)) == 0)
 		{
+			log_add ("Interactive: CLOSE cmd received");
 			db_close ();
 			interactive_send (ACTION_OK);
+			log_add ("Interactive: OK action sent");
 		}
 		else if (memcmp (buffer, CMD_DEMUXER, strlen (CMD_DEMUXER)) == 0)
 		{
+			log_add ("Interactive: DEMUXER cmd received");
 			if (!exec)
 			{
 				if (strlen (buffer) > strlen (CMD_DEMUXER)+1)
 				{
 					strcpy (demuxer, buffer + strlen (CMD_DEMUXER)+1);
 					interactive_send (ACTION_OK);
+					log_add ("Interactive: OK action sent");
 				}
-				else interactive_send_text (ACTION_ERROR, "required one parameter");
+				else
+				{
+					interactive_send_text (ACTION_ERROR, "required one parameter");
+					log_add ("Interactive: ERROR action sent (required one parameter)");
+				}
 			}
-			else interactive_send_text (ACTION_ERROR, "cannot do it... other operations in background");
+			else
+			{
+				interactive_send_text (ACTION_ERROR, "cannot do it... other operations in background");
+				log_add ("Interactive: ERROR action sent (cannot do it... other operations in background)");
+			}
 			timeout_enable = true;
 		}
 		else if (memcmp (buffer, CMD_DOWNLOAD, strlen (CMD_DOWNLOAD)) == 0)
 		{
+			log_add ("Interactive: DOWNLOAD cmd received");
 			if (!exec)
 			{
 				if (strlen (buffer) > strlen (CMD_DOWNLOAD)+1)
@@ -468,37 +489,57 @@ void *interactive (void *args)
 					exec = true;
 					pthread_create (&thread, NULL, download, NULL);
 				}
-				else interactive_send_text (ACTION_ERROR, "required one parameter");
+				else
+				{
+					interactive_send_text (ACTION_ERROR, "required one parameter");
+					log_add ("Interactive: ERROR action sent (required one parameter)");
+				}
 			}
-			else interactive_send_text (ACTION_ERROR, "cannot do it... other operations in background");
+			else
+			{
+				interactive_send_text (ACTION_ERROR, "cannot do it... other operations in background");
+				log_add ("Interactive: ERROR action sent (cannot do it... other operations in background)");
+			}
 			timeout_enable = true;
 		}
 		else if (memcmp (buffer, CMD_WAIT, strlen (CMD_WAIT)) == 0)
 		{
+			log_add ("Interactive: WAIT cmd received");
 			timeout_enable = false;
 		}
 		else if (memcmp (buffer, CMD_SAVE, strlen (CMD_SAVE)) == 0)
 		{
+			log_add ("Interactive: SAVE cmd received");
 			if (!exec)
 			{
 				timeout_enable = false;
 				interactive_send (ACTION_START);
 				interactive_send_text (ACTION_PROGRESS, "ON");
-				if (!epgdb_save (progress_callback)) interactive_send_text (ACTION_ERROR, "cannot save data");
+				if (!epgdb_save (progress_callback))
+				{
+					interactive_send_text (ACTION_ERROR, "cannot save data");
+					log_add ("Interactive: ERROR action sent (cannot save data)");
+				}
 				interactive_send (ACTION_END);
 				interactive_send_text (ACTION_PROGRESS, "OFF");
 			}
-			else interactive_send_text (ACTION_ERROR, "cannot do it... other operations in background");
+			else
+			{
+				interactive_send_text (ACTION_ERROR, "cannot do it... other operations in background");
+				log_add ("Interactive: ERROR action sent (cannot do it... other operations in background)");
+			}
 			timeout_enable = true;
 		}
 		else if (memcmp (buffer, CMD_STOP, strlen (CMD_STOP)) == 0)
 		{
+			log_add ("Interactive: STOP cmd received");
 			stop = true;
 			timeout_enable = true;
 		}
 		else
 		{
 			interactive_send_text (ACTION_ERROR, "unknow command");
+			log_add ("Interactive: ERROR action sent (unknow command)");
 			timeout_enable = true;
 		}
 		pthread_mutex_lock (&mutex);
@@ -611,7 +652,7 @@ int main (int argc, char **argv)
 	
 	mkdir (db_root, S_IRWXU|S_IRWXG|S_IRWXO);
 	
-	log_open (NULL, "CrossEPG Downloader");
+	log_open ("/tmp/crossepg.log", "CrossEPG Downloader");
 	
 	if (iactive) interactive_manager ();
 	else

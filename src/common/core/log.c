@@ -21,7 +21,7 @@ void log_disable ()
 
 bool log_open (char *file, char *plugin_name)
 {	
-	if (!enabled) return true;
+	//if (!enabled) return true;
 	
 	if (file != NULL)
 	    fd = fopen (file, "w");
@@ -40,8 +40,6 @@ void log_close ()
 
 void log_add (char *message, ...)
 {
-	if (!enabled) return;
-	
 	va_list args;
 	char msg[16*1024];
 	time_t now_time;
@@ -59,9 +57,13 @@ void log_add (char *message, ...)
 	va_end (args);
 	msg[(16*1024)-1] = '\0';
 	
-	fwrite (msg, strlen (msg), 1, stdout);
-	fwrite ("\n", 1, 1, stdout);
-	fflush (stdout);
+	if (enabled)
+	{
+		fwrite (msg, strlen (msg), 1, stdout);
+		fwrite ("\n", 1, 1, stdout);
+		fflush (stdout);
+	}
+
 	if (fd != NULL)
 	{
     	fwrite (msg, strlen (msg), 1, fd);
