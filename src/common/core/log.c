@@ -49,7 +49,8 @@ void log_add (char *message, ...)
 	loctime = localtime (&now_time);
 	strftime (msg, 255, "%d/%m/%Y %H:%M:%S ", loctime);
 	
-	fwrite (msg, strlen (msg), 1, stdout);
+	if (enabled)
+		fwrite (msg, strlen (msg), 1, stdout);
 	if (fd != NULL) fwrite (msg, strlen (msg), 1, fd);
 
 	va_start (args, message);
