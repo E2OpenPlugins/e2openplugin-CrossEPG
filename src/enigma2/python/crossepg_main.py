@@ -18,6 +18,7 @@ class CrossEPG_Main:
 		crossepg_auto.lock = True
 		crossepg_auto.stop()
 		self.config.load()
+		self.config.deleteLog()
 		self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, self.config.providers)
 
 	def downloadCallback(self, ret):
