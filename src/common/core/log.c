@@ -27,10 +27,7 @@ bool log_open (char *db_root, bool truncate)
 	if (truncate)
 		fd = fopen (log_filename, "w");
 	else
-	{
 		fd = fopen (log_filename, "a");
-		fseek (fd, 0, SEEK_END);
-	}
 	
 	return (fd != NULL);
 }
