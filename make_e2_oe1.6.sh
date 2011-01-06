@@ -2,7 +2,7 @@
 
 [ -d ./tmp ] && rm -rf ./tmp
 
-DEVKIT_ROOT=/opt/dmm/dm800/build/tmp
+DEVKIT_ROOT=/mnt/devel/workspace/openee_build/dm800se/build/tmp
 CROSS=${DEVKIT_ROOT}/cross/mipsel/bin/mipsel-oe-linux-
 
 export CFLAGS+="-I${DEVKIT_ROOT}/staging/mipsel-oe-linux/usr/include \
@@ -10,7 +10,7 @@ export CFLAGS+="-I${DEVKIT_ROOT}/staging/mipsel-oe-linux/usr/include \
  -I${DEVKIT_ROOT}/staging/mipsel-oe-linux/usr/include/python2.6"
 export CC=${CROSS}gcc
 export STRIP=${CROSS}strip
-export SWIG=${DEVKIT_ROOT}/staging/i686-linux/usr/bin/swig
+export SWIG=${DEVKIT_ROOT}/staging/x86_64-linux/usr/bin/swig
 export D=./tmp
 
 make && make install

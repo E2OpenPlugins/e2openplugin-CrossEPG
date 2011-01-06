@@ -19,15 +19,12 @@ void log_disable ()
 	enabled = false;
 }
 
-bool log_open (char *db_root, bool truncate)
+bool log_open (char *db_root)
 {	
 	char log_filename[256];
 	sprintf (log_filename, "%s/crossepg.log", db_root);
 
-	if (truncate)
-		fd = fopen (log_filename, "w");
-	else
-		fd = fopen (log_filename, "a");
+	fd = fopen (log_filename, "a");
 	
 	return (fd != NULL);
 }

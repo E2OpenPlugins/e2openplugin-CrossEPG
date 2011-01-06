@@ -77,7 +77,7 @@ int main (int argc, char **argv)
 	
 	mkdir (db_root, S_IRWXU|S_IRWXG|S_IRWXO);
 	
-	log_open (db_root, 0);
+	log_open (db_root);
 	log_banner ("CrossEPG XMLTV Importer");
 
 	if (epgdb_open (db_root)) log_add ("EPGDB opened (root=%s)", db_root);

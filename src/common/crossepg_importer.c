@@ -231,7 +231,7 @@ int main (int argc, char **argv)
 	while (db_root[strlen (db_root) - 1] == '/') db_root[strlen (db_root) - 1] = '\0';
 	while (import_root[strlen (import_root) - 1] == '/') import_root[strlen (import_root) - 1] = '\0';
 	
-	log_open (db_root, 0);
+	log_open (db_root);
 	log_banner ("CrossEPG Importer");
 
 	sprintf (import_homedir, "%s/import/", homedir);
