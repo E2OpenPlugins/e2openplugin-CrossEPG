@@ -29,14 +29,19 @@ def fn_escape(s):
 
 # logging class
 class logging_class:
-	LOG_FD=0
 
-	def __init__(self,logfilename):
-		self.LOG_FD=codecs.open(logfilename,"w",'utf-8')
+	def __init__(self,dbroot):
+		crossepg.log_open(dbroot)
 
-	def log2file(self,s):
-		st = time.strftime("%d/%m/%Y %H:%M:%S")
-		self.LOG_FD.write(st + ' ' + s + '\n')
+	def log(self,s):
+		crossepg.log_add(str(s))
+
+	def log2video_status(self,s):
+		print("LOGTEXT " + str(s))
+
+	def log2video_scriptname(self,s):
+		print("TYPE RUNNING CSCRIPT " + str(s))
+
 
 
 
