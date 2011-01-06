@@ -476,6 +476,10 @@ class CrossEPG_Wrapper:
 			elif ttype == "RUNNING SCRIPT":
 				self.type = 14;
 				self.__callCallbacks(self.EVENT_ACTION, _("Running script"))
+			elif ttype.find("RUNNING CSCRIPT") == 0:
+				self.type = 14;
+				self.__callCallbacks(self.EVENT_ACTION, _("Running script: %s") % (data[21:]))
+				
 		elif data.find("CHANNELS ") == 0:
 			self.__callCallbacks(self.EVENT_STATUS, _("%s channels") % (data[9:]))
 		elif data.find("SIZE ") == 0:
@@ -517,6 +521,8 @@ class CrossEPG_Wrapper:
 			self.__callCallbacks(self.INFO_CREATION_TIME, data[14:])
 		elif data.find("UPDATE_TIME ") == 0:
 			self.__callCallbacks(self.INFO_UPDATE_TIME, data[12:])
+		elif data.find("LOGTEXT ") == 0:
+			self.__callCallbacks(self.EVENT_STATUS, data[8:])
 
 	def __callCallbacks(self, event, param = None):
 		for callback in self.callbackList:
