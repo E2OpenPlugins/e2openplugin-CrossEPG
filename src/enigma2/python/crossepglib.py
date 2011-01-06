@@ -476,9 +476,9 @@ class CrossEPG_Wrapper:
 			elif ttype == "RUNNING SCRIPT":
 				self.type = 14;
 				self.__callCallbacks(self.EVENT_ACTION, _("Running script"))
-			elif ttype.find("RUNNING CSCRIPT") == 0:
+			elif ttype.find("RUNNING CSCRIPT ") == 0:
 				self.type = 14;
-				self.__callCallbacks(self.EVENT_ACTION, _("Running script: %s") % (data[21:]))
+				self.__callCallbacks(self.EVENT_ACTION, _("Running script") + " " + data[21:])
 				
 		elif data.find("CHANNELS ") == 0:
 			self.__callCallbacks(self.EVENT_STATUS, _("%s channels") % (data[9:]))
