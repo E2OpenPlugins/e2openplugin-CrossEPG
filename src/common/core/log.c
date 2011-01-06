@@ -19,17 +19,26 @@ void log_disable ()
 	enabled = false;
 }
 
-bool log_open (char *file, char *plugin_name)
+bool log_open (char *db_root, bool truncate)
 {	
-	//if (!enabled) return true;
-	
-	if (file != NULL)
-	    fd = fopen (file, "w");
-	
-	log_add ("SIFTeam %s %s (c) 2009-2010 Sandro Cavazzoni (http://www.crossepg.com)", plugin_name, RELEASE);
-	log_add ("This software is distributed under the terms of the GNU General Public License v2");
+	char log_filename[256];
+	sprintf (log_filename, "%s/crossepg.log", db_root);
+
+	if (truncate)
+		fd = fopen (log_filename, "w");
+	else
+	{
+		fd = fopen (log_filename, "a");
+		fseek (fd, 0, SEEK_END);
+	}
 	
 	return (fd != NULL);
+}
+
+void log_banner (char *app_name)
+{
+	log_add ("SIFTeam %s %s (c) 2009-2011 Sandro Cavazzoni (http://code.google.com/p/crossepg/)", app_name, RELEASE);
+	log_add ("This software is distributed under the terms of the GNU General Public License v2");
 }
 
 void log_close ()

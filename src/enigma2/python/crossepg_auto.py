@@ -125,6 +125,7 @@ class CrossEPG_Auto(Screen):
 				print "[CrossEPG_Auto] automatic download in standby"
 				self.osd = False
 				self.ontune = False
+				self.config.deleteLog()
 				self.download(self.providers)
 		elif self.config.download_daily_enabled:
 			now = time()
@@ -146,6 +147,7 @@ class CrossEPG_Auto(Screen):
 				self.cacheYear = ttime[0]
 				self.cacheMonth = ttime[1]
 				self.cacheDay = ttime[2]
+				self.config.deleteLog()
 				self.download(self.config.providers)
 			elif stime < now + (self.POLL_TIMER / 1000) and self.config.last_full_download_timestamp != stime:
 				print "[CrossEPG_Auto] poll"
@@ -177,6 +179,7 @@ class CrossEPG_Auto(Screen):
 					self.ontune = True
 					self.config.last_partial_download_timestamp = now
 					self.config.save()
+					self.config.deleteLog()
 					self.download([provider,])
 				else:
 					print "[CrossEPG_Auto] poll"

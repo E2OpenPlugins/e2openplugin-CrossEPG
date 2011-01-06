@@ -281,6 +281,12 @@ class CrossEPG_Config:
 			return ret
 		except Exception, e:
 			return False
+		
+	def deleteLog(self):
+		try:
+			os.unlink(self.db_root + "/crossepg.log")
+		except Exception, e:
+			print e
 
 class CrossEPG_Wrapper:
 	EVENT_READY			= 0

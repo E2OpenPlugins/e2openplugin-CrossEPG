@@ -611,8 +611,9 @@ int main (int argc, char **argv)
 	
 	mkdir (db_root, S_IRWXU|S_IRWXG|S_IRWXO);
 	
-	log_open (NULL, "CrossEPG DB Converter");
-	
+	log_open (db_root, 0);
+	log_banner ("CrossEPG DB Converter");
+
 	if (epgdb_open (db_root)) log_add ("EPGDB opened");
 	else
 	{

@@ -227,12 +227,13 @@ int main (int argc, char **argv)
 		}
 	}
 	
-	log_open (NULL, "CrossEPG Importer");
-	
 	while (homedir[strlen (homedir) - 1] == '/') homedir[strlen (homedir) - 1] = '\0';
 	while (db_root[strlen (db_root) - 1] == '/') db_root[strlen (db_root) - 1] = '\0';
 	while (import_root[strlen (import_root) - 1] == '/') import_root[strlen (import_root) - 1] = '\0';
 	
+	log_open (db_root, 0);
+	log_banner ("CrossEPG Importer");
+
 	sprintf (import_homedir, "%s/import/", homedir);
 	
 	if (epgdb_open (db_root)) log_add ("EPGDB opened");

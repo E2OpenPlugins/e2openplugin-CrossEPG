@@ -125,12 +125,13 @@ int main (int argc, char **argv)
 	
 	if (iactive) edump = false;
 	
-	log_open (NULL, "CrossEPG DB Info");
-	
 	while (db_root[strlen (db_root) - 1] == '/') db_root[strlen (db_root) - 1] = '\0';
 	
 	mkdir (db_root, S_IRWXU|S_IRWXG|S_IRWXO);
-	
+
+	log_open (db_root, 0);
+	log_banner ("CrossEPG DB Info");
+
 	if (epgdb_open (db_root)) log_add ("EPGDB opened");
 	else
 	{

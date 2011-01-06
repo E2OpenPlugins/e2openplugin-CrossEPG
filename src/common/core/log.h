@@ -3,7 +3,8 @@
 
 void log_enable ();
 void log_disable ();
-bool log_open (char *file, char *plugin_name);
+bool log_open (char *db_root, bool truncate);
+void log_banner (char *app_name);
 void log_close ();
 void log_add (char *message, ...);
 

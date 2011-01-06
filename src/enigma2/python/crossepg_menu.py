@@ -95,6 +95,8 @@ class CrossEPG_Menu(Screen):
 		elif index == 4:
 			self.session.open(CrossEPG_Providers, "script")
 		elif index == 5:
+			self.config.load()
+			self.config.deleteLog()
 			self.downloader()
 		elif index == 6:
 			self.importer()
