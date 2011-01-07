@@ -1,3 +1,0 @@
-CROSS = /opt/STM/STLinux-2.3/devkit/sh4/bin/sh4-linux-
-CC = $(CROSS)gcc
-STRIP = $(CROSS)strip

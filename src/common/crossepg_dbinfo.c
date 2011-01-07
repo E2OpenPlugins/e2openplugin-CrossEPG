@@ -13,7 +13,6 @@
 #include "../common.h"
 
 #include "core/log.h"
-#include "core/config.h"
 #include "core/interactive.h"
 #include "epgdb/epgdb.h"
 #include "epgdb/epgdb_channels.h"

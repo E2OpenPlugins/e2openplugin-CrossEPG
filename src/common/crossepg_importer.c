@@ -8,9 +8,6 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <dirent.h>
-#ifdef DGS
-#include <sqlite3.h>
-#endif
 #include <pthread.h>
 #include <signal.h>
 
@@ -18,10 +15,6 @@
 
 #include "core/log.h"
 #include "core/interactive.h"
-#include "core/config.h"
-#ifdef DGS
-#include "../dgs/dgs.h"
-#endif
 #include "aliases/aliases.h"
 #include "epgdb/epgdb.h"
 #include "net/http.h"

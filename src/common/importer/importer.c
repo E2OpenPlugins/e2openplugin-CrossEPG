@@ -8,17 +8,10 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <dirent.h>
-#ifndef E2
-#include <sqlite3.h>
-#endif
 
 #include "../../common.h"
 
 #include "../core/log.h"
-#include "../core/config.h"
-#ifndef E2
-#include "../../dgs/dgs.h"
-#endif
 #include "../aliases/aliases.h"
 #include "../epgdb/epgdb.h"
 #include "../net/http.h"

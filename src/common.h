@@ -18,22 +18,11 @@ typedef enum type_bool {false = 0, true} bool;
 #define DEFAULT_SYNC_HOURS			12
 #define DEFAULT_OTV_PROVIDER		"skyit_hotbird_13.0"
 
-#ifdef E2
 #define DEFAULT_DB_ROOT				"/hdd/crossepg"
 #define DEFAULT_IMPORT_ROOT			"/hdd/crossepg/import"
 #define DEFAULT_EPG_DAT				"/hdd/crossepg/ext.epg.dat"
 #define DEFAULT_DEMUXER				"/dev/dvb/adapter0/demux0"
 #define DEFAULT_LAMEDB				"/etc/enigma2/lamedb"
-#elif DGS
-#define DEFAULT_HOME_DIRECTORY		"/var/crossepg/"
-#define DEFAULT_HOME_DIRECTORY_IMPORT	"/var/crossepg/import"
-#define DEFAULT_DB_ROOT				"/media/crossepg"
-#define DEFAULT_IMPORT_ROOT			"/media/crossepg/import"
-#elif E1
-#define DEFAULT_DB_ROOT				"/hdd/crossepg"
-#define DEFAULT_IMPORT_ROOT			"/hdd/crossepg/import"
-#define DEFAULT_DEMUXER				"/dev/dvb/card0/demux0"
-#endif
 
 #ifdef MEMORYMON
 void *_malloc (unsigned int size);

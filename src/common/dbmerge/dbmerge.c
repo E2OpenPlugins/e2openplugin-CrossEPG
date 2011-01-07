@@ -12,10 +12,6 @@
 #include "../../common.h"
 
 #include "../core/log.h"
-#include "../core/config.h"
-#ifndef E2
-#include "../../dgs/dgs.h"
-#endif
 #include "../aliases/aliases.h"
 #include "../epgdb/epgdb.h"
 #include "../epgdb/epgdb_channels.h"
