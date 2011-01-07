@@ -3,19 +3,12 @@
 #include <stdarg.h>
 #include <time.h>
 #include <stdlib.h>
-#ifdef DGS
-#include <sqlite3.h>
-#endif
 #include <wctype.h>
 #include <dirent.h>
 
 #include "../../common.h"
 
 #include "../core/log.h"
-#ifdef DGS
-#include "../../dgs/dgs.h"
-#include "../../dgs/dgs_helper.h"
-#endif
 #include "../epgdb/epgdb.h"
 #include "../epgdb/epgdb_channels.h"
 #include "../epgdb/epgdb_titles.h"
@@ -33,38 +26,6 @@ typedef struct alias_s
 } alias_t;
 
 static int aliases_count = 0;
-
-bool _aliases_auto_save (alias_t *aliases, char *filename)
-{
-	FILE *fd;
-	int i, j;
-	
-	fd = fopen (filename, "w");
-	
-	if (fd == NULL) return false;
-	
-	for (i=0; i<aliases_count; i++)
-	{
-		if (aliases[i].count > 1)
-		{
-			char tmp[256];
-			sprintf (tmp, "# %s (auto)\n", aliases[i].name);
-			fwrite (tmp, strlen (tmp), 1, fd);
-			for (j=0; j<aliases[i].count; j++)
-			{
-				if (j != 0) fwrite (",", 1, 1, fd);
-				sprintf (tmp, "%d|%d|%d", aliases[i].nid[j], aliases[i].tsid[j], aliases[i].sid[j]);
-				fwrite (tmp, strlen (tmp), 1, fd);
-			}
-			fwrite ("\n", 1, 1, fd);
-			fflush (fd);
-		}
-	}
-	
-	fclose (fd);
-	
-	return true;
-}
 
 char *aliastok (char *value)
 {
@@ -201,14 +162,6 @@ void _aliases_load (alias_t *aliases, int max_aliases, char *filename)
 	
 	fclose (fd);
 }
-
-#ifdef E2
-#include "aliases.enigma2.c"
-#elif DGS
-#include "aliases.dgs.c"
-#elif E1
-#include "aliases.enigma2.c"
-#endif
 
 bool _aliases_make_extension_check (char *filename, char *extension)
 {

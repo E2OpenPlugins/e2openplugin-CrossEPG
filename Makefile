@@ -68,32 +68,32 @@ $(SWIGS_OBJS):
 	$(CC) $(CFLAGS) -c -fpic -o $@ $(@:.o=.c)
 	
 $(OBJS): $(VERSION_HEADER) $(BIN_DIR)
-	$(CC) $(CFLAGS) -c -fpic -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
+	$(CC) $(CFLAGS) -c -fpic -o $@ $(@:.o=.c)
 
 $(CONVERTER_OBJS):
-	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
 
 $(DOWNLOADER_OBJS):
-	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
 
 $(EPGCOPY_OBJS):
-	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
 
 $(IMPORTER_OBJS):
-	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
 
 $(EXPORTER_OBJS):
-	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
 
 $(XMLTV_OBJS):
-	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
 
 $(SWIGS_LIBS): $(SWIGS_OBJS)
 	$(CC) $(LDFLAGS) -shared -o $@ $(OBJS) $(SWIGS_OBJS) -lxml2 -lz -lm -lpthread
 	$(STRIP) $@
 	
 $(DBINFO_OBJS):
-	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c) -DE2 -DSTANDALONE
+	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
 
 $(CONVERTER_BIN): $(OBJS) $(CONVERTER_OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(CONVERTER_OBJS) -lxml2 -lz -lm -lpthread
