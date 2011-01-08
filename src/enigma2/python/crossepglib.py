@@ -62,6 +62,7 @@ class CrossEPG_Config:
 	show_extension = 1
 	last_partial_download_timestamp = 0
 	last_full_download_timestamp = 0
+	configured = 0
 	
 	def __init__(self):
 		if pathExists("/usr/crossepg"):
@@ -125,6 +126,8 @@ class CrossEPG_Config:
 							self.show_plugin = int(value);
 						elif key == "show_extension":
 							self.show_extension = int(value);
+						elif key == "configured":
+							self.configured = int(value);
 			except Exception:
 				pass
 
@@ -159,6 +162,7 @@ class CrossEPG_Config:
 		f.write("csv_import_enabled=%d\n" % (self.csv_import_enabled))
 		f.write("show_plugin=%d\n" % (self.show_plugin))
 		f.write("show_extension=%d\n" % (self.show_extension))
+		f.write("configured=%d\n" % (self.configured))
 		
 		f.close()
 		

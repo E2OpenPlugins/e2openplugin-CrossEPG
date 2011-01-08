@@ -48,6 +48,7 @@ class CrossEPG_Menu(Screen):
 		Screen.__init__(self, session)
 
 		self.config = CrossEPG_Config()
+		self.config.load()
 		self.patchtype = getEPGPatchType()
 
 		l = []
@@ -72,11 +73,17 @@ class CrossEPG_Menu(Screen):
 		}, -2)
 
 		self.onFirstExecBegin.append(self.setTitleWithVerion)
+		
+		if self.config.configured == 0:
+			self.onFirstExecBegin.append(self.openSetup)
 
 	def buildListEntry(self, description, image):
 		pixmap = LoadPixmap(cached=True, path="%s/images/%s" % (os.path.dirname(sys.modules[__name__].__file__), image));
 		return((pixmap, description))
 
+	def openSetup(self):
+		self.session.open(CrossEPG_Setup)
+			
 	def setTitleWithVerion(self):
 		try:
 			global version

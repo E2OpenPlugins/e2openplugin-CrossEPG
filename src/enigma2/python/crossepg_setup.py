@@ -67,9 +67,10 @@ class CrossEPG_Setup(Screen):
 				else:
 					self.mountdescription.append(partition.mountpoint)
 				
-		if len(self.mountpoint) == 0:
-			self.onFirstExecBegin.append(self.noDisksFound)
-
+		if not self.config.isQBOXHD():		# for other decoders we add internal flash as last entry (it's unsuggested)
+			self.mountdescription.append(_("Internal flash (unsuggested)"))
+			self.mountpoint.append(self.config.home_directory + "/data")
+			
 		# make lamedb entries
 		for lamedb in self.lamedbs:
 			if lamedb == "lamedb":
@@ -112,6 +113,9 @@ class CrossEPG_Setup(Screen):
 
 		self.makeList()
 
+	def showWarning(self):	
+		self.session.open(MessageBox, _("PLEASE READ!\nNo disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you still want use your internal flash pay attention to:\n(1) If you don't have enough free space your box may completely block and you need to flash it again\n(2) Many write operations on your internal flash may damage your flash memory"), type = MessageBox.TYPE_ERROR)
+	
 	def keyLeft(self):
 		self["config"].handleKey(KEY_LEFT)
 		self.update()
@@ -147,6 +151,11 @@ class CrossEPG_Setup(Screen):
 				device_default = self.mountdescription[i]
 			i += 1
 
+		# default device is really important... if miss a default we force it on first entry and update now the main config
+		if device_default == None:
+			self.config.db_root = self.mountpoint[0]
+			device_default = self.mountdescription[0]
+			
 		lamedb_default = _("main lamedb")
 		if self.config.lamedb != "lamedb":
 			lamedb_default = self.config.lamedb.replace("lamedb.", "").replace(".", " ")
@@ -181,10 +190,6 @@ class CrossEPG_Setup(Screen):
 
 		self["config"].setList(self.list)
 		self.setInfo()
-
-	def noDisksFound(self):
-		self.session.openWithCallback(self.close, MessageBox, _("No disk found. Please install an hard drive or an usb memory storage and try again."), type = MessageBox.TYPE_ERROR)
-		self.close()
 
 	def update(self):
 		redraw = False
@@ -271,6 +276,7 @@ class CrossEPG_Setup(Screen):
 	def quit(self):
 		self.config.last_full_download_timestamp = 0
 		self.config.last_partial_download_timestamp = 0
+		self.config.configured = 1
 		self.config.save()
 		if self.show_extension != self.config.show_extension or self.show_plugin != self.config.show_plugin:
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU):
@@ -284,5 +290,9 @@ class CrossEPG_Setup(Screen):
 			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
 			
 		crossepg_auto.forcePoll()
+		
+		if self.config.db_root == self.config.home_directory + "/data" and not self.config.isQBOXHD():
+			self.showWarning()
+			
 		self.close()
 
