@@ -24,12 +24,12 @@ import crossepg
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	sys.exit(1)
-scriptlib = os.path.join(crossepg_instroot , 'scripts/lib')
-sys.path.append(scriptlib)
+libdir = os.path.join(crossepg_instroot , 'scripts/lib')
+sys.path.append(libdir)
 
 # import local modules
 import sgmllib
-import stuff
+import scriptlib
 
 
 class main:
@@ -54,7 +54,7 @@ class main:
 		self.CROSSEPG_DBROOT = dbroot
 
 		LOG_FILE = os.path.join(confdir, self.CONF_LOGFILENAME)
-		self.logging = stuff.logging_class(LOG_FILE)
+		self.logging = scriptlib.logging_class(LOG_FILE)
 
 		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
 		if not os.path.exists(CONF_FILE) :
@@ -84,10 +84,10 @@ class main:
 	def copy_epg(self):
 		self.log("--- START PROCESSING ---")
 		self.log("Loading lamedb")
-		lamedb = stuff.lamedb_class()
+		lamedb = scriptlib.lamedb_class()
 
 		self.log("Initialize CrossEPG database")
-		crossdb = stuff.crossepg_db_class()
+		crossdb = scriptlib.crossepg_db_class()
 		crossdb.open_db(self.CROSSEPG_DBROOT)
 
 		total_events = 0
@@ -158,6 +158,8 @@ class main:
 
 							title = title.next
 
+						total_events += num_events
+
 						self.log("   copied %d events" % num_events)
 
 			# end "for s in src_sidbyname"
@@ -165,6 +167,7 @@ class main:
 
 		# end process, close CrossEPG DB saving data
 		crossdb.close_db()
+		self.log("Copied %d events" % total_events)
 		self.log("--- END ---")
 
 

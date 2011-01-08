@@ -25,12 +25,12 @@ import crossepg
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	sys.exit(1)
-scriptlib = os.path.join(crossepg_instroot , 'scripts/lib')
-sys.path.append(scriptlib)
+libdir = os.path.join(crossepg_instroot , 'scripts/lib')
+sys.path.append(libdir)
 
 # import local modules
 import sgmllib
-import stuff
+import scriptlib
 
 # =================================================================
 # HTML PARSER
@@ -161,7 +161,7 @@ class main:
 		self.CROSSEPG_DBROOT = dbroot
 
 		# initialize logging
-		self.logging = stuff.logging_class(dbroot)
+		self.logging = scriptlib.logging_class(dbroot)
 		# write to video OSD the script name
 		self.logging.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
 
@@ -183,14 +183,14 @@ class main:
 
 		self.CONF_GMT_ZONE = config.get("global","GMT_ZONE")
 		if self.CONF_GMT_ZONE.strip(' ').lower() == 'equal':
-			#self.DELTA_UTC = -stuff.delta_utc() # return negative if timezone is east of GMT (like Italy), invert sign
+			#self.DELTA_UTC = -scriptlib.delta_utc() # return negative if timezone is east of GMT (like Italy), invert sign
 			self.DELTA_UTC = 0
 		else:
 			self.DELTA_UTC = float(self.CONF_GMT_ZONE)*3600.0
 			if self.DELTA_UTC >= 0:
-				self.DELTA_UTC = self.DELTA_UTC + stuff.delta_dst()
+				self.DELTA_UTC = self.DELTA_UTC + scriptlib.delta_dst()
 			else:
-				self.DELTA_UTC = self.DELTA_UTC - stuff.delta_dst()
+				self.DELTA_UTC = self.DELTA_UTC - scriptlib.delta_dst()
 
 		self.DELTA_UTC = int(self.DELTA_UTC)
 		#self.log("Website timezone - UTC = %d seconds" % self.DELTA_UTC)
@@ -233,7 +233,7 @@ class main:
 		self.log2video("STARTING DOWNLOAD")
 
 		self.log("Removing old cached files")
-		stuff.cleanup_oldcachedfiles(self.CONF_CACHEDIR, self.FIELD_SEPARATOR)
+		scriptlib.cleanup_oldcachedfiles(self.CONF_CACHEDIR, self.FIELD_SEPARATOR)
 
 		#self.log("Start downloading HTML data from \'%s\'" % self.CONF_URL)
 
@@ -285,7 +285,7 @@ class main:
 				# download only if file doesn't exist or cacheopt == 2 (always download),
 				# using open(...,"w") files will be overwritten (saving a delete + create)
 
-				eventfilename = stuff.fn_escape(str(c) + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + day)
+				eventfilename = scriptlib.fn_escape(str(c) + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + day)
 				eventfilepath = os.path.join(self.CONF_CACHEDIR, eventfilename)
 				if (cacheopt == 1) and os.path.exists(eventfilepath):
 					continue
@@ -377,10 +377,10 @@ class main:
 			sys.exit(1)
 
 		self.log("Loading lamedb")
-		lamedb = stuff.lamedb_class()
+		lamedb = scriptlib.lamedb_class()
 
 		self.log("Initialize CrossEPG database")
-		crossdb = stuff.crossepg_db_class()
+		crossdb = scriptlib.crossepg_db_class()
 		crossdb.open_db(self.CROSSEPG_DBROOT)
 
 		events = []
