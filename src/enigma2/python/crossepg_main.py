@@ -1,4 +1,6 @@
 from enigma import *
+from Screens.MessageBox import MessageBox
+
 from crossepglib import *
 from crossepg_downloader import CrossEPG_Downloader
 from crossepg_importer import CrossEPG_Importer
@@ -18,8 +20,11 @@ class CrossEPG_Main:
 		crossepg_auto.lock = True
 		crossepg_auto.stop()
 		self.config.load()
-		self.config.deleteLog()
-		self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, self.config.providers)
+		if self.config.configured == 0:
+			self.session.open(MessageBox, _("Please configure crossepg before start downloader"), type = MessageBox.TYPE_ERROR)
+		else:
+			self.config.deleteLog()
+			self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, self.config.providers)
 
 	def downloadCallback(self, ret):
 		if ret:
