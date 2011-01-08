@@ -18,6 +18,7 @@
 #include "epgdb/epgdb_channels.h"
 #include "epgdb/epgdb_titles.h"
 #include "epgdb/epgdb_index.h"
+#include "xmltv/xmltv_encodings.h"
 #include "xmltv/xmltv_channels.h"
 #include "xmltv/xmltv_parser.h"
 
@@ -89,6 +90,7 @@ int main (int argc, char **argv)
 	}
 	epgdb_load ();
 	
+	xmltv_encodings_init ();
 	xmltv_channels_init ();
 	xmltv_channels_load (channelsfile);
 	xmltv_parser_set_iso639 ("eng");

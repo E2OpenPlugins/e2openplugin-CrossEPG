@@ -37,6 +37,7 @@
 #include "epgdb/epgdb_channels.h"
 #include "epgdb/epgdb_titles.h"
 
+#include "xmltv/xmltv_encodings.h"
 #include "xmltv/xmltv_channels.h"
 #include "xmltv/xmltv_parser.h"
 #include "xmltv/xmltv_downloader.h"
@@ -654,6 +655,8 @@ int main (int argc, char **argv)
 	
 	log_open (db_root);
 	log_banner ("CrossEPG Downloader");
+
+	xmltv_encodings_init ();
 
 	if (iactive) interactive_manager ();
 	else

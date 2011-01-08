@@ -14,6 +14,7 @@ OBJS += src/common/epgdb/epgdb_index.o
 OBJS += src/common/epgdb/epgdb_titles.o
 OBJS += src/common/epgdb/epgdb_aliases.o
 OBJS += src/common/epgdb/epgdb_search.o
+OBJS += src/common/xmltv/xmltv_encodings.o
 OBJS += src/common/xmltv/xmltv_channels.o
 OBJS += src/common/xmltv/xmltv_downloader.o
 OBJS += src/common/xmltv/xmltv_parser.o
