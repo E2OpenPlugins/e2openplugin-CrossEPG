@@ -1,9 +1,10 @@
 #!/usr/bin/python
-# stuff.py  by Ambrosa http://www.ambrosa.net
+# scriptlib.py  by Ambrosa http://www.ambrosa.net
 # derived from E2_LOADEPG
+# 08-Jan-2011
 
 __author__ = "ambrosa http://www.ambrosa.net"
-__copyright__ = "Copyright (C) 2008-2010 Alessandro Ambrosini"
+__copyright__ = "Copyright (C) 2008-2011 Alessandro Ambrosini"
 __license__ = "CreativeCommons by-nc-sa http://creativecommons.org/licenses/by-nc-sa/3.0/"
 
 
@@ -41,7 +42,6 @@ class logging_class:
 
 	def log2video_scriptname(self,s):
 		print("TYPE RUNNING CSCRIPT " + str(s))
-
 
 
 

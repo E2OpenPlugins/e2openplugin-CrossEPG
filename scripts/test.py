@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # above is Python interpreter location
 
-# ambrosa 05-Dec-2010 http://www.ambrosa.net
+# ambrosa 08-Jan-2011 http://www.ambrosa.net
 # this test.py program simply do nothing
 
 
@@ -17,11 +17,11 @@ crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	print "ERROR: cannot find CrossEPG installation directory"
 	sys.exit(1)
-scriptlib = os.path.join(crossepg_instroot , 'scripts/lib')
-sys.path.append(scriptlib)
+libdir = os.path.join(crossepg_instroot , 'scripts/lib')
+sys.path.append(libdir)
 
 # import local modules under 'scripts/lib'
-import stuff
+import scriptlib
 
 # -------------------------------------------------
 # this is the main function
@@ -60,9 +60,9 @@ def main():
 	crossepg.epgdb_close();
 
 
-	delta_timezone = stuff.delta_utc()
+	delta_timezone = scriptlib.delta_utc()
 	crossepg.log_add("GMT vs. LocalTime difference (in seconds): %d" % delta_timezone)
-	delta_daylight = stuff.delta_dst()
+	delta_daylight = scriptlib.delta_dst()
 	crossepg.log_add("DayLight Saving (DST) difference now: %d" % delta_daylight)
 	
 	
