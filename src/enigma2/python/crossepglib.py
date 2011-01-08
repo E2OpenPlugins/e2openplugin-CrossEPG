@@ -54,8 +54,8 @@ class CrossEPG_Config:
 	download_daily_hours = 4
 	download_daily_minutes = 0
 	download_daily_reboot = 1
-	download_tune_enabled = 1
-	download_standby_enabled = 1
+	download_tune_enabled = 0
+	download_standby_enabled = 0
 	download_manual_reboot = 0
 	csv_import_enabled = 0
 	show_plugin = 1
