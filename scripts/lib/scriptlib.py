@@ -31,8 +31,11 @@ def fn_escape(s):
 # logging class
 class logging_class:
 
-	def __init__(self,dbroot):
-		crossepg.log_open(dbroot)
+	def __init__(self):
+		# get where CrossEPG save data (dbroot) and use it for opening crossepg.log
+		dbroot = crossepg.epgdb_get_dbroot()
+		if dbroot == True:
+			crossepg.log_open(dbroot)
 
 	def log(self,s):
 		crossepg.log_add(str(s))
@@ -241,13 +244,15 @@ class crossepg_db_class:
 	def __init__(self):
 		pass
 
-	def open_db(self,dbroot):
-		# open database
+	def open_db(self):
+		# get where CrossEPG save data (dbroot)
+		dbroot = crossepg.epgdb_get_dbroot()
+		# open CrossEPG database
 		if not crossepg.epgdb_open(dbroot):
 			print("ERROR opening CrossEPG database")
 			sys.exit(1)
 
-		# load database structures (hash, ....)
+		# load database structures (index, ....)
 		crossepg.epgdb_load()
 
 	def close_db(self):

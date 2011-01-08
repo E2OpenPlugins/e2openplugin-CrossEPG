@@ -144,7 +144,6 @@ class main:
 	DAYCACHE = []
 	FIELD_SEPARATOR = '###'
 	CHANNELLIST = {}
-	CROSSEPG_DBROOT = ''
 
 
 	def log(self,s,video=0):
@@ -158,10 +157,8 @@ class main:
 
 	def __init__(self,confdir,dbroot):
 
-		self.CROSSEPG_DBROOT = dbroot
-
 		# initialize logging
-		self.logging = scriptlib.logging_class(dbroot)
+		self.logging = scriptlib.logging_class()
 		# write to video OSD the script name
 		self.logging.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
 
@@ -177,7 +174,9 @@ class main:
 
 		# reading [global] section options
 		self.CONF_DEFAULT_PROVIDER = config.get("global","DEFAULT_PROVIDER")
+		# save cache under dbroot
 		self.CONF_CACHEDIR = os.path.join(dbroot,config.get("global","CACHE_DIRNAME"))
+
 		self.CONF_MAX_DAY_EPG = config.getint("global","MAX_DAY_EPG")
 		self.CONF_URL = config.get("global","URL")
 
@@ -381,7 +380,7 @@ class main:
 
 		self.log("Initialize CrossEPG database")
 		crossdb = scriptlib.crossepg_db_class()
-		crossdb.open_db(self.CROSSEPG_DBROOT)
+		crossdb.open_db()
 
 		events = []
 		previous_id = ''
