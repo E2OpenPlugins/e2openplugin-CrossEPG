@@ -8,12 +8,6 @@ __license__ = "CreativeCommons by-nc-sa http://creativecommons.org/licenses/by-n
 
 import os
 import sys
-import time
-import codecs
-import socket
-import string
-import random
-import urllib2
 import ConfigParser
 
 # import CrossEPG functions
@@ -37,24 +31,28 @@ class main:
 	# main config file
 	CONF_CONFIGFILENAME = "alias.conf"
 
-	# log file
-	CONF_LOGFILENAME = "log.txt"
-
-	# charset used in remote website epg data
-	REMOTE_EPG_CHARSET = 'utf-8'
+	# log text
+	CONF_LOG_SCRIPT_NAME = "ALIAS EPG"
+	CONF_LOG_PREFIX = "ALIAS "
 
 
-	def log(self,s):
-		crossepg.log_add(str(s))
-		self.logging.log2file(str(s))
+	def log(self,s,video=0):
+		self.logging.log(self.CONF_LOG_PREFIX + str(s))
+		if video == 1:
+			self.log2video(str(s))
+
+	def log2video(self,s):
+		self.logging.log2video_status(str(s))
+
 
 
 	def __init__(self,confdir,dbroot):
 
-		self.CROSSEPG_DBROOT = dbroot
+		# initialize logging
+		self.logging = scriptlib.logging_class()
+		# write to video OSD the script name
+		self.logging.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
 
-		LOG_FILE = os.path.join(confdir, self.CONF_LOGFILENAME)
-		self.logging = scriptlib.logging_class(LOG_FILE)
 
 		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
 		if not os.path.exists(CONF_FILE) :
@@ -81,90 +79,128 @@ class main:
 # ----------------------------------------------------------------------
 
 
-	def copy_epg(self):
+	def do_epg_alias(self):
 		self.log("--- START PROCESSING ---")
-		self.log("Loading lamedb")
+		self.log("Loading lamedb indexed by channel name")
 		lamedb = scriptlib.lamedb_class()
 
 		self.log("Initialize CrossEPG database")
 		crossdb = scriptlib.crossepg_db_class()
-		crossdb.open_db(self.CROSSEPG_DBROOT)
+		crossdb.open_db()
 
 		total_events = 0
 
 		for src_channel in self.CHANNELLIST :
 
-			dst_channels = self.CHANNELLIST[src_channel].split('|')
+			dst_channels = self.CHANNELLIST[src_channel].split(',')
 
-			# a channel can have zero or more SID (different channel with same name)
-			# return the list [0e1f:00820000:0708:00c8:1:0 , 1d20:00820000:2fa8:013e:1:0 , ..... ]
-			# return [] if channel name is not in lamedb
-			src_sidbyname = lamedb.get_sid_byname(src_channel.strip(' \n').lower())
+			if src_channel.count('-') == 1 :
+				src_chname = src_channel.split('-')[0].strip(' \n\r').lower()
+				src_provname = src_channel.split('-')[1].strip(' \n\r').lower()
 
-			# if not sid then exit, go ahead with next src_channel
-			if len(src_sidbyname) == 0:
-				self.log('Source channel "%s" has not SID in lamedb, skip it' % src_channel)
-				continue
+				src_sidbyname = []
+				src_sidprovidbyname = lamedb.get_sidprovid_byname(src_chname)
+				for p in src_sidprovidbyname:
+					if p[1] == src_provname :
+						# a channel can have zero or more SID (different channel with same name)
+						# return the list [ 0e1f:00820000:0708:00c8:1:0 , 1d20:00820000:2fa8:013e:1:0 , ..... ]
+						# return [] if channel name is not in lamedb
+						src_sidbyname = p[0]
+						ch_sid = lamedb.convert_sid(src_sidbyname)
+						if len(ch_sid) == 0 :
+							self.log("SID \"%s\" invalid, try next" % src_sidbyname)
+							continue
 
-			for s in src_sidbyname:
-				# convert "0e1f:00820000:0708:00c8:1:0" to sid,tsid,onid
-				# return the list [sid,tsid,onid]
-				ch_sid = lamedb.convert_sid(s)
+						src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(ch_sid[2],ch_sid[1],ch_sid[0]);
+						if not src_epgdb_channel :
+							self.log('Source channel "%s" with SID "%s" has not entry in epgdb, try next' % (src_channel,src_sidbyname) )
+							continue
+						else:
+							break
 
-				src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(ch_sid[2],ch_sid[1],ch_sid[0]);
-				if not src_epgdb_channel :
-					self.log('Source channel "%s" with SID "%s" has not entry in epgdb, skip it' % (src_channel,s) )
+				# if not sid then exit, go ahead with next src_channel
+				if len(src_sidbyname) == 0:
+					self.log('Source channel "%s" has not SID in lamedb, skip it' % src_channel)
 					continue
 
-				self.log('Source channel "%s" with SID "%s" found in epgdb, using it' % (src_channel,s) )
+			elif src_channel.count('-') == 2 :
+				tmp = src_channel.split('-')
+				src_sidbyname = "%s:xxxxxxxx:%s:%s:x:x" %(tmp[0].strip(' \n\r'),tmp[1].strip(' \n\r'),tmp[2].strip(' \n\r'))
 
-				for dst in dst_channels:
-					dst = dst.strip(' \n').lower()
-					dst_sidbyname = lamedb.get_sid_byname(dst)
-					if len(dst_sidbyname) == 0:
-						self.log('   dest. channel "%s" has not SID in lamedb, skip it' % dst)
+			else:
+				self.log("Channel source \"%s\" invalid" % src_channel)
+				continue
+
+			# convert "0e1f:00820000:0708:00c8:1:0" to sid,tsid,onid
+			# return the list [sid,tsid,onid]
+			src_sid = lamedb.convert_sid(src_sidbyname)
+			if len(src_sid) == 0 :
+				self.log("SID \"%s\" invalid, try next" % src_sidbyname)
+				continue
+
+			src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(src_sid[2],src_sid[1],src_sid[0]);
+			if not src_epgdb_channel :
+				self.log('Source channel "%s" with SID "%s" has not entry in epgdb, skip it' % (src_channel,src_sidbyname) )
+				continue
+
+			self.log('Source channel "%s" with SID "%s" found in epgdb, using it' % (src_channel,src_sidbyname) )
+
+			for dst in dst_channels:
+				dst = dst.strip(' \n\r').lower()
+				dst_sidbyname = lamedb.get_sid_byname(dst)
+				if len(dst_sidbyname) == 0:
+					self.log('   dest. channel "%s" has not SID in lamedb, skip it' % dst)
+					continue
+
+				for dsid in dst_sidbyname:
+
+					# convert "0e1f:00820000:0708:00c8:1:0" to sid,tsid,onid
+					# return the list [sid,tsid,onid]
+					dst_sid = lamedb.convert_sid(dsid)
+
+					if dst_sid == src_sid:
+						# skip if source=destination
+						self.log('   dest. channel "%s" is eq. to source, skip it' % dst)
 						continue
 
-					for dsid in dst_sidbyname:
-						self.log('   copying EPG data from "%s" to "%s" sid "%s")' % (src_channel,dst,dsid) )
+					num_events = 0
+					self.log('   copying EPG data from "%s" to "%s" sid "%s")' % (src_channel,dst,dsid) )
+					self.log2video("%s -> %s (%d/%d)" % (src_channel,dst,num_events,total_events))
 
-						# convert "0e1f:00820000:0708:00c8:1:0" to sid,tsid,onid
-						# return the list [sid,tsid,onid]
-						d_3sid = lamedb.convert_sid(dsid)
 
-						# add channel into db
-						# doesn't matter if the channel already exist... epgdb do all the work
-						# this make a reference to the dest. channel
-						crossdb.add_channel(d_3sid)
+					# add channel into db
+					# doesn't matter if the channel already exist... epgdb do all the work
+					# this make a reference to the dest. channel
+					crossdb.add_channel(dst_sid)
 
-						num_events = 0
-						title = src_epgdb_channel.title_first;
-						while (title != None) :
-							#print str(title.start_time)
-							#print str(title.length)
-							#print str(crossepg.epgdb_read_description(title))
-							#print str(crossepg.epgdb_read_long_description(title))
-							#print "-----------------------------------"
+					title = src_epgdb_channel.title_first;
 
-							e_starttime = int(title.start_time)
-							e_length = int(title.length)
-							e_title = crossepg.epgdb_read_description(title).encode('utf-8')
-							e_summarie = crossepg.epgdb_read_long_description(title).encode('utf-8')
-							e_countrycode = "%c%c%c" % (title.iso_639_1, title.iso_639_2, title.iso_639_3)
+					while (title != None) :
+						#print str(title.start_time)
+						#print str(title.length)
+						#print str(crossepg.epgdb_read_description(title))
+						#print str(crossepg.epgdb_read_long_description(title))
+						#print "-----------------------------------"
 
-							# add_event(start_time , duration , title , summarie , ISO639_language_code , strings_encoded_with_UTF-8)
-							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, e_countrycode, True )
-							num_events += 1
+						e_starttime = int(title.start_time)
+						e_length = int(title.length)
+						e_title = crossepg.epgdb_read_description(title).encode('utf-8')
+						e_summarie = crossepg.epgdb_read_long_description(title).encode('utf-8')
+						e_countrycode = "%c%c%c" % (title.iso_639_1, title.iso_639_2, title.iso_639_3)
 
-							title = title.next
+						# add_event(start_time , duration , title , summarie , ISO639_language_code , strings_encoded_with_UTF-8)
+						crossdb.add_event(e_starttime, e_length, e_title, e_summarie, e_countrycode, True )
+						num_events += 1
+						title = title.next
 
-						total_events += num_events
+						if (num_events % 25) == 0:
+							self.log2video("%s -> %s (%d/%d)" % (src_channel,dst,num_events,total_events))
 
-						self.log("   copied %d events" % num_events)
 
-			# end "for s in src_sidbyname"
-			break
+					total_events += num_events
+					self.log("   copied %d events" % num_events)
 
+		self.log2video("end: copied %d events" % (total_events))
 		# end process, close CrossEPG DB saving data
 		crossdb.close_db()
 		self.log("Copied %d events" % total_events)
@@ -193,6 +229,6 @@ if crossepg_dbroot == False:
 script_class = main(scriptlocation , crossepg_dbroot)
 
 # copy epg
-script_class.copy_epg()
+script_class.do_epg_alias()
 
 
