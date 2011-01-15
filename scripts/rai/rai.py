@@ -118,9 +118,6 @@ class main:
 	# main config file
 	CONF_CONFIGFILENAME = "rai.conf"
 
-	# log file
-	CONF_LOGFILENAME = "log.txt"
-
 	# Network socket timeout (in seconds)
 	CONF_SOCKET_TIMEOUT = 20
 
@@ -412,6 +409,8 @@ class main:
 						# convert "0e1f:00820000:0708:00c8:1:0" to sid,tsid,onid
 						# return the list [sid,tsid,onid]
 						ch_sid = lamedb.convert_sid(s)
+						if len(ch_sid) == 0:
+							continue
 
 						# add channel into db
 						# doesn't matter if the channel already exist... epgdb do all the work
