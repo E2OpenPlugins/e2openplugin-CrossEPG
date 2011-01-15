@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # scriptlib.py  by Ambrosa http://www.ambrosa.net
 # derived from E2_LOADEPG
-# 08-Jan-2011
+# 12-Jan-2011
 
 __author__ = "ambrosa http://www.ambrosa.net"
 __copyright__ = "Copyright (C) 2008-2011 Alessandro Ambrosini"
@@ -102,12 +102,19 @@ class lamedb_class:
 
 	LAMEDB='/etc/enigma2/lamedb'
 
-	# initialize an empty dictionary (Python array)
-	# the following format can handle duplicated channel name
+	# initialize an empty dictionary (Python array) indexed by channel name
 	# format: { channel_name : [ (sid , provider) , (sid , provider) , .... ] }
-	lamedb_dict={}
+	INDEXBYCHNAME = True
+	lamedb_dict = {}
 
-	def __init__(self):
+	# lamedb indexed by provider name
+	# format: { provider_name : [ (sid , channel_name) , (sid , channel_name) , .... ] }
+	INDEXBYPROVID = False # if True, also create the array lamedb_dict_prov, usually false for saving memory
+	lamedb_provid_dict = {}
+
+	def __init__(self, index_by_chname = True, index_by_provid = False):
+		self.INDEXBYCHNAME = index_by_chname
+		self.INDEXBYPROVID = index_by_provid
 		self.read_lamedb()
 
 	# first of all try to decode a string using UTF-8, if it fails then try with ISO-8859-1
@@ -148,11 +155,11 @@ class lamedb_class:
 				print("ERROR parsing lamedb, transponder section: end of file")
 				sys.exit(1)
 
-			temp = temp.strip(' \n')
+			temp = temp.strip(' \n\r')
 			if temp == u"end":
 				# next line should be "services"
 				temp = self.decode_charset(fd.readline())
-				temp = temp.strip(' \n')
+				temp = temp.strip(' \n\r')
 				if temp == u'services':
 					# reached end of transponder section, end loop and continue with parsing channel section
 					break
@@ -168,7 +175,7 @@ class lamedb_class:
 				print("ERROR parsing lamedb, channel_name section: end of file")
 				sys.exit(1)
 
-			sid = sid.strip(' \n')
+			sid = sid.strip(' \n\r')
 
 			if sid == u'end':
 				# reached end of channel section, end loop
@@ -176,10 +183,10 @@ class lamedb_class:
 
 			channel_name = self.decode_charset(fd.readline()) # read channel name, this is the second line
 
-			channel_name = channel_name.strip(' \n').lower() # force channel name lowercase
+			channel_name = channel_name.strip(' \n\r').lower() # force channel name lowercase
 
 			temp = self.decode_charset(fd.readline()) # read provider , this is the third line
-			temp = temp.strip(' \n').lower()
+			temp = temp.strip(' \n\r').lower()
 
 			temp_P = temp.find('p:')
 			if temp_P == -1 :
@@ -188,21 +195,31 @@ class lamedb_class:
 			else:
 				temp = temp[(temp_P + 2):]
 				temp = temp.split(',')[0]
+				temp = temp.strip(' \n\r')
 				if temp == '':
 					provider_name = u'noprovider'
 				else:
-					provider_name = temp.strip(' ').lower()
+					provider_name = temp.lower()
 
 			#channel_name=channel_name.encode('utf-8')
 			#provider_name=provider_name.encode('utf-8')
 
-			# if name not empty, add sid to dictionary
-			sp = (sid,provider_name)
-			if channel_name != '':
-				if self.lamedb_dict.has_key(channel_name):
-					self.lamedb_dict[channel_name].append(sp)
+			if self.INDEXBYCHNAME == True:
+				sp = (sid,provider_name)
+				if channel_name != '':
+					if self.lamedb_dict.has_key(channel_name):
+						self.lamedb_dict[channel_name].append(sp)
+					else:
+						self.lamedb_dict[channel_name]=[sp]
+
+			if self.INDEXBYPROVID == True:
+				sp = (sid,channel_name)
+				if self.lamedb_provid_dict.has_key(provider_name):
+					self.lamedb_provid_dict[provider_name].append(sp)
 				else:
-					self.lamedb_dict[channel_name]=[sp]
+					self.lamedb_provid_dict[provider_name]=[sp]
+
+				
 
 		fd.close()
 
@@ -222,14 +239,45 @@ class lamedb_class:
 		return(sid_list)
 
 
+	def get_provid_byname(self,channel_name):
+		provid_list = []
+
+		if self.lamedb_dict.has_key(channel_name) :
+			for v in self.lamedb_dict[channel_name]:
+				# (sid,provider_name)
+				provid_list.append(v[1])
+
+		return(provid_list)
+
+	def get_sidprovid_byname(self,channel_name):
+		sidprov_list = []
+		if self.lamedb_dict.has_key(channel_name) :
+			# (sid,provider_name)
+			sidprov_list = self.lamedb_dict[channel_name]
+
+		return(sidprov_list)
+
+
+	def get_chnames_byprov(self,provider_name):
+		if self.INDEXBYPROVID == True:
+			if self.lamedb_provid_dict.has_key(provider_name) :
+				return self.lamedb_provid_dict[provider_name]
+			else:
+				return None
+		return None
+
 	def convert_sid(self,sid):
 		s=[]
 
 		# SID:ns:TSID:ONID:stype:unused
-		tmp = sid.split(":")
-		s.append(int(tmp[0],0x10))  # SID
-		s.append(int(tmp[2],0X10))  # TSID
-		s.append(int(tmp[3],0X10))  # ONID
+
+		try:
+			tmp = sid.split(":")
+			s.append(int(tmp[0],0x10))  # SID
+			s.append(int(tmp[2],0X10))  # TSID
+			s.append(int(tmp[3],0X10))  # ONID
+		except:
+			pass
 
 		return(s)
 
