@@ -2,14 +2,34 @@
 
 search_dev ()
 {
-	if [ "$1" == "/dev/sda" ]; then
+	if [ "$1" = "/dev/sda" ]; then
 		SDA=1
-	elif [ "$1" == "/dev/sdb" ]; then
+	elif [ "$1" = "/dev/sdb" ]; then
 		SDB=1
 	else 
 		SDX=$(( SDX + 1 ))
 	fi
 }
+
+BOARD=$1
+
+if [ "$BOARD" != "qboxhd-mini" -a "$BOARD" != "qboxhd" ]; then
+	echo " "
+	echo "********************************************************************************"
+	echo "FATAL: This board is a '$BOARD' and it's not supported"
+fi
+
+
+if [ "$BOARD" = "qboxhd-mini" ]; then
+	DISPLAY_IMAGE=/usr/bin/display_image_mini
+	IMG="_mini"
+else
+	DISPLAY_IMAGE=/usr/bin/display_image
+	IMG=""
+fi
+
+$DISPLAY_IMAGE /etc/images/update_filesystem$IMG.bin
+
 
 echo " "
 echo "****************************"
@@ -87,8 +107,9 @@ cd $DST_DIR/usr/bin
 ln -sf ../local/bin/python python
 cd /
 
+sync
 # Rename the dir qboxhd_update to done_qboxhd_update
-mv /mnt/update_fs/qboxhd_update /mnt/update_fs/done_qboxhd_update
+mv $SRC_DIR /mnt/update_fs/done_qboxhd_update
 
 echo "CrossEPG: Unmounting rootfs"
 umount /mnt/new_root
