@@ -71,7 +71,7 @@ fi
 
 MOUNTS=$(mount | awk -F' ' '/mnt\/update_fs/ { print $1 }')
 
-if [ "$MOUNTS" == "/dev/sda1" -o "$MOUNTS" == "/dev/sda" ]; then
+if [ "$MOUNTS" = "/dev/sda1" -o "$MOUNTS" = "/dev/sda" ]; then
 	BACKUP_DEV="sda1"
 	ROOTFS_DEV="sdb1"
 else
