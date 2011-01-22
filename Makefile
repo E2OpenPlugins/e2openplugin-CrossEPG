@@ -153,6 +153,7 @@ install-standalone:
 	install -d $(D)/usr/crossepg/scripts/lib
 	install -d $(D)/usr/crossepg/scripts/rai
 	install -d $(D)/usr/crossepg/scripts/alias
+	install -d $(D)/usr/crossepg/scripts/mediaprem
 	install -m 755 bin/crossepg_dbconverter $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_dbinfo $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_downloader $(D)/usr/crossepg/
@@ -166,6 +167,7 @@ install-standalone:
 	install -m 755 scripts/lib/* $(D)/usr/crossepg/scripts/lib/
 	install -m 755 scripts/rai/* $(D)/usr/crossepg/scripts/rai/
 	install -m 755 scripts/alias/* $(D)/usr/crossepg/scripts/alias/
+	install -m 755 scripts/alias/* $(D)/usr/crossepg/scripts/mediaprem/
 
 install-standalone-var:
 	install -d $(D)/var/crossepg/aliases
@@ -175,6 +177,7 @@ install-standalone-var:
 	install -d $(D)/var/crossepg/scripts/lib
 	install -d $(D)/var/crossepg/scripts/rai
 	install -d $(D)/var/crossepg/scripts/alias
+	install -d $(D)/var/crossepg/scripts/mediaprem
 	install -m 755 bin/crossepg_dbconverter $(D)/var/crossepg/
 	install -m 755 bin/crossepg_dbinfo $(D)/var/crossepg/
 	install -m 755 bin/crossepg_downloader $(D)/var/crossepg/
@@ -188,6 +191,7 @@ install-standalone-var:
 	install -m 755 scripts/lib/* $(D)/var/crossepg/scripts/lib/
 	install -m 755 scripts/rai/* $(D)/var/crossepg/scripts/rai/
 	install -m 755 scripts/alias/* $(D)/var/crossepg/scripts/alias/
+	install -m 755 scripts/alias/* $(D)/var/crossepg/scripts/mediaprem/
 
 install-plugin:
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
@@ -230,6 +234,7 @@ remote-install:
 	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/crossepg contrib/crossepg_epgmove.sh
 
 	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/crossepg/providers providers/*
+	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/crossepg/scripts scripts/*
 	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES contrib/po/it/LC_MESSAGES/CrossEPG.mo
 	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG src/enigma2/python/*.py
 	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins src/enigma2/python/skins/*.xml
