@@ -21,6 +21,8 @@ from crossepg_auto import crossepg_auto
 
 from time import *
 
+import os
+
 class CrossEPG_Setup(Screen):
 	def __init__(self, session):
 		if (getDesktop(0).size().width() < 800):
@@ -59,7 +61,7 @@ class CrossEPG_Setup(Screen):
 			self.mountpoint.append("/var/crossepg/data")
 
 		for partition in harddiskmanager.getMountedPartitions():
-			if (partition.mountpoint != '/') and (partition.mountpoint != ''): # and self.isMountedInRW(partition.mountpoint):
+			if (partition.mountpoint != '/') and (partition.mountpoint != '') and self.isMountedInRW(partition.mountpoint):
 				self.mountpoint.append(partition.mountpoint + "/crossepg")
 
 				if partition.description != '':
@@ -113,6 +115,14 @@ class CrossEPG_Setup(Screen):
 
 		self.makeList()
 
+	def isMountedInRW(self, path):
+		testfile = path + "/tmp-rw-test"
+		os.system("touch " + testfile)
+		if os.path.exists(testfile):
+			os.system("rm -f " + testfile)
+			return True
+		return False
+		
 	def showWarning(self):	
 		self.session.open(MessageBox, _("PLEASE READ!\nNo disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you still want use your internal flash pay attention to:\n(1) If you don't have enough free space your box may completely block and you need to flash it again\n(2) Many write operations on your internal flash may damage your flash memory"), type = MessageBox.TYPE_ERROR)
 	
@@ -246,7 +256,7 @@ class CrossEPG_Setup(Screen):
 			index += 2
 
 		if index == 0:
-			self["information"].setText(_("Drive where you save data.\nThe drive MUST be mounted in rw"))
+			self["information"].setText(_("Drive where you save data.\nThe drive MUST be mounted in rw. If you can't see your device here probably is mounted as read only or autofs handle it only in read only mode. In case of mount it manually and try again"))
 		elif index == 1:
 			self["information"].setText(_("Lamedb used for epg.dat conversion.\nThis option doesn't work with crossepg patch v2"))
 		elif index == 2:
