@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 - crossepg\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-08 18:28+0100\n"
+"POT-Creation-Date: 2011-04-24 00:31+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Spaeleus <spaeleus@croci.org>\n"
 "Language-Team: www.linsat.net <spaeleus@croci.org>\n"
@@ -14,240 +14,125 @@ msgstr ""
 "X-Poedit-Country: ITALY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Basepath: /media/TREKSTOR/enigma2-svn/crossepg/trunk\n"
+"X-Poedit-SearchPath-0: /media/TREKSTOR/enigma2-svn/crossepg/trunk\n"
 
-#: .../src/enigma2/python/crossepg_info.py:48
-#: .../src/enigma2/python/crossepg_providers.py:41
-#: .../src/enigma2/python/crossepg_about.py:46
-#: .../src/enigma2/python/crossepg_setup.py:90
-#: .../src/enigma2/python/crossepg_ordering.py:34
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_main.py:24
+msgid "Please configure crossepg before start downloader"
+msgstr "Configurare crossepg prima di avviare il download"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/plugin.py:18
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/plugin.py:23
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/plugin.py:28
+msgid "An EPG downloader"
+msgstr "Un downloader EPG"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/plugin.py:34
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/plugin.py:39
+msgid "CrossEPG setup panel"
+msgstr "Pannello di configurazione CrossEPG"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/plugin.py:44
+msgid "CrossEPG automatic actions"
+msgstr "Automatismi di CrossEPG"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:48
 msgid "Back"
 msgstr "Indietro"
 
-#: .../src/enigma2/python/crossepg_info.py:63
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:63
 #, python-format
 msgid "Headers db size: %s"
 msgstr "Dimensioni db headers: %s"
 
-#: .../src/enigma2/python/crossepg_info.py:65
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:65
 #, python-format
 msgid "Descriptors db size: %s"
 msgstr "Dimensioni db descrizioni: %s"
 
-#: .../src/enigma2/python/crossepg_info.py:67
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:67
 #, python-format
 msgid "Indexes db size: %s"
 msgstr "Dimensioni db indici: %s"
 
-#: .../src/enigma2/python/crossepg_info.py:69
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:69
 #, python-format
 msgid "Aliases db size: %s"
 msgstr "Dimensioni db alias: %s"
 
-#: .../src/enigma2/python/crossepg_info.py:71
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:71
 #, python-format
 msgid "Total size: %s"
 msgstr "Dimensioni totali: %s"
 
-#: .../src/enigma2/python/crossepg_info.py:73
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:73
 #, python-format
 msgid "Channels count: %s"
 msgstr "Numero canali: %s"
 
-#: .../src/enigma2/python/crossepg_info.py:75
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:75
 #, python-format
 msgid "Events count: %s"
 msgstr "Numero eventi: %s"
 
-#: .../src/enigma2/python/crossepg_info.py:77
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:77
 #, python-format
 msgid "Hashes count: %s"
 msgstr "Numero chiavi: %s"
 
-#: .../src/enigma2/python/crossepg_info.py:79
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:79
 #, python-format
 msgid "Creation time: %s"
 msgstr "Ora di creazione: %s"
 
-#: .../src/enigma2/python/crossepg_info.py:81
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:81
 #, python-format
 msgid "Last update time: %s"
 msgstr "Ora ultimo aggiornamento: %s"
 
-#: .../src/enigma2/python/crossepg_info.py:83
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_info.py:83
 #, python-format
 msgid "Version: %s"
 msgstr "Versione: %s"
 
-#: .../src/enigma2/python/crossepg_loader.py:34
-#: .../src/enigma2/python/crossepglib.py:594
-msgid "Loading data"
-msgstr "Caricamento dati..."
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_downloader.py:34
+msgid "Starting downloader"
+msgstr "Avvio download..."
 
-#: .../src/enigma2/python/crossepg_loader.py:205
-#: .../src/enigma2/python/crossepg_importer.py:123
-#: .../src/enigma2/python/crossepg_downloader.py:171
-#: .../src/enigma2/python/crossepg_converter.py:111
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_downloader.py:171
 #, python-format
 msgid "CrossEPG error: %s"
 msgstr "Errore CrossEPG: %s"
 
-#: .../src/enigma2/python/crossepg_providers.py:42
-#: .../src/enigma2/python/crossepg_providers.py:94
-msgid "Enable"
-msgstr "Abilitare"
-
-#: .../src/enigma2/python/crossepg_providers.py:43
-msgid "Download"
-msgstr "Download"
-
-#: .../src/enigma2/python/crossepg_providers.py:92
-msgid "Disable"
-msgstr "Disabilitare"
-
-#: .../src/enigma2/python/crossepg_importer.py:32
-msgid "Starting importer"
-msgstr "Avvio importazione..."
-
-#: .../src/enigma2/python/crossepg_importer.py:94
-msgid "Parsing"
-msgstr "Analisi..."
-
-#: .../src/enigma2/python/crossepg_importer.py:98
-msgid "Downloading"
-msgstr "Download..."
-
-#: .../src/enigma2/python/crossepglib.py:440
-msgid "Reading channels"
-msgstr "Lettura canali..."
-
-#: .../src/enigma2/python/crossepglib.py:443
-msgid "Reading titles"
-msgstr "Lettura titoli..."
-
-#: .../src/enigma2/python/crossepglib.py:446
-msgid "Parsing titles"
-msgstr "Analisi titoli..."
-
-#: .../src/enigma2/python/crossepglib.py:449
-msgid "Reading summaries"
-msgstr "Lettura sommari..."
-
-#: .../src/enigma2/python/crossepglib.py:452
-msgid "Parsing summaries"
-msgstr "Analisi sommari..."
-
-#: .../src/enigma2/python/crossepglib.py:455
-msgid "Downloading channels list"
-msgstr "Download elenco canali"
-
-#: .../src/enigma2/python/crossepglib.py:458
-msgid "Deflating channels list"
-msgstr "Espansione elenco canali"
-
-#: .../src/enigma2/python/crossepglib.py:461
-msgid "Parsing channels list"
-msgstr "Analisi elenco canali"
-
-#: .../src/enigma2/python/crossepglib.py:464
-msgid "Downloading events"
-msgstr "Download eventi"
-
-#: .../src/enigma2/python/crossepglib.py:467
-msgid "Deflating events"
-msgstr "Espansione eventi"
-
-#: .../src/enigma2/python/crossepglib.py:470
-msgid "Parsing events"
-msgstr "Analisi eventi"
-
-#: .../src/enigma2/python/crossepglib.py:473
-msgid "Downloading XEPGDB"
-msgstr "Download XEPGDB"
-
-#: .../src/enigma2/python/crossepglib.py:476
-msgid "Merging XEPGDB"
-msgstr "Unione XEPGDB"
-
-#: .../src/enigma2/python/crossepglib.py:479
-msgid "Deflating XEPGDB"
-msgstr "Espansione XEPGDB"
-
-#: .../src/enigma2/python/crossepglib.py:482
-#: .../src/enigma2/python/crossepglib.py:485
-msgid "Running script"
-msgstr "Esecuzione script..."
-
-#: .../src/enigma2/python/crossepglib.py:488
-#, python-format
-msgid "%s channels"
-msgstr "%s canali"
-
-#: .../src/enigma2/python/crossepglib.py:492
-#, python-format
-msgid "Read %s"
-msgstr "Lettura %s"
-
-#: .../src/enigma2/python/crossepglib.py:494
-#, python-format
-msgid "%s of %s"
-msgstr "%s di %s"
-
-#: .../src/enigma2/python/crossepglib.py:578
-msgid "Converting data"
-msgstr "Conversione dati..."
-
-#: .../src/enigma2/python/crossepglib.py:610
-msgid "Saving data"
-msgstr "Salvataggio dati..."
-
-#: .../src/enigma2/python/plugin.py:18
-#: .../src/enigma2/python/plugin.py:23
-#: .../src/enigma2/python/plugin.py:28
-msgid "An EPG downloader"
-msgstr "Un downloader EPG"
-
-#: .../src/enigma2/python/plugin.py:34
-#: .../src/enigma2/python/plugin.py:39
-msgid "CrossEPG setup panel"
-msgstr "Pannello di configurazione CrossEPG"
-
-#: .../src/enigma2/python/plugin.py:44
-msgid "CrossEPG automatic actions"
-msgstr "Automatismi di CrossEPG"
-
-#: .../src/enigma2/python/crossepg_downloader.py:34
-msgid "Starting downloader"
-msgstr "Avvio download..."
-
-#: .../src/enigma2/python/crossepg_setup.py:58
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:60
 msgid "Internal flash"
 msgstr "Flash interna"
 
-#: .../src/enigma2/python/crossepg_setup.py:71
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:73
 msgid "Internal flash (unsuggested)"
 msgstr "Flash interna (sconsigliato!)"
 
-#: .../src/enigma2/python/crossepg_setup.py:77
-#: .../src/enigma2/python/crossepg_setup.py:159
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:79
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:169
 msgid "main lamedb"
 msgstr "Lamedb principale"
 
-#: .../src/enigma2/python/crossepg_setup.py:82
-#: .../src/enigma2/python/crossepg_setup.py:169
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:84
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:179
 msgid "disabled"
 msgstr "Disabilitato"
 
-#: .../src/enigma2/python/crossepg_setup.py:83
-#: .../src/enigma2/python/crossepg_setup.py:167
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:85
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:177
 msgid "once a day"
 msgstr "Una volta al giorno"
 
-#: .../src/enigma2/python/crossepg_setup.py:84
-#: .../src/enigma2/python/crossepg_setup.py:165
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:86
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:175
 msgid "every hour (only in standby)"
 msgstr "Ogni ora (solo se in standby)"
 
-#: .../src/enigma2/python/crossepg_setup.py:117
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:127
 msgid ""
 "PLEASE READ!\n"
 "No disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you still want use your internal flash pay attention to:\n"
@@ -258,59 +143,59 @@ msgstr ""
 "Nessun disco trovato. Si raccomanda l'utilizzo di un HDD o una penna USB. Volendo Utilizzare la flash interna, ricordare che:\n"
 "1) In caso di spazio insufficiente, il box potrebbe bloccarsi completamente, magari costringendo a reistallare l'immagine.2) Ripetute operazioni di scrittura sulla flash interna potrebbero danneggiarla o abbreviarne la vita operativa."
 
-#: .../src/enigma2/python/crossepg_setup.py:171
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:181
 msgid "Storage device"
 msgstr "Dispositivo per l'archiviazione"
 
-#: .../src/enigma2/python/crossepg_setup.py:173
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:183
 msgid "Preferred lamedb"
 msgstr "Lamedb preferito"
 
-#: .../src/enigma2/python/crossepg_setup.py:175
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:185
 msgid "Enable csv import"
 msgstr "Abilitare importazione csv"
 
-#: .../src/enigma2/python/crossepg_setup.py:176
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:186
 msgid "Force epg reload on boot"
 msgstr "Forzare il caricamento epg all'avvio"
 
-#: .../src/enigma2/python/crossepg_setup.py:177
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:187
 msgid "Download on tune"
 msgstr "Download su sintonia"
 
-#: .../src/enigma2/python/crossepg_setup.py:178
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:188
 msgid "Scheduled download"
 msgstr "Download programmato"
 
-#: .../src/enigma2/python/crossepg_setup.py:183
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:193
 msgid "Scheduled download at"
 msgstr "Download programmato alle"
 
-#: .../src/enigma2/python/crossepg_setup.py:186
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:196
 msgid "Reboot after a scheduled download"
 msgstr "Riavviare dopo un download programmato"
 
-#: .../src/enigma2/python/crossepg_setup.py:187
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:197
 msgid "Reboot after a manual download"
 msgstr "Riavviare dopo uno scaricamento manuale"
 
-#: .../src/enigma2/python/crossepg_setup.py:188
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:198
 msgid "Show as plugin"
 msgstr "Mostrare come plugin"
 
-#: .../src/enigma2/python/crossepg_setup.py:189
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:199
 msgid "Show as extension"
 msgstr "Mostrare come estensione"
 
-#: .../src/enigma2/python/crossepg_setup.py:249
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:259
 msgid ""
 "Drive where you save data.\n"
-"The drive MUST be mounted in rw"
+"The drive MUST be mounted in rw. If you can't see your device here probably is mounted as read only or autofs handle it only in read only mode. In case of mount it manually and try again"
 msgstr ""
-"Supporto su cui salvare i dati.\n"
-"Il supporto DEVE essere montato in modalità rw"
+"Supporto per il salvataggio dei dati.\n"
+"Il supporto DEVE essere montato in modalità RW. Se non compare in elenco probabilmente è montato in sola lettura o autofs riesce a  gestirlo esclusivamente in sola lettura. Montarlo manualmente e riprovare."
 
-#: .../src/enigma2/python/crossepg_setup.py:251
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:261
 msgid ""
 "Lamedb used for epg.dat conversion.\n"
 "This option doesn't work with crossepg patch v2"
@@ -318,7 +203,7 @@ msgstr ""
 "Lamedb usato per la conversione di epg.dat.\n"
 "Questa opzione non funziona con la patch crossepg v2"
 
-#: .../src/enigma2/python/crossepg_setup.py:253
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:263
 #, python-format
 msgid ""
 "Import *.csv and *.bin from %s/import or %s/import\n"
@@ -327,7 +212,7 @@ msgstr ""
 "Importare *.csv e *.bin da %s/import o da %s/import\n"
 "(*.bin sono file binari con un csv come stdout)"
 
-#: .../src/enigma2/python/crossepg_setup.py:255
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:265
 msgid ""
 "Reload epg at every boot.\n"
 "Normally it's not necessary but recover epg after an enigma2 crash"
@@ -335,7 +220,7 @@ msgstr ""
 "Ricaricare l'epg a ogni riavvio.\n"
 "Normalmente non necessario, ricostruisce l'epg in caso di crash di enigma2"
 
-#: .../src/enigma2/python/crossepg_setup.py:257
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:267
 msgid ""
 "Only for opentv providers.\n"
 "If you zap on channel used from a provider it download the epg in background"
@@ -343,7 +228,7 @@ msgstr ""
 "Solo per provider opentv.\n"
 "In caso di sintonia sul canale previsto, il download dell'epg avverrà in background"
 
-#: .../src/enigma2/python/crossepg_setup.py:260
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:270
 msgid ""
 "When the decoder is in standby opentv providers will be automatically downloaded every hour.\n"
 "XMLTV providers will be always downloaded only once a day"
@@ -351,104 +236,220 @@ msgstr ""
 "Se il decoder si trova in standby, il download dell'epg di provider opentv verrà effettuato ogni ora.\n"
 "Il download dei dati di provider XMLTV verrà in ogni caso effettuato solo una volta al giorno"
 
-#: .../src/enigma2/python/crossepg_setup.py:262
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:272
 msgid "Download epg once a day"
 msgstr "Scaricare l'epg una volta al giorno"
 
-#: .../src/enigma2/python/crossepg_setup.py:264
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:274
 msgid "Scheduled download disabled"
 msgstr "Download programmato disabilitato"
 
-#: .../src/enigma2/python/crossepg_setup.py:266
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:276
 msgid "Time for scheduled daily download"
 msgstr "Ora per il download programmato"
 
-#: .../src/enigma2/python/crossepg_setup.py:268
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:278
 msgid "Automatically reboot the decoder after a scheduled download"
 msgstr "Riavviare automaticamente il decoder dopo un download programmato"
 
-#: .../src/enigma2/python/crossepg_setup.py:270
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:280
 msgid "Automatically reboot the decoder after a manual download"
 msgstr "Riavviare dopo un download manuale"
 
-#: .../src/enigma2/python/crossepg_setup.py:272
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:282
 msgid "Show crossepg in plugin menu"
 msgstr "Mostrare nel menu plugin"
 
-#: .../src/enigma2/python/crossepg_setup.py:274
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:284
 msgid "Show crossepg in extensions menu"
 msgstr "Mostrare nel menu estensioni"
 
-#: .../src/enigma2/python/crossepg_menu.py:55
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_importer.py:32
+msgid "Starting importer"
+msgstr "Avvio importazione..."
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_importer.py:94
+msgid "Parsing"
+msgstr "Analisi..."
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_importer.py:98
+msgid "Downloading"
+msgstr "Download..."
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:55
 msgid "Configure"
 msgstr "Configurazione"
 
-#: .../src/enigma2/python/crossepg_menu.py:56
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:56
 msgid "XMLTV providers"
 msgstr "Provider XMLTV"
 
-#: .../src/enigma2/python/crossepg_menu.py:57
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:57
 msgid "OpenTV providers"
 msgstr "Provider OpenTV"
 
-#: .../src/enigma2/python/crossepg_menu.py:58
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:58
 msgid "XEPGDB providers"
 msgstr "Provider XEPGDB"
 
-#: .../src/enigma2/python/crossepg_menu.py:59
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:59
 msgid "Scripts providers"
 msgstr "Script provider"
 
-#: .../src/enigma2/python/crossepg_menu.py:60
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:60
 msgid "Providers start order"
 msgstr "Ordine di avvio provider"
 
-#: .../src/enigma2/python/crossepg_menu.py:61
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:61
 msgid "Download now"
 msgstr "Download"
 
-#: .../src/enigma2/python/crossepg_menu.py:62
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:62
 msgid "Force csv import now"
 msgstr "Forzare l'importazione csv"
 
-#: .../src/enigma2/python/crossepg_menu.py:63
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:63
 msgid "Force epg.dat conversion now"
 msgstr "Forzare la conversione di epg.dat"
 
-#: .../src/enigma2/python/crossepg_menu.py:64
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:64
 msgid "Force epg reload"
 msgstr "Forzare il caricamento epg"
 
-#: .../src/enigma2/python/crossepg_menu.py:65
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:65
 msgid "Info about database"
 msgstr "Info sul database"
 
-#: .../src/enigma2/python/crossepg_menu.py:66
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:66
 msgid "About"
 msgstr "Info"
 
-#: .../src/enigma2/python/crossepg_ordering.py:51
-msgid "CrossEPG - Providers start order"
-msgstr "CrossEPG -  Ordine di avvio provider"
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_loader.py:34
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:594
+msgid "Loading data"
+msgstr "Caricamento dati..."
 
-#: .../src/enigma2/python/crossepg_ordering.py:79
-#: .../src/enigma2/python/crossepg_ordering.py:85
-msgid "Move down"
-msgstr "Spostare giù"
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:440
+msgid "Reading channels"
+msgstr "Lettura canali..."
 
-#: .../src/enigma2/python/crossepg_ordering.py:81
-#: .../src/enigma2/python/crossepg_ordering.py:84
-msgid "Move up"
-msgstr "Spostare sù"
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:443
+msgid "Reading titles"
+msgstr "Lettura titoli..."
 
-#: .../src/enigma2/python/crossepg_converter.py:32
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:446
+msgid "Parsing titles"
+msgstr "Analisi titoli..."
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:449
+msgid "Reading summaries"
+msgstr "Lettura sommari..."
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:452
+msgid "Parsing summaries"
+msgstr "Analisi sommari..."
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:455
+msgid "Downloading channels list"
+msgstr "Download elenco canali"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:458
+msgid "Deflating channels list"
+msgstr "Espansione elenco canali"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:461
+msgid "Parsing channels list"
+msgstr "Analisi elenco canali"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:464
+msgid "Downloading events"
+msgstr "Download eventi"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:467
+msgid "Deflating events"
+msgstr "Espansione eventi"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:470
+msgid "Parsing events"
+msgstr "Analisi eventi"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:473
+msgid "Downloading XEPGDB"
+msgstr "Download XEPGDB"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:476
+msgid "Merging XEPGDB"
+msgstr "Unione XEPGDB"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:479
+msgid "Deflating XEPGDB"
+msgstr "Espansione XEPGDB"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:482
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:485
+msgid "Running script"
+msgstr "Esecuzione script..."
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:488
+#, python-format
+msgid "%s channels"
+msgstr "%s canali"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:492
+#, python-format
+msgid "Read %s"
+msgstr "Lettura %s"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:494
+#, python-format
+msgid "%s of %s"
+msgstr "%s di %s"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:578
+msgid "Converting data"
+msgstr "Conversione dati..."
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepglib.py:610
+msgid "Saving data"
+msgstr "Salvataggio dati..."
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_converter.py:32
 msgid "Starting converter"
 msgstr "Avvio conversione..."
 
-#: .../src/enigma2/python/crossepg_main.py:24
-msgid "Please configure crossepg before start downloader"
-msgstr "Configurare crossepg prima di avviare il download"
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_providers.py:42
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_providers.py:94
+msgid "Enable"
+msgstr "Abilitare"
 
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_providers.py:43
+msgid "Download"
+msgstr "Download"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_providers.py:92
+msgid "Disable"
+msgstr "Disabilitare"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_ordering.py:51
+msgid "CrossEPG - Providers start order"
+msgstr "CrossEPG -  Ordine di avvio provider"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_ordering.py:79
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_ordering.py:85
+msgid "Move down"
+msgstr "Spostare giù"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_ordering.py:81
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_ordering.py:84
+msgid "Move up"
+msgstr "Spostare sù"
+
+#~ msgid ""
+#~ "Drive where you save data.\n"
+#~ "The drive MUST be mounted in rw"
+#~ msgstr ""
+#~ "Supporto su cui salvare i dati.\n"
+#~ "Il supporto DEVE essere montato in modalità rw"
 #~ msgid ""
 #~ "No disk found. Please install an hard drive or an usb memory storage and "
 #~ "try again."
