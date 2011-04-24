@@ -129,7 +129,7 @@ class CrossEPG_Rytec_Update(Screen):
 			f.write("protocol=xmltv\n");
 			count = 0
 			for url in source.channels_urls:
-				f.write("channel_url_" + str(count) + "=" + url + "\n")
+				f.write("channels_url_" + str(count) + "=" + url + "\n")
 				count += 1
 				
 			count = 0
