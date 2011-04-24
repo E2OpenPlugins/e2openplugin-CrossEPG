@@ -44,4 +44,11 @@ def Plugins(**kwargs):
 									description = _("CrossEPG automatic actions"),
 									where = PluginDescriptor.WHERE_SESSIONSTART,
 									fnc = crossepg_main.autostart))
+									
+	if config.show_force_reload_as_plugin == 1:
+		plugins.append(PluginDescriptor(name="CrossEPG Force Reload",
+										description=_("CrossEPG Force Reload"),
+										where = PluginDescriptor.WHERE_PLUGINMENU,
+										fnc = crossepg_main.loaderAsPlugin))
+									
 	return plugins;

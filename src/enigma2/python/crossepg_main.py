@@ -26,6 +26,12 @@ class CrossEPG_Main:
 			self.config.deleteLog()
 			self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, self.config.providers)
 
+	def loaderAsPlugin(self, session, **kwargs):
+		self.session = session
+		crossepg_auto.lock = True
+		crossepg_auto.stop()
+		self.loader()
+
 	def downloadCallback(self, ret):
 		if ret:
 			if self.config.csv_import_enabled == 1:

@@ -60,6 +60,7 @@ class CrossEPG_Config:
 	csv_import_enabled = 0
 	show_plugin = 1
 	show_extension = 1
+	show_force_reload_as_plugin = 0
 	last_partial_download_timestamp = 0
 	last_full_download_timestamp = 0
 	configured = 0
@@ -126,6 +127,8 @@ class CrossEPG_Config:
 							self.show_plugin = int(value);
 						elif key == "show_extension":
 							self.show_extension = int(value);
+						elif key == "show_force_reload_as_plugin":
+							self.show_force_reload_as_plugin = int(value);
 						elif key == "configured":
 							self.configured = int(value);
 			except Exception:
@@ -162,6 +165,7 @@ class CrossEPG_Config:
 		f.write("csv_import_enabled=%d\n" % (self.csv_import_enabled))
 		f.write("show_plugin=%d\n" % (self.show_plugin))
 		f.write("show_extension=%d\n" % (self.show_extension))
+		f.write("show_force_reload_as_plugin=%d\n" % (self.show_force_reload_as_plugin))
 		f.write("configured=%d\n" % (self.configured))
 		
 		f.close()

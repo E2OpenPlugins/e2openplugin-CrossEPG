@@ -54,6 +54,7 @@ class CrossEPG_Setup(Screen):
 
 		self.show_extension = self.config.show_extension
 		self.show_plugin = self.config.show_plugin
+		self.show_force_reload_as_plugin = self.config.show_force_reload_as_plugin
 
 		# make devices entries
 		if self.config.isQBOXHD():
@@ -197,6 +198,7 @@ class CrossEPG_Setup(Screen):
 			self.list.append((_("Reboot after a manual download"), ConfigYesNo(self.config.download_manual_reboot > 0)))
 		self.list.append((_("Show as plugin"), ConfigYesNo(self.config.show_plugin > 0)))
 		self.list.append((_("Show as extension"), ConfigYesNo(self.config.show_extension > 0)))
+		self.list.append((_("Show 'Force reload' as plugin"), ConfigYesNo(self.config.show_force_reload_as_plugin > 0)))
 
 		self["config"].setList(self.list)
 		self.setInfo()
@@ -242,6 +244,7 @@ class CrossEPG_Setup(Screen):
 
 		self.config.show_plugin = int(self.list[i][1].getValue())
 		self.config.show_extension = int(self.list[i+1][1].getValue())
+		self.config.show_force_reload_as_plugin = int(self.list[i+2][1].getValue())
 
 		if redraw:
 			self.makeList()

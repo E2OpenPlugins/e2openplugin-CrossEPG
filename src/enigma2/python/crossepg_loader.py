@@ -138,11 +138,7 @@ class CrossEPG_Loader(Screen):
 		self.closeAndCallback(True)
 	
 	def loadEPG(self):
-		try:
-			cmd = "%s/crossepg_epgcopy %s/ext.epg.dat %s" % (self.home_directory, self.db_root, config.misc.epgcache_filename.value)
-		except Exception, e:
-			cmd = "%s/crossepg_epgcopy %s/ext.epg.dat /hdd/epg.dat" % (self.home_directory, self.db_root)
-		
+		cmd = "%s/crossepg_epgcopy %s/ext.epg.dat /hdd/epg.dat" % (self.home_directory, self.db_root)
 		print "[CrossEPG_Loader] %s" % (cmd)
 		os.system(cmd)
 		self.epgpatch(eEPGCache.getInstance())
