@@ -3,7 +3,7 @@ from enigma import getDesktop
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 
-from Components.config import KEY_LEFT, KEY_RIGHT, KEY_HOME, KEY_END, KEY_0, ConfigYesNo, ConfigSelection, ConfigClock
+from Components.config import KEY_LEFT, KEY_RIGHT, KEY_HOME, KEY_END, KEY_0, ConfigYesNo, ConfigSelection, ConfigClock, config, configfile
 from Components.ConfigList import ConfigList
 from Components.Button import Button
 from Components.Label import Label
@@ -288,6 +288,14 @@ class CrossEPG_Setup(Screen):
 		self.config.last_partial_download_timestamp = 0
 		self.config.configured = 1
 		self.config.save()
+		try:
+			config.misc.epgcache_filename.setValue(self.config.db_root + "/epg.dat")
+			config.misc.epgcache_filename.callNotifiersOnSaveAndCancel = True
+			config.misc.epgcache_filename.save()
+			configfile.save()
+		except Exception, e:
+			print "custom epgcache filename not supported by current enigma2 version"
+			
 		if self.show_extension != self.config.show_extension or self.show_plugin != self.config.show_plugin:
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU):
 				if plugin.name == "CrossEPG Downloader":
