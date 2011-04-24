@@ -94,6 +94,7 @@ bool xmltv_downloader_channels (char *url, char *dbroot, void(*progress_callback
 	{
 		if (event_callback) event_callback(1, NULL);	// turn off progress bar
 		log_add ("Error downloading file %s", tmp_url);
+		unlink (sfn);
 		return false;
 	}
 	

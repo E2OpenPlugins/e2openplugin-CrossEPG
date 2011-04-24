@@ -330,6 +330,7 @@ opentv_stop:
 
 void *download (void *args)
 {
+	int i;
 	char opentv_file[256];
 
 	sprintf (opentv_file, "%s/providers/%s.conf", homedir, provider);
@@ -342,11 +343,40 @@ void *download (void *args)
 		}
 		else if (providers_get_protocol () == 2)
 		{
+			bool channels_loaded = false;
 			interactive_send (ACTION_START);
 			xmltv_channels_init ();
-			xmltv_downloader_channels (providers_get_xmltv_channels (), db_root, progress_callback, event_callback, &stop);
-			xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
-			xmltv_downloader_events (providers_get_xmltv_url (), db_root, progress_callback, event_callback, &stop);
+			for (i=0; i<10; i++)
+			{
+				if (strlen(providers_get_xmltv_channels (i)) == 0)
+				{
+					log_add ("No more url available");
+					log_add ("Error downloading/parsing channels file");
+					break;
+				}
+				log_add ("Download channels from url: %s (%d)", providers_get_xmltv_channels (i), i);
+				if (xmltv_downloader_channels (providers_get_xmltv_channels (i), db_root, progress_callback, event_callback, &stop))
+				{
+					channels_loaded = true;
+					break;
+				}
+			}
+			if (channels_loaded)
+			{
+				xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
+				for (i=0; i<10; i++)
+				{
+					if (strlen(providers_get_xmltv_url (i)) == 0)
+					{
+						log_add ("No more url available");
+						log_add ("Error downloading/parsing channels file");
+						break;
+					}
+					log_add ("Download channels from url: %s (%d)", providers_get_xmltv_channels (i), i);
+					if (xmltv_downloader_events (providers_get_xmltv_url (i), db_root, progress_callback, event_callback, &stop))
+						break;
+				}
+			}
 			exec = false;
 			xmltv_channels_cleanup ();
 			interactive_send (ACTION_END);
@@ -679,24 +709,41 @@ int main (int argc, char **argv)
 			else if (providers_get_protocol () == 2)
 			{
 				log_add ("Provider %s identified as xmltv", provider);
-				log_add ("Channels url: %s", providers_get_xmltv_channels ());
-				log_add ("Events url: %s", providers_get_xmltv_url ());
 				log_add ("Preferred language: %s", providers_get_xmltv_plang ());
 				if (!db_load ())
 					goto error;
+
 				xmltv_channels_init ();
-				if (!xmltv_downloader_channels (providers_get_xmltv_channels (), db_root, NULL, NULL, &stop))
-					log_add ("Error downloading/parsing channels file");
+				for (i=0; i<10; i++)
+				{
+					if (strlen(providers_get_xmltv_channels (i)) == 0)
+					{
+						log_add ("No more url available");
+						log_add ("Error downloading/parsing channels file");
+						goto error;
+					}
+					log_add ("Download channels from url: %s (%d)", providers_get_xmltv_channels (i), i);
+					if (xmltv_downloader_channels (providers_get_xmltv_channels (i), db_root, NULL, NULL, &stop))
+						break;
+				}
 
 				xmltv_parser_set_iso639 (providers_get_xmltv_plang ());
-				if (xmltv_downloader_events (providers_get_xmltv_url (), db_root, NULL, NULL, &stop))
+				for (i=0; i<10; i++)
 				{
-					if (epgdb_save (NULL)) log_add ("Data saved");
-					else log_add ("Error saving data");
+					if (strlen(providers_get_xmltv_url (i)) == 0)
+					{
+						log_add ("No more url available");
+						log_add ("Error downloading/parsing events file");
+						goto error;
+					}
+					log_add ("Download events from url: %s", providers_get_xmltv_url (i));
+					if (xmltv_downloader_events (providers_get_xmltv_url (i), db_root, NULL, NULL, &stop))
+					{
+						if (epgdb_save (NULL)) log_add ("Data saved");
+						else log_add ("Error saving data");
+						break;
+					}
 				}
-				else
-					log_add ("Error downloading/parsing events file");
-					
 				xmltv_channels_cleanup ();
 				db_close ();
 			}

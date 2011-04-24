@@ -22,8 +22,26 @@ static int channels_types_count = 0;
 static int nid = 0;
 static int tsid = 0;
 static int sid = 0;
-static char channels[256];
-static char url[256];
+static char xmltv_channels_url_0[256];
+static char xmltv_channels_url_1[256];
+static char xmltv_channels_url_2[256];
+static char xmltv_channels_url_3[256];
+static char xmltv_channels_url_4[256];
+static char xmltv_channels_url_5[256];
+static char xmltv_channels_url_6[256];
+static char xmltv_channels_url_7[256];
+static char xmltv_channels_url_8[256];
+static char xmltv_channels_url_9[256];
+static char xmltv_epg_url_0[256];
+static char xmltv_epg_url_1[256];
+static char xmltv_epg_url_2[256];
+static char xmltv_epg_url_3[256];
+static char xmltv_epg_url_4[256];
+static char xmltv_epg_url_5[256];
+static char xmltv_epg_url_6[256];
+static char xmltv_epg_url_7[256];
+static char xmltv_epg_url_8[256];
+static char xmltv_epg_url_9[256];
 static char xepgdb_headers_url[256];
 static char xepgdb_descriptors_url[256];
 static char preferred_language[4];
@@ -41,8 +59,78 @@ int  providers_get_nid						()	{ return nid;					}
 int  providers_get_tsid						()	{ return tsid;					}
 int  providers_get_sid						()	{ return sid;					}
 int  providers_get_protocol					()	{ return protocol;				}
-char *providers_get_xmltv_channels			()	{ return channels;				}
-char *providers_get_xmltv_url				()	{ return url;					}
+char *providers_get_xmltv_channels (int id)
+{
+	switch (id)
+	{
+		case 0:
+		return xmltv_channels_url_0;
+
+		case 1:
+		return xmltv_channels_url_1;
+
+		case 2:
+		return xmltv_channels_url_2;
+
+		case 3:
+		return xmltv_channels_url_3;
+
+		case 4:
+		return xmltv_channels_url_4;
+
+		case 5:
+		return xmltv_channels_url_5;
+
+		case 6:
+		return xmltv_channels_url_6;
+
+		case 7:
+		return xmltv_channels_url_7;
+
+		case 8:
+		return xmltv_channels_url_8;
+
+		case 9:
+		return xmltv_channels_url_9;
+	}
+	return xmltv_channels_url_0; // unknow id? return first url
+}
+char *providers_get_xmltv_url (int id)
+{
+	switch (id)
+	{
+		case 0:
+		return xmltv_epg_url_0;
+
+		case 1:
+		return xmltv_epg_url_1;
+
+		case 2:
+		return xmltv_epg_url_2;
+
+		case 3:
+		return xmltv_epg_url_3;
+
+		case 4:
+		return xmltv_epg_url_4;
+
+		case 5:
+		return xmltv_epg_url_5;
+
+		case 6:
+		return xmltv_epg_url_6;
+
+		case 7:
+		return xmltv_epg_url_7;
+
+		case 8:
+		return xmltv_epg_url_8;
+
+		case 9:
+		return xmltv_epg_url_9;
+	}
+	return xmltv_epg_url_0; // unknow id? return first url
+}
 char *providers_get_xmltv_plang				()	{ return preferred_language;	}
 char *providers_get_xepgdb_headers_url		()	{ return xepgdb_headers_url;	}
 char *providers_get_xepgdb_descriptors_url	()	{ return xepgdb_descriptors_url;}
@@ -73,8 +161,26 @@ bool providers_read (char *read)
 	channels_types_count = 0;
 	protocol = 0;
 	
-	strcpy (channels, "");
-	strcpy (url, "");
+	strcpy (xmltv_channels_url_0, "");
+	strcpy (xmltv_channels_url_1, "");
+	strcpy (xmltv_channels_url_2, "");
+	strcpy (xmltv_channels_url_3, "");
+	strcpy (xmltv_channels_url_4, "");
+	strcpy (xmltv_channels_url_5, "");
+	strcpy (xmltv_channels_url_6, "");
+	strcpy (xmltv_channels_url_7, "");
+	strcpy (xmltv_channels_url_8, "");
+	strcpy (xmltv_channels_url_9, "");
+	strcpy (xmltv_epg_url_0, "");
+	strcpy (xmltv_epg_url_1, "");
+	strcpy (xmltv_epg_url_2, "");
+	strcpy (xmltv_epg_url_3, "");
+	strcpy (xmltv_epg_url_4, "");
+	strcpy (xmltv_epg_url_5, "");
+	strcpy (xmltv_epg_url_6, "");
+	strcpy (xmltv_epg_url_7, "");
+	strcpy (xmltv_epg_url_8, "");
+	strcpy (xmltv_epg_url_9, "");
 	strcpy (preferred_language, "eng");
 	strcpy (xepgdb_headers_url, "");
 	strcpy (xepgdb_descriptors_url, "");
@@ -153,10 +259,46 @@ bool providers_read (char *read)
 			tsid = atoi (tmp_value);
 		else if (strcmp ("sid", tmp_key) == 0)
 			sid = atoi (tmp_value);
-		else if (strcmp ("channels", tmp_key) == 0)
-			strcpy (channels, tmp_value);
-		else if (strcmp ("url", tmp_key) == 0)
-			strcpy (url, tmp_value);
+		else if (strcmp ("channels_url_0", tmp_key) == 0)
+			strcpy (xmltv_channels_url_0, tmp_value);
+		else if (strcmp ("channels_url_1", tmp_key) == 0)
+			strcpy (xmltv_channels_url_1, tmp_value);
+		else if (strcmp ("channels_url_2", tmp_key) == 0)
+			strcpy (xmltv_channels_url_2, tmp_value);
+		else if (strcmp ("channels_url_3", tmp_key) == 0)
+			strcpy (xmltv_channels_url_3, tmp_value);
+		else if (strcmp ("channels_url_4", tmp_key) == 0)
+			strcpy (xmltv_channels_url_4, tmp_value);
+		else if (strcmp ("channels_url_5", tmp_key) == 0)
+			strcpy (xmltv_channels_url_5, tmp_value);
+		else if (strcmp ("channels_url_6", tmp_key) == 0)
+			strcpy (xmltv_channels_url_6, tmp_value);
+		else if (strcmp ("channels_url_7", tmp_key) == 0)
+			strcpy (xmltv_channels_url_7, tmp_value);
+		else if (strcmp ("channels_url_8", tmp_key) == 0)
+			strcpy (xmltv_channels_url_8, tmp_value);
+		else if (strcmp ("channels_url_9", tmp_key) == 0)
+			strcpy (xmltv_channels_url_9, tmp_value);
+		else if (strcmp ("epg_url_0", tmp_key) == 0)
+			strcpy (xmltv_epg_url_0, tmp_value);
+		else if (strcmp ("epg_url_1", tmp_key) == 0)
+			strcpy (xmltv_epg_url_1, tmp_value);
+		else if (strcmp ("epg_url_2", tmp_key) == 0)
+			strcpy (xmltv_epg_url_2, tmp_value);
+		else if (strcmp ("epg_url_3", tmp_key) == 0)
+			strcpy (xmltv_epg_url_3, tmp_value);
+		else if (strcmp ("epg_url_4", tmp_key) == 0)
+			strcpy (xmltv_epg_url_4, tmp_value);
+		else if (strcmp ("epg_url_5", tmp_key) == 0)
+			strcpy (xmltv_epg_url_5, tmp_value);
+		else if (strcmp ("epg_url_6", tmp_key) == 0)
+			strcpy (xmltv_epg_url_6, tmp_value);
+		else if (strcmp ("epg_url_7", tmp_key) == 0)
+			strcpy (xmltv_epg_url_7, tmp_value);
+		else if (strcmp ("epg_url_8", tmp_key) == 0)
+			strcpy (xmltv_epg_url_8, tmp_value);
+		else if (strcmp ("epg_url_9", tmp_key) == 0)
+			strcpy (xmltv_epg_url_9, tmp_value);
 		else if (strcmp ("preferred_language", tmp_key) == 0)
 		{
 			if (strlen (tmp_value) == 3)
