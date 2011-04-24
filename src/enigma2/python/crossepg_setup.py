@@ -296,6 +296,10 @@ class CrossEPG_Setup(Screen):
 		except Exception, e:
 			print "custom epgcache filename not supported by current enigma2 version"
 			
+		if getEPGPatchType() == -1:
+			# exec crossepg_prepare_pre_start for unpatched images
+			os.system(self.config.home_directory + "/crossepg_prepare_pre_start.sh")
+			
 		if self.show_extension != self.config.show_extension or self.show_plugin != self.config.show_plugin:
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU):
 				if plugin.name == "CrossEPG Downloader":

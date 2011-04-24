@@ -162,6 +162,7 @@ install-standalone:
 	install -m 755 bin/crossepg_exporter $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_xmltv $(D)/usr/crossepg/
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/usr/crossepg/
+	install -m 755 contrib/crossepg_prepare_pre_start.sh $(D)/usr/crossepg/
 	install -m 644 providers/* $(D)/usr/crossepg/providers/
 	install -m 755 scripts/*.py $(D)/usr/crossepg/scripts/
 	install -m 755 scripts/lib/* $(D)/usr/crossepg/scripts/lib/
@@ -186,6 +187,7 @@ install-standalone-var:
 	install -m 755 bin/crossepg_exporter $(D)/var/crossepg/
 	install -m 755 bin/crossepg_xmltv $(D)/var/crossepg/
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/var/crossepg/
+	install -m 755 contrib/crossepg_prepare_pre_start.sh $(D)/var/crossepg/
 	install -m 644 providers/* $(D)/var/crossepg/providers/
 	install -m 755 scripts/*.py $(D)/var/crossepg/scripts/
 	install -m 755 scripts/lib/* $(D)/var/crossepg/scripts/lib/
