@@ -13,7 +13,7 @@ export STRIP=${CROSS}strip
 export SWIG=swig
 export D=./tmp
 
-make && make install-var
+make && make install-var-flash
 
 if [ $? != 0 ]; then
 	echo compile error
