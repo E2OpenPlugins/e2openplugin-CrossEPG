@@ -223,6 +223,7 @@ install-plugin-qboxhd:
 
 install: install-python install-standalone install-plugin
 install-var: install-python install-standalone-var install-plugin
+install-var-flash: install-standalone-var install-plugin
 install-var-qboxhd: install-python-qboxhd install-standalone-var install-plugin-qboxhd
 install-py25: install-python-2.5 install-standalone install-plugin
 
