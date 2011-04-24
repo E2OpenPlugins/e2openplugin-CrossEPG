@@ -14,7 +14,12 @@ then
 else # else default path
 	EPGDAT="/hdd/epg.dat"
 fi
-echo $EPGDAT
+
+if [ ! -n "$EPGDAT" ]
+then
+	EPGDAT="/hdd/epg.dat"
+fi
+
 if [ -f "$DBROOT/ext.epg.dat" ] # try on configuration path
 then
 	echo copying ext.epg.dat from $DBROOT
