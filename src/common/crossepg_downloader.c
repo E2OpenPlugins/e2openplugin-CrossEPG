@@ -394,7 +394,7 @@ void *download (void *args)
 			interactive_send (ACTION_START);
 			interactive_send_text (ACTION_TYPE, "RUNNING SCRIPT");
 			interactive_send_text (ACTION_URL, providers_get_script_filename ());
-			sprintf (filename, "%s/scripts/%s", homedir, providers_get_script_filename ());
+			sprintf (filename, "LD_LIBRARY_PATH=%s %s/scripts/%s %s", homedir, homedir, providers_get_script_filename (), db_root);
 			if (system (filename) != 0)
 				interactive_send_text (ACTION_ERROR, "script returned an error");
 			exec = false;
@@ -770,7 +770,7 @@ int main (int argc, char **argv)
 				log_add ("Provider %s identified as script", provider);
 				log_add ("Script file name: %s", providers_get_script_filename ());
 
-				sprintf (filename, "%s/scripts/%s", homedir, providers_get_script_filename ());
+				sprintf (filename, "LD_LIBRARY_PATH=%s %s/scripts/%s %s", homedir, homedir, providers_get_script_filename (), db_root);
 
 				log_add ("Executing script %s ...", filename);
 				system (filename);
