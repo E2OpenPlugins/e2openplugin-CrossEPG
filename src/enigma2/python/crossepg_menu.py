@@ -11,6 +11,7 @@ from crossepg_converter import CrossEPG_Converter
 from crossepg_loader import CrossEPG_Loader
 from crossepg_ordering import CrossEPG_Ordering
 from crossepg_rytec_update import CrossEPG_Rytec_Update
+from crossepg_xepgdb_update import CrossEPG_Xepgdb_Update
 from crossepg_locale import _
 
 from Screens.Screen import Screen
@@ -60,6 +61,7 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("Scripts providers"), "scripts.png"))
 		l.append(self.buildListEntry(_("Providers start order"), "reorder.png"))
 		l.append(self.buildListEntry(_("Update rytec providers"), "rytec_small.png"))
+		l.append(self.buildListEntry(_("Update xepgdb providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Download now"), "download.png"))
 		l.append(self.buildListEntry(_("Force csv import now"), "csv.png"))
 		l.append(self.buildListEntry(_("Force epg.dat conversion now"), "conversion.png"))
@@ -110,18 +112,20 @@ class CrossEPG_Menu(Screen):
 		elif index == 6:
 			self.session.open(CrossEPG_Rytec_Update)
 		elif index == 7:
+			self.session.open(CrossEPG_Xepgdb_Update)
+		elif index == 8:
 			self.config.load()
 			self.config.deleteLog()
 			self.downloader()
-		elif index == 8:
-			self.importer()
 		elif index == 9:
-			self.converter()
+			self.importer()
 		elif index == 10:
-			self.loader()
+			self.converter()
 		elif index == 11:
-			self.session.open(CrossEPG_Info)
+			self.loader()
 		elif index == 12:
+			self.session.open(CrossEPG_Info)
+		elif index == 13:
 			self.session.open(CrossEPG_About)
 		
 	def quit(self):
