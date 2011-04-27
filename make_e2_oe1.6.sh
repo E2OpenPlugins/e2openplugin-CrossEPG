@@ -24,7 +24,7 @@ mkdir -p tmp/CONTROL
 cp contrib/control tmp/CONTROL/
 VERSION=`cat src/version.h | grep RELEASE | sed "s/.*RELEASE \"//" | sed "s/\"//" | sed "s/\ /-/" | sed "s/\ /-/" | sed "s/(//" | sed "s/)//"`
 echo "Package: enigma2-plugin-systemplugins-crossepg" >> tmp/CONTROL/control
-echo "Version: $VERSION" >> tmp/CONTROL/control
+echo "Version: $VERSION-r0" >> tmp/CONTROL/control
 echo "Architecture: mipsel" >> tmp/CONTROL/control
 
 sh ipkg-build -o root -g root tmp/
