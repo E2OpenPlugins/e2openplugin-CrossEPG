@@ -32,7 +32,7 @@ bool log_open (char *db_root)
 void log_banner (char *app_name)
 {
 	log_add ("SIFTeam %s %s (c) 2009-2011 Sandro Cavazzoni (http://code.google.com/p/crossepg/)", app_name, RELEASE);
-	log_add ("This software is distributed under the terms of the GNU General Public License v2");
+	log_add ("This software is distributed under the terms of the GNU Lesser General Public License v2.1");
 }
 
 void log_close ()
