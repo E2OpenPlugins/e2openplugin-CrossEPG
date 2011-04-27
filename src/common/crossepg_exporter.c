@@ -78,7 +78,7 @@ int main (int argc, char **argv)
 		switch (c)
 		{
 			case 'd':
-				sprintf (db_root, optarg);
+				strcpy (db_root, optarg);
 				break;
 			case 'k':
 				nice (atoi(optarg));

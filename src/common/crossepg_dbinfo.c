@@ -68,7 +68,7 @@ void dump ()
 		epgdb_title_t *title = channel->title_first;
 		while (title != NULL)
 		{
-			printf ("Start time: %li Length %d\n", title->start_time, title->length);
+			printf ("Start time: %u Length %d\n", title->start_time, title->length);
 			char *description = epgdb_read_description (title);
 			char *ldescription = epgdb_read_long_description (title);
 			printf ("%s\n", description);
@@ -95,7 +95,7 @@ int main (int argc, char **argv)
 		switch (c)
 		{
 			case 'd':
-				sprintf (db_root, optarg);
+				strcpy (db_root, optarg);
 				break;
 			case 'k':
 				nice (atoi(optarg));

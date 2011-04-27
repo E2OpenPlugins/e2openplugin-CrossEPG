@@ -65,8 +65,8 @@ static char descriptor_filename[256];
 static char index_filename[256];
 static char aliases_filename[256];
 
-static time_t db_creation_time = 0;
-static time_t db_update_time = 0;
+static uint32_t db_creation_time = 0;
+static uint32_t db_update_time = 0;
 
 FILE *epgdb_get_fdd () { return fd_d; }
 time_t epgdb_get_creation_time () { return db_creation_time; }
@@ -136,7 +136,7 @@ void epgdb_close ()
 
 bool epgdb_save (void(*progress_callback)(int, int))
 {
-	int channels_count, titles_count, indexes_count, aliases_groups_count, i;
+	uint32_t channels_count, titles_count, indexes_count, aliases_groups_count, i;
 	unsigned char revision;
 	epgdb_channel_t *channel;
 	int progress_count = 0;
@@ -163,11 +163,11 @@ bool epgdb_save (void(*progress_callback)(int, int))
 	fwrite (&revision, sizeof (unsigned char), 1, fd_h);
 	
 	db_update_time = time (NULL);
-	fwrite (&db_creation_time, sizeof (time_t), 1, fd_h);
-	fwrite (&db_update_time, sizeof (time_t), 1, fd_h);
+	fwrite (&db_creation_time, sizeof (uint32_t), 1, fd_h);
+	fwrite (&db_update_time, sizeof (uint32_t), 1, fd_h);
 	
 	channels_count = 0;
-	fwrite (&channels_count, sizeof (int), 1, fd_h); // write the exact value at end
+	fwrite (&channels_count, sizeof (uint32_t), 1, fd_h); // write the exact value at end
 	
 	channel = epgdb_channels_get_first ();
 	while (channel != NULL)
@@ -177,7 +177,7 @@ bool epgdb_save (void(*progress_callback)(int, int))
 		{
 			epgdb_title_t *title = channel->title_first;
 			fwrite (channel, sizeof (epgdb_channel_header_t), 1, fd_h);
-			fwrite (&titles_count, sizeof (int), 1, fd_h);
+			fwrite (&titles_count, sizeof (uint32_t), 1, fd_h);
 			
 			while (title != NULL)
 			{
@@ -193,8 +193,8 @@ bool epgdb_save (void(*progress_callback)(int, int))
 		if (progress_callback != NULL)
 			progress_callback (progress_count, progress_max);
 	}
-	fseek (fd_h, strlen (MAGIC_HEADERS) + sizeof (unsigned char) + (sizeof (time_t) * 2), SEEK_SET);
-	fwrite (&channels_count, sizeof (int), 1, fd_h);
+	fseek (fd_h, strlen (MAGIC_HEADERS) + sizeof (unsigned char) + (sizeof (uint32_t) * 2), SEEK_SET);
+	fwrite (&channels_count, sizeof (uint32_t), 1, fd_h);
 	fflush (fd_h);
 	fsync (fileno (fd_h));
 	fseek (fd_h, 0, SEEK_SET);
@@ -210,7 +210,7 @@ bool epgdb_save (void(*progress_callback)(int, int))
 	void epgdb_index_empty_unused ();
 	
 	indexes_count = epgdb_index_count ();
-	fwrite (&indexes_count, sizeof (int), 1, fd_i);
+	fwrite (&indexes_count, sizeof (uint32_t), 1, fd_i);
 	
 	for (i=0; i<65536; i++)
 	{
@@ -228,7 +228,7 @@ bool epgdb_save (void(*progress_callback)(int, int))
 
 	/* empty indexes */
 	indexes_count = epgdb_index_empties_count ();
-	fwrite (&indexes_count, sizeof (int), 1, fd_i);
+	fwrite (&indexes_count, sizeof (uint32_t), 1, fd_i);
 	epgdb_index_t *index = epgdb_index_empties_get_first ();
 	while (index != NULL)
 	{
@@ -249,7 +249,7 @@ bool epgdb_save (void(*progress_callback)(int, int))
 	fwrite (&revision, sizeof (unsigned char), 1, fd_a);
 	
 	aliases_groups_count = 0;
-	fwrite (&aliases_groups_count, sizeof (int), 1, fd_a); // write the exact value at end
+	fwrite (&aliases_groups_count, sizeof (uint32_t), 1, fd_a); // write the exact value at end
 	
 	channel = epgdb_channels_get_first ();
 	while (channel != NULL)
@@ -268,7 +268,7 @@ bool epgdb_save (void(*progress_callback)(int, int))
 		channel = channel->next;
 	}
 	fseek (fd_a, strlen (MAGIC_ALIASES) + sizeof (unsigned char), SEEK_SET);
-	fwrite (&aliases_groups_count, sizeof (int), 1, fd_a);
+	fwrite (&aliases_groups_count, sizeof (uint32_t), 1, fd_a);
 	fflush (fd_a);
 	fsync (fileno (fd_a));
 	fseek (fd_a, 0, SEEK_SET);
@@ -283,8 +283,8 @@ bool epgdb_load ()
 {
 	char tmp[256];
 	unsigned char revision;
-	int channels_count, i, j, aliases_groups_count, indexes_count;
-	time_t now = time (NULL);
+	uint32_t channels_count, i, j, aliases_groups_count, indexes_count;
+	uint32_t now = time (NULL);
 	
 	epgdb_index_init ();
 	
@@ -299,10 +299,10 @@ bool epgdb_load ()
 	fread (&revision, sizeof (unsigned char), 1, fd_h);
 	if (revision != DB_REVISION) return false;
 	
-	fread (&db_creation_time, sizeof (time_t), 1, fd_h);
-	fread (&db_update_time, sizeof (time_t), 1, fd_h);
+	fread (&db_creation_time, sizeof (uint32_t), 1, fd_h);
+	fread (&db_update_time, sizeof (uint32_t), 1, fd_h);
 	
-	fread (&channels_count, sizeof (int), 1, fd_h);
+	fread (&channels_count, sizeof (uint32_t), 1, fd_h);
 	for (i=0; i<channels_count; i++)
 	{
 		int titles_count;
@@ -327,7 +327,7 @@ bool epgdb_load ()
 			epgdb_channels_set_last (channel);
 		}
 		
-		fread (&titles_count, sizeof (int), 1, fd_h);
+		fread (&titles_count, sizeof (uint32_t), 1, fd_h);
 		
 		for (j=0; j<titles_count; j++)
 		{
@@ -362,7 +362,7 @@ bool epgdb_load ()
 	fread (&revision, sizeof (unsigned char), 1, fd_i);
 	if (revision != DB_REVISION) return false;
 	
-	fread (&indexes_count, sizeof (int), 1, fd_i);
+	fread (&indexes_count, sizeof (uint32_t), 1, fd_i);
 	for (i=0; i<indexes_count; i++)
 	{
 		bool added;
@@ -374,7 +374,7 @@ bool epgdb_load ()
 	}
 	/* empty indexes */
 	indexes_count = 0;
-	fread (&indexes_count, sizeof (int), 1, fd_i);
+	fread (&indexes_count, sizeof (uint32_t), 1, fd_i);
 	for (i=0; i<indexes_count; i++)
 	{
 		epgdb_index_t *index = _malloc (sizeof (epgdb_index_t));
@@ -389,7 +389,7 @@ bool epgdb_load ()
 	fread (&revision, sizeof (unsigned char), 1, fd_a);
 	if (revision != DB_REVISION) return false;
 	
-	fread (&aliases_groups_count, sizeof (int), 1, fd_a);
+	fread (&aliases_groups_count, sizeof (uint32_t), 1, fd_a);
 	for (i=0; i<aliases_groups_count; i++)
 	{
 		unsigned char aliases_count;

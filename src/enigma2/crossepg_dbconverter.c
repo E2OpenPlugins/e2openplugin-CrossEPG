@@ -153,7 +153,7 @@ static void write_titles (epgdb_channel_t *channel, FILE *fd)
 		char *description = epgdb_read_description (title);
 		//if (strlen (description) > 245) description[245] = '\0';
 		if (strlen (description) > 246) description[246] = '\0';
-		gmtime_r (&title->start_time, &start_time);
+		gmtime_r ((time_t*)&title->start_time, &start_time);
 		sdesc_t *sdesc = short_desc (description, title->iso_639_1, title->iso_639_2, title->iso_639_3, IS_UTF8(title->flags));
 		
 		crcs[0] = crc32 (sdesc->data, sdesc->size);
@@ -401,7 +401,7 @@ void write_text ()
 			epgdb_title_t *title = channel->title_first;
 			while (title != NULL)
 			{
-				printf ("STARTTIME %li\n", title->start_time);
+				printf ("STARTTIME %u\n", title->start_time);
 				printf ("LENGTH %d\n", title->length);
 				char *description = epgdb_read_description (title);
 				char *description2 = format_text (description);

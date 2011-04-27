@@ -167,7 +167,7 @@ void opentv_read_titles (unsigned char *data, unsigned int length, bool huffman_
 				if (huffman_debug)
 				{
 					char mtime[20];
-					struct tm *loctime = localtime (&title->start_time);
+					struct tm *loctime = localtime ((time_t*)&title->start_time);
 					printf ("Nid: %x Tsid: %x Sid: %x\n", channels[channel_id]->nid, channels[channel_id]->tsid, channels[channel_id]->sid);
 					strftime (mtime, 20, "%d/%m/%Y %H:%M", loctime);
 					printf ("Start time: %s\n", mtime);
@@ -219,7 +219,7 @@ void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffm
 						if (huffman_debug)
 						{
 							char mtime[20];
-							struct tm *loctime = localtime (&title->start_time);
+							struct tm *loctime = localtime ((time_t*)&title->start_time);
 							printf ("Nid: %x Tsid: %x Sid: %x\n", channels[channel_id]->nid, channels[channel_id]->tsid, channels[channel_id]->sid);
 							strftime (mtime, 20, "%d/%m/%Y %H:%M", loctime);
 							printf ("Start time: %s\n", mtime);
