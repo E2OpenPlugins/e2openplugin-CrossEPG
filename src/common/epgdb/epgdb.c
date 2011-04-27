@@ -32,7 +32,7 @@ typedef struct epgdb_title_header_s
 {
 	uint16_t	event_id;
 	uint16_t	mjd;
-	time_t		start_time;
+	uint32_t	start_time;
 	uint16_t	length;
 	uint8_t		genre_id;
 	uint8_t		flags;
