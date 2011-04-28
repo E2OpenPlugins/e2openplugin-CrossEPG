@@ -71,6 +71,7 @@ static uint32_t db_update_time = 0;
 FILE *epgdb_get_fdd () { return fd_d; }
 time_t epgdb_get_creation_time () { return db_creation_time; }
 time_t epgdb_get_update_time () { return db_update_time; }
+int epgdb_get_revision () { return DB_REVISION; }
 
 bool epgdb_open (char* db_root)
 {

@@ -83,5 +83,5 @@ void epgdb_clean ();
 FILE *epgdb_get_fdd ();
 time_t epgdb_get_creation_time ();
 time_t epgdb_get_update_time ();
-
+int epgdb_get_revision ();
 #endif // _EPGDB_H_
