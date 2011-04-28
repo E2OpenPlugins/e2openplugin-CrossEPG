@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 - crossepg\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-25 18:27+0100\n"
+"POT-Creation-Date: 2011-04-28 08:15+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Spaeleus <spaeleus@croci.org>\n"
 "Language-Team: www.linsat.net <spaeleus@croci.org>\n"
@@ -284,55 +284,59 @@ msgstr "Analisi..."
 msgid "Downloading"
 msgstr "Download..."
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:56
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:57
 msgid "Configure"
 msgstr "Configurazione"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:57
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:58
 msgid "XMLTV providers"
 msgstr "Provider XMLTV"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:58
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:59
 msgid "OpenTV providers"
 msgstr "Provider OpenTV"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:59
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:60
 msgid "XEPGDB providers"
 msgstr "Provider XEPGDB"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:60
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:61
 msgid "Scripts providers"
 msgstr "Script provider"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:61
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:62
 msgid "Providers start order"
 msgstr "Ordine di avvio provider"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:62
-msgid "Update rytec providers"
-msgstr "Aggiornamento provider rytec"
-
 #: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:63
+msgid "Update rytec providers"
+msgstr "Aggiornare provider rytec"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:64
+msgid "Update xepgdb providers"
+msgstr "Aggiornare provider xepgdb"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:65
 msgid "Download now"
 msgstr "Download"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:64
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:66
 msgid "Force csv import now"
 msgstr "Forzare l'importazione csv"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:65
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:67
 msgid "Force epg.dat conversion now"
 msgstr "Forzare la conversione di epg.dat"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:66
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:68
 msgid "Force epg reload"
 msgstr "Forzare il caricamento epg"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:67
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:69
 msgid "Info about database"
 msgstr "Info sul database"
 
-#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:68
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_menu.py:70
 msgid "About"
 msgstr "Info"
 
@@ -461,12 +465,21 @@ msgid "Updating rytec providers..."
 msgstr "Aggiornamento provider rytec..."
 
 #: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_rytec_update.py:59
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_xepgdb_update.py:58
 msgid "Providers updated"
 msgstr "Provider aggiornati"
 
 #: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_rytec_update.py:61
 msgid "Cannot retrieve rytec sources"
 msgstr "Impossibile recuperare le fonti rytec"
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_xepgdb_update.py:43
+msgid "Updating xepgdb providers..."
+msgstr "Aggiornamento provider xepgdb..."
+
+#: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_xepgdb_update.py:60
+msgid "Cannot retrieve xepgdb sources"
+msgstr "Impossibile recuperare le fonti xepgbd"
 
 #~ msgid ""
 #~ "Drive where you save data.\n"

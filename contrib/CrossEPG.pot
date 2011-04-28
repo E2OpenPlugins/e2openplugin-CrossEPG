@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 - CrossEPG\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-25 19:00+0100\n"
+"POT-Creation-Date: 2011-04-28 08:19+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
@@ -266,55 +266,59 @@ msgstr ""
 msgid "Downloading"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_menu.py:56
+#: .../src/enigma2/python/crossepg_menu.py:57
 msgid "Configure"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_menu.py:57
+#: .../src/enigma2/python/crossepg_menu.py:58
 msgid "XMLTV providers"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_menu.py:58
+#: .../src/enigma2/python/crossepg_menu.py:59
 msgid "OpenTV providers"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_menu.py:59
+#: .../src/enigma2/python/crossepg_menu.py:60
 msgid "XEPGDB providers"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_menu.py:60
+#: .../src/enigma2/python/crossepg_menu.py:61
 msgid "Scripts providers"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_menu.py:61
+#: .../src/enigma2/python/crossepg_menu.py:62
 msgid "Providers start order"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_menu.py:62
+#: .../src/enigma2/python/crossepg_menu.py:63
 msgid "Update rytec providers"
 msgstr ""
 
-#: .../src/enigma2/python/crossepg_menu.py:63
-msgid "Download now"
-msgstr ""
-
 #: .../src/enigma2/python/crossepg_menu.py:64
-msgid "Force csv import now"
+msgid "Update xepgdb providers"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:65
-msgid "Force epg.dat conversion now"
+msgid "Download now"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:66
-msgid "Force epg reload"
+msgid "Force csv import now"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:67
-msgid "Info about database"
+msgid "Force epg.dat conversion now"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_menu.py:68
+msgid "Force epg reload"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_menu.py:69
+msgid "Info about database"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_menu.py:70
 msgid "About"
 msgstr ""
 
@@ -443,10 +447,19 @@ msgid "Updating rytec providers..."
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_rytec_update.py:59
+#: .../src/enigma2/python/crossepg_xepgdb_update.py:58
 msgid "Providers updated"
 msgstr ""
 
 #: .../src/enigma2/python/crossepg_rytec_update.py:61
 msgid "Cannot retrieve rytec sources"
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_xepgdb_update.py:43
+msgid "Updating xepgdb providers..."
+msgstr ""
+
+#: .../src/enigma2/python/crossepg_xepgdb_update.py:60
+msgid "Cannot retrieve xepgdb sources"
 msgstr ""
 
