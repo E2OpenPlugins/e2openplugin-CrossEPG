@@ -2,7 +2,7 @@
 HOME=`echo $0 | sed "s/crossepg_prepare_pre_start\.sh//"`
 ENIGMA2PRESTART="/usr/bin/enigma2_pre_start.sh"
 
-if [ -f "/var/crossepg/crossepg.conf" ]
+if [ -f "/var/crossepg/crossepg.config" ]
 then
 	HOME="/var/crossepg/"
 else
