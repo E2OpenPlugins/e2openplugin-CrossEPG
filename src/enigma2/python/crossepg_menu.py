@@ -59,6 +59,7 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("OpenTV providers"), "opentv.png"))
 		l.append(self.buildListEntry(_("XEPGDB providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Scripts providers"), "scripts.png"))
+		l.append(self.buildListEntry(_("MHW2 providers"), "opentv.png"))
 		l.append(self.buildListEntry(_("Providers start order"), "reorder.png"))
 		l.append(self.buildListEntry(_("Update rytec providers"), "rytec_small.png"))
 		l.append(self.buildListEntry(_("Update xepgdb providers"), "xepgdb.png"))
@@ -108,24 +109,26 @@ class CrossEPG_Menu(Screen):
 		elif index == 4:
 			self.session.open(CrossEPG_Providers, "script")
 		elif index == 5:
-			self.session.open(CrossEPG_Ordering)
+			self.session.open(CrossEPG_Providers, "mhw2")
 		elif index == 6:
-			self.session.open(CrossEPG_Rytec_Update)
+			self.session.open(CrossEPG_Ordering)
 		elif index == 7:
-			self.session.open(CrossEPG_Xepgdb_Update)
+			self.session.open(CrossEPG_Rytec_Update)
 		elif index == 8:
+			self.session.open(CrossEPG_Xepgdb_Update)
+		elif index == 9:
 			self.config.load()
 			self.config.deleteLog()
 			self.downloader()
-		elif index == 9:
-			self.importer()
 		elif index == 10:
-			self.converter()
+			self.importer()
 		elif index == 11:
-			self.loader()
+			self.converter()
 		elif index == 12:
-			self.session.open(CrossEPG_Info)
+			self.loader()
 		elif index == 13:
+			self.session.open(CrossEPG_Info)
+		elif index == 14:
 			self.session.open(CrossEPG_About)
 		
 	def quit(self):

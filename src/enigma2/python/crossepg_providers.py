@@ -62,15 +62,30 @@ class CrossEPG_Providers(Screen):
 			self.setTitle("CrossEPG - OpenTV providers")
 		elif self.protocol == "xepgdb":
 			self.setTitle("CrossEPG - XEPGDB providers")
-		elif self.protocol == "scripts":
+		elif self.protocol == "script":
 			self.setTitle("CrossEPG - Scripts providers")
+		elif self.protocol == "mhw2":
+			self.setTitle("CrossEPG - MHW2 providers")
 
 	def buildList(self):
 		self.list = []
 		i = 0
+		protocol = self.protocol
+		if protocol == "mhw2":
+			protocol = "script"
+		print protocol
+		print self.protocol
 		for provider in self.providers[0]:
-			if self.providers[2][i] == self.protocol:
-				self.list.append(self.buildListEntry(provider, self.providers[1][i], self.config.providers.count(provider) > 0))
+			if self.providers[2][i] == protocol:
+				if protocol == "script":
+					description = self.providers[1][i].lower()
+					# we use find("mhw2") as workaround because mhw2 doesn't exist as provider type
+					if self.protocol == "mhw2" and description.find("mhw2") != -1:
+						self.list.append(self.buildListEntry(provider, self.providers[1][i], self.config.providers.count(provider) > 0))
+					elif self.protocol == "script" and description.find("mhw2") == -1:
+						self.list.append(self.buildListEntry(provider, self.providers[1][i], self.config.providers.count(provider) > 0))
+				else:
+					self.list.append(self.buildListEntry(provider, self.providers[1][i], self.config.providers.count(provider) > 0))
 			i += 1
 
 		self["list"].setList(self.list)
