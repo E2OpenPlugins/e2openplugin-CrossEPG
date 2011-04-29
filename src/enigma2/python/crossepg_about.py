@@ -53,17 +53,20 @@ class CrossEPG_About(Screen):
 		except Exception, e:
 			version = "unknow version"
 
-		credit = "SIFTeam CrossEPG %s (c) 2009-2010 Sandro Cavazzoni\n" % version
+		credit = "SIFTeam CrossEPG %s (c) 2009-2011 Sandro Cavazzoni\n" % version
 		credit += "http://code.google.com/p/crossepg/\n\n"
 		credit += "Application credits:\n"
 		credit += "- Sandro Cavazzoni aka skaman (main developer)\n"
 		credit += "- Ambrosa (scripts developer)\n"
 		credit += "- Spaeleus (italian translations)\n"
-		credit += "- Bodyan (ukrainian translations)\n\n"
+		credit += "- Bodyan (ukrainian translations)\n"
+		credit += "- Kosmacz (polish translations)\n"
+		credit += "- Ku4a (russian translations)\n\n"
 		credit += "Sources credits:\n"
 		credit += "- Rytec http://www.rytec.be (xmltv providers for many countries)\n"
-		credit += "- Krkadoni http://www.krkadoni.com/ (xmltv provider for Ex Yugoslavia and various xepgdb sources maintainer)\n"
-		credit += "- Bodyan and dillinger http://linux-sat.tv/ (xmltv provider for ex USSR channels)"
+		credit += "- Krkadoni http://www.krkadoni.com/ (xmltv provider for Ex Yugoslavia)\n"
+		credit += "- Bodyan and dillinger http://linux-sat.tv/ (xmltv provider for ex USSR channels)\n"
+		credit += "- Devilcosta http://sgcpm.com/ (xmltv provider for nova channels in greek and english)"
 		self["about"].setText(credit)
 
 		self.onFirstExecBegin.append(self.setImages)
