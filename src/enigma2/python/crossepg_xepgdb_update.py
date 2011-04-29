@@ -55,22 +55,25 @@ class CrossEPG_Xepgdb_Update(Screen):
 	def start(self):
 		if self.load():
 			self.save(self.config.home_directory + "/providers/")
-			self.session.open(MessageBox, _("Providers updated"), type = MessageBox.TYPE_INFO, timeout = 20)	
+			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type = MessageBox.TYPE_INFO, timeout = 20)	
 		else:
 			self.session.open(MessageBox, _("Cannot retrieve xepgdb sources"), type = MessageBox.TYPE_ERROR, timeout = 20)	
 		self.close()
 		
 	def load(self):
-		conn = httplib.HTTPConnection(SIFTEAM_HOST)
-		conn.request("GET", "/sources.xml")
-		httpres = conn.getresponse()
-		if httpres.status == 200:
-			f = open ("/tmp/crossepg_xepgdb_tmp", "w")
-			f.write(httpres.read())
-			f.close()
-			self.loadFromFile("/tmp/crossepg_xepgdb_tmp")
-			os.unlink("/tmp/crossepg_xepgdb_tmp")
-			return True
+		try:
+			conn = httplib.HTTPConnection(SIFTEAM_HOST)
+			conn.request("GET", "/sources.xml")
+			httpres = conn.getresponse()
+			if httpres.status == 200:
+				f = open ("/tmp/crossepg_xepgdb_tmp", "w")
+				f.write(httpres.read())
+				f.close()
+				self.loadFromFile("/tmp/crossepg_xepgdb_tmp")
+				os.unlink("/tmp/crossepg_xepgdb_tmp")
+				return True
+		except Exception, e:
+			print e
 		return False
 
 	def loadFromFile(self, filename):
