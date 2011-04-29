@@ -168,7 +168,7 @@ class CrossEPG_Menu(Screen):
 			else:
 				if self.config.download_manual_reboot:
 					from Screens.Standby import TryQuitMainloop
-					session.open(TryQuitMainloop, 3)
+					self.session.open(TryQuitMainloop, 3)
 
 	def loader(self):
 		self.session.open(CrossEPG_Loader)
