@@ -13,10 +13,10 @@ from crossepg_locale import _
 import httplib
 import xml.etree.cElementTree
 import re
-import zipfile
 import os
 
-RYTEC_HOST = "www.rytec.be"
+RYTEC_HOSTS = ["www.xmltvepg.be", "www.world-of-satellite.com", "www.xmltvepg.nl", "www.tm800hd.co.uk"]
+RYTEC_XMLS = ["/rytec.sources.xml", "/epg_data/rytec.sources.xml", "/rytec.sources.xml", "/rytec.sources.xml"]
 
 class CrossEPG_Rytec_Source(object):
 	def __init__(self):
@@ -56,66 +56,64 @@ class CrossEPG_Rytec_Update(Screen):
 	def start(self):
 		if self.load():
 			self.save(self.config.home_directory + "/providers/")
-			self.session.open(MessageBox, _("Providers updated"), type = MessageBox.TYPE_INFO, timeout = 20)	
+			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type = MessageBox.TYPE_INFO, timeout = 20)	
 		else:
 			self.session.open(MessageBox, _("Cannot retrieve rytec sources"), type = MessageBox.TYPE_ERROR, timeout = 20)	
 		self.close()
-		
-	def getChannelsUrls(self, root, name):
-		ret = []
-		for node in root:
-			if node.tag == "channel":
-				if node.get("name") == name:
-					for childnode in node:
-						if childnode.tag == "url":
-							ret.append(childnode.text)
-							
-					break
-		return ret
 
 	def load(self):
-		conn = httplib.HTTPConnection(RYTEC_HOST)
-		conn.request("GET", "/")
-		httpres = conn.getresponse()
-		if httpres.status == 200:
-			#/tools/rytec.sources.xml.20110419.zip
-			p = re.search('a href\s?=\s?"([\w:\/\.\_\-]+rytec\.sources\.xml\.\d+\.zip)"', httpres.read())
-			if p == None:
-				return False
-			conn.request("GET", p.group(1))
-			httpres = conn.getresponse()
-			if httpres.status == 200:
-				f = open ("/tmp/crossepg_rytec_tmp", "w")
-				f.write(httpres.read())
-				f.close()
-				zip = zipfile.ZipFile("/tmp/crossepg_rytec_tmp", "r")
-				files = zip.namelist()
-				for file in files:
-					if file == "rytec.sources.xml":
-						f = open ("/tmp/crossepg_rytec_tmp2", "w")
-						f.write(zip.read(file))
-						f.close()
-						self.loadFromFile("/tmp/crossepg_rytec_tmp2")
-				os.unlink("/tmp/crossepg_rytec_tmp")
-				os.unlink("/tmp/crossepg_rytec_tmp2")
-				return True
-		return False
+		ret = False
+		count = 0
+		for host in RYTEC_HOSTS:
+			try:
+				print "downloading from http://%s%s" % (host, RYTEC_XMLS[count])
+				conn = httplib.HTTPConnection(host)
+				conn.request("GET", RYTEC_XMLS[count])
+				httpres = conn.getresponse()
+				if httpres.status == 200:
+					f = open ("/tmp/crossepg_rytec_tmp", "w")
+					f.write(httpres.read())
+					f.close()
+					self.loadFromFile("/tmp/crossepg_rytec_tmp")
+					os.unlink("/tmp/crossepg_rytec_tmp")
+					ret = True
+				else:
+					print "http error: %d (http://%s%s)" % (httpres.status, host, RYTEC_XMLS[count])
+			except Exception, e:
+				print e
+			count += 1
+		return ret
 
+	def getServer(self, description):
+		for source in self.sources:
+			if source.description == description:
+				return source
+		return None
+			
 	def loadFromFile(self, filename):
 		mdom = xml.etree.cElementTree.parse(filename)
 		root = mdom.getroot()
-		
+
 		for node in root:
 			if node.tag == "source":
 				source = CrossEPG_Rytec_Source()
-				source.channels_urls = self.getChannelsUrls(root, node.get("channels"))
+				source.channels_urls.append(node.get("channels"))
 				for childnode in node:
 					if childnode.tag == "description":
 						source.description = childnode.text
 					elif childnode.tag == "url":
 						source.epg_urls.append(childnode.text)
-		
-				self.sources.append(source)
+
+				oldsource = self.getServer(source.description)
+				if oldsource == None:
+					self.sources.append(source)
+				else:
+					if len(source.epg_urls) > 0:
+						if source.epg_urls[0] not in oldsource.epg_urls:
+							oldsource.epg_urls.append(source.epg_urls[0])
+					if len(source.channels_urls) > 0:
+						if source.channels_urls[0] not in oldsource.channels_urls:
+							oldsource.channels_urls.append(source.channels_urls[0])
 				
 	def save(self, destination):
 		os.system("rm -f " + destination + "/rytec_*.conf")
