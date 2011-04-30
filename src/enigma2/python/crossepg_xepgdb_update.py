@@ -50,14 +50,22 @@ class CrossEPG_Xepgdb_Update(Screen):
 		
 		self.timer = eTimer()
 		self.timer.callback.append(self.start)
-		self.timer.start(100, 1)
 		
+		self.onFirstExecBegin.append(self.firstExec)
+		
+	def firstExec(self):
+		if self.isHD:
+			self["background"].instance.setPixmapFromFile("%s/images/background_hd.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+		else:
+			self["background"].instance.setPixmapFromFile("%s/images/background.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+		self.timer.start(100, 1)
+			
 	def start(self):
 		if self.load():
 			self.save(self.config.home_directory + "/providers/")
-			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type = MessageBox.TYPE_INFO, timeout = 20)	
+			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type = MessageBox.TYPE_INFO, timeout = 5)	
 		else:
-			self.session.open(MessageBox, _("Cannot retrieve xepgdb sources"), type = MessageBox.TYPE_ERROR, timeout = 20)	
+			self.session.open(MessageBox, _("Cannot retrieve xepgdb sources"), type = MessageBox.TYPE_ERROR, timeout = 10)	
 		self.close()
 		
 	def load(self):
