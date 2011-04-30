@@ -12,6 +12,7 @@ export CC=${CROSS}gcc
 export STRIP=${CROSS}strip
 export SWIG=swig
 export D=./tmp
+export TARGET_ARCH=sh4
 
 make && make install-var-flash
 

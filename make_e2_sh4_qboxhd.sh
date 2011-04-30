@@ -13,6 +13,7 @@ export CC=${CROSS}gcc
 export STRIP=${CROSS}strip
 export SWIG=swig
 export D=./tmp/qboxhd_update
+export TARGET_ARCH=sh4
 
 make && make install-var-qboxhd
 

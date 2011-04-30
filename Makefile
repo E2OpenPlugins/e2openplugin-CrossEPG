@@ -56,6 +56,8 @@ FTP_HOST = 172.16.1.139
 FTP_USER = root
 FTP_PASSWORD = sifteam
 
+TARGET_ARCH ?= mips
+
 all: clean $(CONVERTER_BIN) $(DBINFO_BIN) $(DOWNLOADER_BIN) $(EPGCOPY_BIN) $(IMPORTER_BIN) $(EXPORTER_BIN) $(XMLTV_BIN) $(SWIGS_LIBS) $(SHARED_LIBS)
 
 $(BIN_DIR):
@@ -159,6 +161,7 @@ install-standalone:
 	install -d $(D)/usr/crossepg/scripts/rai
 	install -d $(D)/usr/crossepg/scripts/alias
 	install -d $(D)/usr/crossepg/scripts/mediaprem
+	install -d $(D)/usr/crossepg/scripts/mhw2epgdownloader
 	install -m 755 bin/crossepg_dbconverter $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_dbinfo $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_downloader $(D)/usr/crossepg/
@@ -175,6 +178,8 @@ install-standalone:
 	install -m 755 scripts/rai/* $(D)/usr/crossepg/scripts/rai/
 	install -m 755 scripts/alias/* $(D)/usr/crossepg/scripts/alias/
 	install -m 755 scripts/mediaprem/* $(D)/usr/crossepg/scripts/mediaprem/
+	install -m 644 scripts/mhw2epgdownloader/mhw2epgdownloader.conf $(D)/usr/crossepg/scripts/mhw2epgdownloader/
+	install -m 755 scripts/mhw2epgdownloader/mhw2epgdownloader.$(TARGET_ARCH) $(D)/usr/crossepg/scripts/mhw2epgdownloader/mhw2epgdownloader
 
 install-standalone-var:
 	install -d $(D)/var/crossepg/aliases
@@ -185,6 +190,7 @@ install-standalone-var:
 	install -d $(D)/var/crossepg/scripts/rai
 	install -d $(D)/var/crossepg/scripts/alias
 	install -d $(D)/var/crossepg/scripts/mediaprem
+	install -d $(D)/var/crossepg/scripts/mhw2epgdownloader
 	install -m 755 bin/crossepg_dbconverter $(D)/var/crossepg/
 	install -m 755 bin/crossepg_dbinfo $(D)/var/crossepg/
 	install -m 755 bin/crossepg_downloader $(D)/var/crossepg/
@@ -201,6 +207,8 @@ install-standalone-var:
 	install -m 755 scripts/rai/* $(D)/var/crossepg/scripts/rai/
 	install -m 755 scripts/alias/* $(D)/var/crossepg/scripts/alias/
 	install -m 755 scripts/mediaprem/* $(D)/var/crossepg/scripts/mediaprem/
+	install -m 644 scripts/mhw2epgdownloader/mhw2epgdownloader.conf $(D)/var/crossepg/scripts/mhw2epgdownloader/
+	install -m 755 scripts/mhw2epgdownloader/mhw2epgdownloader.$(TARGET_ARCH) $(D)/var/crossepg/scripts/mhw2epgdownloader/mhw2epgdownloader
 
 install-plugin:
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins
