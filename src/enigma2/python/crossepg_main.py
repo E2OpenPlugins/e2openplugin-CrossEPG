@@ -15,7 +15,7 @@ class CrossEPG_Main:
 		self.config = CrossEPG_Config()
 		self.patchtype = getEPGPatchType()
 		
-	def downloader(self, session, **kwargs):
+	def downloader(self, session):
 		self.session = session
 		crossepg_auto.lock = True
 		crossepg_auto.stop()
@@ -26,7 +26,7 @@ class CrossEPG_Main:
 			self.config.deleteLog()
 			self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, self.config.providers)
 
-	def loaderAsPlugin(self, session, **kwargs):
+	def loaderAsPlugin(self, session):
 		self.session = session
 		crossepg_auto.lock = True
 		crossepg_auto.stop()
@@ -78,7 +78,7 @@ class CrossEPG_Main:
 	def loaderCallback(self, ret):
 		crossepg_auto.lock = False
 
-	def setup(self, session, **kwargs):
+	def setup(self, session):
 		crossepg_auto.lock = True
 		crossepg_auto.stop()
 		session.openWithCallback(self.setupCallback, CrossEPG_Menu)
