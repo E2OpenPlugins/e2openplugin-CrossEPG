@@ -58,6 +58,8 @@ class CrossEPG_About(Screen):
 		credit += "Application credits:\n"
 		credit += "- Sandro Cavazzoni aka skaman (main developer)\n"
 		credit += "- Ambrosa (scripts developer)\n"
+		credit += "- Sergiotas (mhw2epgdownloader author)\n"
+		credit += "- u Killer Bestia (server side application maintainer)\n"
 		credit += "- Spaeleus (italian translations)\n"
 		credit += "- Bodyan (ukrainian translations)\n"
 		credit += "- Kosmacz (polish translations)\n"
