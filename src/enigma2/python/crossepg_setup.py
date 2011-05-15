@@ -292,7 +292,10 @@ class CrossEPG_Setup(Screen):
 		self.config.configured = 1
 		self.config.save()
 		try:
-			config.misc.epgcache_filename.setValue(self.config.db_root + "/epg.dat")
+			if self.config.db_root[-8:] == "crossepg":
+				config.misc.epgcache_filename.setValue(self.config.db_root[:-9] + "/epg.dat")
+			else:
+				config.misc.epgcache_filename.setValue(self.config.db_root + "/epg.dat")
 			config.misc.epgcache_filename.callNotifiersOnSaveAndCancel = True
 			config.misc.epgcache_filename.save()
 			configfile.save()
