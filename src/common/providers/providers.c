@@ -46,6 +46,7 @@ static char xepgdb_headers_url[256];
 static char xepgdb_descriptors_url[256];
 static char preferred_language[4];
 static char script_filename[256];
+static char script_arguments[1024];
 
 int  *providers_get_channels_pids			()	{ return channels_pids;			}
 int  *providers_get_titles_pids				()	{ return titles_pids;			}
@@ -135,6 +136,7 @@ char *providers_get_xmltv_plang				()	{ return preferred_language;	}
 char *providers_get_xepgdb_headers_url		()	{ return xepgdb_headers_url;	}
 char *providers_get_xepgdb_descriptors_url	()	{ return xepgdb_descriptors_url;}
 char *providers_get_script_filename			()	{ return script_filename;		}
+char *providers_get_script_arguments		()	{ return script_arguments;		}
 
 static char *providers_trim_spaces (char *text)
 {
@@ -184,6 +186,8 @@ bool providers_read (char *read)
 	strcpy (preferred_language, "eng");
 	strcpy (xepgdb_headers_url, "");
 	strcpy (xepgdb_descriptors_url, "");
+	strcpy (script_filename, "");
+	strcpy (script_arguments, "");
 	
 	fd = fopen (read, "r");
 	if (!fd) 
@@ -196,7 +200,7 @@ bool providers_read (char *read)
 		memset (key, 0, sizeof (key));
 		memset (value, 0, sizeof (value));
 		
-		if (sscanf (line, "%[^#=]=%s\n", key, value) != 2)
+		if (sscanf (line, "%[^#=]=%[^\t\n]\n", key, value) != 2)
 			continue;
 
 		tmp_key = providers_trim_spaces (key);
@@ -310,6 +314,8 @@ bool providers_read (char *read)
 			strcpy (xepgdb_descriptors_url, tmp_value);
 		else if (strcmp ("filename", tmp_key) == 0)
 			strcpy (script_filename, tmp_value);
+		else if (strcmp ("arguments", tmp_key) == 0)
+			strcpy (script_arguments, tmp_value);
 	}
 	
 	fclose (fd);

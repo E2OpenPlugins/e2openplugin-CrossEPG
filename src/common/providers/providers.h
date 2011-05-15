@@ -20,5 +20,6 @@ char *providers_get_xmltv_plang ();
 char *providers_get_xepgdb_headers_url ();
 char *providers_get_xepgdb_descriptors_url ();
 char *providers_get_script_filename ();
+char *providers_get_script_arguments ();
 
 #endif // _OPENTV_PROVIDERS_H_

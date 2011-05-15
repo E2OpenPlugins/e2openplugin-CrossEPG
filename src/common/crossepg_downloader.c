@@ -93,6 +93,22 @@ static void format_size (char *string, int size)
 		sprintf (string, "%d bytes", size);
 }
 
+char *replace_str(char *str, char *orig, char *rep)
+{
+  static char buffer[4096];
+  char *p;
+
+  if(!(p = strstr(str, orig)))  // Is 'orig' even in 'str'?
+    return str;
+
+  strncpy(buffer, str, p-str); // Copy characters from 'str' start to 'orig' st$
+  buffer[p-str] = '\0';
+
+  sprintf(buffer+(p-str), "%s%s", rep, p+strlen(orig));
+
+  return buffer;
+}
+
 bool opentv_titles_callback (int size, unsigned char* data)
 {
 	char fsize[256];
@@ -390,11 +406,16 @@ void *download (void *args)
 		}
 		else if (providers_get_protocol () == 4)
 		{
-			char filename[256];
+			char filename[1024], tmp[1024], *tmp2;
 			interactive_send (ACTION_START);
 			interactive_send_text (ACTION_TYPE, "RUNNING SCRIPT");
 			interactive_send_text (ACTION_URL, providers_get_script_filename ());
-			sprintf (filename, "LD_LIBRARY_PATH=%s %s/scripts/%s %s", homedir, homedir, providers_get_script_filename (), db_root);
+
+			tmp2 = replace_str (providers_get_script_arguments (), "%%dbroot%%", db_root);
+			strcpy (tmp, tmp2);
+			tmp2 = replace_str (tmp, "%%homedir%%", homedir);
+			sprintf (filename, "LD_LIBRARY_PATH=%s %s/scripts/%s %s", homedir, homedir, providers_get_script_filename (), tmp2);
+
 			if (system (filename) != 0)
 				interactive_send_text (ACTION_ERROR, "script returned an error");
 			exec = false;
@@ -766,11 +787,14 @@ int main (int argc, char **argv)
 			}
 			else if (providers_get_protocol () == 4)
 			{
-				char filename[256];
+				char filename[1024], tmp[1024], *tmp2;
 				log_add ("Provider %s identified as script", provider);
 				log_add ("Script file name: %s", providers_get_script_filename ());
 
-				sprintf (filename, "LD_LIBRARY_PATH=%s %s/scripts/%s %s", homedir, homedir, providers_get_script_filename (), db_root);
+				tmp2 = replace_str (providers_get_script_arguments (), "%%dbroot%%", db_root);
+				strcpy (tmp, tmp2);
+				tmp2 = replace_str (tmp, "%%homedir%%", homedir);
+				sprintf (filename, "LD_LIBRARY_PATH=%s %s/scripts/%s %s", homedir, homedir, providers_get_script_filename (), tmp2);
 
 				log_add ("Executing script %s ...", filename);
 				system (filename);
