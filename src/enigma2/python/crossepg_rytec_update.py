@@ -14,9 +14,8 @@ import httplib
 import xml.etree.cElementTree
 import re
 import os
-
-RYTEC_HOSTS = ["www.xmltvepg.be", "www.world-of-satellite.com", "www.xmltvepg.nl", "www.tm800hd.co.uk"]
-RYTEC_XMLS = ["/rytec.sources.xml", "/epg_data/rytec.sources.xml", "/rytec.sources.xml", "/rytec.sources.xml"]
+import subprocess
+import random
 
 class CrossEPG_Rytec_Source(object):
 	def __init__(self):
@@ -39,6 +38,7 @@ class CrossEPG_Rytec_Update(Screen):
 		
 		self.sources = []
 		self.session = session
+		self.mirrors = []
 		
 		self["background"] = Pixmap()
 		self["action"] = Label(_("Updating rytec providers..."))
@@ -62,6 +62,7 @@ class CrossEPG_Rytec_Update(Screen):
 		self.timer.start(100, 1)
 		
 	def start(self):
+		self.loadSourceList()
 		if self.load():
 			self.save(self.config.home_directory + "/providers/")
 			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type = MessageBox.TYPE_INFO, timeout = 5)	
@@ -69,27 +70,49 @@ class CrossEPG_Rytec_Update(Screen):
 			self.session.open(MessageBox, _("Cannot retrieve rytec sources"), type = MessageBox.TYPE_ERROR, timeout = 10)	
 		self.close()
 
+	def loadSourceList(self):
+		try:
+			print "downloading source list from http://www.rytec.be/tools/crossepgsources.gz"
+			conn = httplib.HTTPConnection("www.rytec.be")
+			conn.request("GET", "/tools/crossepgsources.gz")
+			httpres = conn.getresponse()
+			if httpres.status == 200:
+				f = open("/tmp/crossepg_rytec_tmp", "w")
+				f.write(httpres.read())
+				f.close()
+				slist = subprocess.Popen(["/bin/gzip", "-d", "-c", "/tmp/crossepg_rytec_tmp"], shell=False, stdout=subprocess.PIPE)
+				(stdoutdata, stderrdata) = slist.communicate()
+
+				self.mirrors = stdoutdata.split("\n")
+				random.shuffle(self.mirrors)
+				os.unlink("/tmp/crossepg_rytec_tmp")
+			else:
+				print "http error: %d (%s)" % (httpres.status, "http://www.rytec.be/tools/crossepgsources.gz")
+		except Exception, e:
+			print e
+				
 	def load(self):
 		ret = False
-		count = 0
-		for host in RYTEC_HOSTS:
+		for mirror in self.mirrors:
 			try:
-				print "downloading from http://%s%s" % (host, RYTEC_XMLS[count])
+				print "downloading from %s" % (mirror)
+				smirror = mirror.lstrip("http://")
+				host = smirror.split("/")[0]
+				path = smirror.lstrip(host)
 				conn = httplib.HTTPConnection(host)
-				conn.request("GET", RYTEC_XMLS[count])
+				conn.request("GET", path)
 				httpres = conn.getresponse()
 				if httpres.status == 200:
-					f = open ("/tmp/crossepg_rytec_tmp", "w")
+					f = open("/tmp/crossepg_rytec_tmp", "w")
 					f.write(httpres.read())
 					f.close()
 					self.loadFromFile("/tmp/crossepg_rytec_tmp")
 					os.unlink("/tmp/crossepg_rytec_tmp")
 					ret = True
 				else:
-					print "http error: %d (http://%s%s)" % (httpres.status, host, RYTEC_XMLS[count])
+					print "http error: %d (%s)" % (httpres.status, mirror)
 			except Exception, e:
 				print e
-			count += 1
 		return ret
 
 	def getServer(self, description):
