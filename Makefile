@@ -47,7 +47,6 @@ SWIGS_LIBS = bin/_crossepg.so
 VERSION_HEADER = src/version.h
 VERSION_PYTHON = src/enigma2/python/version.py
 
-GIT=$(shell sh get_git_date.sh)
 VERSION=$(shell cat VERSION)
 
 BIN_DIR = bin
@@ -64,8 +63,8 @@ $(BIN_DIR):
 	mkdir -p $@
 
 $(VERSION_HEADER):
-	echo "#define RELEASE \"$(VERSION) (git $(GIT))\"" > $(VERSION_HEADER)
-	echo "version = \"$(VERSION) (git $(GIT))\"" > $(VERSION_PYTHON)
+	echo "#define RELEASE \"$(VERSION))\"" > $(VERSION_HEADER)
+	echo "version = \"$(VERSION))\"" > $(VERSION_PYTHON)
 
 $(SWIGS_OBJS):
 	$(SWIG) -threads -python $(@:_wrap.o=.i)
