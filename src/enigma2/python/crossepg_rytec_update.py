@@ -14,7 +14,6 @@ import httplib
 import xml.etree.cElementTree
 import re
 import os
-import subprocess
 import random
 
 class CrossEPG_Rytec_Source(object):
@@ -80,10 +79,9 @@ class CrossEPG_Rytec_Update(Screen):
 				f = open("/tmp/crossepg_rytec_tmp", "w")
 				f.write(httpres.read())
 				f.close()
-				slist = subprocess.Popen(["/bin/gzip", "-d", "-c", "/tmp/crossepg_rytec_tmp"], shell=False, stdout=subprocess.PIPE)
-				(stdoutdata, stderrdata) = slist.communicate()
-
-				self.mirrors = stdoutdata.split("\n")
+				gzip = os.popen("/bin/gzip -d -c /tmp/crossepg_rytec_tmp")
+				self.mirrors = gzip.read().split("\n")
+				gzip.close()
 				random.shuffle(self.mirrors)
 				os.unlink("/tmp/crossepg_rytec_tmp")
 			else:
