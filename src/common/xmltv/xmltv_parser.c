@@ -60,7 +60,9 @@ static char current_desc_iso639[3];
 static char* current_channel = NULL;
 static time_t current_starttime = 0;
 static time_t current_stoptime = 0;
+static time_t current_time = 0;
 static int events_count = 0;
+static int events_in_future_count = 0;
 
 static time_t mkgmtime(t)
 register struct tm	*t;
@@ -175,6 +177,9 @@ static void xmltv_parser_add_event ()
 		epgdb_titles_set_description (title, current_title);
 		if (current_desc)
 			epgdb_titles_set_long_description (title, current_desc);
+
+		if (current_starttime>=current_title)
+			events_in_future_count++;
 	}
 	
 	events_count++;
@@ -446,7 +451,9 @@ bool xmltv_parser_import (char *filename, void(*progress_callback)(int, int), vo
 	current_channel = NULL;
 	current_starttime = 0;
 	current_stoptime = 0;
+	current_time = time(NULL);
 	events_count = 0;
+	events_in_future_count = 0;
 	
 	ret = xmlTextReaderRead (reader);
 	while (ret == 1)
@@ -480,6 +487,12 @@ bool xmltv_parser_import (char *filename, void(*progress_callback)(int, int), vo
 	if (ret != 0)
 	{
 		log_add ("Failed to parse %s\n", filename);
+		return false;
+	}
+
+	if (events_in_future_count == 0)
+	{
+		log_add ("Failed to parse %s for new events\n", filename);
 		return false;
 	}
 
