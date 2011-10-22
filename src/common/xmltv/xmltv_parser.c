@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <libxml/xmlreader.h>
+#include <libxml/xmlerror.h>
 #include <string.h>
 #include <time.h>
 
@@ -486,7 +487,11 @@ bool xmltv_parser_import (char *filename, void(*progress_callback)(int, int), vo
 	
 	if (ret != 0)
 	{
-		log_add ("Failed to parse %s\n", filename);
+		xmlErrorPtr error = xmlGetLastError();
+		if (error != NULL)
+			log_add ("Failed to parse %s (on line %d: %s)\n", filename, error->line, error->message);
+		else
+			log_add ("Failed to parse %s\n", filename);
 		return false;
 	}
 
