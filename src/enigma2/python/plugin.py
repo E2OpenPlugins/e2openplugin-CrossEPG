@@ -4,7 +4,7 @@ from crossepg_locale import _
 from Plugins.Plugin import PluginDescriptor
 
 def setup(menuid, **kwargs):
-	if menuid == "setup":
+	if menuid == "epg":
 		return [("CrossEPG", crossepg_main.setup, "crossepg", None)]
 	else:
 		return []
