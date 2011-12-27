@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # alias.py  by Ambrosa http://www.ambrosa.net
 # this module is used for copy epg from a channel to another
+# 22-Dec-2011
 
 __author__ = "ambrosa http://www.ambrosa.net"
 __copyright__ = "Copyright (C) 2008-2011 Alessandro Ambrosini"
@@ -33,30 +34,19 @@ class main:
 
 	# log text
 	CONF_LOG_SCRIPT_NAME = "ALIAS EPG"
-	CONF_LOG_PREFIX = "ALIAS "
-
-
-	def log(self,s,video=0):
-		self.logging.log(self.CONF_LOG_PREFIX + str(s))
-		if video == 1:
-			self.log2video(str(s))
-
-	def log2video(self,s):
-		self.logging.log2video_status(str(s))
-
 
 
 	def __init__(self,confdir,dbroot):
 
 		# initialize logging
-		self.logging = scriptlib.logging_class()
+		self.log = scriptlib.logging_class()
 		# write to video OSD the script name
-		self.logging.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
+		self.log.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
 
 
 		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
 		if not os.path.exists(CONF_FILE) :
-			self.log("ERROR: %s not present" % CONF_FILE)
+			self.log.log("ERROR: %s not present" % CONF_FILE)
 			sys.exit(1)
 
 		config = ConfigParser.ConfigParser()
@@ -72,7 +62,7 @@ class main:
 			self.CHANNELLIST[i[0]] = unicode(i[1],'utf-8')
 
 		if len(self.CHANNELLIST) == 0 :
-			self.log("ERROR: [aliases] section empty ?")
+			self.log.log("ERROR: [aliases] section empty ?")
 			sys.exit(1)
 
 
@@ -80,17 +70,26 @@ class main:
 
 
 	def do_epg_alias(self):
-		self.log("--- START PROCESSING ---")
-		self.log("Loading lamedb indexed by channel name")
+		self.log.log("--- START PROCESSING ---")
+		self.log.log("Loading lamedb indexed by channel name")
+		self.log.log2video_status("start copying EPG from channel to another")
 		lamedb = scriptlib.lamedb_class()
 
-		self.log("Initialize CrossEPG database")
+		self.log.log("Initialize CrossEPG database")
 		crossdb = scriptlib.crossepg_db_class()
 		crossdb.open_db()
 
 		total_events = 0
 
+		pbar_maxvalue = 100.0 / (len(self.CHANNELLIST) + 1.0)
+		pbar_index = 1
+		self.log.log2video_pbar_on()
+		self.log.log2video_pbar(0)
+
+
 		for src_channel in self.CHANNELLIST :
+			self.log.log2video_pbar( int(pbar_index * pbar_maxvalue) )
+			pbar_index += 1
 
 			dst_channels = self.CHANNELLIST[src_channel].split(',')
 
@@ -108,48 +107,48 @@ class main:
 						src_sidbyname = p[0]
 						ch_sid = lamedb.convert_sid(src_sidbyname)
 						if len(ch_sid) == 0 :
-							self.log("SID \"%s\" invalid, try next" % src_sidbyname)
+							self.log.log("SID \"%s\" invalid, try next" % src_sidbyname)
 							continue
 
 						src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(ch_sid[2],ch_sid[1],ch_sid[0]);
 						if not src_epgdb_channel :
-							self.log('Source channel "%s" with SID "%s" has not entry in epgdb, try next' % (src_channel,src_sidbyname) )
+							self.log.log('Source channel "%s" with SID "%s" has not entry in epgdb, try next' % (src_channel,src_sidbyname) )
 							continue
 						else:
 							break
 
 				# if not sid then exit, go ahead with next src_channel
 				if len(src_sidbyname) == 0:
-					self.log('Source channel "%s" has not SID in lamedb, skip it' % src_channel)
+					self.log.log('Source channel "%s" has not SID in lamedb, skip it' % src_channel)
 					continue
 
 			elif src_channel.count('-') == 2 :
 				tmp = src_channel.split('-')
-				src_sidbyname = "%s:xxxxxxxx:%s:%s:x:x" %(tmp[0].strip(' \n\r'),tmp[1].strip(' \n\r'),tmp[2].strip(' \n\r'))
+				src_sidbyname = "%s:xxxxxxxx:%s:%s:x:x" % (tmp[0].strip(' \n\r'),tmp[1].strip(' \n\r'),tmp[2].strip(' \n\r'))
 
 			else:
-				self.log("Channel source \"%s\" invalid" % src_channel)
+				self.log.log("Channel source \"%s\" invalid" % src_channel)
 				continue
 
 			# convert "0e1f:00820000:0708:00c8:1:0" to sid,tsid,onid
 			# return the list [sid,tsid,onid]
 			src_sid = lamedb.convert_sid(src_sidbyname)
 			if len(src_sid) == 0 :
-				self.log("SID \"%s\" invalid, try next" % src_sidbyname)
+				self.log.log("SID \"%s\" invalid, try next" % src_sidbyname)
 				continue
 
 			src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(src_sid[2],src_sid[1],src_sid[0]);
 			if not src_epgdb_channel :
-				self.log('Source channel "%s" with SID "%s" has not entry in epgdb, skip it' % (src_channel,src_sidbyname) )
+				self.log.log('Source channel "%s" with SID "%s" has not entry in epgdb, skip it' % (src_channel,src_sidbyname) )
 				continue
 
-			self.log('Source channel "%s" with SID "%s" found in epgdb, using it' % (src_channel,src_sidbyname) )
+			self.log.log('Source channel "%s" with SID "%s" found in epgdb, using it' % (src_channel,src_sidbyname) )
 
 			for dst in dst_channels:
 				dst = dst.strip(' \n\r').lower()
 				dst_sidbyname = lamedb.get_sid_byname(dst)
 				if len(dst_sidbyname) == 0:
-					self.log('   dest. channel "%s" has not SID in lamedb, skip it' % dst)
+					self.log.log('   dest. channel "%s" has not SID in lamedb, skip it' % dst)
 					continue
 
 				for dsid in dst_sidbyname:
@@ -160,12 +159,12 @@ class main:
 
 					if dst_sid == src_sid:
 						# skip if source=destination
-						self.log('   dest. channel "%s" is eq. to source, skip it' % dst)
+						self.log.log('   dest. channel "%s" is eq. to source, skip it' % dst)
 						continue
 
 					num_events = 0
-					self.log('   copying EPG data from "%s" to "%s" sid "%s")' % (src_channel,dst,dsid) )
-					self.log2video("%s -> %s (%d/%d)" % (src_channel,dst,num_events,total_events))
+					self.log.log('   copying EPG data from "%s" to "%s" sid "%s")' % (src_channel,dst,dsid) )
+					self.log.log2video_status("copy %s -> %s (%d/%d)" % (src_channel,dst,num_events,total_events))
 
 
 					# add channel into db
@@ -194,17 +193,21 @@ class main:
 						title = title.next
 
 						if (num_events % 25) == 0:
-							self.log2video("%s -> %s (%d/%d)" % (src_channel,dst,num_events,total_events))
+							self.log.log2video_status("copy %s -> %s (%d/%d)" % (src_channel,dst,num_events,total_events))
 
 
 					total_events += num_events
-					self.log("   copied %d events" % num_events)
+					self.log.log("   copied %d events" % num_events)
 
-		self.log2video("end: copied %d events" % (total_events))
+
+		self.log.log2video_pbar(0)
+		self.log.log2video_pbar_off()
+
+		self.log.log2video_status("END, copied %d events" % (total_events))
 		# end process, close CrossEPG DB saving data
 		crossdb.close_db()
-		self.log("Copied %d events" % total_events)
-		self.log("--- END ---")
+		self.log.log("Copied %d events" % total_events)
+		self.log.log("--- END ---")
 
 
 
