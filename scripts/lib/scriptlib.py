@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # scriptlib.py  by Ambrosa http://www.ambrosa.net
 # derived from E2_LOADEPG
-# 12-Jan-2011
+# 22-Dec-2011
 
 __author__ = "ambrosa http://www.ambrosa.net"
 __copyright__ = "Copyright (C) 2008-2011 Alessandro Ambrosini"
@@ -30,23 +30,46 @@ def fn_escape(s):
 
 # logging class
 class logging_class:
+	
+	FDlog = None
 
-	def __init__(self):
+	def __init__(self, fname=''):
 		# get where CrossEPG save data (dbroot) and use it for opening crossepg.log
 		dbroot = crossepg.epgdb_get_dbroot()
-		if dbroot == True:
-			crossepg.log_open(dbroot)
+		if dbroot != False:
+			if fname != '' :
+				self.FDlog = open(dbroot+'/'+fname,'w')
+			else :
+				crossepg.log_open(dbroot)
+		else:
+			print "[scriptlib] WARNING: cannot open crossepg dbroot. Log not initialized !!"
+			
 
 	def log(self,s):
-		crossepg.log_add(str(s))
+		if self.FDlog != None :
+			self.FDlog.write("%s %s\n" % (time.strftime("%d/%m/%Y %H:%M:%S"), s) )
+		else:
+			crossepg.log_add(str(s))
 
 	def log2video_status(self,s):
-		print("LOGTEXT " + str(s))
+		print("LOGTEXT %s" % s)
+		sys.stdout.flush()
+		
+	def log2video_pbar_on(self):
+		print("PROGRESS ON")
+		sys.stdout.flush()
+		
+	def log2video_pbar_off(self):
+		print("PROGRESS OFF")
+		sys.stdout.flush()
 
+	def log2video_pbar(self,i):
+		print("PROGRESS %d" % i)
+		sys.stdout.flush()
+		
 	def log2video_scriptname(self,s):
-		print("TYPE RUNNING CSCRIPT " + str(s))
-
-
+		print("TYPE RUNNING CSCRIPT %s" % s)
+		sys.stdout.flush()
 
 # decompress gzipped data
 class zlib_class:
