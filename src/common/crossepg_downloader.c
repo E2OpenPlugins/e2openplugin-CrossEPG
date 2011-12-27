@@ -407,6 +407,8 @@ void *download (void *args)
 		else if (providers_get_protocol () == 4)
 		{
 			char filename[1024], tmp[1024], *tmp2;
+			FILE *fp_s; char text_s[80];
+			
 			interactive_send (ACTION_START);
 			interactive_send_text (ACTION_TYPE, "RUNNING SCRIPT");
 			interactive_send_text (ACTION_URL, providers_get_script_filename ());
@@ -416,8 +418,21 @@ void *download (void *args)
 			tmp2 = replace_str (tmp, "%%homedir%%", homedir);
 			sprintf (filename, "LD_LIBRARY_PATH=%s %s/scripts/%s %s", homedir, homedir, providers_get_script_filename (), tmp2);
 
-			if (system (filename) != 0)
-				interactive_send_text (ACTION_ERROR, "script returned an error");
+			//if (system (filename) != 0)
+			//	interactive_send_text (ACTION_ERROR, "script returned an error");
+			
+			fp_s = popen(filename, "r");
+				if (fp_s == NULL) {
+					interactive_send_text (ACTION_ERROR, "script returned an error");				
+				} else {
+					/* Read the output a line at a time - output it. */
+					while (fgets(text_s, sizeof(text_s), fp_s) != NULL) {
+						printf ("%s", text_s); // ending '\n' is managed by script
+						fflush (stdout);
+					}
+					pclose(fp_s);
+				}
+				
 			exec = false;
 			interactive_send (ACTION_END);
 		}
