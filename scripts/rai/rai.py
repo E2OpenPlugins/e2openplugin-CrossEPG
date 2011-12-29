@@ -2,6 +2,7 @@
 # rai.py  by Ambrosa http://www.ambrosa.net
 # this module is used for download EPG data from Rai website
 # derived from E2_LOADEPG
+# 29-Dec-2011
 
 __author__ = "ambrosa http://www.ambrosa.net"
 __copyright__ = "Copyright (C) 2008-2011 Alessandro Ambrosini"
@@ -123,7 +124,6 @@ class main:
 
 	# log text
 	CONF_LOG_SCRIPT_NAME = "RAI (Italy)"
-	CONF_LOG_PREFIX = "RAI: "
 
 	# retry number if HTTP error
 	HTTP_ERROR_RETRY = 3
@@ -143,26 +143,18 @@ class main:
 	CHANNELLIST = {}
 
 
-	def log(self,s,video=0):
-		self.logging.log(self.CONF_LOG_PREFIX + str(s))
-		if video == 1:
-			self.log2video(str(s))
-
-	def log2video(self,s):
-		self.logging.log2video_status(str(s))
-
-
 	def __init__(self,confdir,dbroot):
 
 		# initialize logging
-		self.logging = scriptlib.logging_class()
+		self.log = scriptlib.logging_class()
 		# write to video OSD the script name
-		self.logging.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
-
+		self.log.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
+		
+		self.log.log("=== RUNNING SCRIPT %s ===" % self.CONF_LOG_SCRIPT_NAME)
 
 		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
 		if not os.path.exists(CONF_FILE) :
-			self.log("ERROR: %s not present" % CONF_FILE,1)
+			self.log.log("ERROR: %s not present" % CONF_FILE)
 			sys.exit(1)
 
 		config = ConfigParser.ConfigParser()
@@ -182,7 +174,7 @@ class main:
 			#self.DELTA_UTC = -scriptlib.delta_utc() # return negative if timezone is east of GMT (like Italy), invert sign
 			self.DELTA_UTC = 0
 		else:
-			self.DELTA_UTC = float(self.CONF_GMT_ZONE)*3600.0
+			self.DELTA_UTC = float(self.CONF_GMT_ZONE) * 3600.0
 			if self.DELTA_UTC >= 0:
 				self.DELTA_UTC = self.DELTA_UTC + scriptlib.delta_dst()
 			else:
@@ -192,18 +184,18 @@ class main:
 		#self.log("Website timezone - UTC = %d seconds" % self.DELTA_UTC)
 
 		if not os.path.exists(self.CONF_CACHEDIR):
-			self.log("Creating \'%s\' directory for caching" % self.CONF_CACHEDIR)
+			self.log.log("Creating \'%s\' directory for caching" % self.CONF_CACHEDIR)
 			os.mkdir(self.CONF_CACHEDIR)
 
 		# reading [channels] section
-		temp=config.items("channels");
+		temp = config.items("channels");
 
 		# create a dictionary (Python array) with index = channel ID
 		for i in temp:
 			self.CHANNELLIST[i[0]] = unicode(i[1],'utf-8')
 
 		if len(self.CHANNELLIST) == 0 :
-			self.log("ERROR: [channels] section empty ?",1)
+			self.log.log("ERROR: [channels] section empty ?")
 			sys.exit(1)
 
 		# set network socket timeout
@@ -225,10 +217,10 @@ class main:
 
 
 	def download_and_cache(self):
-		self.log("--- START DOWNLOAD AND CACHE DATA ---")
-		self.log2video("STARTING DOWNLOAD")
+		self.log.log("--- START DOWNLOAD AND CACHE DATA ---")
+		self.log.log2video_status("STARTING DOWNLOAD")
 
-		self.log("Removing old cached files")
+		self.log.log("Removing old cached files")
 		scriptlib.cleanup_oldcachedfiles(self.CONF_CACHEDIR, self.FIELD_SEPARATOR)
 
 		#self.log("Start downloading HTML data from \'%s\'" % self.CONF_URL)
@@ -238,6 +230,19 @@ class main:
 		# get remote XML files
 		#   chid format: channel id , 0|1|2(,new name)
 		#   i.e. ("101" , "1,SkyCinema1")
+		pbar_max = 0
+		for c in chlist.keys():
+			cacheopt = int(string.split(chlist[c],",")[0])
+			if cacheopt == 1:
+				pbar_max += 1
+				
+		pbar_max *= self.CONF_MAX_DAY_EPG
+		pbar_max = 100.0 / pbar_max
+			
+		self.log.log2video_pbar_on()
+		self.log.log2video_pbar(0)
+		pbar_value = 0
+		
 		for c in sorted(chlist.keys()):
 			self.guidatoday = []
 			self.guidatomorrow = []
@@ -253,7 +258,8 @@ class main:
 			# if cacheopt == 0, do nothing
 			if cacheopt == 0:
 				continue
-
+		
+			self.log.log2video_status("processing %s" % c)
 			channel_name = ''
 			if len(chlist[c].split(",")) > 1 :
 				if chlist[c].split(",")[1] != '' :
@@ -262,7 +268,7 @@ class main:
 
 			# if channel name is not present as option, quit with error
 			if channel_name == '':
-				self.log("ERROR ! ID=%s channel name not present" % c, 1)
+				self.log.log("ERROR ! ID=%s channel name not present" % c)
 				sys.exit(1)
 
 			channel_provider = self.CONF_DEFAULT_PROVIDER
@@ -274,9 +280,13 @@ class main:
 			for day in self.DAYCACHE:
 				if exit_for_loop == True:
 					break
+				
+				pbar_value += 1
+				self.log.log2video_pbar(pbar_value * pbar_max)
+
 
 				day_get = time.strftime("%Y_%m_%d",time.strptime(day,"%Y%m%d"))
-				xmlfile = "?%s_%s" % (c,day_get)
+				xmlfile = "%s_%s" % (c,day_get)
 
 				# download only if file doesn't exist or cacheopt == 2 (always download),
 				# using open(...,"w") files will be overwritten (saving a delete + create)
@@ -288,12 +298,12 @@ class main:
 				if (cacheopt == 3) and os.path.exists(eventfilepath) and (day != self.TODAY):
 					continue
 				if (cacheopt != 1) and (cacheopt != 2) and (cacheopt != 3):
-					self.log("Warning: unknown cache option " + str(cacheopt))
+					self.log.log("Warning: unknown cache option %s" % cacheopt)
 					exit_for_loop = True
 					continue
 
-				self.log("Download HTML data from \'%s\'" % (self.CONF_URL + xmlfile))
-				self.log2video("Download " + c)
+				self.log.log("Download HTML data from \'%s?%s\'" % (self.CONF_URL,xmlfile))
+				self.log.log2video_status("downloading %s" % xmlfile)
 
 				i = self.HTTP_ERROR_RETRY
 				while i > 0  :
@@ -301,7 +311,7 @@ class main:
 					time.sleep(random.uniform(self.CONF_RANDOM_MIN, self.CONF_RANDOM_MAX))
 
 					try:
-						sock=urllib2.urlopen(self.CONF_URL + xmlfile)
+						sock=urllib2.urlopen(self.CONF_URL + '?' + xmlfile)
 						data=sock.read()
 
 					except IOError, e:
@@ -313,7 +323,7 @@ class main:
 							if hasattr(e, 'msg'):
 								serr+=" , "+str(e.msg)
 
-						self.log("\'%s\' connection error. Reason: %s. Waiting %d sec. and retry [%d] ..." % (self.CONF_URL + xmlfile, serr, self.HTTP_ERROR_WAIT_RETRY, i))
+						self.log.log("\'%s?%s\' connection error. Reason: %s. Waiting %d sec. and retry [%d] ..." % (self.CONF_URL,xmlfile, serr, self.HTTP_ERROR_WAIT_RETRY, i))
 						time.sleep(self.HTTP_ERROR_WAIT_RETRY) # add sleep
 						i -= 1
 
@@ -333,7 +343,7 @@ class main:
 
 						self.guida = self.guida + self.guidatoday
 
-						self.log("  writing in cache \'%s\'" % eventfilename)
+						self.log.log("  writing in cache \'%s\'" % eventfilename)
 						# write data in cache file using UTF-8 encoding
 						fd = codecs.open(eventfilepath, "w", 'utf-8')
 						fd.write(str(c) + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + channel_provider + self.FIELD_SEPARATOR + day + '\n')
@@ -360,22 +370,26 @@ class main:
 							fd.write(event_starttime + self.FIELD_SEPARATOR + event_startime_unix_gmt + self.FIELD_SEPARATOR + event_title + self.FIELD_SEPARATOR + event_description + '\n')
 
 						fd.close()
+		
+		self.log.log2video_pbar(0)
+		self.log.log2video_pbar_off()
+
 
 
 # ----------------------------------------------------------------------
 
 
 	def process_cache(self):
-		self.log("--- START PROCESSING CACHE ---")
-		self.log2video("START PROCESSING CACHE")
+		self.log.log("--- START PROCESSING CACHE ---")
+		self.log.log2video_status("START PROCESSING CACHE")
 		if not os.path.exists(self.CONF_CACHEDIR):
-			self.log("ERROR: %s not present" % self.CONF_CACHEDIR,1)
+			self.log.log("ERROR: %s not present" % self.CONF_CACHEDIR)
 			sys.exit(1)
 
-		self.log("Loading lamedb")
+		self.log.log("Loading lamedb")
 		lamedb = scriptlib.lamedb_class()
 
-		self.log("Initialize CrossEPG database")
+		self.log.log("Initialize CrossEPG database")
 		crossdb = scriptlib.crossepg_db_class()
 		crossdb.open_db()
 
@@ -384,7 +398,7 @@ class main:
 		channels_name = ''
 		total_events = 0
 
-		self.log("Start data processing")
+		self.log.log("Start data processing")
 		filelist = sorted(os.listdir(self.CONF_CACHEDIR))
 		filelist.append('***END***')
 
@@ -395,8 +409,8 @@ class main:
 
 			if id != previous_id :
 				total_events += len(events)
-				self.log("  ...processing \'%s\' , nr. events %d" % (previous_id,len(events)))
-				self.log2video("processed %d events ..." % total_events )
+				self.log.log("  ...processing \'%s\' , nr. events %d" % (previous_id,len(events)))
+				self.log.log2video_status("processed %d events ..." % total_events )
 
 				for c in channels_name:
 					# a channel can have zero or more SID (different channel with same name)
@@ -450,7 +464,7 @@ class main:
 				channels_name = ''
 
 			if id == previous_id:
-				self.log("Reading  \'%s\'" % f)
+				self.log.log("Reading  \'%s\'" % f)
 				# read events from cache file using UTF-8 and insert them in events list
 				fd = codecs.open(os.path.join(self.CONF_CACHEDIR, f),"r","utf-8")
 				lines = fd.readlines()
@@ -464,9 +478,10 @@ class main:
 
 		# end process, close CrossEPG DB saving data
 		crossdb.close_db()
-		self.log("TOTAL EPG EVENTS PROCESSED: %d" % total_events)
-		self.log("--- END ---")
-		self.log2video("END , events processed: %d" % total_events)
+		self.log.log("TOTAL EPG EVENTS PROCESSED: %d" % total_events)
+		self.log.log("--- END ---")
+		self.log.log2video_status("END, events processed: %d" % total_events)
+		time.sleep(3)
 
 
 
