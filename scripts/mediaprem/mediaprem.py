@@ -2,7 +2,7 @@
 # mediaprem.py  by Ambrosa http://www.ambrosa.net
 # this module is used for download EPG data from Mediaset website
 # derived from E2_LOADEPG
-# 22-Dec-2011
+# 29-Dec-2011
 
 __author__ = "ambrosa http://www.ambrosa.net"
 __copyright__ = "Copyright (C) 2008-2011 Alessandro Ambrosini"
@@ -125,6 +125,11 @@ class main(sgmllib.SGMLParser):
 	
 	SGML_PBAR_MAXVALUE = 0
 	SGML_PBAR_INDEX = 0
+	SGML_LOGTEXT = ''
+	
+	SGML_ACTIVITY_CHAR = '|/-\\'
+	SGML_ACTIVITY_INDEX = 0
+	SGML_ACTIVITY_MAX_INDEX = 3
 
 	def parse(self, s):
 			self.feed(s)
@@ -154,6 +159,7 @@ class main(sgmllib.SGMLParser):
 	def start_canale(self,attr):
 		if self.SGML_GIORNOMP != None:
 			self.log.log2video_status("processing XML %s ..." % self.SGML_GIORNOMP)
+			
 			for name,value in attr:
 				if name == "id":
 					pbar_value = int(self.SGML_PBAR_INDEX * 100 / self.SGML_PBAR_MAXVALUE)
@@ -214,7 +220,9 @@ class main(sgmllib.SGMLParser):
 						break
 
 					self.log.log("  Writing in cache \'%s\'" % eventfilename)
-					self.log.log2video_status("caching %s (%s) ..." % (channel_name.upper(), day))
+					
+					self.SGML_LOGTEXT = "downloading %s (%s) ..." % (channel_name.upper(), day)
+					self.log.log2video_status(self.SGML_LOGTEXT)
 
 					self.SGML_FD = codecs.open(eventfilepath,"w",'utf-8')
 
@@ -256,6 +264,11 @@ class main(sgmllib.SGMLParser):
 
 			event_description = ''
 			if self.CONF_DL_DESC == 1 :
+				self.log.log2video_status(self.SGML_LOGTEXT + ' ' + self.SGML_ACTIVITY_CHAR[self.SGML_ACTIVITY_INDEX])
+				self.SGML_ACTIVITY_INDEX += 1
+				if self.SGML_ACTIVITY_INDEX > self.SGML_ACTIVITY_MAX_INDEX :
+					self.SGML_ACTIVITY_INDEX = 0
+				
 				event_description = unicode(self.get_description(self.SGML_EVENT_SUMMARIE_LINK.strip(' \n\r'), self.CONF_DLDESCMAXCHAR) )
 				event_description = event_description.replace('\r','')
 				event_description = event_description.replace('\n',u' ')
@@ -361,6 +374,8 @@ class main(sgmllib.SGMLParser):
 		
 		# write to video OSD the script name
 		self.log.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
+		
+		self.log.log("=== RUNNING SCRIPT %s ===" % self.CONF_LOG_SCRIPT_NAME)
 
 		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
 		if not os.path.exists(CONF_FILE) :

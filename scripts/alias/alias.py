@@ -42,6 +42,8 @@ class main:
 		self.log = scriptlib.logging_class()
 		# write to video OSD the script name
 		self.log.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
+		
+		self.log.log("=== RUNNING SCRIPT %s ===" % self.CONF_LOG_SCRIPT_NAME)
 
 
 		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
@@ -203,12 +205,12 @@ class main:
 		self.log.log2video_pbar(0)
 		self.log.log2video_pbar_off()
 
-		self.log.log2video_status("END, copied %d events" % (total_events))
 		# end process, close CrossEPG DB saving data
 		crossdb.close_db()
 		self.log.log("Copied %d events" % total_events)
 		self.log.log("--- END ---")
-
+		self.log.log2video_status("END, copied %d events" % (total_events))
+		time.sleep(3)
 
 
 # ****************************************************************************************************************************
