@@ -64,6 +64,10 @@ class logging_class:
 		sys.stdout.flush()
 
 	def log2video_pbar(self,i):
+		if i > 100:
+			i = 100
+		if i < 0:
+			i = 0
 		print("PROGRESS %d" % i)
 		sys.stdout.flush()
 		
