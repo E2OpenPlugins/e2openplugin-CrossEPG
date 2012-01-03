@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# mediaprem.py  by Ambrosa http://www.ambrosa.net
+# mediaset.py  by Ambrosa http://www.ambrosa.net
 # this module is used for download EPG data from Mediaset website
 # derived from E2_LOADEPG
 # 29-Dec-2011
@@ -35,58 +35,18 @@ import sgmllib
 import scriptlib
 
 # =================================================================
-# HTML PARSER used for parsing description
-
-
-class Description_parser(sgmllib.SGMLParser):
-	def parse(self, s):
-		self.feed(s)
-		self.close()
-
-	def __init__(self, verbose=0):
-		sgmllib.SGMLParser.__init__(self, verbose)
-		self.start_div_box = False
-		self.start_div_boxtxt = False
-		self.description = ''
-
-
-	def start_div(self, attributes):
-		for name, value in attributes:
-			if name == "class":
-				if value == "box_Text":
-					self.start_div_box = True
-				elif value == "txtBox_cms":
-					self.start_div_boxtxt = True
-
-	def end_div(self):
-		if self.start_div_boxtxt == True:
-			self.start_div_box = False
-			self.start_div_boxtxt = False
-
-
-	def handle_data(self, data):
-		if self.start_div_boxtxt == True:
-			self.description += data.decode('iso-8859-1')
-
-	def get_descr(self):
-		return (self.description.strip(' \n\r') )
-
-
-
-# =================================================================
-
 
 class main(sgmllib.SGMLParser):
 
 	# main config file
-	CONF_CONFIGFILENAME = "mediaprem.conf"
+	CONF_CONFIGFILENAME = "mediaset.conf"
 
 	# Network socket timeout (in seconds)
 	CONF_SOCKET_TIMEOUT = 20
 
 	# log text
-	CONF_LOG_SCRIPT_NAME = "MediasetPremium (IT)"
-	CONF_LOG_FILENAME = '' # if empty, log to crossepg.log  #"mediaprem.log"
+	CONF_LOG_SCRIPT_NAME = "Mediaset FTA (IT)"
+	CONF_LOG_FILENAME = '' # if empty, log to crossepg.log
 
 	# max chars in description
 	CONF_DLDESCMAXCHAR = 250
@@ -111,150 +71,126 @@ class main(sgmllib.SGMLParser):
 # best way is use xml.minidom but it's very memory hungry (about 40MB memory for 2 MB XML file)
 # sgmllib can simple parse xml data
 	SGML_PALINSESTO_INSIDE = False
-	SGML_TITOLO_INSIDE = False
-	SGML_LINKSCHEDA_INSIDE = False
-
+	SGML_PROGRAMMI_INSIDE = False
+	
 	SGML_GIORNOMP = None
-	SGML_CHID = None
-	SGML_FD = None
+	SGML_FD = {}
 	SGML_TOTAL_EVENTS = 0
 
-	SGML_EVENT_STARTHOUR = None
+	SGML_EVENT_IDREF = None
+	SGML_EVENT_TIMESTAMP = None
 	SGML_EVENT_TITLE = None
-	SGML_EVENT_SUMMARIE = None
 	
-	SGML_PBAR_MAXVALUE = 0
+	SGML_PBAR_MAXVALUE = 1
 	SGML_PBAR_INDEX = 0
-	SGML_LOGTEXT = ''
-	
-	SGML_ACTIVITY_CHAR = '|/-\\'
-	SGML_ACTIVITY_INDEX = 0
-	SGML_ACTIVITY_MAX_INDEX = 3
 
 	def parse(self, s):
-			self.feed(s)
-			self.close()
+		self.feed(s)
+		self.close()
 
 	def start_palinsesto(self, attr):
 		self.SGML_PALINSESTO_INSIDE = True
+		self.SGML_PBAR_MAXVALUE = 100.0 / self.SGML_PBAR_MAXVALUE
 
 	def end_palinsesto(self):
 		self.SGML_PALINSESTO_INSIDE = False
 		self.SGML_GIORNOMP = None
 		self.log.log("extracted %d events" % self.SGML_TOTAL_EVENTS)
 
-	def start_giorno(self,attr):
+	def start_guidatv(self,attr):
 		if self.SGML_PALINSESTO_INSIDE == True :
 			self.SGML_GIORNOMP = None
 			for name,value in attr:
 				if name == "data":
+					self.log.log2video_pbar(self.SGML_PBAR_INDEX * self.SGML_PBAR_MAXVALUE)
 					if str(value).strip(' \n\r') in self.DAYCACHEMP :
 						self.SGML_GIORNOMP = str(value).strip(' \n\r')
-						self.log.log2video_status("processing XML %s ..." % self.SGML_GIORNOMP)
-					break
+						self.log.log2video_status("processing XML %s (%d)" % (self.SGML_GIORNOMP,self.SGML_TOTAL_EVENTS) )
+						self.SGML_FD = {}
+						
+						for c in sorted(self.CHANNELLIST.keys()):
+							cacheopt = int(self.CHANNELLIST[c].split(",")[0])
+							
+							# if cacheopt == 0, do nothing
+							if cacheopt == 0:
+								continue
 
-	def end_giorno(self):
+							channel_name = ''
+							if len(self.CHANNELLIST[c].split(",")) > 1 :
+								if self.CHANNELLIST[c].split(",")[1] != '' :
+									# channel renamed, new name provided by user
+									channel_name = self.CHANNELLIST[c].split(",")[1].strip(' \n\r').lower()
+
+							# if channel name is not present as option, quit with error
+							if channel_name == '':
+								self.log.log("ERROR ! ID=%s channel name not present" % c)
+								sys.exit(1)
+
+							channel_provider = self.CONF_DEFAULT_PROVIDER
+							if len(self.CHANNELLIST[c].split(",")) > 2 :
+								if self.CHANNELLIST[c].split(",")[2] != '' :
+									channel_provider = self.CHANNELLIST[c].split(",")[2].strip(' \n\r').lower()
+
+							# if channel name is not present as option in channel_list.conf , skip it
+							if channel_name == '':
+								self.log.log("ERROR ! ID=%s channel name not present. Skip !" % c)
+								continue
+
+							day = str(self.convert_daymp(self.SGML_GIORNOMP))
+							eventfilename = scriptlib.fn_escape(c  + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + day)
+							eventfilepath = os.path.join(self.CONF_CACHEDIR, eventfilename)
+							
+							if (cacheopt == 1) and os.path.exists(eventfilepath):
+								continue
+							if (cacheopt == 3) and os.path.exists(eventfilepath) and (self.SGML_GIORNOMP != self.TODAYMP):
+								continue
+							if (cacheopt != 1) and (cacheopt != 2) and (cacheopt != 3):
+								self.log.log("WARNING: unknown cache option %s" % cacheopt)
+								continue
+
+							self.log.log("  Opening for caching \'%s\'" % eventfilename)
+
+							self.SGML_FD[c] = codecs.open(eventfilepath,"w",'utf-8')
+							self.SGML_FD[c].write(c + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + channel_provider + self.FIELD_SEPARATOR + day + '\n')
+							self.SGML_FD[c].write("Local Time (human readeable)###Unix GMT Time###Event Title###Event Description\n")
+
+						
+
+	def end_guidatv(self):
 		self.SGML_GIORNOMP = None
+		for c in self.SGML_FD.keys():
+			self.SGML_FD[c].close()
 
-	def start_canale(self,attr):
+
+	def start_programmi(self,attr):
 		if self.SGML_GIORNOMP != None:
-			self.log.log2video_status("processing XML %s ..." % self.SGML_GIORNOMP)
-			
+			self.SGML_PROGRAMMI_INSIDE = True
+
+	def end_programmi(self):
+		self.SGML_PROGRAMMI_INSIDE = False
+
+		
+	def start_programma(self,attr):
+		self.SGML_PBAR_INDEX += 1
+		self.SGML_TOTAL_EVENTS += 1
+		if (self.SGML_PROGRAMMI_INSIDE == True) :
 			for name,value in attr:
-				if name == "id":
-					pbar_value = int(self.SGML_PBAR_INDEX * 100 / self.SGML_PBAR_MAXVALUE)
-					if pbar_value > 100:
-						pbar_value = 100
-					self.log.log2video_pbar(pbar_value)
-					self.SGML_PBAR_INDEX += 1
-
-					self.SGML_CHID = str(value).strip(' \n\r').lower()
-
-					if not self.CHANNELLIST.has_key(self.SGML_CHID) :
-							self.log.log("WARNING: new channel id=%s found in XML data" % self.SGML_CHID )
-							break
-
-					# get cache option
-					#  0 : don't download/cache
-					#  1 : download and cache (optional 1,new_name )
-					#  2 : always download overwriting existing files (optional 2,new_name )
-					#  3 : always download overwriting existing files only for TODAY (optional 3,new_name )
-
-					cacheopt = int(self.CHANNELLIST[self.SGML_CHID].split(",")[0])
-
-					# if cacheopt == 0, do nothing
-					if cacheopt == 0:
-						break
-
-					channel_name = ''
-					if len(self.CHANNELLIST[self.SGML_CHID].split(",")) > 1 :
-						if self.CHANNELLIST[self.SGML_CHID].split(",")[1] != '' :
-							# channel renamed, new name provided by user
-							channel_name = self.CHANNELLIST[self.SGML_CHID].split(",")[1].strip(' \n\r').lower()
-
-					# if channel name is not present as option, quit with error
-					if channel_name == '':
-						self.log.log("ERROR ! ID=%s channel name not present" % self.SGML_CHID)
-						sys.exit(1)
-
-					channel_provider = self.CONF_DEFAULT_PROVIDER
-					if len(self.CHANNELLIST[self.SGML_CHID].split(",")) > 2 :
-						if self.CHANNELLIST[self.SGML_CHID].split(",")[2] != '' :
-							channel_provider = self.CHANNELLIST[self.SGML_CHID].split(",")[2].strip(' \n\r').lower()
-
-					# if channel name is not present as option in channel_list.conf , skip it
-					if channel_name == '':
-						self.log.log("ERROR ! ID=%s channel name not present. Skip !" % self.SGML_CHID)
-						break
-
-					day = str(self.convert_daymp(self.SGML_GIORNOMP))
-					eventfilename = scriptlib.fn_escape(self.SGML_CHID + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + day)
-					eventfilepath = os.path.join(self.CONF_CACHEDIR, eventfilename)
+				if name == "idref" :
+					self.SGML_EVENT_IDREF = str(value).strip(' \n\r').lower()
+					if not self.CHANNELLIST.has_key(self.SGML_EVENT_IDREF) :
+						self.log.log("WARNING: new channel id=%s found in XML data" % self.SGML_EVENT_IDREF )
+				elif name == "timestamp" :
+					self.SGML_EVENT_TIMESTAMP = str(value).strip(' \n\r')
+				elif name == "titolo" :
+					self.SGML_EVENT_TITLE = str(value).strip(' \n\r')
+					self.SGML_EVENT_TITLE = self.SGML_EVENT_TITLE.encode('utf-8')
 					
-					if (cacheopt == 1) and os.path.exists(eventfilepath):
-						break
-					if (cacheopt == 3) and os.path.exists(eventfilepath) and (self.SGML_GIORNOMP != self.TODAYMP):
-						break
-					if (cacheopt != 1) and (cacheopt != 2) and (cacheopt != 3):
-						self.log.log("WARNING: unknown cache option %s" % cacheopt)
-						break
 
-					self.log.log("  Writing in cache \'%s\'" % eventfilename)
-					
-					self.SGML_LOGTEXT = "downloading %s (%s) ..." % (channel_name.upper(), day)
-					self.log.log2video_status(self.SGML_LOGTEXT)
-
-					self.SGML_FD = codecs.open(eventfilepath,"w",'utf-8')
-
-					self.SGML_FD.write(self.SGML_CHID + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + channel_provider + self.FIELD_SEPARATOR + day + '\n')
-					self.SGML_FD.write("Local Time (human readeable)###Unix GMT Time###Event Title###Event Description\n")
-
-					break
-
-	def end_canale(self):
-		if self.SGML_FD != None:
-			self.SGML_FD.close()
-		self.SGML_FD = None
-		self.SGML_CHID = None
-
-	def start_prg(self,attr):
-		if self.SGML_FD != None :
-			self.SGML_EVENT_STARTHOUR = None
-			for name,value in attr:
-				if name == "orainizio":
-					self.SGML_EVENT_STARTHOUR = str(value).strip(' \n\r')
-					break
-
-	def end_prg(self):
-		if self.SGML_FD != None :
-
-			if (self.SGML_EVENT_STARTHOUR >='00:00') and (self.SGML_EVENT_STARTHOUR <= '05:59') :
-				nextdayevent = 86400
-			else:
-				nextdayevent = 0
-
-			event_starttime = self.SGML_GIORNOMP + '_' + self.SGML_EVENT_STARTHOUR
-			event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y/%m/%d_%H:%M"))) - self.DELTA_UTC + nextdayevent)
+	def end_programma(self):
+		if self.SGML_FD.has_key(self.SGML_EVENT_IDREF) :
+				
+			event_starttime = self.SGML_EVENT_TIMESTAMP
+			event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y%m%d%H%M"))) - self.DELTA_UTC)
 
 			event_title = unicode(self.SGML_EVENT_TITLE)
 			event_title = event_title.replace('\r','')
@@ -262,106 +198,45 @@ class main(sgmllib.SGMLParser):
 			event_title = event_title.strip(u' ')
 			#self.log.log("  event_title=" + event_title)
 
+			# no descriptions available for Mediaset
 			event_description = ''
-			if self.CONF_DL_DESC == 1 :
-				self.log.log2video_status(self.SGML_LOGTEXT + ' ' + self.SGML_ACTIVITY_CHAR[self.SGML_ACTIVITY_INDEX])
-				self.SGML_ACTIVITY_INDEX += 1
-				if self.SGML_ACTIVITY_INDEX > self.SGML_ACTIVITY_MAX_INDEX :
-					self.SGML_ACTIVITY_INDEX = 0
-				
-				event_description = unicode(self.get_description(self.SGML_EVENT_SUMMARIE_LINK.strip(' \n\r'), self.CONF_DLDESCMAXCHAR) )
-				event_description = event_description.replace('\r','')
-				event_description = event_description.replace('\n',u' ')
-				event_description = event_description.strip(u' ')
 
-			self.SGML_FD.write(event_starttime + self.FIELD_SEPARATOR + event_startime_unix_gmt + self.FIELD_SEPARATOR + event_title + self.FIELD_SEPARATOR + event_description + '\n')
+			self.SGML_FD[self.SGML_EVENT_IDREF].write(event_starttime + self.FIELD_SEPARATOR + event_startime_unix_gmt + self.FIELD_SEPARATOR + event_title + self.FIELD_SEPARATOR + event_description + '\n')
 			self.SGML_TOTAL_EVENTS += 1
+			
+			self.SGML_EVENT_IDREF = None
+			self.SGML_EVENT_TIMESTAMP = None
+			self.SGML_EVENT_TITLE = None
+		
+		
 
-	def start_titolo(self,attr):
-		if self.SGML_FD != None:
-			self.SGML_TITOLO_INSIDE = True
+					#pbar_value = int(self.SGML_PBAR_INDEX * 100 / self.SGML_PBAR_MAXVALUE)
+					#if pbar_value > 100:
+					#	pbar_value = 100
+					#self.log.log2video_pbar(pbar_value)
+					#self.SGML_PBAR_INDEX += 1
 
-	def end_titolo(self):
-		if self.SGML_FD != None:
-			self.SGML_TITOLO_INSIDE = False
+		
+		
+		
+#	def handle_data(self, data):
+#		pass
 
-	def start_linkscheda(self,attr):
-		if self.SGML_FD != None:
-			self.SGML_LINKSCHEDA_INSIDE = True
-
-	def end_linkscheda(self):
-		if self.SGML_FD != None:
-			self.SGML_LINKSCHEDA_INSIDE = False
-
-	def handle_data(self, data):
-		if self.SGML_TITOLO_INSIDE == True:
-			self.SGML_EVENT_TITLE = data.encode('utf-8')
-			self.SGML_EVENT_TITLE = self.SGML_EVENT_TITLE.strip(' \n\r')
-
-		if self.SGML_LINKSCHEDA_INSIDE == True:
-			self.SGML_EVENT_SUMMARIE_LINK = data.encode('utf-8')
-			self.SGML_EVENT_SUMMARIE_LINK = self.SGML_EVENT_SUMMARIE_LINK.strip(' \n\r')
-
-	def report_unbalanced(self, tag):
-		if self.SGML_FD != None:
-			self.log.log("  WARNING: UNBALANCED TAG REPORTED %s !!" % tag)
-
+#	def report_unbalanced(self, tag):
+#		self.log.log("  WARNING: UNBALANCED TAG REPORTED \"%s\" @ line=%d!!" % (tag,self.line) )
+#
 #	def unknown_starttag(self, tag, attributes):
-#		if self.SGML_FD != None:
-#			self.log.log(" UNKNW STARTTAG %s !!" % tag)
+#		self.log.log(" UNKNW STARTTAG %s !!" % tag)
 #
 #	def unknown_endtag(self, tag):
-#		if self.SGML_FD != None:
-#			self.log.log(" UNKNW ENDTAG %s !!" % tag)
+#		self.log.log(" UNKNW ENDTAG %s !!" % tag)
 
 
 # -----------------------------------------------
 
 	def convert_daymp(self,dmp):
-		daystandard = time.strftime("%Y%m%d",time.strptime(dmp,"%Y/%m/%d"))
+		daystandard = time.strftime("%Y%m%d",time.strptime(dmp,"%d/%m/%Y"))
 		return daystandard
-
-
-	def get_description(self,url,maxchar=128):
-
-		if url[:7] != 'http://':
-			return('')
-
-		if (url[-5:] != '.html') and (url[-4:] != '.htm') :
-			return('')
-
-		url_hash = hash(url)
-
-		if self.DESCRIPTIONS_WEBCACHE.has_key(url_hash):
-			self.log.log("   description (from cache): " + url)
-			return(self.DESCRIPTIONS_WEBCACHE[url_hash])
-
-		self.log.log("   downloading description and cache: " + url )
-		url_enc = str(urllib.quote(url,safe=":/"))
-		try:
-			sock = urllib2.urlopen(url_enc)
-			data = sock.read()
-		except IOError, e:
-			serr = "unknown"
-			if hasattr(e, 'reason'):
-				serr = str(e.reason)
-			elif hasattr(e, 'code'):
-				serr = str(e.code)
-				if hasattr(e, 'msg'):
-					serr += " , " + str(e.msg)
-
-			self.log.log("      error, reason: %s. Skip it." % serr)
-			return('')
-
-		else:
-			sock.close()
-			dsparser = Description_parser()
-			dsparser.parse(data)
-			self.DESCRIPTIONS_WEBCACHE[url_hash] = dsparser.get_descr()[:maxchar]
-			return(self.DESCRIPTIONS_WEBCACHE[url_hash])
-
-		return('')
-
 
 
 	def __init__(self, confdir, dbroot):
@@ -392,9 +267,7 @@ class main(sgmllib.SGMLParser):
 		# save cache under dbroot
 		self.CONF_CACHEDIR = os.path.join(dbroot,config.get("global","CACHE_DIRNAME"))
 
-		self.CONF_DL_DESC = config.getint("global","DL_DESC")
 		self.CONF_MAX_DAY_EPG = config.getint("global","MAX_DAY_EPG")
-		self.SGML_PBAR_MAXVALUE = 100.0 / (self.CONF_MAX_DAY_EPG + 1.0)
 
 		self.CONF_URL = config.get("global","URL")
 
@@ -430,11 +303,11 @@ class main(sgmllib.SGMLParser):
 		# set network socket timeout
 		socket.setdefaulttimeout(self.CONF_SOCKET_TIMEOUT)
 
-		self.TODAYMP = time.strftime("%Y/%m/%d")
-		# create a list filled with dates (format AAAA/MM/DD) from today to today+ MAX_DAY_EPG
+		self.TODAYMP = time.strftime("%d/%m/%Y")
+		# create a list filled with dates (format DD/MM/AAAA) from today to today+ MAX_DAY_EPG
 		self.DAYCACHEMP=[]
 		for day in range(0,self.CONF_MAX_DAY_EPG):
-			self.DAYCACHEMP.append(time.strftime("%Y/%m/%d",time.localtime(time.time()+86400*day)))
+			self.DAYCACHEMP.append(time.strftime("%d/%m/%Y",time.localtime(time.time()+86400*day)))
 
 
 
@@ -449,7 +322,7 @@ class main(sgmllib.SGMLParser):
 		scriptlib.cleanup_oldcachedfiles(self.CONF_CACHEDIR, self.FIELD_SEPARATOR)
 
 
-		self.log.log("Start download XML data from \'" + self.CONF_URL+"\'")
+		self.log.log("Start download XML data from \'%s\'" % self.CONF_URL )
 		self.log.log2video_status("downloading XML data ...")
 
 		i = self.HTTP_ERROR_RETRY
@@ -484,10 +357,10 @@ class main(sgmllib.SGMLParser):
 		self.log.log2video_status("processing XML data, wait ...")
 
 		# replace malformed single end tag <.../> as <...> (SGML doesn't like "/>")
-		data = data.replace('/>','>')
+		data = data.replace('/>','></programma>')
 
 		# set max 'id' occurencies
-		self.SGML_PBAR_MAXVALUE = data.count('id="')
+		self.SGML_PBAR_MAXVALUE = data.count('idref="')
 
 		# start SGMLLIB parsing
 		self.log.log2video_pbar_on()
@@ -633,7 +506,7 @@ os.nice(10)
 # memory saving: about 50% (!!), some performance loss (obviously)
 gc.set_threshold(50,10,10)
 
-SCRIPT_DIR = 'scripts/mediaprem/'
+SCRIPT_DIR = 'scripts/mediaset/'
 
 # get CrossEPG installation dir.
 crossepg_instroot = crossepg.epgdb_get_installroot()
