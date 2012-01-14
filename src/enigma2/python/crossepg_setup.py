@@ -94,7 +94,7 @@ class CrossEPG_Setup(Screen):
 		self["key_green"] = Button()
 		self["key_yellow"] = Button()
 		self["key_blue"] = Button("")
-		self["config_actions"] = NumberActionMap(["SetupActions", "InputAsciiActions", "KeyboardInputActions", "ColorActions"],
+		self["config_actions"] = NumberActionMap(["SetupActions", "InputAsciiActions", "KeyboardInputActions", "ColorActions", "MenuActions"],
 		{
 			"gotAsciiCode": self.keyGotAscii,
 			"red": self.quit,
@@ -103,6 +103,7 @@ class CrossEPG_Setup(Screen):
 			"right": self.keyRight,
 			"home": self.keyHome,
 			"end": self.keyEnd,
+			"menu": self.quit,
 			"1": self.keyNumberGlobal,
 			"2": self.keyNumberGlobal,
 			"3": self.keyNumberGlobal,

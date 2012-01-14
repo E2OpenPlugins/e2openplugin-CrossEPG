@@ -35,12 +35,13 @@ class CrossEPG_Ordering(Screen):
 		self["key_green"] = Button("")
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button("")
-		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
 		{
 			"red": self.quit,
 			"cancel": self.quit,
 			"green": self.moveUp,
 			"yellow": self.moveDown,
+			"menu": self.quit,
 		}, -2)
 
 		self.buildList()

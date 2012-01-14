@@ -42,13 +42,14 @@ class CrossEPG_Providers(Screen):
 		self["key_green"] = Button(_("Enable"))
 		self["key_yellow"] = Button(_("Download"))
 		self["key_blue"] = Button("")
-		self["setupActions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
 		{
 			"red": self.quit,
 			"cancel": self.quit,
 			"green": self.switchState,
 			"ok": self.switchState,
 			"yellow": self.download,
+			"menu": self.quit,
 		}, -2)
 
 		self.buildList()

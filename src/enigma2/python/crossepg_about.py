@@ -37,10 +37,11 @@ class CrossEPG_About(Screen):
 		self["krkadoni_pix"] = Pixmap()
 		self["krkadoni_text"] = Label("")
 
-		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
 		{
 			"red": self.quit,
 			"cancel": self.quit
+			"menu": self.quit,
 		}, -2)
 		
 		self["key_red"] = Button(_("Back"))

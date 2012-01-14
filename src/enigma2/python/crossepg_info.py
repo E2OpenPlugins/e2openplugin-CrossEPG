@@ -39,10 +39,11 @@ class CrossEPG_Info(Screen):
 		self["channels_count"] = Label("")
 		self["events_count"] = Label("")
 		self["hashes_count"] = Label("")
-		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
 		{
 			"red": self.quit,
 			"cancel": self.quit
+			"menu": self.quit,
 		}, -2)
 		
 		self["key_red"] = Button(_("Back"))

@@ -71,10 +71,11 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("About"), "about.png"))
 
 		self["list"] = List(l)
-		self["setupActions"] = ActionMap(["SetupActions"],
+		self["setupActions"] = ActionMap(["SetupActions", "MenuActions"],
 		{
 			"cancel": self.quit,
 			"ok": self.openSelected,
+			"menu": self.quit,
 		}, -2)
 
 		self.onFirstExecBegin.append(self.setTitleWithVerion)
