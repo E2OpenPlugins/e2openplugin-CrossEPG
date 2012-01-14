@@ -42,7 +42,7 @@ class CrossEPG_Info(Screen):
 		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
 		{
 			"red": self.quit,
-			"cancel": self.quit
+			"cancel": self.quit,
 			"menu": self.quit,
 		}, -2)
 		
