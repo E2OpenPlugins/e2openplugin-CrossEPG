@@ -18,6 +18,7 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 
 from Components.Label import Label
+from Components.Sources.StaticText import StaticText
 from Components.Button import Button
 from Components.MenuList import MenuList
 from Components.Sources.List import List
@@ -31,10 +32,6 @@ from Plugins.Plugin import PluginDescriptor
 
 from time import *
 
-try:
-	from version import version
-except Exception, e:
-	pass
 
 import _enigma
 
@@ -48,11 +45,19 @@ class CrossEPG_Menu(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+		try:
+			from version import version
+			self.setup_title = _("CrossEPG") + " - " + version[:5]
+			Screen.setTitle(self, self.setup_title)
+		except Exception, e:
+			self.setup_title = _("CrossEPG") + " - " + _("unknow version")
+			Screen.setTitle(self, self.setup_title)
 
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.patchtype = getEPGPatchType()
 
+		self.onChangedEntry = [ ]
 		l = []
 		l.append(self.buildListEntry(_("Configure"), "configure.png"))
 		l.append(self.buildListEntry(_("XMLTV providers"), "xmltv.png"))
@@ -78,10 +83,22 @@ class CrossEPG_Menu(Screen):
 			"menu": self.quit,
 		}, -2)
 
-		self.onFirstExecBegin.append(self.setTitleWithVerion)
-		
 		if self.config.configured == 0:
 			self.onFirstExecBegin.append(self.openSetup)
+
+	# for summary:
+	def changedEntry(self):
+		for x in self.onChangedEntry:
+			x()
+
+	def getCurrentEntry(self):
+		return str(self["list"].getCurrent()[1])
+
+	def getCurrentValue(self):
+		return ""
+
+	def createSummary(self):
+		return CrossEPG_MenuSummary
 
 	def buildListEntry(self, description, image):
 		pixmap = LoadPixmap(cached=True, path="%s/images/%s" % (os.path.dirname(sys.modules[__name__].__file__), image));
@@ -89,13 +106,6 @@ class CrossEPG_Menu(Screen):
 
 	def openSetup(self):
 		self.session.open(CrossEPG_Setup)
-			
-	def setTitleWithVerion(self):
-		try:
-			global version
-			self.setTitle("CrossEPG - %s" % version)
-		except Exception, e:
-			self.setTitle("CrossEPG - unknow version")
 
 	def openSelected(self):
 		index = self["list"].getIndex()
@@ -173,4 +183,26 @@ class CrossEPG_Menu(Screen):
 
 	def loader(self):
 		self.session.open(CrossEPG_Loader)
+
+class CrossEPG_MenuSummary(Screen):
+	def __init__(self, session, parent):
+		Screen.__init__(self, session, parent = parent)
+		self["SetupTitle"] = StaticText(_(parent.setup_title))
+		self["SetupEntry"] = StaticText("")
+		self["SetupValue"] = StaticText("")
+		self.onShow.append(self.addWatcher)
+		self.onHide.append(self.removeWatcher)
+
+	def addWatcher(self):
+		self.parent.onChangedEntry.append(self.selectionChanged)
+		self.parent["list"].onSelectionChanged.append(self.selectionChanged)
+		self.selectionChanged()
+
+	def removeWatcher(self):
+		self.parent.onChangedEntry.remove(self.selectionChanged)
+		self.parent["list"].onSelectionChanged.remove(self.selectionChanged)
+
+	def selectionChanged(self):
+		self["SetupEntry"].text = self.parent.getCurrentEntry()
+		self["SetupValue"].text = self.parent.getCurrentValue()
 

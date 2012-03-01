@@ -1,6 +1,7 @@
 from enigma import getDesktop, eTimer
 
 from Components.Label import Label
+from Components.Sources.StaticText import StaticText
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
 from Components.ActionMap import NumberActionMap
@@ -27,9 +28,11 @@ class CrossEPG_Converter(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+		Screen.setTitle(self, _("CrossEPG"))
 		
 		self["background"] = Pixmap()
 		self["action"] = Label(_("Starting converter"))
+		self["summary_action"] = StaticText(_("Starting converter"))
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()

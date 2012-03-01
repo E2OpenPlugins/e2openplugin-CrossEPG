@@ -27,6 +27,7 @@ class CrossEPG_About(Screen):
 		f.close()
 
 		Screen.__init__(self, session)
+		Screen.setTitle(self, _("CrossEPG") + " - " + _("About"))
 		
 		self.config = CrossEPG_Config()
 		self.config.load()

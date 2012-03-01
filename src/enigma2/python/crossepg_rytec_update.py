@@ -24,6 +24,7 @@ class CrossEPG_Rytec_Source(object):
 
 class CrossEPG_Rytec_Update(Screen):
 	def __init__(self, session):
+		from Components.Sources.StaticText import StaticText
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/downloader_sd.xml" % os.path.dirname(sys.modules[__name__].__file__)
 			self.isHD = 0
@@ -34,13 +35,16 @@ class CrossEPG_Rytec_Update(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+		Screen.setTitle(self, _("CrossEPG"))
 		
+		self.onChangedEntry = [ ]
 		self.sources = []
 		self.session = session
 		self.mirrors = []
 		
 		self["background"] = Pixmap()
 		self["action"] = Label(_("Updating rytec providers..."))
+		self["summary_action"] = StaticText(_("Updating rytec providers..."))
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
@@ -52,7 +56,7 @@ class CrossEPG_Rytec_Update(Screen):
 		self.timer.callback.append(self.start)
 		
 		self.onFirstExecBegin.append(self.firstExec)
-		
+
 	def firstExec(self):
 		if self.isHD:
 			self["background"].instance.setPixmapFromFile("%s/images/background_hd.png" % (os.path.dirname(sys.modules[__name__].__file__)))

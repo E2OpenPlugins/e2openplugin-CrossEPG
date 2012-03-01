@@ -3,6 +3,7 @@ from enigma import getDesktop
 from Screens.Screen import Screen
 
 from Components.Label import Label
+from Components.Sources.StaticText import StaticText
 from Components.Button import Button
 from Components.ActionMap import ActionMap
 from Components.Sources.List import List
@@ -26,6 +27,18 @@ class CrossEPG_Providers(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+		if protocol == "xmltv":
+			protocol_title = _("XMLTV")
+		elif protocol == "opentv":
+			protocol_title = _("OpenTV")
+		elif protocol == "xepgdb":
+			protocol_title = _("XEPGDB")
+		elif protocol == "script":
+			protocol_title = _("Scripts")
+		elif protocol == "mhw2":
+			protocol_title = _("MHW2")
+		self.setup_title = _("CrossEPG") + " - " + protocol_title + ' ' + _("providers")
+		Screen.setTitle(self, self.setup_title)
 
 		self.patchtype = getEPGPatchType()
 		self.config = CrossEPG_Config()
@@ -34,6 +47,7 @@ class CrossEPG_Providers(Screen):
 		self.protocol = protocol
 
 		self.old_service = None
+		self.onChangedEntry = [ ]
 		self.list = []
 
 		self["list"] = List(self.list)
@@ -53,20 +67,28 @@ class CrossEPG_Providers(Screen):
 		}, -2)
 
 		self.buildList()
-		self.onFirstExecBegin.append(self.setTitleByProtocol)
 		self.onFirstExecBegin.append(self.selectionChanged)
 
-	def setTitleByProtocol(self):
-		if self.protocol == "xmltv":
-			self.setTitle("CrossEPG - XMLTV providers")
-		elif self.protocol == "opentv":
-			self.setTitle("CrossEPG - OpenTV providers")
-		elif self.protocol == "xepgdb":
-			self.setTitle("CrossEPG - XEPGDB providers")
-		elif self.protocol == "script":
-			self.setTitle("CrossEPG - Scripts providers")
-		elif self.protocol == "mhw2":
-			self.setTitle("CrossEPG - MHW2 providers")
+	# for summary:
+	def changedEntry(self):
+		for x in self.onChangedEntry:
+			x()
+
+	def getCurrentEntry(self):
+		return self["list"].getCurrent() and self["list"].getCurrent()[0] or ""
+
+	def getCurrentValue(self):
+		try:
+			if self["list"].getCurrent()[1]:
+				return _("Enabled")
+			else:
+				return _("Disabled")
+		except:
+			return ""
+
+	def createSummary(self):
+		from crossepg_menu import CrossEPG_MenuSummary
+		return CrossEPG_MenuSummary
 
 	def buildList(self):
 		self.list = []

@@ -33,6 +33,8 @@ class CrossEPG_Setup(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+		self.setup_title = _("CrossEPG Setup")
+		Screen.setTitle(self, self.setup_title)
 
 		patchtype = getEPGPatchType()
 		if patchtype == 0 or patchtype == 1 or patchtype == 3:
@@ -86,6 +88,7 @@ class CrossEPG_Setup(Screen):
 		self.automatictype.append(_("once a day"))
 		self.automatictype.append(_("every hour (only in standby)"))
 
+		self.onChangedEntry = [ ]
 		self.list = []
 		self["config"] = ConfigList(self.list, session = self.session)
 		self["config"].onSelectionChanged.append(self.setInfo)
@@ -117,6 +120,27 @@ class CrossEPG_Setup(Screen):
 		}, -1) # to prevent left/right overriding the listbox
 
 		self.makeList()
+
+	# for summary:
+	def changedEntry(self):
+		self.item = self["config"].getCurrent()
+		for x in self.onChangedEntry:
+			x()
+		try:
+			if isinstance(self["config"].getCurrent()[1], ConfigYesNo) or isinstance(self["config"].getCurrent()[1], ConfigSelection):
+				self.createSetup()
+		except:
+			pass
+
+	def getCurrentEntry(self):
+		return self["config"].getCurrent() and self["config"].getCurrent()[0] or ""
+
+	def getCurrentValue(self):
+		return self["config"].getCurrent() and str(self["config"].getCurrent()[1].getText()) or ""
+
+	def createSummary(self):
+		from Screens.Setup import SetupSummary
+		return SetupSummary
 
 	def isMountedInRW(self, path):
 		testfile = path + "/tmp-rw-test"
@@ -299,7 +323,7 @@ class CrossEPG_Setup(Screen):
 			elif index == 9:
 				self["information"].setText(_("Show crossepg in extensions menu"))
 			if index == 10:
-				self["information"].setText(_(" "))
+				self["information"].setText(_("Show crossepg force load in plugin menu"))
 		
 	def quit(self):
 		self.config.last_full_download_timestamp = 0

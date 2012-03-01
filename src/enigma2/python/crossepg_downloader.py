@@ -17,6 +17,8 @@ import sys
 
 class CrossEPG_Downloader(Screen):
 	def __init__(self, session, providers, pcallback = None, noosd = False):
+		from Components.Sources.StaticText import StaticText
+		from Components.Sources.Progress import Progress
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/downloader_sd.xml" % os.path.dirname(sys.modules[__name__].__file__)
 			self.isHD = 0
@@ -35,6 +37,9 @@ class CrossEPG_Downloader(Screen):
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
+		self["summary_action"] = StaticText(_("Starting downloader"))
+		self["summary_status"] = StaticText()
+		self["summary_progress"] = Progress()
 		self["actions"] = NumberActionMap(["WizardActions", "InputActions"],
 		{
 			"back": self.quit
@@ -150,20 +155,26 @@ class CrossEPG_Downloader(Screen):
 		elif event == CrossEPG_Wrapper.EVENT_ACTION:
 			self["action"].text = param
 			self["status"].text = ""
+			self["summary_action"].text = param
+			self["summary_status"].text = ""
 			
 		elif event == CrossEPG_Wrapper.EVENT_STATUS or event == CrossEPG_Wrapper.EVENT_URL:
 			self["status"].text = param
+			self["summary_status"].text = param
 
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESS:
 			self["progress"].setValue(param)
+			self["summary_progress"].setValue(param)
 			
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESSONOFF:
 			if param:
 				self.hideprogress.stop()
 				self["progress"].setValue(0)
 				self["progress"].show()
+				self["summary_progress"].setValue(0)
 			else:
 				self["progress"].setValue(100)
+				self["summary_progress"].setValue(100)
 				self.hideprogress.start(500, 1)
 		elif event == CrossEPG_Wrapper.EVENT_QUIT:
 			self.closeAndCallback(self.retValue)

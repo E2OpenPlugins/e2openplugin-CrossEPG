@@ -2,6 +2,7 @@ from enigma import getDesktop, eTimer
 
 from Components.config import config
 from Components.Label import Label
+from Components.Sources.StaticText import StaticText
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
 from Components.ActionMap import NumberActionMap
@@ -29,9 +30,11 @@ class CrossEPG_Loader(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+		Screen.setTitle(self, _("CrossEPG"))
 
 		self["background"] = Pixmap()
 		self["action"] = Label(_("Loading data"))
+		self["summary_action"] = StaticText(_("Loading data"))
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()

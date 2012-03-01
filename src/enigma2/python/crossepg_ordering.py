@@ -23,10 +23,13 @@ class CrossEPG_Ordering(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+		self.setup_title = _("CrossEPG") + " - " + _("Providers start order")
+		Screen.setTitle(self, self.setup_title)
 
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.providers = self.config.getAllProviders()
+		self.onChangedEntry = [ ]
 		self.list = []
 
 		self["list"] = List(self.list)
@@ -45,11 +48,25 @@ class CrossEPG_Ordering(Screen):
 		}, -2)
 
 		self.buildList()
-		self.onFirstExecBegin.append(self.setCustomTitle)
 		self.onFirstExecBegin.append(self.selectionChanged)
 
-	def setCustomTitle(self):
-		self.setTitle(_("CrossEPG - Providers start order"))
+	# for summary:
+	def changedEntry(self):
+		for x in self.onChangedEntry:
+			x()
+
+	def getCurrentEntry(self):
+		if self["list"].getCurrent():
+			return str(self["list"].getCurrent()[0])
+		else:
+			return ""
+
+	def getCurrentValue(self):
+		return ""
+
+	def createSummary(self):
+		from crossepg_menu import CrossEPG_MenuSummary
+		return CrossEPG_MenuSummary
 
 	def getProviderDescription(self, provider):
 		i = 0
