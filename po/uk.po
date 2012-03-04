@@ -234,7 +234,7 @@ msgstr "Провайдери OpenTV"
 
 msgid ""
 "PLEASE READ!\n"
-"A hard drive or an usb pen is HARDLY SUGGESTED. If you still want use your "
+"A hard drive or an usb pen is STRONGLY SUGGESTED. If you still want use your "
 "internal flash pay attention to:\n"
 "(1) If you don't have enough free space your box may completely block and "
 "you need to flash it again\n"
