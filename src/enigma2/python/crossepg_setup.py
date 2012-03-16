@@ -185,7 +185,7 @@ class CrossEPG_Setup(Screen):
 	def makeList(self):
 		self.list = []
 
-		self.config.db_root = config.misc.epgcachepath.value + 'crossepg'
+# 		self.config.db_root = config.misc.epgcachepath.value + 'crossepg'
 		#device_default = None
 		#i = 0
 		#for mountpoint in self.mountpoint:
@@ -236,7 +236,7 @@ class CrossEPG_Setup(Screen):
 
 	def update(self):
 		redraw = False
-		self.config.db_root = config.misc.epgcachepath.value + 'crossepg'
+# 		self.config.db_root = config.misc.epgcachepath.value + 'crossepg'
 
 		i = 0
 		if len(self.lamedbs_desc) > 1:
@@ -294,7 +294,7 @@ class CrossEPG_Setup(Screen):
 		if index == 0:
 			self["information"].setText(_("Lamedb used for epg.dat conversion.\nThis option doesn't work with crossepg patch v2"))
 		elif index == 1:
-			self["information"].setText(_("Import *.csv and *.bin from %s/import or %s/import\n(*.bin are binaries with a csv as stdout)") % (self.config.db_root, self.config.home_directory))
+			self["information"].setText(_("Import *.csv and *.bin from %s/import or %s/import\n(*.bin are binaries with a csv as stdout)") % (config.misc.epgcachepath.value + 'crossepg', self.config.home_directory))
 		elif index == 2:
 			self["information"].setText(_("Reload epg at every boot.\nNormally it's not necessary but recover epg after an enigma2 crash"))
 		elif index == 3:
@@ -358,7 +358,7 @@ class CrossEPG_Setup(Screen):
 			
 		crossepg_auto.forcePoll()
 		
-		if (self.config.db_root == self.config.home_directory + "/data" and not self.config.isQBOXHD()) or self.config.db_root.startswith('/etc/enigma2'):
+		if config.misc.epgcachepath.value + 'crossepg'.startswith('/etc/enigma2'):
 			self.showWarning()
 			
 		self.close()

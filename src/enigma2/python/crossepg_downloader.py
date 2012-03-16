@@ -5,6 +5,7 @@ from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
 from Components.ServiceEventTracker import ServiceEventTracker
 from Components.ActionMap import NumberActionMap
+from Components.config import config
 
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -93,7 +94,7 @@ class CrossEPG_Downloader(Screen):
 		if len(self.providers) == 0:
 			self.closeAndCallback(True)
 		else:
-			self.wrapper.init(CrossEPG_Wrapper.CMD_DOWNLOADER, self.config.db_root)
+			self.wrapper.init(CrossEPG_Wrapper.CMD_DOWNLOADER, config.misc.epgcachepath.value + 'crossepg')
 	
 	def download(self):
 		if self.config.getChannelProtocol(self.providers[self.provider_index]) != "script":
