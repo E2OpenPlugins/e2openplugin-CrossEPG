@@ -358,7 +358,7 @@ class CrossEPG_Setup(Screen):
 			
 		crossepg_auto.forcePoll()
 		
-		if config.misc.epgcachepath.value + 'crossepg'.startswith('/etc/enigma2'):
+		if config.misc.epgcachepath.value.startswith('/etc/enigma2'):
 			self.showWarning()
 			
 		self.close()
