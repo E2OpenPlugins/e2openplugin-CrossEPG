@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # alias.py  by Ambrosa http://www.ambrosa.net
 # this module is used for copy epg from a channel to another
-# 22-Dec-2011
+# 11-apr-2012 
 
 __author__ = "ambrosa http://www.ambrosa.net"
 __copyright__ = "Copyright (C) 2008-2011 Alessandro Ambrosini"
@@ -10,6 +10,7 @@ __license__ = "CreativeCommons by-nc-sa http://creativecommons.org/licenses/by-n
 import os
 import sys
 import ConfigParser
+import time
 
 # import CrossEPG functions
 import crossepg
