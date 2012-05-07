@@ -46,20 +46,20 @@ class CrossEPG_Auto(Screen):
 			os.system("rm -f /tmp/crossepg.standby")
 			print "[CrossEPG_Auto] coming back in standby in 30 seconds"
 			self.standbyTimer.start(30000, 1)
-			
+
 		self.config.load()
-		
+
 		if self.config.force_load_on_boot:
 			self.loader()
 
 	def init(self, session = None):
 		if session != None:
 			self.session = session
-			
+
 		if time() < 1262325600:		# if before 2010 probably the clock isn't yet updated
 			self.delayedInitTimer.start(60000, 1)	#initialization delayed of 1 minute
 			return
-			
+
 		self.resetDailyDownloadDateCache()
 		self.timer.start(self.POLL_TIMER_BOOT, 1)
 
@@ -67,7 +67,7 @@ class CrossEPG_Auto(Screen):
 		self.timer.stop()
 		self.resetDailyDownloadDateCache()
 		self.timer.start(self.POLL_TIMER_FAST, 1)
-		
+
 	def resetDailyDownloadDateCache(self):
 		self.config.load()
 		now = time()
@@ -81,20 +81,20 @@ class CrossEPG_Auto(Screen):
 		# we step forward of 24 hours until the new time is greater than now
 		while ttime < now:
 			ttime = ttime+86400	# 24 hours in future
-		
+
 		self.cacheYear = ttime[0]
 		self.cacheMonth = ttime[1]
 		self.cacheDay = ttime[2]
-			
+
 	def poll(self):
 		from Screens.Standby import inStandby
 		self.config.load()
 
 		if self.lock:
-			print "[CrossEPG_Auto] poll"
+# 			print "[CrossEPG_Auto] poll"
 			self.timer.start(self.POLL_TIMER_FAST, 1)
 		elif self.session.nav.RecordTimer.isRecording() or abs(self.session.nav.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(self.session.nav.RecordTimer.getNextZapTime() - time()) <= 900:
-			print "[CrossEPG_Auto] poll"
+# 			print "[CrossEPG_Auto] poll"
 			self.timer.start(self.POLL_TIMER, 1)
 		elif self.config.download_standby_enabled and inStandby:
 			self.providers = []
@@ -119,7 +119,7 @@ class CrossEPG_Auto(Screen):
 					i += 1
 
 			if len(self.providers) == 0:
-				print "[CrossEPG_Auto] poll"
+# 				print "[CrossEPG_Auto] poll"
 				self.timer.start(self.POLL_TIMER, 1)
 			else:
 				print "[CrossEPG_Auto] automatic download in standby"
@@ -150,11 +150,11 @@ class CrossEPG_Auto(Screen):
 				self.config.deleteLog()
 				self.download(self.config.providers)
 			elif stime < now + (self.POLL_TIMER / 1000) and self.config.last_full_download_timestamp != stime:
-				print "[CrossEPG_Auto] poll"
+# 				print "[CrossEPG_Auto] poll"
 				delta = int(stime - now);
 				self.timer.start((delta + 5)*1000, 1)	# 5 seconds offset
 			else:
-				print "[CrossEPG_Auto] poll"
+# 				print "[CrossEPG_Auto] poll"
 				self.timer.start(self.POLL_TIMER, 1)
 		elif self.config.download_tune_enabled:
 			now = time()
@@ -182,13 +182,13 @@ class CrossEPG_Auto(Screen):
 					self.config.deleteLog()
 					self.download([provider,])
 				else:
-					print "[CrossEPG_Auto] poll"
+# 					print "[CrossEPG_Auto] poll"
 					self.timer.start(self.POLL_TIMER, 1)
 			else:
-				print "[CrossEPG_Auto] poll"
+# 				print "[CrossEPG_Auto] poll"
 				self.timer.start(self.POLL_TIMER, 1)
 		else:
-			print "[CrossEPG_Auto] poll"
+# 			print "[CrossEPG_Auto] poll"
 			self.timer.start(self.POLL_TIMER, 1)
 
 	def download(self, providers):
