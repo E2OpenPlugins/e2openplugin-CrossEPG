@@ -116,6 +116,15 @@ class CrossEPG_Setup(Screen):
 
 		self.makeList()
 
+	# Modded by IAmATeaf 13/04/2012
+	# def isMountedInRW(self, path):
+	# 	testfile = path + "/tmp-rw-test"
+	# 	os.system("touch " + testfile)
+	# 	if os.path.exists(testfile):
+	# 		os.system("rm -f " + testfile)
+	# 		return True
+	# 	return False
+
 	def isMountedInRW(self, path):
 		testfile = os.path.join(path, "tmp-rw-test")
 		try:
