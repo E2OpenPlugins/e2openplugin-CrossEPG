@@ -43,7 +43,9 @@ class CrossEPG_Auto(Screen):
 		self.lock = False
 
 		if fileExists("/tmp/crossepg.standby"):
-			os.system("rm -f /tmp/crossepg.standby")
+			# Modded by IAmATeaf 13/04/2012
+			# os.system("rm -f /tmp/crossepg.standby")
+			os.unlink("/tmp/crossepg.standby")
 			print "[CrossEPG_Auto] coming back in standby in 30 seconds"
 			self.standbyTimer.start(30000, 1)
 
@@ -253,9 +255,13 @@ class CrossEPG_Auto(Screen):
 				if self.config.download_daily_reboot:
 					from Screens.Standby import inStandby
 					if inStandby:
-						os.system("touch /tmp/crossepg.standby")
+						# Modded by IAmATeaf 13/04/2012
+						# os.system("touch /tmp/crossepg.standby")
+						open("/tmp/crossepg.standby", "wb").close()
 					else:
-						os.system("rm /tmp/crossepg.standby")
+						# Modded by IAmATeaf 13/04/2012
+						# os.system("rm /tmp/crossepg.standby")
+						os.unlink("/tmp/crossepg.standby")
 					print "[CrossEPG_Auto] rebooting"
 					from Screens.Standby import TryQuitMainloop
 					self.session.open(TryQuitMainloop, 3)
