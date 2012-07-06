@@ -137,8 +137,8 @@ clean:
 	$(SWIGS_OBJS) $(SWIGS_LIBS) $(SHARED_LIBS)
 
 install-python:
-	install -d $(D)/usr/lib/python2.6/lib-dynload
-	install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.6
+	install -d $(D)/usr/lib/python2.7/lib-dynload
+	install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.7
 	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.6/lib-dynload
 
 install-python-qboxhd:
@@ -150,6 +150,11 @@ install-python-2.5:
 	install -d $(D)/usr/lib/python2.5/lib-dynload
 	install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.5
 	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.5/lib-dynload
+
+install-python-2.6:
+	install -d $(D)/usr/lib/python2.6/lib-dynload
+	install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.6
+	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.6/lib-dynload
 
 install-standalone:
 	install -d $(D)/usr/crossepg/aliases
@@ -260,6 +265,7 @@ install-var: install-python install-standalone-var install-plugin
 install-var-flash: install-standalone-var install-plugin
 install-var-qboxhd: install-python-qboxhd install-standalone-var install-plugin-qboxhd
 install-py25: install-python-2.5 install-standalone install-plugin
+install-py26: install-python-2.6 install-standalone install-plugin
 
 remote-install:
 	ncftpput -m -u $(FTP_USER) -p $(FTP_PASSWORD) $(FTP_HOST) /usr/lib/python2.6 src/common/crossepg.py
