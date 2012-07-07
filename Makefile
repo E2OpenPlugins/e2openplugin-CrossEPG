@@ -139,7 +139,7 @@ clean:
 install-python:
 	install -d $(D)/usr/lib/python2.7/lib-dynload
 	install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.7
-	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.6/lib-dynload
+	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.7/lib-dynload
 
 install-python-qboxhd:
 	install -d $(D)/usr/local/lib/python2.6/lib-dynload
