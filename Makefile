@@ -63,8 +63,8 @@ $(BIN_DIR):
 	mkdir -p $@
 
 $(VERSION_HEADER):
-	echo "#define RELEASE \"$(VERSION))\"" > $(VERSION_HEADER)
-	echo "version = \"$(VERSION))\"" > $(VERSION_PYTHON)
+	echo "#define RELEASE \"$(VERSION)\"" > $(VERSION_HEADER)
+	echo "version = \"$(VERSION)\"" > $(VERSION_PYTHON)
 
 $(SWIGS_OBJS):
 	$(SWIG) -threads -python $(@:_wrap.o=.i)
