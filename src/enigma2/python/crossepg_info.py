@@ -26,10 +26,10 @@ class CrossEPG_Info(Screen):
 
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("CrossEPG") + " - " + _("Info"))
-		
+
 		self.config = CrossEPG_Config()
 		self.config.load()
-		
+
 		self["version"] = Label("")
 		self["create"] = Label("")
 		self["last_update"] = Label("")
@@ -47,20 +47,24 @@ class CrossEPG_Info(Screen):
 			"cancel": self.quit,
 			"menu": self.quit,
 		}, -2)
-		
+
 		self["key_red"] = Button(_("Back"))
 		self["key_green"] = Button("")
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button("")
-		
+
 		self.wrapper = CrossEPG_Wrapper()
 		self.wrapper.addCallback(self.__wrapperCallback)
-		self.wrapper.init(CrossEPG_Wrapper.CMD_INFO, config.misc.epgcachepath.value + 'crossepg')
-			
+		if getDistro() == 'ViX':
+			self.wrapper.init(CrossEPG_Wrapper.CMD_INFO, config.misc.epgcachepath.value + 'crossepg')
+		else:
+			self.wrapper.init(CrossEPG_Wrapper.CMD_INFO, self.config.db_root)
+
+
 	def quit(self):
 		if not self.wrapper.running():
 			self.close()
-	
+
 	def __wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.INFO_HEADERSDB_SIZE:
 			self["headersdb_size"].text = _("Headers db size: %s") % (param)
@@ -84,4 +88,4 @@ class CrossEPG_Info(Screen):
 			self["last_update"].text = _("Last update time: %s") % (param)
 		elif event == CrossEPG_Wrapper.INFO_VERSION:
 			self["version"].text = _("Version: %s") % (param)
-			
+

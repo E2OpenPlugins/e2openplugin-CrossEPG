@@ -141,7 +141,7 @@ class CrossEPG_Menu(Screen):
 			self.session.open(CrossEPG_Info)
 		elif index == 14:
 			self.session.open(CrossEPG_About)
-		
+
 	def quit(self):
 		self.close()
 

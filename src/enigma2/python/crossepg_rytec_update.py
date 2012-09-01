@@ -36,25 +36,25 @@ class CrossEPG_Rytec_Update(Screen):
 		f.close()
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("CrossEPG"))
-		
+
 		self.onChangedEntry = [ ]
 		self.sources = []
 		self.session = session
 		self.mirrors = []
-		
+
 		self["background"] = Pixmap()
 		self["action"] = Label(_("Updating rytec providers..."))
 		self["summary_action"] = StaticText(_("Updating rytec providers..."))
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
-		
+
 		self.config = CrossEPG_Config()
 		self.config.load()
-		
+
 		self.timer = eTimer()
 		self.timer.callback.append(self.start)
-		
+
 		self.onFirstExecBegin.append(self.firstExec)
 
 	def firstExec(self):
@@ -63,14 +63,14 @@ class CrossEPG_Rytec_Update(Screen):
 		else:
 			self["background"].instance.setPixmapFromFile("%s/images/background.png" % (os.path.dirname(sys.modules[__name__].__file__)))
 		self.timer.start(100, 1)
-		
+
 	def start(self):
 		self.loadSourceList()
 		if self.load():
 			self.save(self.config.home_directory + "/providers/")
-			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type = MessageBox.TYPE_INFO, timeout = 5)	
+			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type = MessageBox.TYPE_INFO, timeout = 5)
 		else:
-			self.session.open(MessageBox, _("Cannot retrieve rytec sources"), type = MessageBox.TYPE_ERROR, timeout = 10)	
+			self.session.open(MessageBox, _("Cannot retrieve rytec sources"), type = MessageBox.TYPE_ERROR, timeout = 10)
 		self.close()
 
 	def loadSourceList(self):
@@ -92,7 +92,7 @@ class CrossEPG_Rytec_Update(Screen):
 				print "http error: %d (%s)" % (httpres.status, "http://www.rytec.be/tools/crossepgsources.gz")
 		except Exception, e:
 			print e
-				
+
 	def load(self):
 		ret = False
 		for mirror in self.mirrors:
@@ -122,7 +122,7 @@ class CrossEPG_Rytec_Update(Screen):
 			if source.description == description:
 				return source
 		return None
-			
+
 	def loadFromFile(self, filename):
 		mdom = xml.etree.cElementTree.parse(filename)
 		root = mdom.getroot()
@@ -147,7 +147,7 @@ class CrossEPG_Rytec_Update(Screen):
 					if len(source.channels_urls) > 0:
 						if source.channels_urls[0] not in oldsource.channels_urls:
 							oldsource.channels_urls.append(source.channels_urls[0])
-				
+
 	def save(self, destination):
 		os.system("rm -f " + destination + "/rytec_*.conf")
 		for source in self.sources:
@@ -162,11 +162,11 @@ class CrossEPG_Rytec_Update(Screen):
 			for url in source.channels_urls:
 				f.write("channels_url_" + str(count) + "=" + url + "\n")
 				count += 1
-				
+
 			count = 0
 			for url in source.epg_urls:
 				f.write("epg_url_" + str(count) + "=" + url + "\n")
 				count += 1
 			f.write("preferred_language=eng");
 			f.close()
-			
+

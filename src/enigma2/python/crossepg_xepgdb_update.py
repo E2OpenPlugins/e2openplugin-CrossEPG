@@ -38,40 +38,40 @@ class CrossEPG_Xepgdb_Update(Screen):
 		Screen.__init__(self, session)
 		Screen.__init__(self, session)
 		Screen.setTitle(self, _("CrossEPG"))
-		
+
 		self.sources = []
 		self.session = session
-		
+
 		self["background"] = Pixmap()
 		self["action"] = Label(_("Updating xepgdb providers..."))
 		self["summary_action"] = StaticText(_("Updating rytec providers..."))
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
-		
+
 		self.config = CrossEPG_Config()
 		self.config.load()
-		
+
 		self.timer = eTimer()
 		self.timer.callback.append(self.start)
-		
+
 		self.onFirstExecBegin.append(self.firstExec)
-		
+
 	def firstExec(self):
 		if self.isHD:
 			self["background"].instance.setPixmapFromFile("%s/images/background_hd.png" % (os.path.dirname(sys.modules[__name__].__file__)))
 		else:
 			self["background"].instance.setPixmapFromFile("%s/images/background.png" % (os.path.dirname(sys.modules[__name__].__file__)))
 		self.timer.start(100, 1)
-			
+
 	def start(self):
 		if self.load():
 			self.save(self.config.home_directory + "/providers/")
-			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type = MessageBox.TYPE_INFO, timeout = 5)	
+			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type = MessageBox.TYPE_INFO, timeout = 5)
 		else:
-			self.session.open(MessageBox, _("Cannot retrieve xepgdb sources"), type = MessageBox.TYPE_ERROR, timeout = 10)	
+			self.session.open(MessageBox, _("Cannot retrieve xepgdb sources"), type = MessageBox.TYPE_ERROR, timeout = 10)
 		self.close()
-		
+
 	def load(self):
 		try:
 			conn = httplib.HTTPConnection(SIFTEAM_HOST)
@@ -91,7 +91,7 @@ class CrossEPG_Xepgdb_Update(Screen):
 	def loadFromFile(self, filename):
 		mdom = xml.etree.cElementTree.parse(filename)
 		root = mdom.getroot()
-		
+
 		for node in root:
 			if node.tag == "source":
 				source = CrossEPG_Xepgdb_Source()
@@ -102,9 +102,9 @@ class CrossEPG_Xepgdb_Update(Screen):
 						source.headers = childnode.text
 					elif childnode.tag == "descriptors":
 						source.descriptors = childnode.text
-		
+
 				self.sources.append(source)
-				
+
 	def save(self, destination):
 		os.system("rm -f " + destination + "/xepgdb_*.conf")
 		for source in self.sources:
@@ -118,4 +118,4 @@ class CrossEPG_Xepgdb_Update(Screen):
 			f.write("headers_url =" + source.headers + "\n")
 			f.write("descriptors_url =" + source.descriptors + "\n")
 			f.close()
-			
+

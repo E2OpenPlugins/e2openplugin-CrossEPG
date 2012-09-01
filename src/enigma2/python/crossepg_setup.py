@@ -41,7 +41,7 @@ class CrossEPG_Setup(Screen):
 			self.fastpatch = True
 		else:
 			self.fastpatch = False
-		
+
 		self.session = session
 
 		self.config = CrossEPG_Config()
@@ -58,31 +58,32 @@ class CrossEPG_Setup(Screen):
 		self.show_plugin = self.config.show_plugin
 		self.show_force_reload_as_plugin = self.config.show_force_reload_as_plugin
 
-		## make devices entries
-		#if self.config.isQBOXHD():
-			#self.mountdescription.append(_("Internal flash"))
-			#self.mountpoint.append("/var/crossepg/data")
+		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			## make devices entries
+			if self.config.isQBOXHD():
+				self.mountdescription.append(_("Internal flash"))
+				self.mountpoint.append("/var/crossepg/data")
 
-		#for partition in harddiskmanager.getMountedPartitions():
-			#if (partition.mountpoint != '/') and (partition.mountpoint != '') and self.isMountedInRW(partition.mountpoint):
-				#self.mountpoint.append(partition.mountpoint + "/crossepg")
+			for partition in harddiskmanager.getMountedPartitions():
+				if (partition.mountpoint != '/') and (partition.mountpoint != '') and self.isMountedInRW(partition.mountpoint):
+					self.mountpoint.append(partition.mountpoint + "/crossepg")
 
-				#if partition.description != '':
-					#self.mountdescription.append(partition.description)
-				#else:
-					#self.mountdescription.append(partition.mountpoint)
-				
-		#if not self.config.isQBOXHD():		# for other decoders we add internal flash as last entry (it's unsuggested)
-			#self.mountdescription.append(_("Internal flash (unsuggested)"))
-			#self.mountpoint.append(self.config.home_directory + "/data")
-			
+					if partition.description != '':
+						self.mountdescription.append(partition.description)
+					else:
+						self.mountdescription.append(partition.mountpoint)
+
+			if not self.config.isQBOXHD():		# for other decoders we add internal flash as last entry (it's unsuggested)
+				self.mountdescription.append(_("Internal flash (unsuggested)"))
+				self.mountpoint.append(self.config.home_directory + "/data")
+
 		# make lamedb entries
 		for lamedb in self.lamedbs:
 			if lamedb == "lamedb":
 				self.lamedbs_desc.append(_("main lamedb"))
 			else:
 				self.lamedbs_desc.append(lamedb.replace("lamedb.", "").replace(".", " "))
-				
+
 		# make automatic type entries
 		self.automatictype.append(_("disabled"))
 		self.automatictype.append(_("once a day"))
@@ -150,10 +151,10 @@ class CrossEPG_Setup(Screen):
 		except:
 			return False
 		return True
-		
-	def showWarning(self):	
+
+	def showWarning(self):
 		self.session.open(MessageBox, _("PLEASE READ!\nA hard drive or an usb pen is STRONGLY SUGGESTED. If you still want use your internal flash pay attention to:\n(1) If you don't have enough free space your box may completely block and you need to flash it again\n(2) Many write operations on your internal flash may damage your flash memory"), type = MessageBox.TYPE_ERROR)
-	
+
 	def keyLeft(self):
 		self["config"].handleKey(KEY_LEFT)
 		self.update()
@@ -186,19 +187,19 @@ class CrossEPG_Setup(Screen):
 	def makeList(self):
 		self.list = []
 
-# 		self.config.db_root = config.misc.epgcachepath.value + 'crossepg'
-		#device_default = None
-		#i = 0
-		#for mountpoint in self.mountpoint:
-			#if mountpoint == self.config.db_root:
-				#device_default = self.mountdescription[i]
-			#i += 1
+		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			device_default = None
+			i = 0
+			for mountpoint in self.mountpoint:
+				if mountpoint == self.config.db_root:
+					device_default = self.mountdescription[i]
+				i += 1
 
-		## default device is really important... if miss a default we force it on first entry and update now the main config
-		#if device_default == None:
-			#self.config.db_root = self.mountpoint[0]
-			#device_default = self.mountdescription[0]
-			
+			## default device is really important... if miss a default we force it on first entry and update now the main config
+			if device_default == None:
+				self.config.db_root = self.mountpoint[0]
+				device_default = self.mountdescription[0]
+
 		lamedb_default = _("main lamedb")
 		if self.config.lamedb != "lamedb":
 			lamedb_default = self.config.lamedb.replace("lamedb.", "").replace(".", " ")
@@ -211,7 +212,8 @@ class CrossEPG_Setup(Screen):
 		else:
 			scheduled_default = _("disabled")
 
-		#self.list.append((_("Storage device"), ConfigSelection(self.mountdescription, device_default)))
+		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			self.list.append((_("Storage device"), ConfigSelection(self.mountdescription, device_default)))
 		if len(self.lamedbs_desc) > 1:
 			self.list.append((_("Preferred lamedb"), ConfigSelection(self.lamedbs_desc, lamedb_default)))
 
@@ -237,9 +239,12 @@ class CrossEPG_Setup(Screen):
 
 	def update(self):
 		redraw = False
-# 		self.config.db_root = config.misc.epgcachepath.value + 'crossepg'
+		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			self.config.db_root = self.mountpoint[self.list[0][1].getIndex()]
+			i = 1
+		else:
+			i = 0
 
-		i = 0
 		if len(self.lamedbs_desc) > 1:
 			self.config.lamedb = self.lamedbs[self.list[i][1].getIndex()]
 			i += 1
@@ -250,15 +255,27 @@ class CrossEPG_Setup(Screen):
 
 		dailycache = self.config.download_daily_enabled
 		standbycache = self.config.download_standby_enabled
-		if int(self.list[i+3][1].getIndex()) == 0:
-			self.config.download_daily_enabled = 0
-			self.config.download_standby_enabled = 0
-		elif int(self.list[i+3][1].getIndex()) == 1:
-			self.config.download_daily_enabled = 1
-			self.config.download_standby_enabled = 0
-		elif int(self.list[i+3][1].getIndex()) == 2:
-			self.config.download_daily_enabled = 0
-			self.config.download_standby_enabled = 1
+
+		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			if self.list[i+3][1].getIndex() == 0:
+				self.config.download_daily_enabled = 0
+				self.config.download_standby_enabled = 0
+			elif self.list[i+3][1].getIndex() == 1:
+				self.config.download_daily_enabled = 1
+				self.config.download_standby_enabled = 0
+			else:
+				self.config.download_daily_enabled = 0
+				self.config.download_standby_enabled = 1
+		else:
+			if int(self.list[i+3][1].getIndex()) == 0:
+				self.config.download_daily_enabled = 0
+				self.config.download_standby_enabled = 0
+			elif int(self.list[i+3][1].getIndex()) == 1:
+				self.config.download_daily_enabled = 1
+				self.config.download_standby_enabled = 0
+			elif int(self.list[i+3][1].getIndex()) == 2:
+				self.config.download_daily_enabled = 0
+				self.config.download_standby_enabled = 1
 
 		if dailycache != self.config.download_daily_enabled or standbycache != self.config.download_standby_enabled:
 			redraw = True
@@ -285,82 +302,131 @@ class CrossEPG_Setup(Screen):
 		index = self["config"].getCurrentIndex()
 		if len(self.lamedbs_desc) <= 1 and index > 0:
 			index += 1
-		if self.config.download_daily_enabled == 0 and index > 4:
-			index += 1
-		if self.fastpatch and index > 5:
-			index += 2
-
-		#if index == 0:
-			#self["information"].setText(_("Drive where you save data.\nThe drive MUST be mounted in rw. If you can't see your device here probably is mounted as read only or autofs handle it only in read only mode. In case of mount it manually and try again"))
-		if index == 0:
-			self["information"].setText(_("Lamedb used for epg.dat conversion.\nThis option doesn't work with crossepg patch v2"))
-		elif index == 1:
-			self["information"].setText(_("Import *.csv and *.bin from %s/import or %s/import\n(*.bin are binaries with a csv as stdout)") % (config.misc.epgcachepath.value + 'crossepg', self.config.home_directory))
-		elif index == 2:
-			self["information"].setText(_("Reload epg at every boot.\nNormally it's not necessary but recover epg after an enigma2 crash"))
-		elif index == 3:
-			self["information"].setText(_("Only for opentv providers.\nIf you zap on channel used from a provider it download the epg in background"))
-		elif index == 4:
-			if self.config.download_standby_enabled:
-				self["information"].setText(_("When the decoder is in standby opentv providers will be automatically downloaded every hour.\nXMLTV providers will be always downloaded only once a day"))
-			elif self.config.download_daily_enabled:
-				self["information"].setText(_("Download epg once a day"))
-			else:
-				self["information"].setText(_("Scheduled download disabled"))
-		elif index == 5:
-				self["information"].setText(_("Time for scheduled daily download"))
-		if not self.fastpatch:
-			if index == 6:
-				self["information"].setText(_("Automatically reboot the decoder after a scheduled download"))
-			elif index == 7:
-				self["information"].setText(_("Automatically reboot the decoder after a manual download"))
-			elif index == 8:
-				self["information"].setText(_("Show crossepg in plugin menu"))
-			elif index == 9:
-				self["information"].setText(_("Show crossepg in extensions menu"))
+		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			if self.config.download_daily_enabled == 0 and index > 5:
+				index += 1
 		else:
-			if index == 8:
-				self["information"].setText(_("Show crossepg in plugin menu"))
-			elif index == 9:
-				self["information"].setText(_("Show crossepg in extensions menu"))
-			if index == 10:
-				self["information"].setText(_("Show crossepg force load in plugin menu"))
-		
+			if self.config.download_daily_enabled == 0 and index > 4:
+				index += 1
+		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			if self.fastpatch and index > 6:
+				index += 2
+		else:
+			if self.fastpatch and index > 5:
+				index += 2
+
+		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			if index == 0:
+				self["information"].setText(_("Drive where you save data.\nThe drive MUST be mounted in rw. If you can't see your device here probably is mounted as read only or autofs handle it only in read only mode. In case of mount it manually and try again"))
+			elif index == 1:
+				self["information"].setText(_("Lamedb used for epg.dat conversion.\nThis option doesn't work with crossepg patch v2"))
+			elif index == 2:
+				self["information"].setText(_("Import *.csv and *.bin from %s/import or %s/import\n(*.bin are binaries with a csv as stdout)") % (self.config.db_root, self.config.home_directory))
+			elif index == 3:
+				self["information"].setText(_("Reload epg at every boot.\nNormally it's not necessary but recover epg after an enigma2 crash"))
+			elif index == 4:
+				self["information"].setText(_("Only for opentv providers.\nIf you zap on channel used from a provider it download the epg in background"))
+			elif index == 5:
+				if self.config.download_standby_enabled:
+					self["information"].setText(_("When the decoder is in standby opentv providers will be automatically downloaded every hour.\nXMLTV providers will be always downloaded only once a day"))
+				elif self.config.download_daily_enabled:
+					self["information"].setText(_("Download epg once a day"))
+				else:
+					self["information"].setText(_("Scheduled download disabled"))
+			elif index == 6:
+					self["information"].setText(_("Time for scheduled daily download"))
+			if not self.fastpatch:
+				if index == 7:
+					self["information"].setText(_("Automatically reboot the decoder after a scheduled download"))
+				elif index == 8:
+					self["information"].setText(_("Automatically reboot the decoder after a manual download"))
+				elif index == 9:
+					self["information"].setText(_("Show crossepg in plugin menu"))
+				elif index == 10:
+					self["information"].setText(_("Show crossepg in extensions menu"))
+			else:
+				if index == 9:
+					self["information"].setText(_("Show crossepg in plugin menu"))
+				elif index == 10:
+					self["information"].setText(_("Show crossepg in extensions menu"))
+				if index == 11:
+					self["information"].setText(_("Show crossepg force load in plugin menu"))
+		else:
+			if index == 0:
+				self["information"].setText(_("Lamedb used for epg.dat conversion.\nThis option doesn't work with crossepg patch v2"))
+			elif index == 1:
+				self["information"].setText(_("Import *.csv and *.bin from %s/import or %s/import\n(*.bin are binaries with a csv as stdout)") % (config.misc.epgcachepath.value + 'crossepg', self.config.home_directory))
+			elif index == 2:
+				self["information"].setText(_("Reload epg at every boot.\nNormally it's not necessary but recover epg after an enigma2 crash"))
+			elif index == 3:
+				self["information"].setText(_("Only for opentv providers.\nIf you zap on channel used from a provider it download the epg in background"))
+			elif index == 4:
+				if self.config.download_standby_enabled:
+					self["information"].setText(_("When the decoder is in standby opentv providers will be automatically downloaded every hour.\nXMLTV providers will be always downloaded only once a day"))
+				elif self.config.download_daily_enabled:
+					self["information"].setText(_("Download epg once a day"))
+				else:
+					self["information"].setText(_("Scheduled download disabled"))
+			elif index == 5:
+					self["information"].setText(_("Time for scheduled daily download"))
+			if not self.fastpatch:
+				if index == 6:
+					self["information"].setText(_("Automatically reboot the decoder after a scheduled download"))
+				elif index == 7:
+					self["information"].setText(_("Automatically reboot the decoder after a manual download"))
+				elif index == 8:
+					self["information"].setText(_("Show crossepg in plugin menu"))
+				elif index == 9:
+					self["information"].setText(_("Show crossepg in extensions menu"))
+			else:
+				if index == 8:
+					self["information"].setText(_("Show crossepg in plugin menu"))
+				elif index == 9:
+					self["information"].setText(_("Show crossepg in extensions menu"))
+				if index == 10:
+					self["information"].setText(_("Show crossepg force load in plugin menu"))
+
 	def quit(self):
 		self.config.last_full_download_timestamp = 0
 		self.config.last_partial_download_timestamp = 0
 		self.config.configured = 1
 		self.config.save()
-		#try:
-			#if self.config.db_root[-8:] == "crossepg":
-				#config.misc.epgcache_filename.setValue(self.config.db_root[:-9] + "/epg.dat")
-			#else:
-				#config.misc.epgcache_filename.setValue(self.config.db_root + "/epg.dat")
-			#config.misc.epgcache_filename.callNotifiersOnSaveAndCancel = True
-			#config.misc.epgcache_filename.save()
-			#configfile.save()
-		#except Exception, e:
-			#print "custom epgcache filename not supported by current enigma2 version"
-			
+		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			try:
+				if self.config.db_root[-8:] == "crossepg":
+					config.misc.epgcache_filename.setValue(self.config.db_root[:-9] + "/epg.dat")
+				else:
+					config.misc.epgcache_filename.setValue(self.config.db_root + "/epg.dat")
+				config.misc.epgcache_filename.callNotifiersOnSaveAndCancel = True
+				config.misc.epgcache_filename.save()
+				configfile.save()
+			except Exception, e:
+				print "custom epgcache filename not supported by current enigma2 version"
+
 		if getEPGPatchType() == -1:
 			# exec crossepg_prepare_pre_start for unpatched images
 			os.system(self.config.home_directory + "/crossepg_prepare_pre_start.sh")
-			
+
 		if self.show_extension != self.config.show_extension or self.show_plugin != self.config.show_plugin:
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU):
 				if plugin.name == "CrossEPG Downloader":
 					plugins.removePlugin(plugin)
-				
+
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_EXTENSIONSMENU):
 				if plugin.name == "CrossEPG Downloader":
 					plugins.removePlugin(plugin)
-				
+
 			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
-			
+
 		crossepg_auto.forcePoll()
-		
-		if config.misc.epgcachepath.value.startswith('/etc/enigma2'):
-			self.showWarning()
-			
+
+
+		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			if (self.config.db_root == self.config.home_directory + "/data" and not self.config.isQBOXHD()) or self.config.db_root.startswith('/etc/enigma2'):
+				self.showWarning()
+		else:
+			if config.misc.epgcache_filename.value.startswith('/etc/enigma2'):
+				self.showWarning()
+
 		self.close()
 

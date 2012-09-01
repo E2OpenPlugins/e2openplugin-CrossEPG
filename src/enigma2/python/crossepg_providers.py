@@ -119,7 +119,7 @@ class CrossEPG_Providers(Screen):
 			return((description, pixmap, name))
 		else:
 			return((description, None, name))
-		
+
 	def selectionChanged(self):
 		if len(self.list) == 0:
 			return

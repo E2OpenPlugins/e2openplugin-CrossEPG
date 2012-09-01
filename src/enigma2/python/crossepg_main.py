@@ -14,7 +14,7 @@ class CrossEPG_Main:
 	def __init__(self):
 		self.config = CrossEPG_Config()
 		self.patchtype = getEPGPatchType()
-		
+
 	def downloader(self, session):
 		self.session = session
 		crossepg_auto.lock = True
@@ -88,5 +88,5 @@ class CrossEPG_Main:
 
 	def autostart(self, reason, session):
 		crossepg_auto.init(session)
-		
+
 crossepg_main = CrossEPG_Main()
