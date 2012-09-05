@@ -4,12 +4,16 @@ from crossepg_locale import _
 from Plugins.Plugin import PluginDescriptor
 
 def setup(menuid, **kwargs):
-	if menuid == "epg" and (getDistro() == "ViX" or getDistro() == "AAF" or getDistro() == "openMips"):
-		return [("CrossEPG", crossepg_main.setup, "crossepg", None)]
-	elif menuid == "setup" and (getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips"):
-		return [("CrossEPG", crossepg_main.setup, "crossepg", None)]
+	if getDistro() == "ViX" or getDistro() == "AAF" or getDistro() == "openMips":
+		if menuid == "epg":
+			return [("CrossEPG", crossepg_main.setup, "crossepg", None)]
+		else:
+			return []
 	else:
-		return []
+		if menuid == "setup":
+			return [("CrossEPG", crossepg_main.setup, "crossepg", None)]
+		else:
+			return []
 
 def call_downloader(session, **kwargs):
 	crossepg_main.downloader(session)
