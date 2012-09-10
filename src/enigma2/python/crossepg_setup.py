@@ -58,7 +58,7 @@ class CrossEPG_Setup(Screen):
 		self.show_plugin = self.config.show_plugin
 		self.show_force_reload_as_plugin = self.config.show_force_reload_as_plugin
 
-		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			## make devices entries
 			if self.config.isQBOXHD():
 				self.mountdescription.append(_("Internal flash"))
@@ -187,7 +187,7 @@ class CrossEPG_Setup(Screen):
 	def makeList(self):
 		self.list = []
 
-		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			device_default = None
 			i = 0
 			for mountpoint in self.mountpoint:
@@ -212,7 +212,7 @@ class CrossEPG_Setup(Screen):
 		else:
 			scheduled_default = _("disabled")
 
-		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			self.list.append((_("Storage device"), ConfigSelection(self.mountdescription, device_default)))
 		if len(self.lamedbs_desc) > 1:
 			self.list.append((_("Preferred lamedb"), ConfigSelection(self.lamedbs_desc, lamedb_default)))
@@ -239,7 +239,7 @@ class CrossEPG_Setup(Screen):
 
 	def update(self):
 		redraw = False
-		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			self.config.db_root = self.mountpoint[self.list[0][1].getIndex()]
 			i = 1
 		else:
@@ -256,7 +256,7 @@ class CrossEPG_Setup(Screen):
 		dailycache = self.config.download_daily_enabled
 		standbycache = self.config.download_standby_enabled
 
-		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			if self.list[i+3][1].getIndex() == 0:
 				self.config.download_daily_enabled = 0
 				self.config.download_standby_enabled = 0
@@ -302,20 +302,20 @@ class CrossEPG_Setup(Screen):
 		index = self["config"].getCurrentIndex()
 		if len(self.lamedbs_desc) <= 1 and index > 0:
 			index += 1
-		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			if self.config.download_daily_enabled == 0 and index > 5:
 				index += 1
 		else:
 			if self.config.download_daily_enabled == 0 and index > 4:
 				index += 1
-		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			if self.fastpatch and index > 6:
 				index += 2
 		else:
 			if self.fastpatch and index > 5:
 				index += 2
 
-		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			if index == 0:
 				self["information"].setText(_("Drive where you save data.\nThe drive MUST be mounted in rw. If you can't see your device here probably is mounted as read only or autofs handle it only in read only mode. In case of mount it manually and try again"))
 			elif index == 1:
@@ -391,7 +391,7 @@ class CrossEPG_Setup(Screen):
 		self.config.last_partial_download_timestamp = 0
 		self.config.configured = 1
 		self.config.save()
-		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			try:
 				if self.config.db_root[-8:] == "crossepg":
 					config.misc.epgcache_filename.setValue(self.config.db_root[:-9] + "/epg.dat")
@@ -421,7 +421,7 @@ class CrossEPG_Setup(Screen):
 		crossepg_auto.forcePoll()
 
 
-		if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			if (self.config.db_root == self.config.home_directory + "/data" and not self.config.isQBOXHD()) or self.config.db_root.startswith('/etc/enigma2'):
 				self.showWarning()
 		else:

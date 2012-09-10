@@ -94,7 +94,7 @@ class CrossEPG_Downloader(Screen):
 		if len(self.providers) == 0:
 			self.closeAndCallback(True)
 		else:
-			if getDistro() != "ViX" or getDistro() != "AAF" or getDistro() != "openMips":
+			if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 				self.wrapper.init(CrossEPG_Wrapper.CMD_DOWNLOADER, self.config.db_root)
 			else:
 				self.wrapper.init(CrossEPG_Wrapper.CMD_DOWNLOADER, config.misc.epgcachepath.value + 'crossepg')
