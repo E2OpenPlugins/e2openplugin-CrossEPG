@@ -4,7 +4,7 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 
 from Components.config import KEY_LEFT, KEY_RIGHT, KEY_HOME, KEY_END, KEY_0, KEY_ASCII, ConfigYesNo, ConfigSelection, ConfigClock, config, configfile
-from Components.ConfigList import ConfigList
+from Components.ConfigList import ConfigListScreen
 from Components.Button import Button
 from Components.Label import Label
 from Components.Harddisk import harddiskmanager
@@ -23,7 +23,7 @@ from time import *
 
 import os
 
-class CrossEPG_Setup(Screen):
+class CrossEPG_Setup(ConfigListScreen, Screen):
 	def __init__(self, session):
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/setup_sd.xml" % (os.path.dirname(sys.modules[__name__].__file__))
@@ -91,23 +91,24 @@ class CrossEPG_Setup(Screen):
 
 		self.onChangedEntry = [ ]
 		self.list = []
-		self["config"] = ConfigList(self.list, session = self.session)
-		self["config"].onSelectionChanged.append(self.setInfo)
+		ConfigListScreen.__init__(self, self.list, session = self.session, on_change = self.changedEntry)
+
 		self["information"] = Label("")
-		self["key_red"] = Button(_("Back"))
-		self["key_green"] = Button()
+		self["key_red"] = Button(_("Cancel"))
+		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button()
 		self["key_blue"] = Button("")
 		self["config_actions"] = NumberActionMap(["SetupActions", "InputAsciiActions", "KeyboardInputActions", "ColorActions", "MenuActions"],
 		{
 			"gotAsciiCode": self.keyGotAscii,
-			"red": self.quit,
-			"cancel": self.quit,
+			"cancel": self.keyCancel,
+			"red": self.keyCancel,
+			"green": self.keySave,
 			"left": self.keyLeft,
 			"right": self.keyRight,
 			"home": self.keyHome,
 			"end": self.keyEnd,
-			"menu": self.quit,
+			"menu": self.keyCancel,
 			"1": self.keyNumberGlobal,
 			"2": self.keyNumberGlobal,
 			"3": self.keyNumberGlobal,
@@ -121,6 +122,8 @@ class CrossEPG_Setup(Screen):
 		}, -1) # to prevent left/right overriding the listbox
 
 		self.makeList()
+		if not self.setInfo in self["config"].onSelectionChanged:
+			self["config"].onSelectionChanged.append(self.setInfo)
 
 	# for summary:
 	def changedEntry(self):
@@ -185,8 +188,6 @@ class CrossEPG_Setup(Screen):
 		#self.setInfo()
 
 	def makeList(self):
-		self.list = []
-
 		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			device_default = None
 			i = 0
@@ -234,6 +235,7 @@ class CrossEPG_Setup(Screen):
 		self.list.append((_("Show as extension"), ConfigYesNo(self.config.show_extension > 0)))
 		self.list.append((_("Show 'Force reload' as plugin"), ConfigYesNo(self.config.show_force_reload_as_plugin > 0)))
 
+		self["config"].list = self.list
 		self["config"].setList(self.list)
 		self.setInfo()
 
@@ -386,7 +388,21 @@ class CrossEPG_Setup(Screen):
 				if index == 10:
 					self["information"].setText(_("Show crossepg force load in plugin menu"))
 
-	def quit(self):
+	def cancelConfirm(self, result):
+		if not result:
+			return
+
+		for x in self["config"].list:
+			x[1].cancel()
+		self.close()
+
+	def keyCancel(self):
+		if self["config"].isChanged():
+			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
+		else:
+			self.close()
+
+	def keySave(self):
 		self.config.last_full_download_timestamp = 0
 		self.config.last_partial_download_timestamp = 0
 		self.config.configured = 1

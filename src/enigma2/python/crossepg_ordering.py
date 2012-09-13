@@ -1,6 +1,7 @@
 from enigma import getDesktop
 
 from Screens.Screen import Screen
+from Screens.MessageBox import MessageBox
 
 from Components.Label import Label
 from Components.Button import Button
@@ -28,27 +29,29 @@ class CrossEPG_Ordering(Screen):
 
 		self.config = CrossEPG_Config()
 		self.config.load()
+		self.has_chnaged = False
 		self.providers = self.config.getAllProviders()
 		self.onChangedEntry = [ ]
 		self.list = []
 
 		self["list"] = List(self.list)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
-		self["key_red"] = Button(_("Back"))
-		self["key_green"] = Button("")
+		self["key_red"] = Button(_("Cancel"))
+		self["key_green"] = Button("Save")
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button("")
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
 		{
-			"red": self.quit,
-			"cancel": self.quit,
-			"green": self.moveUp,
-			"yellow": self.moveDown,
-			"menu": self.quit,
+			"cancel": self.keyCancel,
+			"red": self.keyCancel,
+			"green": self.keySave,
+			"yellow": self.moveUp,
+			"blue": self.moveDown,
+			"menu": self.keyCancel,
 		}, -2)
 
 		self.buildList()
-		self.onFirstExecBegin.append(self.selectionChanged)
+		self.onFirstExecBegin.append(self.firstRun)
 
 	# for summary:
 	def changedEntry(self):
@@ -87,20 +90,36 @@ class CrossEPG_Ordering(Screen):
 	def buildListEntry(self, name, description):
 		return((description, None, name))
 
-	def selectionChanged(self):
+	def firstRun(self):
 		if len(self.list) <= 1:
 			return
 
 		index = self["list"].getIndex()
 		if index == 0:
-			self["key_green"].setText("")
-			self["key_yellow"].setText(_("Move down"))
-		elif index == len(self.list) - 1:
-			self["key_green"].setText(_("Move up"))
 			self["key_yellow"].setText("")
+			self["key_blue"].setText(_("Move down"))
+		elif index == len(self.list) - 1:
+			self["key_yellow"].setText(_("Move up"))
+			self["key_blue"].setText("")
 		else:
-			self["key_green"].setText(_("Move up"))
-			self["key_yellow"].setText(_("Move down"))
+			self["key_yellow"].setText(_("Move up"))
+			self["key_blue"].setText(_("Move down"))
+
+	def selectionChanged(self):
+		if len(self.list) <= 1:
+			return
+		self.has_chnaged = True
+
+		index = self["list"].getIndex()
+		if index == 0:
+			self["key_yellow"].setText("")
+			self["key_blue"].setText(_("Move down"))
+		elif index == len(self.list) - 1:
+			self["key_yellow"].setText(_("Move up"))
+			self["key_blue"].setText("")
+		else:
+			self["key_yellow"].setText(_("Move up"))
+			self["key_blue"].setText(_("Move down"))
 
 	def moveUp(self):
 		if len(self.list) <= 1:
@@ -128,7 +147,19 @@ class CrossEPG_Ordering(Screen):
 			self.buildList()
 			self["list"].setIndex(index + 1)
 
-	def quit(self):
+	def cancelConfirm(self, result):
+		if not result:
+			return
+
+		self.close()
+
+	def keyCancel(self):
+		if self.has_chnaged :
+			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
+		else:
+			self.close()
+
+	def keySave(self):
 		self.config.save()
 		self.close()
 

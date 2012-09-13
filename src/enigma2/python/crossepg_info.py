@@ -48,7 +48,7 @@ class CrossEPG_Info(Screen):
 			"menu": self.quit,
 		}, -2)
 
-		self["key_red"] = Button(_("Back"))
+		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button("")
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button("")

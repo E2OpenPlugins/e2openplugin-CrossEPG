@@ -1,6 +1,7 @@
 from enigma import getDesktop
 
 from Screens.Screen import Screen
+from Screens.MessageBox import MessageBox
 
 from Components.Label import Label
 from Components.Sources.StaticText import StaticText
@@ -46,28 +47,28 @@ class CrossEPG_Providers(Screen):
 		self.providers = self.config.getAllProviders()
 		self.protocol = protocol
 
+		self.has_chnaged = False
 		self.old_service = None
 		self.onChangedEntry = [ ]
 		self.list = []
 
 		self["list"] = List(self.list)
 		self["list"].onSelectionChanged.append(self.selectionChanged)
-		self["key_red"] = Button(_("Back"))
-		self["key_green"] = Button(_("Enable"))
+		self["key_red"] = Button(_("Cancel"))
+		self["key_green"] = Button(_("Save"))
 		self["key_yellow"] = Button(_("Download"))
 		self["key_blue"] = Button("")
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
 		{
-			"red": self.quit,
-			"cancel": self.quit,
-			"green": self.switchState,
+			"red": self.keyCancel,
+			"cancel": self.keyCancel,
+			"green": self.keySave,
 			"ok": self.switchState,
 			"yellow": self.download,
-			"menu": self.quit,
+			"menu": self.keyCancel,
 		}, -2)
 
 		self.buildList()
-		self.onFirstExecBegin.append(self.selectionChanged)
 
 	# for summary:
 	def changedEntry(self):
@@ -123,13 +124,7 @@ class CrossEPG_Providers(Screen):
 	def selectionChanged(self):
 		if len(self.list) == 0:
 			return
-
-		index = self["list"].getIndex()
-		provider = self.list[index][2]
-		if self.config.providers.count(provider) > 0:
-			self["key_green"].setText(_("Disable"))
-		else:
-			self["key_green"].setText(_("Enable"))
+		self.has_chnaged = True
 
 	def switchState(self):
 		if len(self.list) == 0:
@@ -169,7 +164,19 @@ class CrossEPG_Providers(Screen):
 	def loader(self):
 		self.session.open(CrossEPG_Loader)
 
-	def quit(self):
+	def cancelConfirm(self, result):
+		if not result:
+			return
+
+		self.close()
+
+	def keyCancel(self):
+		if self.has_chnaged :
+			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
+		else:
+			self.close()
+
+	def keySave(self):
 		self.config.save()
 		self.close()
 
