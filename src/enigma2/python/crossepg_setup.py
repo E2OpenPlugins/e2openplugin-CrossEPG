@@ -188,6 +188,8 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 		#self.setInfo()
 
 	def makeList(self):
+		self.list = []
+
 		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			device_default = None
 			i = 0
