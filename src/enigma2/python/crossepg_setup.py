@@ -220,8 +220,9 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 		if len(self.lamedbs_desc) > 1:
 			self.list.append((_("Preferred lamedb"), ConfigSelection(self.lamedbs_desc, lamedb_default)))
 
-		self.list.append((_("Enable csv import"), ConfigYesNo(self.config.csv_import_enabled > 0)))
-		self.list.append((_("Force epg reload on boot"), ConfigYesNo(self.config.force_load_on_boot > 0)))
+		if getDistro() != "ViX":
+			self.list.append((_("Enable csv import"), ConfigYesNo(self.config.csv_import_enabled > 0)))
+			self.list.append((_("Force epg reload on boot"), ConfigYesNo(self.config.force_load_on_boot > 0)))
 		self.list.append((_("Download on tune"), ConfigYesNo(self.config.download_tune_enabled > 0)))
 		self.list.append((_("Scheduled download"), ConfigSelection(self.automatictype, scheduled_default)))
 
@@ -235,7 +236,8 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 			self.list.append((_("Reboot after a manual download"), ConfigYesNo(self.config.download_manual_reboot > 0)))
 		self.list.append((_("Show as plugin"), ConfigYesNo(self.config.show_plugin > 0)))
 		self.list.append((_("Show as extension"), ConfigYesNo(self.config.show_extension > 0)))
-		self.list.append((_("Show 'Force reload' as plugin"), ConfigYesNo(self.config.show_force_reload_as_plugin > 0)))
+		if getDistro() != "ViX":
+			self.list.append((_("Show 'Force reload' as plugin"), ConfigYesNo(self.config.show_force_reload_as_plugin > 0)))
 
 		self["config"].list = self.list
 		self["config"].setList(self.list)
@@ -254,12 +256,15 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 			i += 1
 
 		self.config.csv_import_enabled = int(self.list[i][1].getValue())
-		self.config.force_load_on_boot = int(self.list[i+1][1].getValue())
+
+		if getDistro() != "ViX":
+			self.config.force_load_on_boot = int(self.list[i+1][1].getValue())
+		else:
+			i -= 1
 		self.config.download_tune_enabled = int(self.list[i+2][1].getValue())
 
 		dailycache = self.config.download_daily_enabled
 		standbycache = self.config.download_standby_enabled
-
 		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
 			if self.list[i+3][1].getIndex() == 0:
 				self.config.download_daily_enabled = 0
@@ -297,98 +302,72 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 
 		self.config.show_plugin = int(self.list[i][1].getValue())
 		self.config.show_extension = int(self.list[i+1][1].getValue())
-		self.config.show_force_reload_as_plugin = int(self.list[i+2][1].getValue())
+		if getDistro() != "ViX":
+			self.config.show_force_reload_as_plugin = int(self.list[i+2][1].getValue())
+		else:
+			i += 1
 
 		if redraw:
 			self.makeList()
 
 	def setInfo(self):
 		index = self["config"].getCurrentIndex()
-		if len(self.lamedbs_desc) <= 1 and index > 0:
+		if getDistro() == "ViX" or getDistro() == "AAF" or getDistro() == "openMips":
 			index += 1
-		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
-			if self.config.download_daily_enabled == 0 and index > 5:
-				index += 1
-		else:
-			if self.config.download_daily_enabled == 0 and index > 4:
-				index += 1
-		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
-			if self.fastpatch and index > 6:
-				index += 2
-		else:
-			if self.fastpatch and index > 5:
-				index += 2
-
-		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
-			if index == 0:
-				self["information"].setText(_("Drive where you save data.\nThe drive MUST be mounted in rw. If you can't see your device here probably is mounted as read only or autofs handle it only in read only mode. In case of mount it manually and try again"))
-			elif index == 1:
-				self["information"].setText(_("Lamedb used for epg.dat conversion.\nThis option doesn't work with crossepg patch v2"))
-			elif index == 2:
-				self["information"].setText(_("Import *.csv and *.bin from %s/import or %s/import\n(*.bin are binaries with a csv as stdout)") % (self.config.db_root, self.config.home_directory))
-			elif index == 3:
-				self["information"].setText(_("Reload epg at every boot.\nNormally it's not necessary but recover epg after an enigma2 crash"))
-			elif index == 4:
-				self["information"].setText(_("Only for opentv providers.\nIf you zap on channel used from a provider it download the epg in background"))
-			elif index == 5:
-				if self.config.download_standby_enabled:
-					self["information"].setText(_("When the decoder is in standby opentv providers will be automatically downloaded every hour.\nXMLTV providers will be always downloaded only once a day"))
-				elif self.config.download_daily_enabled:
-					self["information"].setText(_("Download epg once a day"))
-				else:
-					self["information"].setText(_("Scheduled download disabled"))
-			elif index == 6:
-					self["information"].setText(_("Time for scheduled daily download"))
-			if not self.fastpatch:
-				if index == 7:
-					self["information"].setText(_("Automatically reboot the decoder after a scheduled download"))
-				elif index == 8:
-					self["information"].setText(_("Automatically reboot the decoder after a manual download"))
-				elif index == 9:
-					self["information"].setText(_("Show crossepg in plugin menu"))
-				elif index == 10:
-					self["information"].setText(_("Show crossepg in extensions menu"))
+		if index == 0:
+			self["information"].setText(_("Drive where you save data.\nThe drive MUST be mounted in rw. If you can't see your device here probably is mounted as read only or autofs handle it only in read only mode. In case of mount it manually and try again"))
+			return
+		if len(self.lamedbs_desc) <= 1:
+			index += 1
+		if index == 1:
+			self["information"].setText(_("Lamedb used for epg.dat conversion.\nThis option doesn't work with crossepg patch v2"))
+			return
+		if getDistro() == "ViX":
+			index += 1
+		if index == 2:
+			self["information"].setText(_("Import *.csv and *.bin from %s/import or %s/import\n(*.bin are binaries with a csv as stdout)") % (self.config.db_root, self.config.home_directory))
+			return
+		if getDistro() == "ViX":
+			index += 1
+		if index == 3:
+			self["information"].setText(_("Reload epg at every boot.\nNormally it's not necessary but recover epg after an enigma2 crash"))
+			return
+		if index == 4:
+			self["information"].setText(_("Only for opentv providers.\nIf you zap on channel used from a provider it download the epg in background"))
+			return
+		if index == 5:
+			if self.config.download_standby_enabled:
+				self["information"].setText(_("When the decoder is in standby opentv providers will be automatically downloaded every hour.\nXMLTV providers will be always downloaded only once a day"))
+				return
+			elif self.config.download_daily_enabled:
+				self["information"].setText(_("Download epg once a day"))
+				return
 			else:
-				if index == 9:
-					self["information"].setText(_("Show crossepg in plugin menu"))
-				elif index == 10:
-					self["information"].setText(_("Show crossepg in extensions menu"))
-				if index == 11:
-					self["information"].setText(_("Show crossepg force load in plugin menu"))
-		else:
-			if index == 0:
-				self["information"].setText(_("Lamedb used for epg.dat conversion.\nThis option doesn't work with crossepg patch v2"))
-			elif index == 1:
-				self["information"].setText(_("Import *.csv and *.bin from %s/import or %s/import\n(*.bin are binaries with a csv as stdout)") % (config.misc.epgcachepath.value + 'crossepg', self.config.home_directory))
-			elif index == 2:
-				self["information"].setText(_("Reload epg at every boot.\nNormally it's not necessary but recover epg after an enigma2 crash"))
-			elif index == 3:
-				self["information"].setText(_("Only for opentv providers.\nIf you zap on channel used from a provider it download the epg in background"))
-			elif index == 4:
-				if self.config.download_standby_enabled:
-					self["information"].setText(_("When the decoder is in standby opentv providers will be automatically downloaded every hour.\nXMLTV providers will be always downloaded only once a day"))
-				elif self.config.download_daily_enabled:
-					self["information"].setText(_("Download epg once a day"))
-				else:
-					self["information"].setText(_("Scheduled download disabled"))
-			elif index == 5:
-					self["information"].setText(_("Time for scheduled daily download"))
-			if not self.fastpatch:
-				if index == 6:
-					self["information"].setText(_("Automatically reboot the decoder after a scheduled download"))
-				elif index == 7:
-					self["information"].setText(_("Automatically reboot the decoder after a manual download"))
-				elif index == 8:
-					self["information"].setText(_("Show crossepg in plugin menu"))
-				elif index == 9:
-					self["information"].setText(_("Show crossepg in extensions menu"))
-			else:
-				if index == 8:
-					self["information"].setText(_("Show crossepg in plugin menu"))
-				elif index == 9:
-					self["information"].setText(_("Show crossepg in extensions menu"))
-				if index == 10:
-					self["information"].setText(_("Show crossepg force load in plugin menu"))
+				self["information"].setText(_("Scheduled download disabled"))
+				return
+		if self.config.download_daily_enabled == 0:
+			index += 1
+		if index == 6:
+			if self.config.download_standby_enabled or self.config.download_daily_enabled:
+				self["information"].setText(_("Time for scheduled daily download"))
+				return
+		if self.fastpatch:
+			index += 2
+		if index == 7:
+			self["information"].setText(_("Automatically reboot the decoder after a scheduled download"))
+			return
+		if index == 8:
+			self["information"].setText(_("Automatically reboot the decoder after a manual download"))
+			return
+		if index == 9:
+			self["information"].setText(_("Show crossepg in plugin menu"))
+			return
+		if index == 10:
+			self["information"].setText(_("Show crossepg in extensions menu"))
+			return
+		if index == 11:
+			self["information"].setText(_("Show crossepg force load in plugin menu"))
+			return
 
 	def cancelConfirm(self, result):
 		if not result:

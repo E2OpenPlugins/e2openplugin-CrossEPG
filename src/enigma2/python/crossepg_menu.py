@@ -69,9 +69,10 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("Update rytec providers"), "rytec_small.png"))
 		l.append(self.buildListEntry(_("Update xepgdb providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Download now"), "download.png"))
-		l.append(self.buildListEntry(_("Force csv import now"), "csv.png"))
-		l.append(self.buildListEntry(_("Force epg.dat conversion now"), "conversion.png"))
-		l.append(self.buildListEntry(_("Force epg reload"), "reload.png"))
+		if getDistro() != "ViX":
+			l.append(self.buildListEntry(_("Force csv import now"), "csv.png"))
+			l.append(self.buildListEntry(_("Force epg.dat conversion now"), "conversion.png"))
+			l.append(self.buildListEntry(_("Force epg reload"), "reload.png"))
 		l.append(self.buildListEntry(_("Info about database"), "dbinfo.png"))
 		l.append(self.buildListEntry(_("About"), "about.png"))
 
@@ -111,36 +112,53 @@ class CrossEPG_Menu(Screen):
 		index = self["list"].getIndex()
 		if index == 0:
 			self.session.open(CrossEPG_Setup)
-		elif index == 1:
+			return
+		if index == 1:
 			self.session.open(CrossEPG_Providers, "xmltv")
-		elif index == 2:
+			return
+		if index == 2:
 			self.session.open(CrossEPG_Providers, "opentv")
-		elif index == 3:
+			return
+		if index == 3:
 			self.session.open(CrossEPG_Providers, "xepgdb")
-		elif index == 4:
+			return
+		if index == 4:
 			self.session.open(CrossEPG_Providers, "script")
-		elif index == 5:
+			return
+		if index == 5:
 			self.session.open(CrossEPG_Providers, "mhw2")
-		elif index == 6:
+			return
+		if index == 6:
 			self.session.open(CrossEPG_Ordering)
-		elif index == 7:
+			return
+		if index == 7:
 			self.session.open(CrossEPG_Rytec_Update)
-		elif index == 8:
+			return
+		if index == 8:
 			self.session.open(CrossEPG_Xepgdb_Update)
-		elif index == 9:
+			return
+		if index == 9:
 			self.config.load()
 			self.config.deleteLog()
 			self.downloader()
-		elif index == 10:
+			return
+		if getDistro() == "ViX":
+			index += 3
+		if index == 10:
 			self.importer()
-		elif index == 11:
+			return
+		if index == 11:
 			self.converter()
-		elif index == 12:
+			return
+		if index == 12:
 			self.loader()
-		elif index == 13:
+			return
+		if index == 13:
 			self.session.open(CrossEPG_Info)
-		elif index == 14:
+			return
+		if index == 14:
 			self.session.open(CrossEPG_About)
+			return
 
 	def quit(self):
 		self.close()
