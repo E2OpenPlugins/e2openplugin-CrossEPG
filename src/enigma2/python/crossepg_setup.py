@@ -260,7 +260,7 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 		if getDistro() != "ViX":
 			self.config.force_load_on_boot = int(self.list[i+1][1].getValue())
 		else:
-			i -= 1
+			i -= 2
 		self.config.download_tune_enabled = int(self.list[i+2][1].getValue())
 
 		dailycache = self.config.download_daily_enabled
