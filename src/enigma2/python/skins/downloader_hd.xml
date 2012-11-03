@@ -1,4 +1,4 @@
-<screen position="670,e-80" size="600,70" title="CrossEPG" flags="wfNoBorder">
+<screen position="c-300,e-100" size="600,70" title="CrossEPG" flags="wfNoBorder">
 	<widget name="background" position="0,0" size="600,80" zPosition="-1" />
 	<widget name="action" halign="center" valign="center" position="65,10" size="520,20" font="Regular;16" backgroundColor="#11000000"/>
 	<widget name="status" halign="center" valign="center" position="65,30" size="520,20" font="Regular;16" backgroundColor="#11000000"/>
