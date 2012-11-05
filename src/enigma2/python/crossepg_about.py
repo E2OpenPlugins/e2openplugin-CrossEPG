@@ -15,6 +15,8 @@ from crossepg_locale import _
 import os
 import sys
 
+from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+
 class CrossEPG_About(Screen):
 	def __init__(self, session):
 		self.session = session
@@ -76,8 +78,15 @@ class CrossEPG_About(Screen):
 		self.onFirstExecBegin.append(self.setImages)
 
 	def setImages(self):
-		self["rytec_pix"].instance.setPixmapFromFile("%s/images/rytec.png" % (os.path.dirname(sys.modules[__name__].__file__)))
-		self["krkadoni_pix"].instance.setPixmapFromFile("%s/images/krkadoni.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+		rytecpng = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/rytec.png")
+		if rytecpng == None:
+			rytecpng = "%s/images/rytec.png" % (os.path.dirname(sys.modules[__name__].__file__))
+		self["rytec_pix"].instance.setPixmapFromFile(rytecpng)
+
+		krkadonipng = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/krkadoni.png")
+		if krkadonipng == None:
+			krkadonipng = "%s/images/krkadoni.png" % (os.path.dirname(sys.modules[__name__].__file__))
+		self["krkadoni_pix"].instance.setPixmapFromFile(krkadonipng)
 
 	def quit(self):
 		self.close()

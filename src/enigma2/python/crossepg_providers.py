@@ -15,8 +15,9 @@ from crossepg_downloader import CrossEPG_Downloader
 from crossepg_converter import CrossEPG_Converter
 from crossepg_loader import CrossEPG_Loader
 from crossepg_locale import _
-
 from crossepglib import *
+
+from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
 
 class CrossEPG_Providers(Screen):
 	def __init__(self, session, protocol):
@@ -116,7 +117,9 @@ class CrossEPG_Providers(Screen):
 
 	def buildListEntry(self, name, description, enabled):
 		if enabled:
-			pixmap = LoadPixmap(cached=True, path="%s/images/enabled.png" % os.path.dirname(sys.modules[__name__].__file__));
+			pixmap = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/enabled.png"))
+			if pixmap == None:
+				pixmap = LoadPixmap(cached=True, path="%s/images/enabled.png" % os.path.dirname(sys.modules[__name__].__file__));
 			return((description, pixmap, name))
 		else:
 			return((description, None, name))

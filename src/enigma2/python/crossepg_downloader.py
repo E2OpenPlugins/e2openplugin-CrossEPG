@@ -16,6 +16,8 @@ from crossepg_locale import _
 import os
 import sys
 
+from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+
 class CrossEPG_Downloader(Screen):
 	def __init__(self, session, providers, pcallback = None, noosd = False):
 		from Components.Sources.StaticText import StaticText
@@ -85,9 +87,14 @@ class CrossEPG_Downloader(Screen):
 
 	def firstExec(self):
 		if self.isHD:
-			self["background"].instance.setPixmapFromFile("%s/images/background_hd.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+			png = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/background_hd.png")
+			if png == None:
+				png = "%s/images/background_hd.png" % os.path.dirname(sys.modules[__name__].__file__)
 		else:
-			self["background"].instance.setPixmapFromFile("%s/images/background.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+			png = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/background.png")
+			if png == None:
+				png = "%s/images/background.png" % os.path.dirname(sys.modules[__name__].__file__)
+		self["background"].instance.setPixmapFromFile(png)
 		self.wrappertimer.start(100, 1)
 
 	def initWrapper(self):

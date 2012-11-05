@@ -27,7 +27,7 @@ from Components.Harddisk import harddiskmanager
 from Components.PluginComponent import plugins
 from Components.ActionMap import ActionMap
 from Tools.LoadPixmap import LoadPixmap
-from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
 from Plugins.Plugin import PluginDescriptor
 
 from time import *
@@ -102,7 +102,9 @@ class CrossEPG_Menu(Screen):
 		return CrossEPG_MenuSummary
 
 	def buildListEntry(self, description, image):
-		pixmap = LoadPixmap(cached=True, path="%s/images/%s" % (os.path.dirname(sys.modules[__name__].__file__), image));
+		pixmap = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/" + image))
+		if pixmap == None:
+			pixmap = LoadPixmap(cached=True, path="%s/images/%s" % (os.path.dirname(sys.modules[__name__].__file__), image));
 		return((pixmap, description))
 
 	def openSetup(self):

@@ -16,6 +16,8 @@ import re
 import os
 import random
 
+from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+
 class CrossEPG_Rytec_Source(object):
 	def __init__(self):
 		self.channels_urls = []
@@ -59,9 +61,14 @@ class CrossEPG_Rytec_Update(Screen):
 
 	def firstExec(self):
 		if self.isHD:
-			self["background"].instance.setPixmapFromFile("%s/images/background_hd.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+			png = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/background_hd.png")
+			if png == None:
+				png = "%s/images/background_hd.png" % os.path.dirname(sys.modules[__name__].__file__)
 		else:
-			self["background"].instance.setPixmapFromFile("%s/images/background.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+			png = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/background.png")
+			if png == None:
+				png = "%s/images/background.png" % os.path.dirname(sys.modules[__name__].__file__)
+		self["background"].instance.setPixmapFromFile(png)
 		self.timer.start(100, 1)
 
 	def start(self):
