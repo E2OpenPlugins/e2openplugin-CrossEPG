@@ -4,7 +4,7 @@ from crossepg_locale import _
 from Plugins.Plugin import PluginDescriptor
 
 def setup(menuid, **kwargs):
-	if getDistro() == "ViX" or getDistro() == "AAF" or getDistro() == "openMips" or getDistro() == "Venton":
+	if getDistro() == "ViX" or getDistro() == "AAF" or getDistro() == "openMips" or getDistro() == "Venton" or getDistro() == "EGAMI":
 		if menuid == "epg":
 			return [("CrossEPG", crossepg_main.setup, "crossepg", None)]
 		else:
