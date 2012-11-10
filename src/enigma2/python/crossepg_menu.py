@@ -102,9 +102,10 @@ class CrossEPG_Menu(Screen):
 		return CrossEPG_MenuSummary
 
 	def buildListEntry(self, description, image):
-		pixmap = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/" + image))
-		if pixmap == None:
-			pixmap = LoadPixmap(cached=True, path="%s/images/%s" % (os.path.dirname(sys.modules[__name__].__file__), image));
+		png = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/" + image)
+		if png == None or not os.path.exists(png):
+			png = "%s/images/%s" % (os.path.dirname(sys.modules[__name__].__file__), image)
+		pixmap = LoadPixmap(cached=True, path=png)
 		return((pixmap, description))
 
 	def openSetup(self):

@@ -77,11 +77,11 @@ class CrossEPG_Converter(Screen):
 	def firstExec(self):
 		if self.isHD:
 			png = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/background_hd.png")
-			if png == None:
+			if png == None or not os.path.exists(png):
 				png = "%s/images/background_hd.png" % os.path.dirname(sys.modules[__name__].__file__)
 		else:
 			png = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/background.png")
-			if png == None:
+			if png == None or not os.path.exists(png):
 				png = "%s/images/background.png" % os.path.dirname(sys.modules[__name__].__file__)
 		self["background"].instance.setPixmapFromFile(png)
 		self.startWrapper()

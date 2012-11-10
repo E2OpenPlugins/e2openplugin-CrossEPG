@@ -117,9 +117,10 @@ class CrossEPG_Providers(Screen):
 
 	def buildListEntry(self, name, description, enabled):
 		if enabled:
-			pixmap = LoadPixmap(resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/enabled.png"))
-			if pixmap == None:
-				pixmap = LoadPixmap(cached=True, path="%s/images/enabled.png" % os.path.dirname(sys.modules[__name__].__file__));
+			png = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/enabled.png")
+			if png == None or not os.path.exists(png):
+				png = "%s/images/enabled.png" % os.path.dirname(sys.modules[__name__].__file__)
+			pixmap = LoadPixmap(cached=True, path=png)
 			return((description, pixmap, name))
 		else:
 			return((description, None, name))
