@@ -16,6 +16,10 @@ import re
 import os
 
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+try:
+	from Tools.Directories import SCOPE_ACTIVE_SKIN
+except:
+	pass
 
 SIFTEAM_HOST = "crossepg.sifteam.eu"
 
@@ -61,11 +65,17 @@ class CrossEPG_Xepgdb_Update(Screen):
 
 	def firstExec(self):
 		if self.isHD:
-			png = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/background_hd.png")
+			try:
+				png = resolveFilename(SCOPE_ACTIVE_SKIN, "crossepg/background_hd.png")
+			except:
+				png = resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/crossepg/background_hd.png")
 			if png == None or not os.path.exists(png):
 				png = "%s/images/background_hd.png" % os.path.dirname(sys.modules[__name__].__file__)
 		else:
-			png = resolveFilename(SCOPE_CURRENT_SKIN, "crossepg/background.png")
+			try:
+				png = resolveFilename(SCOPE_ACTIVE_SKIN, "crossepg/background.png")
+			except:
+				png = resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/crossepg/background.png")
 			if png == None or not os.path.exists(png):
 				png = "%s/images/background.png" % os.path.dirname(sys.modules[__name__].__file__)
 		self["background"].instance.setPixmapFromFile(png)
