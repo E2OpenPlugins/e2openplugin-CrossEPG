@@ -84,7 +84,7 @@ class CrossEPG_About(Screen):
 	def setImages(self):
 		try:
 			rytecpng = resolveFilename(SCOPE_ACTIVE_SKIN, "crossepg/rytec.png")
-		try:
+		except:
 			rytecpng = resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/crossepg/rytec.png")
 		if rytecpng == None or not os.path.exists(rytecpng):
 			rytecpng = "%s/images/rytec.png" % (os.path.dirname(sys.modules[__name__].__file__))
