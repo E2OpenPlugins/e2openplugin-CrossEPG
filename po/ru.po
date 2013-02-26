@@ -5,9 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: enigma 2-plugin-systemplugins-crossepg-0.6.2+git0+5531246976cc69ec8d4a089a33c84a2b2c73d020-r9\n"
+"Project-Id-Version: enigma 2-plugin-systemplugins-"
+"crossepg-0.6.2+git0+5531246976cc69ec8d4a089a33c84a2b2c73d020-r9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-01 15:53+0000\n"
+"POT-Creation-Date: 2013-02-26 14:53+0100\n"
 "PO-Revision-Date: 2013-02-26 14:00+0100\n"
 "Last-Translator: xxx\n"
 "Language-Team: none\n"
@@ -15,220 +16,168 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../src/enigma2/python/crossepg_xepgdb_update.py:70
-#: ../src/enigma2/python/crossepg_rytec_update.py:71
 #, python-format
 msgid "%d providers updated"
 msgstr "%d провайдеров обновленно"
 
-#: ../src/enigma2/python/crossepglib.py:492
 #, python-format
 msgid "%s channels"
 msgstr "%s каналов"
 
-#: ../src/enigma2/python/crossepglib.py:498
 #, python-format
 msgid "%s of %s"
 msgstr "%s из %s"
 
-#: ../src/enigma2/python/crossepg_menu.py:76
-#: ../src/enigma2/python/crossepg_about.py:30
 msgid "About"
 msgstr "О"
 
-#: ../src/enigma2/python/crossepg_info.py:71
 #, python-format
 msgid "Aliases db size: %s"
 msgstr "Размер других ДБ: %s"
 
-#: ../src/enigma2/python/plugin.py:30
-#: ../src/enigma2/python/plugin.py:35
-#: ../src/enigma2/python/plugin.py:40
 msgid "An EPG downloader"
 msgstr "EPG загрузчик"
 
-#: ../src/enigma2/python/plugin.py:55
 msgid "Auto"
 msgstr "Авто"
 
-#: ../src/enigma2/python/crossepg_setup.py:315
 msgid "Automatically reboot the decoder after a manual download"
 msgstr "Автоматическая перезагрузка декодера после ручной загрузки"
 
-#: ../src/enigma2/python/crossepg_setup.py:313
 msgid "Automatically reboot the decoder after a scheduled download"
 msgstr "Автоматическая перезагрузка декодера после загрузки по графику"
 
-#: ../src/enigma2/python/crossepg_setup.py:96
-#: ../src/enigma2/python/crossepg_providers.py:55
-#: ../src/enigma2/python/crossepg_ordering.py:37
-#: ../src/enigma2/python/crossepg_info.py:50
-#: ../src/enigma2/python/crossepg_about.py:48
-msgid "Back"
-msgstr "Назад"
+msgid "Cancel"
+msgstr ""
 
-#: ../src/enigma2/python/crossepg_rytec_update.py:73
 msgid "Cannot retrieve rytec sources"
 msgstr "Не удается получить rytec"
 
-#: ../src/enigma2/python/crossepg_xepgdb_update.py:72
 msgid "Cannot retrieve xepgdb sources"
 msgstr "Не удается получить xepgdb"
 
-#: ../src/enigma2/python/crossepg_info.py:75
 #, python-format
 msgid "Channels count: %s"
 msgstr "Счетчик каналов: %s"
 
-#: ../src/enigma2/python/crossepg_menu.py:62
+msgid "Close"
+msgstr ""
+
 msgid "Configure"
 msgstr "Конфиг"
 
-#: ../src/enigma2/python/crossepglib.py:582
 msgid "Converting data"
 msgstr "Конвертация данных"
 
-#: ../src/enigma2/python/crossepg_info.py:81
 #, python-format
 msgid "Creation time: %s"
 msgstr "Время создания: %s"
 
-#: ../src/enigma2/python/plugin.py:62
+msgid "CrossEPG"
+msgstr ""
+
 msgid "CrossEPG Force Reload"
 msgstr "Принудительная перезагрузка CrossEPG"
 
-#: ../src/enigma2/python/crossepg_setup.py:36
 msgid "CrossEPG Setup"
 msgstr "Настройка CrossEPG"
 
-#: ../src/enigma2/python/plugin.py:56
 msgid "CrossEPG automatic actions"
 msgstr "CrossEPG автоматические действия"
 
-#: ../src/enigma2/python/crossepg_loader.py:212
-#: ../src/enigma2/python/crossepg_importer.py:126
-#: ../src/enigma2/python/crossepg_downloader.py:182
-#: ../src/enigma2/python/crossepg_converter.py:114
 #, python-format
 msgid "CrossEPG error: %s"
 msgstr "CrossEPG ошибка: %s"
 
-#: ../src/enigma2/python/plugin.py:46
-#: ../src/enigma2/python/plugin.py:51
 msgid "CrossEPG setup panel"
 msgstr "Панель настройки CrossEPG"
 
-#: ../src/enigma2/python/crossepglib.py:483
 msgid "Deflating XEPGDB"
 msgstr "Выкачивание XEPGDB"
 
-#: ../src/enigma2/python/crossepglib.py:462
 msgid "Deflating channels list"
 msgstr "Выкачивание списка каналов"
 
-#: ../src/enigma2/python/crossepglib.py:471
 msgid "Deflating events"
 msgstr "Выкачивание событий"
 
-#: ../src/enigma2/python/crossepg_info.py:67
 #, python-format
 msgid "Descriptors db size: %s"
 msgstr "Размер дескрипторов ДБ: %s"
 
-#: ../src/enigma2/python/crossepg_providers.py:130
-msgid "Disable"
-msgstr "Отключить"
-
-#: ../src/enigma2/python/crossepg_providers.py:85
 msgid "Disabled"
 msgstr "Отключено"
 
-#: ../src/enigma2/python/crossepg_providers.py:57
 msgid "Download"
 msgstr "Скачать"
 
-#: ../src/enigma2/python/crossepg_setup.py:306
 msgid "Download epg once a day"
 msgstr "Скачивать Epg раз в день"
 
-#: ../src/enigma2/python/crossepg_menu.py:71
 msgid "Download now"
 msgstr "Скачать сейчас"
 
-#: ../src/enigma2/python/crossepg_setup.py:219
 msgid "Download on tune"
 msgstr "Загружать при настройке"
 
 msgid "Downloader"
 msgstr "Загрузчик"
 
-#: ../src/enigma2/python/crossepg_importer.py:101
 msgid "Downloading"
 msgstr "Загрузка"
 
-#: ../src/enigma2/python/crossepglib.py:477
 msgid "Downloading XEPGDB"
 msgstr "Загрузка XEPGDB"
 
-#: ../src/enigma2/python/crossepglib.py:459
 msgid "Downloading channels list"
 msgstr "Загрузка списка каналов"
 
-#: ../src/enigma2/python/crossepglib.py:468
 msgid "Downloading events"
 msgstr "Загрузка событий"
 
-#: ../src/enigma2/python/crossepg_providers.py:56
-#: ../src/enigma2/python/crossepg_providers.py:132
-msgid "Enable"
-msgstr "Включить"
+msgid ""
+"Drive where you save data.\n"
+"The drive MUST be mounted in rw. If you can't see your device here probably "
+"is mounted as read only or autofs handle it only in read only mode. In case "
+"of mount it manually and try again"
+msgstr ""
 
-#: ../src/enigma2/python/crossepg_setup.py:217
 msgid "Enable csv import"
 msgstr "Включить импорт csv"
 
-#: ../src/enigma2/python/crossepg_providers.py:83
 msgid "Enabled"
 msgstr "Доступно"
 
-#: ../src/enigma2/python/crossepg_info.py:77
 #, python-format
 msgid "Events count: %s"
 msgstr "Счетчик событий %s"
 
-#: ../src/enigma2/python/plugin.py:61
 msgid "Force Reload"
 msgstr "Принудительная перезагрузка"
 
-#: ../src/enigma2/python/crossepg_menu.py:72
 msgid "Force csv import now"
 msgstr "Принудительный импорт csv"
 
-#: ../src/enigma2/python/crossepg_menu.py:74
 msgid "Force epg reload"
 msgstr "Принудительная перезагрузка EPG"
 
-#: ../src/enigma2/python/crossepg_setup.py:218
 msgid "Force epg reload on boot"
 msgstr "Принудительная перезагрузка EPG при загрузке"
 
-#: ../src/enigma2/python/crossepg_menu.py:73
 msgid "Force epg.dat conversion now"
 msgstr "Принудительная конвертация epg.dat"
 
-#: ../src/enigma2/python/crossepg_info.py:79
 #, python-format
 msgid "Hashes count: %s"
 msgstr "Счетчик хэшей: %s"
 
-#: ../src/enigma2/python/crossepg_info.py:65
 #, python-format
 msgid "Headers db size: %s"
 msgstr "Размер заголовков ДБ: %s"
 
-#: ../src/enigma2/python/crossepg_setup.py:297
 #, python-format
 msgid ""
 "Import *.csv and *.bin from %s/import or %s/import\n"
@@ -237,20 +186,22 @@ msgstr ""
 "Импорт *.csv и *.bin из %s/импорт или %s/импорт\n"
 "(*.bin являются бинарными с csv как stdout)"
 
-#: ../src/enigma2/python/crossepg_info.py:69
 #, python-format
 msgid "Indexes db size: %s"
 msgstr "Размер индексов ДБ: %s"
 
-#: ../src/enigma2/python/crossepg_info.py:27
 msgid "Info"
 msgstr "Инфо"
 
-#: ../src/enigma2/python/crossepg_menu.py:75
 msgid "Info about database"
 msgstr "Информация о БД"
 
-#: ../src/enigma2/python/crossepg_setup.py:295
+msgid "Internal flash"
+msgstr ""
+
+msgid "Internal flash (unsuggested)"
+msgstr ""
+
 msgid ""
 "Lamedb used for epg.dat conversion.\n"
 "This option doesn't work with crossepg patch v2"
@@ -258,40 +209,31 @@ msgstr ""
 "БД ТП используется для конвертации epg.dat.\n"
 "Это опция не работает с CrossEpg патч v2"
 
-#: ../src/enigma2/python/crossepg_info.py:83
 #, python-format
 msgid "Last update time: %s"
 msgstr "Время последнего обновления: %s"
 
-#: ../src/enigma2/python/crossepglib.py:598
-#: ../src/enigma2/python/crossepg_loader.py:36
-#: ../src/enigma2/python/crossepg_loader.py:37
 msgid "Loading data"
 msgstr "Загрузка данных"
 
-#: ../src/enigma2/python/crossepg_providers.py:39
 msgid "MHW2"
 msgstr "MHW2"
 
-#: ../src/enigma2/python/crossepg_menu.py:67
 msgid "MHW2 providers"
 msgstr "MHW2 провайдеры"
 
-#: ../src/enigma2/python/crossepglib.py:480
 msgid "Merging XEPGDB"
 msgstr "XEPGDB"
 
-#: ../src/enigma2/python/crossepg_ordering.py:97
-#: ../src/enigma2/python/crossepg_ordering.py:103
 msgid "Move down"
 msgstr "Вниз"
 
-#: ../src/enigma2/python/crossepg_ordering.py:99
-#: ../src/enigma2/python/crossepg_ordering.py:102
 msgid "Move up"
 msgstr "Вверх"
 
-#: ../src/enigma2/python/crossepg_setup.py:301
+msgid "OK"
+msgstr ""
+
 msgid ""
 "Only for opentv providers.\n"
 "If you zap on channel used from a provider it download the epg in background"
@@ -299,85 +241,73 @@ msgstr ""
 "Только для Opentv провайдеров.\n"
 "Если вы смотрите канал, то Epg загружается в фоновом режиме"
 
-#: ../src/enigma2/python/crossepg_providers.py:33
 msgid "OpenTV"
 msgstr "OpenTV"
 
-#: ../src/enigma2/python/crossepg_menu.py:64
 msgid "OpenTV providers"
 msgstr "OpenTV провайдеры"
 
-#: ../src/enigma2/python/crossepg_setup.py:154
 msgid ""
 "PLEASE READ!\n"
-"A hard drive or an usb pen is STRONGLY SUGGESTED. If you still want use your internal flash pay attention to:\n"
-"(1) If you don't have enough free space your box may completely block and you need to flash it again\n"
+"A hard drive or an usb pen is STRONGLY SUGGESTED. If you still want use your "
+"internal flash pay attention to:\n"
+"(1) If you don't have enough free space your box may completely block and "
+"you need to flash it again\n"
 "(2) Many write operations on your internal flash may damage your flash memory"
 msgstr ""
 "Пожалуйста, прочтите!\n"
-"Рекомендуется использовать жесткий диск или USB флеш. Если вы все же хотите использовать внутренню флеш, то обратите внимание:\n"
-"(1) Если будет недостаточно места, ваш ресивер может быть заблокирован и прийдется перешивать его снова\n"
+"Рекомендуется использовать жесткий диск или USB флеш. Если вы все же хотите "
+"использовать внутренню флеш, то обратите внимание:\n"
+"(1) Если будет недостаточно места, ваш ресивер может быть заблокирован и "
+"прийдется перешивать его снова\n"
 "(2) Множественная запись на внутренню флеш может ее повредить."
 
-#: ../src/enigma2/python/crossepg_importer.py:97
 msgid "Parsing"
 msgstr "Анализ"
 
-#: ../src/enigma2/python/crossepglib.py:465
 msgid "Parsing channels list"
 msgstr "Анализ списка каналов"
 
-#: ../src/enigma2/python/crossepglib.py:474
 msgid "Parsing events"
 msgstr "Анализ событий"
 
-#: ../src/enigma2/python/crossepglib.py:456
 msgid "Parsing summaries"
 msgstr "Анализ описаний"
 
-#: ../src/enigma2/python/crossepglib.py:450
 msgid "Parsing titles"
 msgstr "Анализ названий"
 
-#: ../src/enigma2/python/crossepg_main.py:24
 msgid "Please configure crossepg before start downloader"
 msgstr "Настройте CrossEpg до начала загрузки"
 
-#: ../src/enigma2/python/crossepg_setup.py:215
 msgid "Preferred lamedb"
 msgstr "БД транспондеров"
 
-#: ../src/enigma2/python/crossepg_ordering.py:26
-#: ../src/enigma2/python/crossepg_menu.py:68
 msgid "Providers start order"
 msgstr ""
 
-#: ../src/enigma2/python/crossepglib.py:496
 #, python-format
 msgid "Read %s"
 msgstr "Чтение %s"
 
-#: ../src/enigma2/python/crossepglib.py:444
 msgid "Reading channels"
 msgstr "Чтение каналов"
 
-#: ../src/enigma2/python/crossepglib.py:453
 msgid "Reading summaries"
 msgstr "Чтение описаний"
 
-#: ../src/enigma2/python/crossepglib.py:447
 msgid "Reading titles"
 msgstr "Чтение названий"
 
-#: ../src/enigma2/python/crossepg_setup.py:229
+msgid "Really close without saving settings?"
+msgstr ""
+
 msgid "Reboot after a manual download"
 msgstr "Перезагружать после ручного скачивания"
 
-#: ../src/enigma2/python/crossepg_setup.py:228
 msgid "Reboot after a scheduled download"
 msgstr "Перезагружать после скачивания по графику"
 
-#: ../src/enigma2/python/crossepg_setup.py:299
 msgid ""
 "Reload epg at every boot.\n"
 "Normally it's not necessary but recover epg after an enigma2 crash"
@@ -385,157 +315,126 @@ msgstr ""
 "Обновлять EPG при каждой загрузке.\n"
 "Это необходимо для восстановления EPG после краха системы"
 
-#: ../src/enigma2/python/crossepglib.py:486
-#: ../src/enigma2/python/crossepglib.py:489
 msgid "Running script"
 msgstr "Выполнение скрипта"
 
-#: ../src/enigma2/python/crossepglib.py:614
+msgid "Save"
+msgstr ""
+
 msgid "Saving data"
 msgstr "Сохранение данных"
 
-#: ../src/enigma2/python/crossepg_setup.py:220
 msgid "Scheduled download"
 msgstr "Загрузка по графику"
 
-#: ../src/enigma2/python/crossepg_setup.py:225
 msgid "Scheduled download at"
 msgstr "Загрузка по графику на"
 
-#: ../src/enigma2/python/crossepg_setup.py:308
 msgid "Scheduled download disabled"
 msgstr "Загрузка по графику отключена"
 
-#: ../src/enigma2/python/crossepg_providers.py:37
 msgid "Scripts"
 msgstr "Scripts"
 
-#: ../src/enigma2/python/crossepg_menu.py:66
 msgid "Scripts providers"
 msgstr "Scripts провайдеры"
 
-#: ../src/enigma2/python/crossepg_setup.py:232
 msgid "Show 'Force reload' as plugin"
 msgstr "Показывать 'Force reload' как плагин"
 
-#: ../src/enigma2/python/crossepg_setup.py:231
 msgid "Show as extension"
 msgstr "Показывать, как расширение"
 
-#: ../src/enigma2/python/crossepg_setup.py:230
 msgid "Show as plugin"
 msgstr "Показывать, как плагин"
 
-#: ../src/enigma2/python/crossepg_setup.py:326
 msgid "Show crossepg force load in plugin menu"
 msgstr "Показывать CrossEpg force load в меню плагинов"
 
-#: ../src/enigma2/python/crossepg_setup.py:319
-#: ../src/enigma2/python/crossepg_setup.py:324
 msgid "Show crossepg in extensions menu"
 msgstr "Показывать CrossEpg в меню расширений"
 
-#: ../src/enigma2/python/crossepg_setup.py:317
-#: ../src/enigma2/python/crossepg_setup.py:322
 msgid "Show crossepg in plugin menu"
 msgstr "Показывать CrossEpg в меню плагинов"
 
-#: ../src/enigma2/python/crossepg_converter.py:34
-#: ../src/enigma2/python/crossepg_converter.py:35
 msgid "Starting converter"
 msgstr "Запуск конвертора"
 
-#: ../src/enigma2/python/crossepg_downloader.py:36
-#: ../src/enigma2/python/crossepg_downloader.py:40
 msgid "Starting downloader"
 msgstr "Запуск загрузки"
 
-#: ../src/enigma2/python/crossepg_importer.py:34
-#: ../src/enigma2/python/crossepg_importer.py:35
 msgid "Starting importer"
 msgstr "Запуск импорта"
 
-#: ../src/enigma2/python/crossepg_setup.py:310
+msgid "Storage device"
+msgstr ""
+
 msgid "Time for scheduled daily download"
 msgstr "Время ежедневной загрузки"
 
-#: ../src/enigma2/python/crossepg_info.py:73
 #, python-format
 msgid "Total size: %s"
 msgstr "Общий размер: %s"
 
-#: ../src/enigma2/python/crossepg_menu.py:69
 msgid "Update rytec providers"
 msgstr "Обновить rytec провайдеры"
 
-#: ../src/enigma2/python/crossepg_menu.py:70
 msgid "Update xepgdb providers"
 msgstr "Обновить xepgdb провайдеры"
 
-#: ../src/enigma2/python/crossepg_xepgdb_update.py:47
-#: ../src/enigma2/python/crossepg_rytec_update.py:46
-#: ../src/enigma2/python/crossepg_rytec_update.py:47
 msgid "Updating rytec providers..."
 msgstr "Обновление rytec провайдеров..."
 
-#: ../src/enigma2/python/crossepg_xepgdb_update.py:46
 msgid "Updating xepgdb providers..."
 msgstr "Обновление xepgdb провайдеров..."
 
-#: ../src/enigma2/python/crossepg_info.py:85
 #, python-format
 msgid "Version: %s"
 msgstr "Версия: %s"
 
-#: ../src/enigma2/python/crossepg_setup.py:304
 msgid ""
-"When the decoder is in standby opentv providers will be automatically downloaded every hour.\n"
+"When the decoder is in standby opentv providers will be automatically "
+"downloaded every hour.\n"
 "XMLTV providers will be always downloaded only once a day"
 msgstr ""
 "В режиме ожидания opentv провайдеры будут загружаться каждый час.\n"
 "XMLTV провайдеры будут загружаться раз в день"
 
-#: ../src/enigma2/python/crossepg_providers.py:35
 msgid "XEPGDB"
 msgstr "XEPGDB"
 
-#: ../src/enigma2/python/crossepg_menu.py:65
 msgid "XEPGDB providers"
 msgstr "XEPGDB провайдеры"
 
-#: ../src/enigma2/python/crossepg_providers.py:31
 msgid "XMLTV"
 msgstr "XMLTV"
 
-#: ../src/enigma2/python/crossepg_menu.py:63
 msgid "XMLTV providers"
 msgstr "XMLTV провайдеры"
 
-#: ../src/enigma2/python/crossepg_setup.py:87
-#: ../src/enigma2/python/crossepg_setup.py:211
 msgid "disabled"
 msgstr "откл."
 
-#: ../src/enigma2/python/crossepg_setup.py:89
-#: ../src/enigma2/python/crossepg_setup.py:207
 msgid "every hour (only in standby)"
 msgstr "каждый час (режим ожидания)"
 
-#: ../src/enigma2/python/crossepg_setup.py:82
-#: ../src/enigma2/python/crossepg_setup.py:201
 msgid "main lamedb"
 msgstr "БД транспондеров"
 
-#: ../src/enigma2/python/crossepg_setup.py:88
-#: ../src/enigma2/python/crossepg_setup.py:209
 msgid "once a day"
 msgstr "раз в день"
 
-#: ../src/enigma2/python/crossepg_providers.py:40
 msgid "providers"
 msgstr "провайдеры"
 
-#: ../src/enigma2/python/crossepg_menu.py:53
 msgid "unknow version"
 msgstr "неизвестная версия"
 
+#~ msgid "Back"
+#~ msgstr "Назад"
+
+#~ msgid "Disable"
+#~ msgstr "Отключить"
+
+#~ msgid "Enable"
+#~ msgstr "Включить"
