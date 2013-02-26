@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: enigma 2-plugin-systemplugins-crossepg-0.6.2+git0+5531246976cc69ec8d4a089a33c84a2b2c73d020-r9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-01 15:53+0000\n"
-"PO-Revision-Date: 2013-02-04 13:01+0100\n"
+"PO-Revision-Date: 2013-02-26 14:00+0100\n"
 "Last-Translator: xxx\n"
 "Language-Team: none\n"
 "Language: ru\n"
@@ -95,27 +95,6 @@ msgstr "Конвертация данных"
 msgid "Creation time: %s"
 msgstr "Время создания: %s"
 
-#: ../src/enigma2/python/plugin.py:29
-#: ../src/enigma2/python/plugin.py:34
-#: ../src/enigma2/python/plugin.py:39
-#: ../src/enigma2/python/plugin.py:45
-#: ../src/enigma2/python/plugin.py:50
-#: ../src/enigma2/python/plugin.py:55
-#: ../src/enigma2/python/plugin.py:61
-#: ../src/enigma2/python/crossepg_xepgdb_update.py:40
-#: ../src/enigma2/python/crossepg_rytec_update.py:38
-#: ../src/enigma2/python/crossepg_providers.py:40
-#: ../src/enigma2/python/crossepg_ordering.py:26
-#: ../src/enigma2/python/crossepg_menu.py:50
-#: ../src/enigma2/python/crossepg_menu.py:53
-#: ../src/enigma2/python/crossepg_loader.py:33
-#: ../src/enigma2/python/crossepg_info.py:27
-#: ../src/enigma2/python/crossepg_importer.py:31
-#: ../src/enigma2/python/crossepg_converter.py:31
-#: ../src/enigma2/python/crossepg_about.py:30
-msgid "CrossEPG"
-msgstr "CrossEPG"
-
 #: ../src/enigma2/python/plugin.py:62
 msgid "CrossEPG Force Reload"
 msgstr "Принудительная перезагрузка CrossEPG"
@@ -182,9 +161,6 @@ msgstr "Скачать сейчас"
 msgid "Download on tune"
 msgstr "Загружать при настройке"
 
-#: ../src/enigma2/python/plugin.py:29
-#: ../src/enigma2/python/plugin.py:34
-#: ../src/enigma2/python/plugin.py:39
 msgid "Downloader"
 msgstr "Загрузчик"
 
