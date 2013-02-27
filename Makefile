@@ -233,6 +233,7 @@ install-plugin:
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/pl/LC_MESSAGES
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/fa/LC_MESSAGES
 	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/es/LC_MESSAGES
+	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/sv/LC_MESSAGES
 	install -m 644 contrib/po/cs/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/cs/LC_MESSAGES/
 	install -m 644 contrib/po/nl/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/nl/LC_MESSAGES/
 	install -m 644 contrib/po/it/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES/
@@ -241,6 +242,7 @@ install-plugin:
 	install -m 644 contrib/po/pl/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/pl/LC_MESSAGES/
 	install -m 644 contrib/po/fa/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/fa/LC_MESSAGES/
 	install -m 644 contrib/po/es/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/es/LC_MESSAGES/
+	install -m 644 contrib/po/es/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/sv/LC_MESSAGES/
 	install -m 644 src/enigma2/python/*.py $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
 	install -m 644 src/enigma2/python/*.pyo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
 	install -m 644 src/enigma2/python/skins/*.xml $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins/
@@ -256,6 +258,7 @@ install-plugin-qboxhd:
 	install -d $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/pl/LC_MESSAGES
 	install -d $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/fa/LC_MESSAGES
 	install -d $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/es/LC_MESSAGES
+	install -d $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/sv/LC_MESSAGES
 	install -m 644 contrib/po/nl/LC_MESSAGES/CrossEPG.mo $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/nl/LC_MESSAGES/
 	install -m 644 contrib/po/it/LC_MESSAGES/CrossEPG.mo $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/it/LC_MESSAGES/
 	install -m 644 contrib/po/uk/LC_MESSAGES/CrossEPG.mo $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/uk/LC_MESSAGES/
@@ -263,6 +266,7 @@ install-plugin-qboxhd:
 	install -m 644 contrib/po/pl/LC_MESSAGES/CrossEPG.mo $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/pl/LC_MESSAGES/
 	install -m 644 contrib/po/fa/LC_MESSAGES/CrossEPG.mo $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/fa/LC_MESSAGES/
 	install -m 644 contrib/po/es/LC_MESSAGES/CrossEPG.mo $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/es/LC_MESSAGES/
+	install -m 644 contrib/po/es/LC_MESSAGES/CrossEPG.mo $(D)/usr/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/po/sv/LC_MESSAGES/
 	install -m 644 src/enigma2/python/*.py $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
 	install -m 644 src/enigma2/python/*.pyo $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/
 	install -m 644 src/enigma2/python/skins/*.xml $(D)/usr/local/lib/enigma2/python/Plugins/SystemPlugins/CrossEPG/skins/
