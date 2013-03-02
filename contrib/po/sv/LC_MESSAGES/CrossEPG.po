@@ -118,16 +118,16 @@ msgid "Downloader"
 msgstr "Hämtning"
 
 msgid "Downloading"
-msgstr "Hämtar"
+msgstr "Hämtar..."
 
 msgid "Downloading XEPGDB"
-msgstr "Hämtar XEPGDB"
+msgstr "Hämtar XEPGDB..."
 
 msgid "Downloading channels list"
-msgstr "Hämtar kanallistor"
+msgstr "Hämtar kanallistor..."
 
 msgid "Downloading events"
-msgstr "Hämtar program"
+msgstr "Hämtar program..."
 
 msgid ""
 "Drive where you save data.\n"
@@ -269,7 +269,7 @@ msgid "Preferred lamedb"
 msgstr "Föredragen 'lamedb'"
 
 msgid "Providers start order"
-msgstr "Startordning (Opertörer)"
+msgstr "Startordning (Operatörer)"
 
 #, python-format
 msgid "Read %s"
