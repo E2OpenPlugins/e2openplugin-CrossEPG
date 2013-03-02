@@ -72,6 +72,9 @@ msgstr "Skapades på: %s"
 msgid "CrossEPG"
 msgstr "EPG via XML (CrossEPG)"
 
+msgid "CrossEPG Settings"
+msgstr "CrossEPG-inställningar"
+
 msgid "CrossEPG Force Reload"
 msgstr "CrossEPG 'Tvinga fram hämtning'"
 
