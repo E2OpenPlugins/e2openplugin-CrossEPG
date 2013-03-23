@@ -73,7 +73,7 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("Update rytec providers"), "rytec_small.png"))
 		l.append(self.buildListEntry(_("Update xepgdb providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Download now"), "download.png"))
-		if getDistro() != "ViX":
+		if getDistro() != "openvix":
 			l.append(self.buildListEntry(_("Force csv import now"), "csv.png"))
 			l.append(self.buildListEntry(_("Force epg.dat conversion now"), "conversion.png"))
 			l.append(self.buildListEntry(_("Force epg reload"), "reload.png"))
@@ -152,7 +152,7 @@ class CrossEPG_Menu(Screen):
 			self.config.deleteLog()
 			self.downloader()
 			return
-		if getDistro() == "ViX":
+		if getDistro() == "openvix":
 			index += 3
 		if index == 10:
 			self.importer()

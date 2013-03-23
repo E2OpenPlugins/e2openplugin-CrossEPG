@@ -12,16 +12,20 @@ import _enigma
 
 def getDistro():
 	try:
-		file = open('/etc/image-version', 'r')
-		lines = file.readlines()
-		file.close()
-		for x in lines:
-			splitted = x.split('=')
-			if splitted[0] == "comment":
-				result =  splitted[1].replace('\n','')
+		from enigma import getDristro as e2_getDistro
+		return e2_getDistro()
 	except:
-		result = None
-	return result
+		try:
+			file = open('/etc/image-version', 'r')
+			lines = file.readlines()
+			file.close()
+			for x in lines:
+				splitted = x.split('=')
+				if splitted[0] == "comment":
+					result =  splitted[1].replace('\n','')
+		except:
+			result = None
+		return result
 
 # return value
 # -1 none

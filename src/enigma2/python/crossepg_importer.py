@@ -52,7 +52,7 @@ class CrossEPG_Importer(Screen):
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.lamedb = self.config.lamedb
-		if getDistro() != "ViX" and getDistro() != "AAF" and getDistro() != "openMips":
+		if getDistro() != "openvix" and getDistro() != "openaaf" and getDistro() != "openmips":
 			self.db_root = self.config.db_root
 		else:
 			self.db_root = config.misc.epgcachepath.value + 'crossepg'
