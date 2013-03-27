@@ -12,7 +12,7 @@ import _enigma
 
 def getDistro():
 	try:
-		from enigma import getDristro as e2_getDistro
+		from enigma import getDistro as e2_getDistro
 		return e2_getDistro()
 	except:
 		try:
