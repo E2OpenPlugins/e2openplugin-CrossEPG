@@ -70,7 +70,7 @@ msgid "Creation time: %s"
 msgstr "Skapades på: %s"
 
 msgid "CrossEPG"
-msgstr "EPG via XML (CrossEPG)"
+msgstr "CrossEPG"
 
 msgid "CrossEPG Settings"
 msgstr "CrossEPG-inställningar"
@@ -399,7 +399,7 @@ msgid "XMLTV"
 msgstr "XMLTV"
 
 msgid "XMLTV providers"
-msgstr "XMLTV-operatörer"
+msgstr "Rytec-operatörer"
 
 msgid "disabled"
 msgstr "Avaktiverad"
