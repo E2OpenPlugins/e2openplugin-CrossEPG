@@ -55,7 +55,7 @@ class CrossEPG_Info(Screen):
 
 		self.wrapper = CrossEPG_Wrapper()
 		self.wrapper.addCallback(self.__wrapperCallback)
-		if getDistro() == 'ViX':
+		if getDistro() == 'openvix':
 			self.wrapper.init(CrossEPG_Wrapper.CMD_INFO, config.misc.epgcachepath.value + 'crossepg')
 		else:
 			self.wrapper.init(CrossEPG_Wrapper.CMD_INFO, self.config.db_root)
