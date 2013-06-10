@@ -220,8 +220,8 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 		if len(self.lamedbs_desc) > 1:
 			self.list.append((_("Preferred lamedb"), ConfigSelection(self.lamedbs_desc, lamedb_default)))
 
+		self.list.append((_("Enable csv import"), ConfigYesNo(self.config.csv_import_enabled > 0)))
 		if getDistro() != "openvix":
-			self.list.append((_("Enable csv import"), ConfigYesNo(self.config.csv_import_enabled > 0)))
 			self.list.append((_("Force epg reload on boot"), ConfigYesNo(self.config.force_load_on_boot > 0)))
 		self.list.append((_("Download on tune"), ConfigYesNo(self.config.download_tune_enabled > 0)))
 		self.list.append((_("Scheduled download"), ConfigSelection(self.automatictype, scheduled_default)))
@@ -260,7 +260,7 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 		if getDistro() != "openvix":
 			self.config.force_load_on_boot = int(self.list[i+1][1].getValue())
 		else:
-			i -= 2
+			i -= 1
 		self.config.download_tune_enabled = int(self.list[i+2][1].getValue())
 
 		dailycache = self.config.download_daily_enabled
@@ -322,8 +322,6 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 		if index == 1:
 			self["information"].setText(_("Lamedb used for epg.dat conversion.\nThis option doesn't work with crossepg patch v2"))
 			return
-		if getDistro() == "openvix":
-			index += 1
 		if index == 2:
 			self["information"].setText(_("Import *.csv and *.bin from %s/import or %s/import\n(*.bin are binaries with a csv as stdout)") % (self.config.db_root, self.config.home_directory))
 			return
