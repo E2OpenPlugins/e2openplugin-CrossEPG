@@ -111,7 +111,7 @@ class CrossEPG_Downloader(Screen):
 		if len(self.providers) == 0:
 			self.closeAndCallback(True)
 		else:
-			if getDistro() != "openvix" and getDistro() != "openaaf" and getDistro() != "openmips":
+			if getDistro() != "openvix" and getDistro() != "openatv":
 				self.wrapper.init(CrossEPG_Wrapper.CMD_DOWNLOADER, self.config.db_root)
 			else:
 				self.wrapper.init(CrossEPG_Wrapper.CMD_DOWNLOADER, config.misc.epgcachepath.value + 'crossepg')
