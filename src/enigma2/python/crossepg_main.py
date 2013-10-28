@@ -78,7 +78,7 @@ class CrossEPG_Main:
 	def loaderCallback(self, ret):
 		crossepg_auto.lock = False
 
-	def setup(self, session):
+	def setup(self, session, **kwargs):
 		crossepg_auto.lock = True
 		crossepg_auto.stop()
 		session.openWithCallback(self.setupCallback, CrossEPG_Menu)
