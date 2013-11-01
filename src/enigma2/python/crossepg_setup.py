@@ -223,7 +223,6 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 		self.list.append((_("Enable csv import"), ConfigYesNo(self.config.csv_import_enabled > 0)))
 		if getDistro() != "openvix":
 			self.list.append((_("Force epg reload on boot"), ConfigYesNo(self.config.force_load_on_boot > 0)))
-		self.list.append((_("Download on tune"), ConfigYesNo(self.config.download_tune_enabled > 0)))
 		self.list.append((_("Scheduled download"), ConfigSelection(self.automatictype, scheduled_default)))
 
 		if self.config.download_daily_enabled:
@@ -261,35 +260,34 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 			self.config.force_load_on_boot = int(self.list[i+1][1].getValue())
 		else:
 			i -= 1
-		self.config.download_tune_enabled = int(self.list[i+2][1].getValue())
 
 		dailycache = self.config.download_daily_enabled
 		standbycache = self.config.download_standby_enabled
 		if getDistro() != "openvix":
-			if self.list[i+3][1].getIndex() == 0:
+			if self.list[i+2][1].getIndex() == 0:
 				self.config.download_daily_enabled = 0
 				self.config.download_standby_enabled = 0
-			elif self.list[i+3][1].getIndex() == 1:
+			elif self.list[i+2][1].getIndex() == 1:
 				self.config.download_daily_enabled = 1
 				self.config.download_standby_enabled = 0
 			else:
 				self.config.download_daily_enabled = 0
 				self.config.download_standby_enabled = 1
 		else:
-			if int(self.list[i+3][1].getIndex()) == 0:
+			if int(self.list[i+2][1].getIndex()) == 0:
 				self.config.download_daily_enabled = 0
 				self.config.download_standby_enabled = 0
-			elif int(self.list[i+3][1].getIndex()) == 1:
+			elif int(self.list[i+2][1].getIndex()) == 1:
 				self.config.download_daily_enabled = 1
 				self.config.download_standby_enabled = 0
-			elif int(self.list[i+3][1].getIndex()) == 2:
+			elif int(self.list[i+2][1].getIndex()) == 2:
 				self.config.download_daily_enabled = 0
 				self.config.download_standby_enabled = 1
 
 		if dailycache != self.config.download_daily_enabled or standbycache != self.config.download_standby_enabled:
 			redraw = True
 
-		i += 4
+		i += 3
 		if dailycache:
 			self.config.download_daily_hours = self.list[i][1].getValue()[0]
 			self.config.download_daily_minutes = self.list[i][1].getValue()[1]
@@ -331,9 +329,6 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 			self["information"].setText(_("Reload epg at every boot.\nNormally it's not necessary but recover epg after an enigma2 crash"))
 			return
 		if index == 4:
-			self["information"].setText(_("Only for opentv providers.\nIf you zap on channel used from a provider it download the epg in background"))
-			return
-		if index == 5:
 			if self.config.download_standby_enabled:
 				self["information"].setText(_("When the decoder is in standby opentv providers will be automatically downloaded every hour.\nXMLTV providers will be always downloaded only once a day"))
 				return
@@ -345,25 +340,25 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 				return
 		if self.config.download_daily_enabled == 0:
 			index += 1
-		if index == 6:
+		if index == 5:
 			if self.config.download_standby_enabled or self.config.download_daily_enabled:
 				self["information"].setText(_("Time for scheduled daily download"))
 				return
 		if self.fastpatch:
 			index += 2
-		if index == 7:
+		if index == 6:
 			self["information"].setText(_("Automatically reboot the decoder after a scheduled download"))
 			return
-		if index == 8:
+		if index == 7:
 			self["information"].setText(_("Automatically reboot the decoder after a manual download"))
 			return
-		if index == 9:
+		if index == 8:
 			self["information"].setText(_("Show crossepg in plugin menu"))
 			return
-		if index == 10:
+		if index == 9:
 			self["information"].setText(_("Show crossepg in extensions menu"))
 			return
-		if index == 11:
+		if index == 10:
 			self["information"].setText(_("Show crossepg force load in plugin menu"))
 			return
 

@@ -12,6 +12,7 @@ typedef struct dvb_s
 	int				*pids;
 	unsigned int	pids_count;
 	char			*demuxer;
+	int				frontend;
 	unsigned int	min_length;
 	unsigned int	buffer_size;
 	unsigned char 	filter;

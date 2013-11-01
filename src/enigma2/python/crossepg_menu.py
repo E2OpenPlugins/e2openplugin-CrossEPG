@@ -12,6 +12,7 @@ from crossepg_loader import CrossEPG_Loader
 from crossepg_ordering import CrossEPG_Ordering
 from crossepg_rytec_update import CrossEPG_Rytec_Update
 from crossepg_xepgdb_update import CrossEPG_Xepgdb_Update
+from crossepg_defragmenter import CrossEPG_Defragmenter
 from crossepg_locale import _
 
 from Screens.Screen import Screen
@@ -73,6 +74,7 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("Update rytec providers"), "rytec_small.png"))
 		l.append(self.buildListEntry(_("Update xepgdb providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Download now"), "download.png"))
+		l.append(self.buildListEntry(_("Defragment database"), "conversion.png"))
 		if getDistro() != "openvix":
 			l.append(self.buildListEntry(_("Force csv import now"), "csv.png"))
 			l.append(self.buildListEntry(_("Force epg.dat conversion now"), "conversion.png"))
@@ -152,21 +154,24 @@ class CrossEPG_Menu(Screen):
 			self.config.deleteLog()
 			self.downloader()
 			return
+		if index == 10:
+			self.session.open(CrossEPG_Defragmenter)
+			return
 		if getDistro() == "openvix":
 			index += 3
-		if index == 10:
+		if index == 11:
 			self.importer()
 			return
-		if index == 11:
+		if index == 12:
 			self.converter()
 			return
-		if index == 12:
+		if index == 13:
 			self.loader()
 			return
-		if index == 13:
+		if index == 14:
 			self.session.open(CrossEPG_Info)
 			return
-		if index == 14:
+		if index == 15:
 			self.session.open(CrossEPG_About)
 			return
 

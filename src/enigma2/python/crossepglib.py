@@ -2,11 +2,11 @@ from enigma import *
 from crossepg_locale import _
 from Tools.Directories import crawlDirectory, pathExists, createDir
 from types import *
+from time import *
 
 import sys, traceback
 import os
 import re
-import time
 import new
 import _enigma
 
@@ -71,7 +71,6 @@ class CrossEPG_Config:
 	download_daily_hours = 4
 	download_daily_minutes = 0
 	download_daily_reboot = 1
-	download_tune_enabled = 0
 	download_standby_enabled = 0
 	download_manual_reboot = 0
 	csv_import_enabled = 0
@@ -80,6 +79,7 @@ class CrossEPG_Config:
 	show_force_reload_as_plugin = 0
 	last_partial_download_timestamp = 0
 	last_full_download_timestamp = 0
+	last_defrag_timestamp = time()
 	configured = 0
 
 	def __init__(self):
@@ -126,8 +126,6 @@ class CrossEPG_Config:
 							self.download_daily_hours = int(value);
 						elif key == "download_daily_minutes":
 							self.download_daily_minutes = int(value);
-						elif key == "download_tune_enabled":
-							self.download_tune_enabled = int(value);
 						elif key == "download_daily_reboot":
 							self.download_daily_reboot = int(value);
 						elif key == "download_manual_reboot":
@@ -138,6 +136,8 @@ class CrossEPG_Config:
 							self.last_partial_download_timestamp = int(value);
 						elif key == "last_full_download_timestamp":
 							self.last_full_download_timestamp = int(value);
+						elif key == "last_defrag_timestamp":
+							self.last_defrag_timestamp = int(value);
 						elif key == "csv_import_enabled":
 							self.csv_import_enabled = int(value);
 						elif key == "show_plugin":
@@ -174,11 +174,11 @@ class CrossEPG_Config:
 		f.write("download_daily_hours=%d\n" % (self.download_daily_hours))
 		f.write("download_daily_minutes=%d\n" % (self.download_daily_minutes))
 		f.write("download_daily_reboot=%d\n" % (self.download_daily_reboot))
-		f.write("download_tune_enabled=%d\n" % (self.download_tune_enabled))
 		f.write("download_manual_reboot=%d\n" % (self.download_manual_reboot))
 		f.write("download_standby_enabled=%d\n" % (self.download_standby_enabled))
 		f.write("last_full_download_timestamp=%d\n" % (self.last_full_download_timestamp))
 		f.write("last_partial_download_timestamp=%d\n" % (self.last_partial_download_timestamp))
+		f.write("last_defrag_timestamp=%d\n" % (self.last_defrag_timestamp))
 		f.write("csv_import_enabled=%d\n" % (self.csv_import_enabled))
 		f.write("show_plugin=%d\n" % (self.show_plugin))
 		f.write("show_extension=%d\n" % (self.show_extension))
@@ -204,42 +204,48 @@ class CrossEPG_Config:
 		f.close()
 		return ""
 
-	def getChannelID(self, provider):
+	def getTransponder(self, provider):
 		try:
 			f = open("%s/providers/%s.conf" % (self.home_directory, provider), "r")
 		except Exception, e:
 			print "[CrossEPG_Config] %s" % (e)
 			return
+			
+		regexp = re.compile(r"(.*)=(.*)")
 
-		nid = -1;
-		tsid = -1;
-		sid = -1;
-		namespace = -1;
-		nidRe = re.compile(r"nid=(.*)")
-		tsidRe = re.compile(r"tsid=(.*)")
-		sidRe = re.compile(r"sid=(.*)")
-		namespaceRe = re.compile(r"namespace=(.*)")
-
+		transponder_keys = [
+				"frequency",
+				"symbol_rate",
+				"polarization",
+				"fec_inner",
+				"orbital_position",
+				"inversion",
+				"system",
+				"modulation",
+				"roll_off",
+				"pilot",
+			]
+			
+		transponder = {}
 		for line in f.readlines():
-			znid = re.findall(nidRe, line)
-			if znid:
-				nid = int(znid[0])
-			zsid = re.findall(sidRe, line)
-			if zsid:
-				sid = int(zsid[0])
-			ztsid = re.findall(tsidRe, line)
-			if ztsid:
-				tsid = int(ztsid[0])
-			znamespace = re.findall(namespaceRe, line)
-			if znamespace:
-				namespace = int(znamespace[0]);
+			res = re.findall(regexp, line)
+			if res:
+				key = res[0][0]
+				try:
+					value = int(res[0][1])
+				except Exception, e:
+					value = -1
+				
+				if key in transponder_keys:
+					transponder[key] = value
 
-		if nid == -1 or sid == -1 or tsid == -1:
+		if len(transponder.keys()) != len(transponder_keys):
 			return
 
 		f.close()
-		return "1:0:1:%X:%X:%X:%X:0:0:0:" % (sid, tsid, nid, namespace)
 
+		return transponder
+		
 	def getAllProviders(self):
 		providers = list()
 		providersdesc = list()
@@ -344,10 +350,11 @@ class CrossEPG_Wrapper:
 	INFO_UPDATE_TIME		= 59
 	INFO_VERSION			= 60
 
-	CMD_DOWNLOADER	= 0
-	CMD_CONVERTER	= 1
-	CMD_INFO		= 2
-	CMD_IMPORTER	= 3
+	CMD_DOWNLOADER		= 0
+	CMD_CONVERTER		= 1
+	CMD_INFO			= 2
+	CMD_IMPORTER		= 3
+	CMD_DEFRAGMENTER	= 4
 
 	home_directory = ""
 
@@ -394,6 +401,8 @@ class CrossEPG_Wrapper:
 		elif cmd == self.CMD_IMPORTER:
 			importdir = "%s/import/" % (dbdir)
 			x = "%s/crossepg_importer -r -i %s -d %s" % (self.home_directory, importdir, dbdir)
+		elif cmd == self.CMD_DEFRAGMENTER:
+			x = "%s/crossepg_defragmenter -r -d %s" % (self.home_directory, dbdir)
 		else:
 			print "[CrossEPG_Wrapper] unknow command on init"
 			return
@@ -586,6 +595,22 @@ class CrossEPG_Wrapper:
 		else:
 			self.cmd.write(cmd)
 
+	def frontend(self, value):
+		print "[CrossEPG_Wrapper] -> FRONTEND %s" % (value)
+		cmd = "FRONTEND %d\n" % (value)
+		if self.oldapi:
+			self.cmd.write(cmd, len(cmd))
+		else:
+			self.cmd.write(cmd)
+	
+	def defrag(self,):
+		print "[CrossEPG_Wrapper] -> DEFRAGMENT"
+		cmd = "DEFRAGMENT\n"
+		if self.oldapi:
+			self.cmd.write(cmd, len(cmd))
+		else:
+			self.cmd.write(cmd)
+	
 	def download(self, provider):
 		print "[CrossEPG_Wrapper] -> DOWNLOAD %s" % (provider)
 		cmd = "DOWNLOAD %s\n" % (provider)

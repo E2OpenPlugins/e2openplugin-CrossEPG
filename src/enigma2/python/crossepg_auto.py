@@ -6,6 +6,7 @@ from crossepg_downloader import CrossEPG_Downloader
 from crossepg_converter import CrossEPG_Converter
 from crossepg_loader import CrossEPG_Loader
 from crossepg_importer import CrossEPG_Importer
+from crossepg_defragmenter import CrossEPG_Defragmenter
 from crossepg_locale import _
 from Screens.Screen import Screen
 
@@ -37,9 +38,9 @@ class CrossEPG_Auto(Screen):
 		self.pimporter = None
 		self.pconverter = None
 		self.ploader = None
+		self.pdefrag = None
 
 		self.osd = False
-		self.ontune = False
 		self.lock = False
 
 		if fileExists("/tmp/crossepg.standby"):
@@ -126,7 +127,6 @@ class CrossEPG_Auto(Screen):
 			else:
 				print "[CrossEPG_Auto] automatic download in standby"
 				self.osd = False
-				self.ontune = False
 				self.config.deleteLog()
 				self.download(self.providers)
 		elif self.config.download_daily_enabled:
@@ -137,7 +137,6 @@ class CrossEPG_Auto(Screen):
 			if stime < now and self.config.last_full_download_timestamp != stime:
 				from Screens.Standby import inStandby
 				self.osd = (inStandby == None)
-				self.ontune = False
 				self.config.last_full_download_timestamp = stime
 				self.config.last_partial_download_timestamp = stime
 				self.config.save()
@@ -158,37 +157,6 @@ class CrossEPG_Auto(Screen):
 			else:
 # 				print "[CrossEPG_Auto] poll"
 				self.timer.start(self.POLL_TIMER, 1)
-		elif self.config.download_tune_enabled:
-			now = time()
-			if self.config.last_partial_download_timestamp <= now - (60*60):
-				providerok = None
-				sservice = self.session.nav.getCurrentlyPlayingServiceReference()
-				if sservice:
-					service = sservice.toString()
-
-					providers = self.config.getAllProviders()
-					i = 0
-					for provider in providers[0]:
-						if providers[2][i] == "opentv":
-							if self.config.getChannelID(provider) == service:
-								providerok = provider
-								break;
-						i += 1
-
-				if providerok:
-					print "[CrossEPG_Auto] automatic download on tune"
-					self.osd = False
-					self.ontune = True
-					self.config.last_partial_download_timestamp = now
-					self.config.save()
-					self.config.deleteLog()
-					self.download([provider,])
-				else:
-# 					print "[CrossEPG_Auto] poll"
-					self.timer.start(self.POLL_TIMER, 1)
-			else:
-# 				print "[CrossEPG_Auto] poll"
-				self.timer.start(self.POLL_TIMER, 1)
 		else:
 # 			print "[CrossEPG_Auto] poll"
 			self.timer.start(self.POLL_TIMER, 1)
@@ -205,12 +173,8 @@ class CrossEPG_Auto(Screen):
 	def downloadCallback(self, ret):
 		self.pdownloader = None
 
-		from Screens.Standby import inStandby
-		if inStandby: # if in standby force service stop
-			self.session.nav.stopService()
-
 		if ret:
-			if self.config.csv_import_enabled == 1 and not self.ontune:
+			if self.config.csv_import_enabled == 1:
 				self.importer()
 			else:
 				if self.patchtype != 3:
@@ -220,6 +184,22 @@ class CrossEPG_Auto(Screen):
 		else:
 			self.timer.start(self.POLL_TIMER, 1)
 
+	def defrag(self):
+		if self.config.last_defrag_timestamp < time() - 7 * 24 * 60 * 60:	 # 1 week
+			print "[CrossEPG_Auto] start defragmentation"
+			if self.osd:
+				self.session.openWithCallback(self.defragCallback, CrossEPG_Defragmenter)
+			else:
+				self.pdefrag = CrossEPG_Defragmenter(self.session, self.defragCallback, True)
+			self.config.last_defrag_timestamp = time()
+			self.config.save()
+		else:
+			self.timer.start(self.POLL_TIMER, 1)
+			
+	def defragCallback(self, ret):
+		self.pdefrag = None
+		self.timer.start(self.POLL_TIMER, 1)
+		
 	def importer(self):
 		print "[CrossEPG_Auto] start csv import"
 		if self.osd:
@@ -278,7 +258,7 @@ class CrossEPG_Auto(Screen):
 
 	def loaderCallback(self, ret):
 		self.ploader = None
-		self.timer.start(self.POLL_TIMER, 1)
+		self.defrag()
 
 	def stop(self):
 		if self.pdownloader:
@@ -293,6 +273,9 @@ class CrossEPG_Auto(Screen):
 		if self.ploader:
 			self.ploader.quit()
 			self.ploader = None
+		if self.pdefrag:
+			self.pdefrag.quit()
+			self.pdefrag = None
 
 	def backToStandby(self):
 		from Screens.Standby import inStandby

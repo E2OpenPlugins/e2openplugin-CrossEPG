@@ -6,6 +6,7 @@ from Components.ProgressBar import ProgressBar
 from Components.ServiceEventTracker import ServiceEventTracker
 from Components.ActionMap import NumberActionMap
 from Components.config import config
+from Components.NimManager import nimmanager
 
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -23,6 +24,8 @@ except:
 	pass
 
 class CrossEPG_Downloader(Screen):
+	LOCK_TIMEOUT = 300 	# 100ms for tick - 30 sec
+	
 	def __init__(self, session, providers, pcallback = None, noosd = False):
 		from Components.Sources.StaticText import StaticText
 		from Components.Sources.Progress import Progress
@@ -52,18 +55,14 @@ class CrossEPG_Downloader(Screen):
 			"back": self.quit
 		}, -1)
 
-		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
-		{
-			iPlayableService.evTunedIn: self.tuned,
-		})
-
+		self.frontend = None
+		self.rawchannel = None
 		self.retValue = True
 		self.provider_index = 0
 		self.status = 0
 		self.open = False
 		self.saved = False
-		self.tune_enabled = False
-		self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
+		self.oldService = None
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.providers = providers
@@ -71,9 +70,6 @@ class CrossEPG_Downloader(Screen):
 
 		self.wrapper = CrossEPG_Wrapper()
 		self.wrapper.addCallback(self.wrapperCallback)
-
-		self.timeout = eTimer()
-		self.timeout.callback.append(self.quit)
 
 		self.hideprogress = eTimer()
 		self.hideprogress.callback.append(self["progress"].hide)
@@ -129,29 +125,133 @@ class CrossEPG_Downloader(Screen):
 				self.provider_index -= 1
 				return
 
-		service = self.config.getChannelID(self.providers[self.provider_index])
-		try:
-			cservice = self.session.nav.getCurrentlyPlayingServiceReference().toString()
-		except Exception, e:
-			cservice = None
-
-		if service:
-			print "[CrossEPG_Downloader] %s service is %s" % (self.providers[self.provider_index], service)
-			if service == cservice:
-				self.wrapper.download(self.providers[self.provider_index])
-			else:
-				self.tune_enabled = True
-				self.wrapper.wait()
-				self.timeout.start(60000, 1)
-				self.session.nav.playService(eServiceReference(service))
+		transponder = self.config.getTransponder(self.providers[self.provider_index])
+		if transponder:
+			self.doTune(transponder)
 		else:
 			self.wrapper.download(self.providers[self.provider_index])
+			
+	def error(self, message):
+		print "[CrossEPG_Downloader] Error: %s" % message
+		self.session.open(MessageBox, _("CrossEPG error: %s") % (message), type = MessageBox.TYPE_INFO, timeout = 20)
+		self.retValue = False
+		self.quit()
+		
+	def doTune(self, transponder):
+		nimList = nimmanager.getNimListOfType("DVB-S")
+		if len(nimList) == 0:
+			self.error("No DVB-S NIMs founds")
+			return
 
+		resmanager = eDVBResourceManager.getInstance()
+		if not resmanager:
+			self.error("Cannot retrieve Resource Manager instance")
+			return
+
+		print "[CrossEPG_Downloader] Search NIM for orbital position %d" % transponder["orbital_position"]
+		current_slotid = -1
+		if self.rawchannel:
+			del(self.rawchannel)
+
+		self.frontend = None
+		self.rawchannel = None
+
+		nimList.reverse() # start from the last
+		for slotid in nimList:
+			sats = nimmanager.getSatListForNim(slotid)
+			for sat in sats:
+				if sat[0] == transponder["orbital_position"]:
+					if current_slotid == -1:	# mark the first valid slotid in case of no other one is free
+						current_slotid = slotid
+
+					self.rawchannel = resmanager.allocateRawChannel(slotid)
+					if self.rawchannel:
+						print "[CrossEPG_Downloader] Nim found on slot id %d with sat %s" % (slotid, sat[1])
+						current_slotid = slotid
+						break
+
+			if self.rawchannel:
+				break
+
+		if current_slotid == -1:
+			self.error("No valid NIM found")
+			return
+
+		if not self.rawchannel:
+			print "[CrossEPG_Downloader] Nim found on slot id %d but it's busy. Stop current service" % current_slotid
+
+			self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
+			self.session.nav.stopService()
+			if self.session.pipshown:
+				self.session.pipshown = False
+
+			self.rawchannel = resmanager.allocateRawChannel(current_slotid)
+			if not self.rawchannel:
+				self.error("Cannot get the NIM")
+				return
+
+		self.frontend = self.rawchannel.getFrontend()
+		if not self.frontend:
+			self.error("Cannot get frontend")
+			return
+
+		demuxer_id = self.rawchannel.reserveDemux()
+		if demuxer_id < 0:
+			self.error("Cannot allocate the demuxer")
+			return
+
+		params = eDVBFrontendParametersSatellite()
+		params.frequency = transponder["frequency"]
+		params.symbol_rate = transponder["symbol_rate"]
+		params.polarisation = transponder["polarization"]
+		params.fec = transponder["fec_inner"]
+		params.inversion = transponder["inversion"]
+		params.orbital_position = transponder["orbital_position"]
+		params.system = transponder["system"]
+		params.modulation = transponder["modulation"]
+		params.rolloff = transponder["roll_off"]
+		params.pilot = transponder["pilot"]
+		params_fe = eDVBFrontendParameters()
+		params_fe.setDVBS(params, False)
+		self.frontend.tune(params_fe)
+		self.wrapper.demuxer("/dev/dvb/adapter%d/demux%d" % (0, demuxer_id)) # FIX: use the correct device
+		self.wrapper.frontend(current_slotid)
+
+		self.lockcounter = 0
+		self.locktimer = eTimer()
+		self.locktimer.callback.append(self.checkTunerLock)
+		self.locktimer.start(100, 1)
+
+	def checkTunerLock(self):
+		dict = {}
+		self.frontend.getFrontendStatus(dict)
+		if dict["tuner_state"] == "TUNING":
+			print "[CrossEPG] TUNING"
+		elif dict["tuner_state"] == "LOCKED":
+			print "[CrossEPG] ACQUIRING TSID/ONID"
+			self.wrapper.download(self.providers[self.provider_index])
+			return
+		elif dict["tuner_state"] == "LOSTLOCK" or dict["tuner_state"] == "FAILED":
+			print "[CrossEPG] FAILED"
+
+		self.lockcounter += 1
+		if self.lockcounter > self.LOCK_TIMEOUT:
+			self.error("Timeout for tuner lock")
+			return
+
+		self.locktimer.start(100, 1)
+		
 	def wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.EVENT_READY:
 			self.download()
 
 		elif event == CrossEPG_Wrapper.EVENT_END:
+			if self.rawchannel:
+				del(self.rawchannel)
+
+			self.frontend = None
+			self.rawchannel = None
+			
 			if self.saved and self.open:
 				self.wrapper.close()
 				self.open = False
@@ -204,13 +304,13 @@ class CrossEPG_Downloader(Screen):
 			self.retValue = False
 			self.quit()
 
-	def tuned(self):
-		if self.tune_enabled:
-			self.timeout.stop()
-			self.wrapper.download(self.providers[self.provider_index])
-			self.tune_enabled = False
-
 	def quit(self):
+		if self.rawchannel:
+			del(self.rawchannel)
+
+		self.frontend = None
+		self.rawchannel = None
+		
 		if self.wrapper.running():
 			self.retValue = False
 			self.wrapper.quit()

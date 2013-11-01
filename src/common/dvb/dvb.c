@@ -29,10 +29,26 @@ void dvb_read (dvb_t *settings, bool(*data_callback)(int, unsigned char*))
 	struct pollfd PFD[256];
 	int cycles, i, total_size;
 	struct dmx_sct_filter_params params;
+	dmx_source_t ssource;
 	
 	char first[settings->pids_count][settings->buffer_size];
 	int first_length[settings->pids_count];
 	bool first_ok[settings->pids_count];
+	
+	switch (settings->frontend)
+	{
+	case 1:
+		ssource = DMX_SOURCE_FRONT1;
+		break;
+	case 2:
+		ssource = DMX_SOURCE_FRONT2;
+		break;
+	case 3:
+		ssource = DMX_SOURCE_FRONT3;
+		break;
+	default:
+		ssource = DMX_SOURCE_FRONT0;
+	}
 	
 	for (i = 0; i < settings->pids_count; i++)
 	{
@@ -47,8 +63,12 @@ void dvb_read (dvb_t *settings, bool(*data_callback)(int, unsigned char*))
 		params.filter.filter[0] = settings->filter;
 		params.filter.mask[0] = settings->mask;
 		
+		if (ioctl(PFD[i].fd, DMX_SET_SOURCE, &ssource) < 0) {
+			log_add ("ioctl DMX_SET_SOURCE failed");
+		}
+		
 		if (ioctl (PFD[i].fd, DMX_SET_FILTER, &params) < 0)
-			log_add ("Error starting filter");
+			log_add ("ioctl DMX_SET_FILTER failed");
 		
 		first_length[i] = 0;
 		first_ok[i] = false;

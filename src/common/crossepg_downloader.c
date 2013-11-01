@@ -55,6 +55,8 @@ char *db_root = DEFAULT_DB_ROOT;
 char demuxer[256];
 char provider[256];
 char homedir[256];
+int frontend = 0;
+
 static volatile bool stop = false;
 static volatile bool exec = false;
 static volatile bool quit = false;
@@ -231,6 +233,7 @@ void download_opentv ()
 		settings.pids = providers_get_channels_pids ();
 		settings.pids_count = providers_get_channels_pids_count ();
 		settings.demuxer = demuxer;
+		settings.frontend = frontend;
 		settings.min_length = 11;
 		settings.buffer_size = 16 * 1024;
 		settings.filter = 0x4a;
@@ -245,6 +248,7 @@ void download_opentv ()
 		settings.pids = providers_get_titles_pids ();
 		settings.pids_count = providers_get_titles_pids_count ();
 		settings.demuxer = demuxer;
+		settings.frontend = frontend;
 		settings.min_length = 20;
 		settings.buffer_size = 16 * 1024;
 		settings.filter = 0xa0;
@@ -291,6 +295,7 @@ void download_opentv ()
 		settings.pids = providers_get_summaries_pids ();
 		settings.pids_count = providers_get_summaries_pids_count ();
 		settings.demuxer = demuxer;
+		settings.frontend = frontend;
 		settings.min_length = 20;
 		settings.buffer_size = 16 * 1024;
 		settings.filter = 0xa8;
@@ -406,7 +411,7 @@ void *download (void *args)
 		}
 		else if (providers_get_protocol () == 4)
 		{
-			char filename[1024], tmp[1024], *tmp2;
+			char filename[1024], tmp[4096], *tmp2, sfrontend[4];
 			FILE *fp_s; char text_s[80];
 			
 			interactive_send (ACTION_START);
@@ -416,22 +421,24 @@ void *download (void *args)
 			tmp2 = replace_str (providers_get_script_arguments (), "%%dbroot%%", db_root);
 			strcpy (tmp, tmp2);
 			tmp2 = replace_str (tmp, "%%homedir%%", homedir);
+			strcpy (tmp, tmp2);
+			tmp2 = replace_str (tmp, "%%demuxer%%", demuxer);
+			strcpy (tmp, tmp2);
+			sprintf (sfrontend, "%d", frontend);
+			tmp2 = replace_str (tmp, "%%frontend%%", sfrontend);
 			sprintf (filename, "LD_LIBRARY_PATH=%s %s/scripts/%s %s", homedir, homedir, providers_get_script_filename (), tmp2);
 
-			//if (system (filename) != 0)
-			//	interactive_send_text (ACTION_ERROR, "script returned an error");
-			
 			fp_s = popen(filename, "r");
-				if (fp_s == NULL) {
-					interactive_send_text (ACTION_ERROR, "script returned an error");				
-				} else {
-					/* Read the output a line at a time - output it. */
-					while (fgets(text_s, sizeof(text_s), fp_s) != NULL) {
-						printf ("%s", text_s); // ending '\n' is managed by script
-						fflush (stdout);
-					}
-					pclose(fp_s);
+			if (fp_s == NULL) {
+				interactive_send_text (ACTION_ERROR, "script returned an error");
+			} else {
+				/* Read the output a line at a time - output it. */
+				while (fgets(text_s, sizeof(text_s), fp_s) != NULL) {
+					printf ("%s", text_s); // ending '\n' is managed by script
+					fflush (stdout);
 				}
+				pclose(fp_s);
+			}
 				
 			exec = false;
 			interactive_send (ACTION_END);
@@ -528,6 +535,30 @@ void *interactive (void *args)
 				if (strlen (buffer) > strlen (CMD_DEMUXER)+1)
 				{
 					strcpy (demuxer, buffer + strlen (CMD_DEMUXER)+1);
+					interactive_send (ACTION_OK);
+					log_add ("Interactive: OK action sent");
+				}
+				else
+				{
+					interactive_send_text (ACTION_ERROR, "required one parameter");
+					log_add ("Interactive: ERROR action sent (required one parameter)");
+				}
+			}
+			else
+			{
+				interactive_send_text (ACTION_ERROR, "cannot do it... other operations in background");
+				log_add ("Interactive: ERROR action sent (cannot do it... other operations in background)");
+			}
+			timeout_enable = true;
+		}
+		else if (memcmp (buffer, CMD_FRONTEND, strlen (CMD_FRONTEND)) == 0)
+		{
+			log_add ("Interactive: FRONTEND cmd received");
+			if (!exec)
+			{
+				if (strlen (buffer) > strlen (CMD_FRONTEND)+1)
+				{
+					frontend = atoi (buffer + strlen (CMD_DEMUXER)+1);
 					interactive_send (ACTION_OK);
 					log_add ("Interactive: OK action sent");
 				}
@@ -660,7 +691,7 @@ int main (int argc, char **argv)
 	strcpy (demuxer, DEFAULT_DEMUXER);
 	strcpy (provider, DEFAULT_OTV_PROVIDER);
 
-	while ((c = getopt (argc, argv, "h:d:x:l:p:k:riyz")) != -1)
+	while ((c = getopt (argc, argv, "h:d:x:f:l:p:k:riyz")) != -1)
 	{
 		switch (c)
 		{
@@ -669,6 +700,9 @@ int main (int argc, char **argv)
 				break;
 			case 'x':
 				strcpy (demuxer, optarg);
+				break;
+			case 'f':
+				frontend = atoi(optarg);
 				break;
 			case 'l':
 				strcpy (homedir, optarg);
@@ -701,6 +735,8 @@ int main (int argc, char **argv)
 				printf ("                default: %s\n", db_root);
 				printf ("  -x demuxer    dvb demuxer\n");
 				printf ("                default: %s\n", demuxer);
+				printf ("  -f frontend   dvb frontend\n");
+				printf ("                default: %d\n", frontend);
 				printf ("  -l homedir    home directory\n");
 				printf ("                default: %s\n", homedir);
 				printf ("  -p provider   opentv provider\n");
