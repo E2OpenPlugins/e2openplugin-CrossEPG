@@ -61,12 +61,12 @@ class CrossEPG_About(Screen):
 		except Exception, e:
 			version = "unknow version"
 
-		credit = "SIFTeam CrossEPG %s (c) 2009-2011 Sandro Cavazzoni\n" % version
-		credit += "http://code.google.com/p/crossepg/\n\n"
+		credit = "CrossEPG %s (c) 2009-2013 Sandro Cavazzoni\n" % version
+		credit += "https://github.com/oe-alliance/e2openplugin-CrossEPG\n\n"
 		credit += "Application credits:\n"
 		credit += "- Sandro Cavazzoni aka skaman (main developer)\n"
+		credit += "- Andy Blackburn aka andyblac (co-developer)\n"
 		credit += "- Ambrosa (scripts developer)\n"
-		credit += "- Sergiotas (mhw2epgdownloader author)\n"
 		credit += "- u Killer Bestia (server side application maintainer)\n"
 		credit += "- Spaeleus (italian translations)\n"
 		credit += "- Bodyan (ukrainian translations)\n"
