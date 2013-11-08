@@ -134,15 +134,17 @@ class CrossEPG_Auto:
 			atLeast = 60
 			print "[CrossEPG_Auto] onTimer occured at", strftime("%c", localtime(now))
 			from Screens.Standby import inStandby
-			if self.lock or self.session.nav.RecordTimer.isRecording() or abs(self.session.nav.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(self.session.nav.RecordTimer.getNextZapTime() - time()) <= 900:
-				print "[CrossEPG_Auto] poll delaying as recording."
-				self.doCrossEPG(False)
-			elif not inStandby:
-				message = _("Your STB_BOX is about to update your bouquets,\nDo you want to allow this?")
-				ybox = self.session.openWithCallback(self.doCrossEPG, MessageBox, message, MessageBox.TYPE_YESNO, timeout = 30)
-				ybox.setTitle('Scheduled CrossEPG.')
-			else:
-				self.doCrossEPG(True)
+			self.config.load()
+			if (self.config.download_standby_enabled and inStandby) or self.config.download_daily_enabled:
+				if self.lock or self.session.nav.RecordTimer.isRecording() or abs(self.session.nav.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(self.session.nav.RecordTimer.getNextZapTime() - time()) <= 900:
+					print "[CrossEPG_Auto] poll delaying as recording."
+					self.doCrossEPG(False)
+				elif not inStandby:
+					message = _("Your epg about to update,\nDo you want to allow this?")
+					ybox = self.session.openWithCallback(self.doCrossEPG, MessageBox, message, MessageBox.TYPE_YESNO, timeout = 30)
+					ybox.setTitle('Scheduled CrossEPG.')
+				else:
+					self.doCrossEPG(True)
 		self.crossepgdate(atLeast)
 
 	def doCrossEPG(self, answer):
@@ -171,16 +173,13 @@ class CrossEPG_Auto:
 			self.timer.start(100, 1)
 
 	def doautostartdownload(self):
-		from Screens.Standby import inStandby
 		self.config.load()
 		if self.config.download_standby_enabled and inStandby:
 			self.osd = False
-			self.config.deleteLog()
-			self.download(self.providers)
 		elif self.config.download_daily_enabled:
 			self.osd = (inStandby == None)
-			self.config.deleteLog()
-			self.download(self.config.providers)
+		self.config.deleteLog()
+		self.download(self.config.providers)
 
 	def download(self, providers):
 		print "[CrossEPG_Auto] providers selected for download:"
