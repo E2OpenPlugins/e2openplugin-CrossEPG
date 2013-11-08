@@ -17,7 +17,6 @@ from Plugins.Plugin import PluginDescriptor
 
 from crossepglib import *
 from crossepg_locale import _
-from crossepg_auto import crossepg_auto
 
 from time import *
 
@@ -407,9 +406,6 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 					plugins.removePlugin(plugin)
 
 			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
-
-		crossepg_auto.forcePoll()
-
 
 		if getDistro() != "openvix":
 			if (self.config.db_root == self.config.home_directory + "/data" and not self.config.isQBOXHD()) or self.config.db_root.startswith('/etc/enigma2'):

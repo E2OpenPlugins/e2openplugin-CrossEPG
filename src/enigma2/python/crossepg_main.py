@@ -8,7 +8,7 @@ from crossepg_converter import CrossEPG_Converter
 from crossepg_loader import CrossEPG_Loader
 from crossepg_setup import CrossEPG_Setup
 from crossepg_menu import CrossEPG_Menu
-from crossepg_auto import crossepg_auto
+from crossepg_auto import CrossEPG_Auto
 
 class CrossEPG_Main:
 	def __init__(self):
@@ -17,8 +17,8 @@ class CrossEPG_Main:
 
 	def downloader(self, session):
 		self.session = session
-		crossepg_auto.lock = True
-		crossepg_auto.stop()
+		CrossEPG_Auto.instance.lock = True
+		CrossEPG_Auto.instance.stop()
 		self.config.load()
 		if self.config.configured == 0:
 			self.session.open(MessageBox, _("Please configure crossepg before start downloader"), type = MessageBox.TYPE_ERROR)
@@ -28,8 +28,8 @@ class CrossEPG_Main:
 
 	def loaderAsPlugin(self, session):
 		self.session = session
-		crossepg_auto.lock = True
-		crossepg_auto.stop()
+		CrossEPG_Auto.instance.lock = True
+		CrossEPG_Auto.instance.stop()
 		self.loader()
 
 	def downloadCallback(self, ret):
@@ -42,7 +42,7 @@ class CrossEPG_Main:
 				else:
 					self.loader()
 		else:
-			crossepg_auto.lock = False
+			CrossEPG_Auto.instance.lock = False
 
 	def importer(self):
 		self.session.openWithCallback(self.importerCallback, CrossEPG_Importer)
@@ -54,7 +54,7 @@ class CrossEPG_Main:
 			else:
 				self.loader()
 		else:
-			crossepg_auto.lock = False
+			CrossEPG_Auto.instance.lock = False
 
 	def converter(self):
 		self.session.openWithCallback(self.converterCallback, CrossEPG_Converter)
@@ -68,25 +68,22 @@ class CrossEPG_Main:
 					from Screens.Standby import TryQuitMainloop
 					self.session.open(TryQuitMainloop, 3)
 				else:
-					crossepg_auto.lock = False
+					CrossEPG_Auto.instance.lock = False
 		else:
-			crossepg_auto.lock = False
+			CrossEPG_Auto.instance.lock = False
 
 	def loader(self):
 		self.session.openWithCallback(self.loaderCallback, CrossEPG_Loader)
 
 	def loaderCallback(self, ret):
-		crossepg_auto.lock = False
+		CrossEPG_Auto.instance.lock = False
 
 	def setup(self, session, **kwargs):
-		crossepg_auto.lock = True
-		crossepg_auto.stop()
+		CrossEPG_Auto.instance.lock = True
 		session.openWithCallback(self.setupCallback, CrossEPG_Menu)
 
 	def setupCallback(self):
-		crossepg_auto.lock = False
-
-	def autostart(self, reason, session):
-		crossepg_auto.init(session)
+		CrossEPG_Auto.instance.lock = False
+		CrossEPG_Auto.instance.doneConfiguring()
 
 crossepg_main = CrossEPG_Main()

@@ -1,6 +1,5 @@
 from enigma import *
 from crossepglib import *
-from crossepg_auto import crossepg_auto
 from crossepg_info import CrossEPG_Info
 from crossepg_about import CrossEPG_About
 from crossepg_providers import CrossEPG_Providers

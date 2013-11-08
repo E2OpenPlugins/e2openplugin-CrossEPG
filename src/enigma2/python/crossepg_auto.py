@@ -1,5 +1,6 @@
 from enigma import * #, quitMainloop
 from Components.ServiceEventTracker import ServiceEventTracker
+from Screens.MessageBox import MessageBox
 from Tools.Directories import fileExists
 from crossepglib import *
 from crossepg_downloader import CrossEPG_Downloader
@@ -14,22 +15,31 @@ from time import *
 
 import os
 
-class CrossEPG_Auto(Screen):
-	POLL_TIMER = 1800000	# poll every 30 minutes
-	#POLL_TIMER = 18000
-	POLL_TIMER_FAST = 10000	# poll every 10 seconds
-	POLL_TIMER_BOOT = 60000	# poll every 1 minute
+retrycount = 0
+autoCrossEPGTimer = None
+def CrossEPGautostart(reason, session=None, **kwargs):
+	"called with reason=1 to during /sbin/shutdown.sysvinit, with reason=0 at startup?"
+	global autoCrossEPGTimer
+	global _session
+	now = int(time())
+	if reason == 0:
+		print "[CrossEPG_Auto] AutoStart Enabled"
+		if session is not None:
+			_session = session
+			if autoCrossEPGTimer is None:
+				autoCrossEPGTimer = CrossEPG_Auto(session)
+	else:
+		print "[CrossEPG_Auto] Stop"
+		autoCrossEPGTimer.stop()
 
-	def __init__(self):
-		self.session = None
-
-		self.timer = eTimer()
-		self.standbyTimer = eTimer()
-		self.delayedInitTimer = eTimer()
-
-		self.timer.callback.append(self.poll)
-		self.standbyTimer.callback.append(self.backToStandby)
-		self.delayedInitTimer.callback.append(self.init)
+class CrossEPG_Auto:
+	instance = None
+	def __init__(self, session):
+		self.session = session
+		self.crossepgtimer = eTimer()
+		self.crossepgtimer.callback.append(self.CrossEPGonTimer)
+		self.crossepgactivityTimer = eTimer()
+		self.crossepgactivityTimer.timeout.get().append(self.crossepgdatedelay)
 
 		self.config = CrossEPG_Config()
 		self.patchtype = getEPGPatchType()
@@ -55,111 +65,122 @@ class CrossEPG_Auto(Screen):
 		if self.config.force_load_on_boot:
 			self.loader()
 
-	def init(self, session = None):
-		if session != None:
-			self.session = session
+		now = int(time())
+		global CrossEPGTime
+		if self.config.download_standby_enabled or self.config.download_daily_enabled:
+			print "[CrossEPG_Auto] Schedule Enabled at ", strftime("%c", localtime(now))
+			if now > 1262304000:
+				self.crossepgdate()
+			else:
+				print "[CrossEPG_Auto] Time not yet set."
+				CrossEPGTime = 0
+				self.crossepgactivityTimer.start(36000)
+		else:
+			CrossEPGTime = 0
+			print "[CrossEPG_Auto] Schedule Disabled at", strftime("%c", localtime(now))
+			self.crossepgactivityTimer.stop()
 
-		if time() < 1262325600:		# if before 2010 probably the clock isn't yet updated
-			self.delayedInitTimer.start(60000, 1)	#initialization delayed of 1 minute
-			return
+		assert CrossEPG_Auto.instance is None, "class CrossEPG_Auto is a singleton class and just one instance of this class is allowed!"
+		CrossEPG_Auto.instance = self
 
-		self.resetDailyDownloadDateCache()
-		self.timer.start(self.POLL_TIMER_BOOT, 1)
+	def __onClose(self):
+		CrossEPG_Auto.instance = None
 
 	def forcePoll(self):
-		self.timer.stop()
-		self.resetDailyDownloadDateCache()
-		self.timer.start(self.POLL_TIMER_FAST, 1)
+		self.crossepgtimer.start(10)
 
-	def resetDailyDownloadDateCache(self):
+	def crossepgdatedelay(self):
+		self.crossepgactivityTimer.stop()
+		self.crossepgdate()
+
+	def getCrossEPGTime(self):
 		self.config.load()
-		now = time()
-		ttime = localtime(now)
-		ltime = (ttime[0], ttime[1], ttime[2], self.config.download_daily_hours, self.config.download_daily_minutes, 0, ttime[6], ttime[7], ttime[8])
-		stime = mktime(ltime)
-		if stime < now:
-			ttime = localtime(stime+86400)	# 24 hours in future
+		nowt = time()
+		now = localtime(nowt)
+		return int(mktime((now.tm_year, now.tm_mon, now.tm_mday, self.config.download_daily_hours, self.config.download_daily_minutes, 0, now.tm_wday, now.tm_yday, now.tm_isdst)))
 
-		# to avoid problems with internal clock (big changes on date/time)
-		# we step forward of 24 hours until the new time is greater than now
-		while ttime < now:
-			ttime = ttime+86400	# 24 hours in future
+	def crossepgdate(self, atLeast = 0):
+		self.crossepgtimer.stop()
+		global CrossEPGTime
+		CrossEPGTime = self.getCrossEPGTime()
+		now = int(time())
+		if CrossEPGTime > 0:
+			if CrossEPGTime < now + atLeast:
+				if self.config.download_daily_enabled:
+					CrossEPGTime += 24*3600
+					while (int(CrossEPGTime)-30) < now:
+						CrossEPGTime += 24*3600
+				elif self.config.download_standby_enabled:
+					CrossEPGTime += 3600
+					while (int(CrossEPGTime)-30) < now:
+						CrossEPGTime += 3600
+			next = CrossEPGTime - now
+			self.crossepgtimer.startLongTimer(next)
+		else:
+			CrossEPGTime = -1
+		print "[CrossEPG_Auto] Time set to", strftime("%c", localtime(CrossEPGTime)), strftime("(now=%c)", localtime(now))
+		return CrossEPGTime
 
-		self.cacheYear = ttime[0]
-		self.cacheMonth = ttime[1]
-		self.cacheDay = ttime[2]
+	def backupstop(self):
+		self.crossepgtimer.stop()
 
-	def poll(self):
+	def CrossEPGonTimer(self):
+		self.crossepgtimer.stop()
+		now = int(time())
+		wake = self.getCrossEPGTime()
+		# If we're close enough, we're okay...
+		atLeast = 0
+		if wake - now < 60:
+			atLeast = 60
+			print "[CrossEPG_Auto] onTimer occured at", strftime("%c", localtime(now))
+			from Screens.Standby import inStandby
+			if self.lock or self.session.nav.RecordTimer.isRecording() or abs(self.session.nav.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(self.session.nav.RecordTimer.getNextZapTime() - time()) <= 900:
+				print "[CrossEPG_Auto] poll delaying as recording."
+				self.doCrossEPG(False)
+			elif not inStandby:
+				message = _("Your STB_BOX is about to update your bouquets,\nDo you want to allow this?")
+				ybox = self.session.openWithCallback(self.doCrossEPG, MessageBox, message, MessageBox.TYPE_YESNO, timeout = 30)
+				ybox.setTitle('Scheduled CrossEPG.')
+			else:
+				self.doCrossEPG(True)
+		self.crossepgdate(atLeast)
+
+	def doCrossEPG(self, answer):
+		global retrycount
+		now = int(time())
+		if answer is False:
+			if retrycount < 2:
+				print '[CrossEPG_Auto] Number of retries',retrycount
+				print "[CrossEPG_Auto] delayed."
+				repeat = retrycount
+				repeat += 1
+				retrycount = repeat
+				CrossEPGTime = now + (30 * 60)
+				print "[CrossEPG_Auto] Time now set to", strftime("%c", localtime(CrossEPGTime)), strftime("(now=%c)", localtime(now))
+				self.crossepgtimer.startLongTimer(30 * 60)
+			else:
+				atLeast = 60
+				print "[CrossEPG_Auto] Enough Retries, delaying till next schedule.", strftime("%c", localtime(now))
+				self.session.open(MessageBox, _("Enough Retries, delaying till next schedule."), MessageBox.TYPE_INFO, timeout = 10)
+				retrycount = 0
+				self.crossepgdate(atLeast)
+		else:
+			self.timer = eTimer()
+			self.timer.callback.append(self.doautostartdownload)
+			print "[CrossEPG_Auto] Running CrossEPG", strftime("%c", localtime(now))
+			self.timer.start(100, 1)
+
+	def doautostartdownload(self):
 		from Screens.Standby import inStandby
 		self.config.load()
-
-		if self.lock:
-# 			print "[CrossEPG_Auto] poll"
-			self.timer.start(self.POLL_TIMER_FAST, 1)
-		elif self.session.nav.RecordTimer.isRecording() or abs(self.session.nav.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(self.session.nav.RecordTimer.getNextZapTime() - time()) <= 900:
-# 			print "[CrossEPG_Auto] poll"
-			self.timer.start(self.POLL_TIMER, 1)
-		elif self.config.download_standby_enabled and inStandby:
-			self.providers = []
-			now = time()
-
-			if self.config.last_full_download_timestamp <= now - (24*60*60):
-				self.config.last_full_download_timestamp = now
-				self.config.last_partial_download_timestamp = now
-				self.config.save()
-				self.providers = self.config.providers
-			elif self.config.last_partial_download_timestamp <= now - (60*60): # skip xmltv... we download it only one time a day
-				self.config.last_partial_download_timestamp = now
-				self.config.save()
-				providers = self.config.getAllProviders()
-				i = 0
-				for provider in providers[0]:
-					if self.config.providers.count(provider) > 0:
-						if providers[2][i] == "opentv":
-							self.providers.append(provider)
-						else:
-							print "[CrossEPG_Auto] is not OpenTV : skip provider %s (we download it only one time a day)" % provider
-					i += 1
-
-			if len(self.providers) == 0:
-# 				print "[CrossEPG_Auto] poll"
-				self.timer.start(self.POLL_TIMER, 1)
-			else:
-				print "[CrossEPG_Auto] automatic download in standby"
-				self.osd = False
-				self.config.deleteLog()
-				self.download(self.providers)
+		if self.config.download_standby_enabled and inStandby:
+			self.osd = False
+			self.config.deleteLog()
+			self.download(self.providers)
 		elif self.config.download_daily_enabled:
-			now = time()
-			ttime = localtime(now)
-			ltime = (self.cacheYear, self.cacheMonth, self.cacheDay, self.config.download_daily_hours, self.config.download_daily_minutes, 0, ttime[6], ttime[7], ttime[8])
-			stime = mktime(ltime)
-			if stime < now and self.config.last_full_download_timestamp != stime:
-				from Screens.Standby import inStandby
-				self.osd = (inStandby == None)
-				self.config.last_full_download_timestamp = stime
-				self.config.last_partial_download_timestamp = stime
-				self.config.save()
-				ttime = localtime(stime+86400)	# 24 hours in future
-				# to avoid problems with internal clock (big changes on date/time)
-				# we step forward of 24 hours until the new time is greater than now
-				while ttime < now:
-					ttime = ttime+86400	# 24 hours in future
-				self.cacheYear = ttime[0]
-				self.cacheMonth = ttime[1]
-				self.cacheDay = ttime[2]
-				self.config.deleteLog()
-				self.download(self.config.providers)
-			elif stime < now + (self.POLL_TIMER / 1000) and self.config.last_full_download_timestamp != stime:
-# 				print "[CrossEPG_Auto] poll"
-				delta = int(stime - now);
-				self.timer.start((delta + 5)*1000, 1)	# 5 seconds offset
-			else:
-# 				print "[CrossEPG_Auto] poll"
-				self.timer.start(self.POLL_TIMER, 1)
-		else:
-# 			print "[CrossEPG_Auto] poll"
-			self.timer.start(self.POLL_TIMER, 1)
+			self.osd = (inStandby == None)
+			self.config.deleteLog()
+			self.download(self.config.providers)
 
 	def download(self, providers):
 		print "[CrossEPG_Auto] providers selected for download:"
@@ -181,8 +202,6 @@ class CrossEPG_Auto(Screen):
 					self.converter()
 				else:
 					self.loader()
-		else:
-			self.timer.start(self.POLL_TIMER, 1)
 
 	def defrag(self):
 		if self.config.last_defrag_timestamp < time() - 7 * 24 * 60 * 60:	 # 1 week
@@ -193,12 +212,9 @@ class CrossEPG_Auto(Screen):
 				self.pdefrag = CrossEPG_Defragmenter(self.session, self.defragCallback, True)
 			self.config.last_defrag_timestamp = time()
 			self.config.save()
-		else:
-			self.timer.start(self.POLL_TIMER, 1)
 			
 	def defragCallback(self, ret):
 		self.pdefrag = None
-		self.timer.start(self.POLL_TIMER, 1)
 		
 	def importer(self):
 		print "[CrossEPG_Auto] start csv import"
@@ -215,8 +231,6 @@ class CrossEPG_Auto(Screen):
 				self.converter()
 			else:
 				self.loader()
-		else:
-			self.timer.start(self.POLL_TIMER, 1)
 
 	def converter(self):
 		print "[CrossEPG_Auto] start epg.dat conversion"
@@ -245,10 +259,6 @@ class CrossEPG_Auto(Screen):
 					print "[CrossEPG_Auto] rebooting"
 					from Screens.Standby import TryQuitMainloop
 					self.session.open(TryQuitMainloop, 3)
-				else:
-					self.timer.start(self.POLL_TIMER, 1)
-		else:
-			self.timer.start(self.POLL_TIMER, 1)
 
 	def loader(self):
 		if self.osd:
@@ -284,4 +294,20 @@ class CrossEPG_Auto(Screen):
 			from Screens.Standby import Standby
 			self.session.open(Standby)
 
-crossepg_auto = CrossEPG_Auto()
+	def doneConfiguring(self):
+		now = int(time())
+		if self.config.download_standby_enabled or self.config.download_daily_enabled:
+			if autoCrossEPGTimer is not None:
+				print "[CrossEPG_Auto] Schedule Enabled at", strftime("%c", localtime(now))
+				autoCrossEPGTimer.crossepgdate()
+		else:
+			if autoCrossEPGTimer is not None:
+				global CrossEPGTime
+				CrossEPGTime = 0
+				print "[CrossEPG_Auto] Schedule Disabled at", strftime("%c", localtime(now))
+				autoCrossEPGTimer.backupstop()
+		if CrossEPGTime > 0:
+			t = localtime(CrossEPGTime)
+			crossepgtext = strftime(_("%a %e %b  %-H:%M"), t)
+		else:
+			crossepgtext = ""

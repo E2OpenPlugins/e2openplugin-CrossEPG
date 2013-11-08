@@ -1,3 +1,4 @@
+from crossepg_auto import CrossEPGautostart
 from crossepglib import CrossEPG_Config, getDistro
 from crossepg_main import crossepg_main
 from crossepg_locale import _
@@ -23,9 +24,6 @@ def call_loaderAsPlugin(session, **kwargs):
 
 def call_setup(session, **kwargs):
 	crossepg_main.setup(session)
-
-def call_autostart(reason, session):
-	crossepg_main.autostart(reason, session)
 
 def Plugins(**kwargs):
 	config = CrossEPG_Config()
@@ -61,7 +59,7 @@ def Plugins(**kwargs):
 	plugins.append(PluginDescriptor(name=_("CrossEPG") + " " + _("Auto"),
 									description = _("CrossEPG automatic actions"),
 									where = PluginDescriptor.WHERE_SESSIONSTART,
-									fnc = call_autostart))
+									fnc = CrossEPGautostart))
 
 	if config.show_force_reload_as_plugin == 1:
 		plugins.append(PluginDescriptor(name=_("CrossEPG") + " " + _("Force Reload"),
