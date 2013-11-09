@@ -1,1 +1,1 @@
-#define RELEASE "0.7.02"
+#define RELEASE "0.7.0"
