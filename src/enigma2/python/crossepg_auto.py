@@ -174,6 +174,7 @@ class CrossEPG_Auto:
 
 	def doautostartdownload(self):
 		self.config.load()
+		from Screens.Standby import inStandby
 		if self.config.download_standby_enabled and inStandby:
 			self.osd = False
 		elif self.config.download_daily_enabled:
