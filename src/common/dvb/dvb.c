@@ -38,20 +38,7 @@ void dvb_read (dvb_t *settings, bool(*data_callback)(int, unsigned char*))
 		int first_length;
 		bool first_ok;
 		
-		switch (settings->frontend)
-		{
-		case 1:
-			ssource = DMX_SOURCE_FRONT1;
-			break;
-		case 2:
-			ssource = DMX_SOURCE_FRONT2;
-			break;
-		case 3:
-			ssource = DMX_SOURCE_FRONT3;
-			break;
-		default:
-			ssource = DMX_SOURCE_FRONT0;
-		}
+		ssource = DMX_SOURCE_FRONT0 + settings->frontend;
 		
 		memset(&params, 0, sizeof(params));
 		params.pid = settings->pids[i];
@@ -136,20 +123,7 @@ void dvb_read (dvb_t *settings, bool(*data_callback)(int, unsigned char*))
 	int first_length[settings->pids_count];
 	bool first_ok[settings->pids_count];
 	
-	switch (settings->frontend)
-	{
-	case 1:
-		ssource = DMX_SOURCE_FRONT1;
-		break;
-	case 2:
-		ssource = DMX_SOURCE_FRONT2;
-		break;
-	case 3:
-		ssource = DMX_SOURCE_FRONT3;
-		break;
-	default:
-		ssource = DMX_SOURCE_FRONT0;
-	}
+	ssource = DMX_SOURCE_FRONT0 + settings->frontend;
 	
 	for (i = 0; i < settings->pids_count; i++)
 	{
