@@ -230,7 +230,9 @@ class CrossEPG_Downloader(Screen):
 			print "[CrossEPG] TUNING"
 		elif dict["tuner_state"] == "LOCKED":
 			print "[CrossEPG] ACQUIRING TSID/ONID"
-			self.wrapper.download(self.providers[self.provider_index])
+			self.timer = eTimer()
+			self.timer.callback.append(self.doDownload)
+			self.timer.start(500, 1)
 			return
 		elif dict["tuner_state"] == "LOSTLOCK" or dict["tuner_state"] == "FAILED":
 			print "[CrossEPG] FAILED"
@@ -242,6 +244,9 @@ class CrossEPG_Downloader(Screen):
 
 		self.locktimer.start(100, 1)
 		
+	def doDownload(self):
+		self.wrapper.download(self.providers[self.provider_index])
+
 	def wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.EVENT_READY:
 			self.download()
