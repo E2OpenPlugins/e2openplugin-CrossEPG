@@ -24,7 +24,7 @@ except:
 	pass
 
 class CrossEPG_Downloader(Screen):
-	LOCK_TIMEOUT = 300 	# 100ms for tick - 30 sec
+	LOCK_TIMEOUT = 600 	# 100ms for tick - 60 sec
 	
 	def __init__(self, session, providers, pcallback = None, noosd = False):
 		from Components.Sources.StaticText import StaticText
