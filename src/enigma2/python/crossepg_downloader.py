@@ -138,7 +138,10 @@ class CrossEPG_Downloader(Screen):
 		self.quit()
 		
 	def doTune(self, transponder):
-		nimList = nimmanager.getNimListOfType("DVB-S")
+		nimList = []
+		for nim in nimmanager.nim_slots:
+			if nim.isCompatible("DVB-S") and nim.config_mode not in ("loopthrough"):
+				nimList.append(nim.slot)
 		if len(nimList) == 0:
 			self.error("No DVB-S NIMs founds")
 			return
