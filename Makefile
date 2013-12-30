@@ -41,7 +41,7 @@ IMPORTER_BIN = bin/crossepg_importer
 EXPORTER_BIN = bin/crossepg_exporter
 XMLTV_BIN = bin/crossepg_xmltv
 DEFRAGMENTER_BIN = bin/crossepg_defragmenter
-SHARED_LIBS = bin/libcrossepg.so
+SHARED_LIBS = /usr/crossepg/libcrossepg.so
 
 SWIGS_OBJS = src/common/crossepg_wrap.o
 SWIGS_LIBS = bin/_crossepg.so
@@ -187,7 +187,7 @@ install-standalone:
 	install -m 755 bin/crossepg_exporter $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_xmltv $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_defragmenter $(D)/usr/crossepg/
-	install -m 644 bin/libcrossepg.so $(D)/usr/crossepg/
+	install -m 644 /usr/crossepg/libcrossepg.so $(D)/usr/crossepg/
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/usr/crossepg/
 	install -m 755 contrib/crossepg_prepare_pre_start.sh $(D)/usr/crossepg/
 	install -m 644 providers/* $(D)/usr/crossepg/providers/
@@ -220,7 +220,7 @@ install-standalone-var:
 	install -m 755 bin/crossepg_exporter $(D)/var/crossepg/
 	install -m 755 bin/crossepg_xmltv $(D)/var/crossepg/
 	install -m 755 bin/crossepg_defragmenter $(D)/var/crossepg/
-	install -m 644 bin/libcrossepg.so $(D)/var/crossepg/
+	install -m 644 /usr/crossepg/libcrossepg.so $(D)/var/crossepg/
 	install -m 755 contrib/crossepg_epgmove.sh $(D)/var/crossepg/
 	install -m 755 contrib/crossepg_prepare_pre_start.sh $(D)/var/crossepg/
 	install -m 644 providers/* $(D)/var/crossepg/providers/
