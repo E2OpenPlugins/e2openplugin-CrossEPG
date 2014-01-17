@@ -36,8 +36,8 @@ from Plugins.Plugin import PluginDescriptor
 
 from time import *
 
-
 import _enigma
+from boxbranding import getImageDistro
 
 class CrossEPG_Menu(Screen):
 	def __init__(self, session):
@@ -74,7 +74,7 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("Update xepgdb providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Download now"), "download.png"))
 		l.append(self.buildListEntry(_("Defragment database"), "conversion.png"))
-		if getDistro() != "openvix":
+		if getImageDistro() != "openvix":
 			l.append(self.buildListEntry(_("Force csv import now"), "csv.png"))
 			l.append(self.buildListEntry(_("Force epg.dat conversion now"), "conversion.png"))
 			l.append(self.buildListEntry(_("Force epg reload"), "reload.png"))
@@ -156,7 +156,7 @@ class CrossEPG_Menu(Screen):
 		if index == 9:
 			self.session.open(CrossEPG_Defragmenter)
 			return
-		if getDistro() == "openvix":
+		if getImageDistro() == "openvix":
 			index += 3
 		if index == 10:
 			self.importer()

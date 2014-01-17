@@ -7,6 +7,7 @@ from Components.Button import Button
 from Components.ActionMap import ActionMap
 from Components.config import config
 
+from boxbranding import getImageDistro
 from crossepglib import *
 from crossepg_locale import _
 
@@ -55,7 +56,7 @@ class CrossEPG_Info(Screen):
 
 		self.wrapper = CrossEPG_Wrapper()
 		self.wrapper.addCallback(self.__wrapperCallback)
-		if getDistro() == 'openvix':
+		if getImageDistro() == 'openvix':
 			self.wrapper.init(CrossEPG_Wrapper.CMD_INFO, config.misc.epgcachepath.value + 'crossepg')
 		else:
 			self.wrapper.init(CrossEPG_Wrapper.CMD_INFO, self.config.db_root)

@@ -1,11 +1,12 @@
 from crossepg_auto import CrossEPGautostart
-from crossepglib import CrossEPG_Config, getDistro
+from crossepglib import CrossEPG_Config
 from crossepg_main import crossepg_main
 from crossepg_locale import _
 from Plugins.Plugin import PluginDescriptor
+from boxbranding import getImageDistro
 
 def setup(menuid, **kwargs):
-	if getDistro() == "openvix" or getDistro() == "ventonsupport" or getDistro() == "egami":
+	if getImageDistro() == "openvix" or getImageDistro() == "ventonsupport" or getImageDistro() == "egami":
 		if menuid == "epg":
 			return [("CrossEPG", crossepg_main.setup, "crossepg", None)]
 		else:

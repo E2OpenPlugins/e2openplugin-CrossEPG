@@ -10,8 +10,6 @@ import re
 import new
 import _enigma
 
-from boxbranding import getDistro
-
 # return value
 # -1 none
 # 0 simple epgcache.load() patch
