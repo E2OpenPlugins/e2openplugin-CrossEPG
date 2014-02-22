@@ -60,6 +60,7 @@ class CrossEPG_About(Screen):
 		credit += "- Ambrosa (scripts developer)\n"
 		credit += "- Sergiotas (mhw2epgdownloader author)\n"
 		credit += "- u Killer Bestia (server side application maintainer)\n"
+		credit += "- valerino (QBoxHD patches@https://github.com/valerino/e2openplugin-CrossEPG)\n"
 		credit += "- Spaeleus (italian translations)\n"
 		credit += "- Bodyan (ukrainian translations)\n"
 		credit += "- Kosmacz (polish translations)\n"

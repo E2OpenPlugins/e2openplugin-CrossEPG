@@ -25,7 +25,6 @@ class CrossEPG_Auto(Screen):
 		self.timer = eTimer()
 		self.standbyTimer = eTimer()
 		self.delayedInitTimer = eTimer()
-
 		self.timer.callback.append(self.poll)
 		self.standbyTimer.callback.append(self.backToStandby)
 		self.delayedInitTimer.callback.append(self.init)
@@ -41,7 +40,9 @@ class CrossEPG_Auto(Screen):
 		self.osd = False
 		self.ontune = False
 		self.lock = False
-
+		
+		self.callLoader = False
+		
 		if fileExists("/tmp/crossepg.standby"):
 			# Modded by IAmATeaf 13/04/2012
 			# os.system("rm -f /tmp/crossepg.standby")
@@ -51,9 +52,6 @@ class CrossEPG_Auto(Screen):
 			
 		self.config.load()
 		
-		if self.config.force_load_on_boot:
-			self.loader()
-
 	def init(self, session = None):
 		if session != None:
 			self.session = session
@@ -61,7 +59,18 @@ class CrossEPG_Auto(Screen):
 		if time() < 1262325600:		# if before 2010 probably the clock isn't yet updated
 			self.delayedInitTimer.start(60000, 1)	#initialization delayed of 1 minute
 			return
-			
+		if self.config.force_load_on_boot:
+			self.callLoader = True
+			print"[CrossEPG_Auto] force_load_on_boot enabled"
+			if self.config.isQBOXHD():
+				# on qboxhd, delay initialization. this patch may be helpful for other decoders aswell....
+				self.config.force_load_on_boot = 0
+				print"[CrossEPG_Auto] running on qboxhd"
+				self.delayedInitTimer.start(10000, 1)
+				return
+		if self.callLoader == True:
+			self.loader()
+				
 		self.resetDailyDownloadDateCache()
 		self.timer.start(self.POLL_TIMER_BOOT, 1)
 
@@ -272,8 +281,10 @@ class CrossEPG_Auto(Screen):
 
 	def loader(self):
 		if self.osd:
+			print "[CrossEPG_Auto] calling CrossEPG_Loader with callback"
 			self.session.openWithCallback(self.loaderCallback, CrossEPG_Loader)
 		else:
+			print "[CrossEPG_Auto] calling CrossEPG_Loader directly"
 			self.ploader = CrossEPG_Loader(self.session, self.loaderCallback, True)
 
 	def loaderCallback(self, ret):

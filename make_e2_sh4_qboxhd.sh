@@ -5,9 +5,9 @@
 DEVKIT_ROOT=/opt/STM/STLinux-2.3/devkit/sh4
 CROSS=${DEVKIT_ROOT}/bin/sh4-linux-
 
-export CFLAGS+="-I${DEVKIT_ROOT}/target/usr/include \
+export CFLAGS="-I${DEVKIT_ROOT}/target/usr/include \
  -I${DEVKIT_ROOT}/target/usr/include/libxml2 \
- -I${DEVKIT_ROOT}/target/usr/include/python2.5"
+ -I${DEVKIT_ROOT}/target/usr/include/python2.4"
 
 export CC=${CROSS}gcc
 export STRIP=${CROSS}strip

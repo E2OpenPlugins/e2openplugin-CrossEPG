@@ -18,24 +18,25 @@ def call_loaderAsPlugin(session, **kwargs):
 def call_setup(session, **kwargs):
 	crossepg_main.setup(session)
 	
-def call_autostart(reason, session):
-	crossepg_main.autostart(reason, session)
-	
+def call_autostart(reason, **kwargs):
+	print "[CrossEPG] call_autostart"
+    	crossepg_main.autostart(reason, kwargs)
+    	
 def Plugins(**kwargs):
 	config = CrossEPG_Config()
-	config.load()
+	config.load()  
 	plugins = list()
-	if config.show_plugin == 1 and config.show_extension == 1:
-		plugins.append(PluginDescriptor(name="CrossEPG Downloader",
-										description=_("An EPG downloader"),
-										where = [ PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_PLUGINMENU ],
-										fnc = call_downloader))
-	elif config.show_extension == 1:
+		
+	if config.show_extension == 1:
 		plugins.append(PluginDescriptor(name="CrossEPG Downloader",
 										description=_("An EPG downloader"),
 										where = PluginDescriptor.WHERE_EXTENSIONSMENU,
 										fnc = call_downloader))
-	elif config.show_plugin == 1:
+		plugins.append(PluginDescriptor(name="CrossEPG Force Reload",
+										description= ("CrossEPG force reload"),
+										where = PluginDescriptor.WHERE_EXTENSIONSMENU,
+										fnc = call_loaderAsPlugin))
+	if config.show_plugin == 1:
 		plugins.append(PluginDescriptor(name="CrossEPG Downloader",
 										description=_("An EPG downloader"),
 										where = PluginDescriptor.WHERE_PLUGINMENU,
@@ -54,13 +55,13 @@ def Plugins(**kwargs):
 										
 	plugins.append(PluginDescriptor(name="CrossEPG Auto",
 									description = _("CrossEPG automatic actions"),
-									where = PluginDescriptor.WHERE_SESSIONSTART,
+									where = PluginDescriptor.WHERE_SESSIONSTART,   
 									fnc = call_autostart))
 									
 	if config.show_force_reload_as_plugin == 1:
 		plugins.append(PluginDescriptor(name="CrossEPG Force Reload",
 										description=_("CrossEPG Force Reload"),
-										where = PluginDescriptor.WHERE_PLUGINMENU,
+										where = [ PluginDescriptor.WHERE_PLUGINMENU ],
 										fnc = call_loaderAsPlugin))
 									
 	return plugins;
