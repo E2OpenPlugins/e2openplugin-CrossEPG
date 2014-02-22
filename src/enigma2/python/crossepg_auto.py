@@ -99,108 +99,112 @@ class CrossEPG_Auto(Screen):
 			
 	def poll(self):
 		from Screens.Standby import inStandby
-		self.config.load()
-
-		if self.lock:
-			print "[CrossEPG_Auto] poll"
-			self.timer.start(self.POLL_TIMER_FAST, 1)
-		elif self.session.nav.RecordTimer.isRecording() or abs(self.session.nav.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(self.session.nav.RecordTimer.getNextZapTime() - time()) <= 900:
-			print "[CrossEPG_Auto] poll"
-			self.timer.start(self.POLL_TIMER, 1)
-		elif self.config.download_standby_enabled and inStandby:
-			self.providers = []
-			now = time()
-
-			if self.config.last_full_download_timestamp <= now - (24*60*60):
-				self.config.last_full_download_timestamp = now
-				self.config.last_partial_download_timestamp = now
-				self.config.save()
-				self.providers = self.config.providers
-			elif self.config.last_partial_download_timestamp <= now - (60*60): # skip xmltv... we download it only one time a day
-				self.config.last_partial_download_timestamp = now
-				self.config.save()
-				providers = self.config.getAllProviders()
-				i = 0
-				for provider in providers[0]:
-					if self.config.providers.count(provider) > 0:
-						if providers[2][i] == "opentv":
-							self.providers.append(provider)
-						else:
-							print "[CrossEPG_Auto] is not OpenTV : skip provider %s (we download it only one time a day)" % provider
-					i += 1
-
-			if len(self.providers) == 0:
+		try:
+			self.config.load()
+				
+			if self.lock:
+				print "[CrossEPG_Auto] poll"
+				self.timer.start(self.POLL_TIMER_FAST, 1)
+			elif self.session.nav.RecordTimer.isRecording() or abs(self.session.nav.RecordTimer.getNextRecordingTime() - time()) <= 900 or abs(self.session.nav.RecordTimer.getNextZapTime() - time()) <= 900:
 				print "[CrossEPG_Auto] poll"
 				self.timer.start(self.POLL_TIMER, 1)
-			else:
-				print "[CrossEPG_Auto] automatic download in standby"
-				self.osd = False
-				self.ontune = False
-				self.config.deleteLog()
-				self.download(self.providers)
-		elif self.config.download_daily_enabled:
-			now = time()
-			ttime = localtime(now)
-			ltime = (self.cacheYear, self.cacheMonth, self.cacheDay, self.config.download_daily_hours, self.config.download_daily_minutes, 0, ttime[6], ttime[7], ttime[8])
-			stime = mktime(ltime)
-			if stime < now and self.config.last_full_download_timestamp != stime:
-				from Screens.Standby import inStandby
-				self.osd = (inStandby == None)
-				self.ontune = False
-				self.config.last_full_download_timestamp = stime
-				self.config.last_partial_download_timestamp = stime
-				self.config.save()
-				ttime = localtime(stime+86400)	# 24 hours in future
-				# to avoid problems with internal clock (big changes on date/time)
-				# we step forward of 24 hours until the new time is greater than now
-				while ttime < now:
-					ttime = ttime+86400	# 24 hours in future
-				self.cacheYear = ttime[0]
-				self.cacheMonth = ttime[1]
-				self.cacheDay = ttime[2]
-				self.config.deleteLog()
-				self.download(self.config.providers)
-			elif stime < now + (self.POLL_TIMER / 1000) and self.config.last_full_download_timestamp != stime:
-				print "[CrossEPG_Auto] poll"
-				delta = int(stime - now);
-				self.timer.start((delta + 5)*1000, 1)	# 5 seconds offset
-			else:
-				print "[CrossEPG_Auto] poll"
-				self.timer.start(self.POLL_TIMER, 1)
-		elif self.config.download_tune_enabled:
-			now = time()
-			if self.config.last_partial_download_timestamp <= now - (60*60):
-				providerok = None
-				sservice = self.session.nav.getCurrentlyPlayingServiceReference()
-				if sservice:
-					service = sservice.toString()
+			elif self.config.download_standby_enabled and inStandby:
+				self.providers = []
+				now = time()
 
+				if self.config.last_full_download_timestamp <= now - (24*60*60):
+					self.config.last_full_download_timestamp = now
+					self.config.last_partial_download_timestamp = now
+					self.config.save()
+					self.providers = self.config.providers
+				elif self.config.last_partial_download_timestamp <= now - (60*60): # skip xmltv... we download it only one time a day
+					self.config.last_partial_download_timestamp = now
+					self.config.save()
 					providers = self.config.getAllProviders()
 					i = 0
 					for provider in providers[0]:
-						if providers[2][i] == "opentv":
-							if self.config.getChannelID(provider) == service:
-								providerok = provider
-								break;
+						if self.config.providers.count(provider) > 0:
+							if providers[2][i] == "opentv":
+								self.providers.append(provider)
+							else:
+								print "[CrossEPG_Auto] is not OpenTV : skip provider %s (we download it only one time a day)" % provider
 						i += 1
 
-				if providerok:
-					print "[CrossEPG_Auto] automatic download on tune"
+				if len(self.providers) == 0:
+					print "[CrossEPG_Auto] poll"
+					self.timer.start(self.POLL_TIMER, 1)
+				else:
+					print "[CrossEPG_Auto] automatic download in standby"
 					self.osd = False
-					self.ontune = True
-					self.config.last_partial_download_timestamp = now
-					self.config.save()
+					self.ontune = False
 					self.config.deleteLog()
-					self.download([provider,])
+					self.download(self.providers)
+			elif self.config.download_daily_enabled:
+				now = time()
+				ttime = localtime(now)
+				ltime = (self.cacheYear, self.cacheMonth, self.cacheDay, self.config.download_daily_hours, self.config.download_daily_minutes, 0, ttime[6], ttime[7], ttime[8])
+				stime = mktime(ltime)
+				if stime < now and self.config.last_full_download_timestamp != stime:
+					from Screens.Standby import inStandby
+					self.osd = (inStandby == None)
+					self.ontune = False
+					self.config.last_full_download_timestamp = stime
+					self.config.last_partial_download_timestamp = stime
+					self.config.save()
+					ttime = localtime(stime+86400)	# 24 hours in future
+					# to avoid problems with internal clock (big changes on date/time)
+					# we step forward of 24 hours until the new time is greater than now
+					while ttime < now:
+						ttime = ttime+86400	# 24 hours in future
+					self.cacheYear = ttime[0]
+					self.cacheMonth = ttime[1]
+					self.cacheDay = ttime[2]
+					self.config.deleteLog()
+					self.download(self.config.providers)
+				elif stime < now + (self.POLL_TIMER / 1000) and self.config.last_full_download_timestamp != stime:
+					print "[CrossEPG_Auto] poll"
+					delta = int(stime - now);
+					self.timer.start((delta + 5)*1000, 1)	# 5 seconds offset
+				else:	
+					print "[CrossEPG_Auto] poll"
+					self.timer.start(self.POLL_TIMER, 1)
+			elif self.config.download_tune_enabled:
+				now = time()
+				if self.config.last_partial_download_timestamp <= now - (60*60):
+					providerok = None
+					sservice = self.session.nav.getCurrentlyPlayingServiceReference()
+					if sservice:
+						service = sservice.toString()
+	
+						providers = self.config.getAllProviders()
+						i = 0
+						for provider in providers[0]:
+							if providers[2][i] == "opentv":
+								if self.config.getChannelID(provider) == service:
+									providerok = provider
+									break;
+							i += 1
+
+					if providerok:
+						print "[CrossEPG_Auto] automatic download on tune"
+						self.osd = False
+						self.ontune = True
+						self.config.last_partial_download_timestamp = now
+						self.config.save()
+						self.config.deleteLog()
+						self.download([provider,])
+					else:
+						print "[CrossEPG_Auto] poll"
+						self.timer.start(self.POLL_TIMER, 1)
 				else:
 					print "[CrossEPG_Auto] poll"
 					self.timer.start(self.POLL_TIMER, 1)
 			else:
 				print "[CrossEPG_Auto] poll"
 				self.timer.start(self.POLL_TIMER, 1)
-		else:
-			print "[CrossEPG_Auto] poll"
-			self.timer.start(self.POLL_TIMER, 1)
+		except:
+			self.timer.start(self.POLL_TIMER,1)
+			pass
 
 	def download(self, providers):
 		print "[CrossEPG_Auto] providers selected for download:"
