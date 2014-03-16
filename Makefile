@@ -97,46 +97,46 @@ $(DEFRAGMENTER_OBJS):
 	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
 
 $(SWIGS_LIBS): $(SWIGS_OBJS)
-	$(CC) $(LDFLAGS) -shared -o $@ $(OBJS) $(SWIGS_OBJS) -lxml2 -lz -lm -lpthread
+	$(CC) $(LDFLAGS) -shared -o $@ $(OBJS) $(SWIGS_OBJS) -lxml2 -lz -lm -lpthread -lcurl
 	$(STRIP) $@
 
 $(SHARED_LIBS): $(OBJS)
-	$(CC) $(LDFLAGS) -shared -o $@ $(OBJS) -lxml2 -lz -lm -lpthread
+	$(CC) $(LDFLAGS) -shared -o $@ $(OBJS) -lxml2 -lz -lm -lpthread -lcurl
 	$(STRIP) $@
 
 $(DBINFO_OBJS):
 	$(CC) $(CFLAGS) -c -o $@ $(@:.o=.c)
 
 $(CONVERTER_BIN): $(OBJS) $(CONVERTER_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(CONVERTER_OBJS) -lxml2 -lz -lm -lpthread
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(CONVERTER_OBJS) -lxml2 -lz -lm -lpthread -lcurl
 	$(STRIP) $@
 
 $(DBINFO_BIN): $(OBJS) $(DBINFO_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(DBINFO_OBJS) -lxml2 -lz -lm -lpthread
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(DBINFO_OBJS) -lxml2 -lz -lm -lpthread -lcurl
 	$(STRIP) $@
 
 $(DOWNLOADER_BIN): $(OBJS) $(DOWNLOADER_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(DOWNLOADER_OBJS) -lxml2 -lz -lm -lpthread
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(DOWNLOADER_OBJS) -lxml2 -lz -lm -lpthread -lcurl
 	$(STRIP) $@
 
 $(EPGCOPY_BIN): $(OBJS) $(EPGCOPY_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(EPGCOPY_OBJS) -lxml2 -lz -lm -lpthread
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(EPGCOPY_OBJS) -lxml2 -lz -lm -lpthread -lcurl
 	$(STRIP) $@
 
 $(IMPORTER_BIN): $(OBJS) $(IMPORTER_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(IMPORTER_OBJS) -lxml2 -lz -lm -lpthread
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(IMPORTER_OBJS) -lxml2 -lz -lm -lpthread -lcurl
 	$(STRIP) $@
 
 $(EXPORTER_BIN): $(OBJS) $(EXPORTER_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(EXPORTER_OBJS) -lxml2 -lz -lm -lpthread
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(EXPORTER_OBJS) -lxml2 -lz -lm -lpthread -lcurl
 	$(STRIP) $@
 
 $(XMLTV_BIN): $(OBJS) $(XMLTV_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(XMLTV_OBJS) -lxml2 -lz -lm -lpthread
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(XMLTV_OBJS) -lxml2 -lz -lm -lpthread -lcurl
 	$(STRIP) $@
 
 $(DEFRAGMENTER_BIN): $(OBJS) $(DEFRAGMENTER_OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(DEFRAGMENTER_OBJS) -lxml2 -lz -lm -lpthread
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(DEFRAGMENTER_OBJS) -lxml2 -lz -lm -lpthread -lcurl
 	$(STRIP) $@
 
 clean:
