@@ -212,7 +212,7 @@ void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffm
 
 				offset2 += 2;
 
-				if (descriptor_tag == 0xb9 && MAX_SUMMARIE_SIZE > buffer_size + descriptor_length && offset2 + descriptor_length < packet_length)
+				if (descriptor_tag == 0xb9 && MAX_SUMMARIE_SIZE > buffer_size + descriptor_length)
 				{
 					memcpy(&buffer[buffer_size], &data[offset2], descriptor_length);
 					buffer_size += descriptor_length;
@@ -222,7 +222,6 @@ void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffm
 				offset2 += descriptor_length;
 			}
 
-			if (packet_length == 0) break;
 			offset += packet_length;
 
 			if (buffer_size > 0 && channels[channel_id] != NULL)
@@ -230,8 +229,8 @@ void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffm
 				epgdb_title_t *title = epgdb_titles_get_by_id_and_mjd (channels[channel_id], event_id, mjd_time);
 				if (title != NULL)
 				{
-					char tmp[MAX_SUMMARIE_SIZE * 2];
-					if (!huffman_decode (buffer, buffer_size, tmp, MAX_SUMMARIE_SIZE * 2, huffman_debug))
+					char tmp[4096];
+					if (!huffman_decode (buffer, buffer_size, tmp, MAX_SUMMARIE_SIZE, huffman_debug)) 
 						tmp[0] = '\0';
 					
 					if (huffman_debug)
