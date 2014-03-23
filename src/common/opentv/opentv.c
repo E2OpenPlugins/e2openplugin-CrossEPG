@@ -202,6 +202,8 @@ void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffm
 			unsigned short int	buffer_size = 0;
 			unsigned int offset2;
 
+			if (packet_length == 0) break;
+
 			event_id = (data[offset] << 8) | data[offset + 1];
 			offset += 4;
 			offset2 = offset;
@@ -212,7 +214,9 @@ void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffm
 
 				offset2 += 2;
 
-				if (descriptor_tag == 0xb9 && MAX_SUMMARIE_SIZE > buffer_size + descriptor_length)
+				if (descriptor_tag == 0xb9 &&
+					MAX_SUMMARIE_SIZE > buffer_size + descriptor_length &&
+					offset2 + descriptor_length < length)
 				{
 					memcpy(&buffer[buffer_size], &data[offset2], descriptor_length);
 					buffer_size += descriptor_length;
