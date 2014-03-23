@@ -229,8 +229,8 @@ void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffm
 				epgdb_title_t *title = epgdb_titles_get_by_id_and_mjd (channels[channel_id], event_id, mjd_time);
 				if (title != NULL)
 				{
-					char tmp[4096];
-					if (!huffman_decode (buffer, buffer_size, tmp, MAX_SUMMARIE_SIZE, huffman_debug)) 
+					char tmp[MAX_SUMMARIE_SIZE * 2];
+					if (!huffman_decode (buffer, buffer_size, tmp, MAX_SUMMARIE_SIZE * 2, huffman_debug))
 						tmp[0] = '\0';
 					
 					if (huffman_debug)
