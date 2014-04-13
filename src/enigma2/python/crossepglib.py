@@ -298,7 +298,10 @@ class CrossEPG_Config:
 
 	def deleteLog(self):
 		try:
-			os.unlink(self.db_root + "/crossepg.log")
+			if getImageDistro() != "openvix":
+				os.unlink(self.db_root + "/crossepg.log")
+			else:
+				os.unlink(config.misc.epgcachepath.value + "/crossepg.log")
 		except Exception, e:
 			print e
 
