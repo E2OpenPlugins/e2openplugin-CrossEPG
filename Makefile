@@ -178,6 +178,7 @@ install-standalone:
 	install -d $(D)/usr/crossepg/scripts/rai
 	install -d $(D)/usr/crossepg/scripts/alias
 	install -d $(D)/usr/crossepg/scripts/mediaprem
+	install -d $(D)/usr/crossepg/scripts/mediaset
 	# install -d $(D)/usr/crossepg/scripts/mhw2epgdownloader
 	install -m 755 bin/crossepg_dbconverter $(D)/usr/crossepg/
 	install -m 755 bin/crossepg_dbinfo $(D)/usr/crossepg/
@@ -197,6 +198,8 @@ install-standalone:
 	install -m 755 scripts/rai/* $(D)/usr/crossepg/scripts/rai/
 	install -m 755 scripts/alias/* $(D)/usr/crossepg/scripts/alias/
 	install -m 755 scripts/mediaprem/* $(D)/usr/crossepg/scripts/mediaprem/
+	install -m 755 scripts/mediaset/* $(D)/usr/crossepg/scripts/mediaset/
+	install -m 755 aliases/aliases.conf $(D)/usr/crossepg/aliases/
 	# install -m 644 scripts/mhw2epgdownloader/*.conf $(D)/usr/crossepg/scripts/mhw2epgdownloader/
 	# install -m 644 scripts/mhw2epgdownloader/version.txt $(D)/usr/crossepg/scripts/mhw2epgdownloader/
 	# install -m 755 scripts/mhw2epgdownloader/mhw2epgdownloader.$(TARGET_ARCH) $(D)/usr/crossepg/scripts/mhw2epgdownloader/mhw2epgdownloader
@@ -231,6 +234,7 @@ install-standalone-var:
 	install -m 755 scripts/alias/* $(D)/var/crossepg/scripts/alias/
 	install -m 755 scripts/mediaprem/* $(D)/var/crossepg/scripts/mediaprem/
 	install -m 755 scripts/mediaset/* $(D)/var/crossepg/scripts/mediaset/
+	install -m 755 aliases/aliases.conf $(D)/usr/crossepg/aliases/
 	# install -m 644 scripts/mhw2epgdownloader/*.conf $(D)/var/crossepg/scripts/mhw2epgdownloader/
 	# install -m 644 scripts/mhw2epgdownloader/version.txt $(D)/var/crossepg/scripts/mhw2epgdownloader/
 	# install -m 755 scripts/mhw2epgdownloader/mhw2epgdownloader.$(TARGET_ARCH) $(D)/var/crossepg/scripts/mhw2epgdownloader/mhw2epgdownloader
