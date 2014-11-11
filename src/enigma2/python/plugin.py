@@ -6,7 +6,7 @@ from Plugins.Plugin import PluginDescriptor
 from boxbranding import getImageDistro
 
 def setup(menuid, **kwargs):
-	if getImageDistro() in ("openvix", "openvixhd", "miraclebox", "egami"):
+	if getImageDistro() in ("openvix", "openvixhd", "miraclebox", "egami", "miracleboxhd", "egamihd"):
 		if menuid == "epg":
 			return [("CrossEPG", crossepg_main.setup, "crossepg", None)]
 		else:
