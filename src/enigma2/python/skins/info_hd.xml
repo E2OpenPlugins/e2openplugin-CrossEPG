@@ -1,21 +1,19 @@
-<screen position="360,150" size="560,400" title="CrossEPG - DB Info">
-	<widget name="version" position="10,10" size="540,25" font="Regular;20" />
-	<widget name="create" position="10,40" size="540,25" font="Regular;20" />
-	<widget name="last_update" position="10,70" size="540,25" font="Regular;20" />
-	<widget name="headersdb_size" position="10,100" size="540,25" font="Regular;20" />
-	<widget name="descriptorsdb_size" position="10,130" size="540,25" font="Regular;20" />
-	<widget name="indexesdb_size" position="10,160" size="540,25" font="Regular;20" />
-	<widget name="aliasesdb_size" position="10,190" size="540,25" font="Regular;20" />
-	<widget name="total_size" position="10,220" size="540,25" font="Regular;20" />
-	<widget name="channels_count" position="10,250" size="540,25" font="Regular;20" />
-	<widget name="events_count" position="10,280" size="540,25" font="Regular;20" />
-	<widget name="hashes_count" position="10,310" size="540,25" font="Regular;20" />
-
+<screen position="360,150" size="560,400">
+	<widget name="version" position="10,10" size="540,25" font="Regular;20"/>
+	<widget name="create" position="10,40" size="540,25" font="Regular;20"/>
+	<widget name="last_update" position="10,70" size="540,25" font="Regular;20"/>
+	<widget name="headersdb_size" position="10,100" size="540,25" font="Regular;20"/>
+	<widget name="descriptorsdb_size" position="10,130" size="540,25" font="Regular;20"/>
+	<widget name="indexesdb_size" position="10,160" size="540,25" font="Regular;20"/>
+	<widget name="aliasesdb_size" position="10,190" size="540,25" font="Regular;20"/>
+	<widget name="total_size" position="10,220" size="540,25" font="Regular;20"/>
+	<widget name="channels_count" position="10,250" size="540,25" font="Regular;20"/>
+	<widget name="events_count" position="10,280" size="540,25" font="Regular;20"/>
+	<widget name="hashes_count" position="10,310" size="540,25" font="Regular;20"/>
 	<widget name="key_red" position="0,360" size="140,40" valign="center" halign="center" zPosition="5" transparent="1" foregroundColor="white" font="Regular;18"/>
 	<widget name="key_green" position="140,360" size="140,40" valign="center" halign="center" zPosition="5" transparent="1" foregroundColor="white" font="Regular;18"/>
 	<widget name="key_yellow" position="280,360" size="140,40" valign="center" halign="center" zPosition="5" transparent="1" foregroundColor="white" font="Regular;18"/>
 	<widget name="key_blue" position="420,360" size="140,40" valign="center" halign="center" zPosition="5" transparent="1" foregroundColor="white" font="Regular;18"/>
-	
 	<ePixmap name="red" pixmap="skin_default/buttons/red.png" position="0,360" size="140,40" zPosition="4" transparent="1" alphatest="on"/>
 	<ePixmap name="green" pixmap="skin_default/buttons/green.png" position="140,360" size="140,40" zPosition="4" transparent="1" alphatest="on"/>
 	<ePixmap name="yellow" pixmap="skin_default/buttons/yellow.png" position="280,360" size="140,40" zPosition="4" transparent="1" alphatest="on"/>
