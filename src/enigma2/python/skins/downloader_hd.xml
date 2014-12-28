@@ -1,4 +1,4 @@
-<screen position="c-300,e-80" size="600,70"flags="wfNoBorder">
+<screen position="c-300,e-80" size="600,70" flags="wfNoBorder">
 	<widget name="background" position="0,0" size="600,70" zPosition="-1"/>
 	<widget name="action" halign="center" valign="center" position="65,10" size="520,20" font="Regular;18" backgroundColor="#333333" transparent="1"/>
 	<widget name="status" halign="center" valign="center" position="65,35" size="520,20" font="Regular;18" backgroundColor="#11404040" transparent="1"/>
