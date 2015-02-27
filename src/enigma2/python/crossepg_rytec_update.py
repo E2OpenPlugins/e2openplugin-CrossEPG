@@ -92,9 +92,9 @@ class CrossEPG_Rytec_Update(Screen):
 
 	def loadSourceList(self):
 		try:
-			print "downloading source list from http://www.rytec.be/tools/crossepgsources.gz"
-			conn = httplib.HTTPConnection("www.rytec.be")
-			conn.request("GET", "/tools/crossepgsources.gz")
+			print "downloading source list from http://www.openvix.co.uk/feeds_extras/crossepg/crossepgsources.gz"
+			conn = httplib.HTTPConnection("www.openvix.co.uk")
+			conn.request("GET", "/feeds_extras/crossepg/crossepgsources.gz")
 			httpres = conn.getresponse()
 			if httpres.status == 200:
 				f = open("/tmp/crossepg_rytec_tmp", "w")
@@ -106,7 +106,7 @@ class CrossEPG_Rytec_Update(Screen):
 				random.shuffle(self.mirrors)
 				os.unlink("/tmp/crossepg_rytec_tmp")
 			else:
-				print "http error: %d (%s)" % (httpres.status, "http://www.rytec.be/tools/crossepgsources.gz")
+				print "http error: %d (%s)" % (httpres.status, "http://www.openvix.co.uk/feeds_extras/crossepg/crossepgsources.gz")
 		except Exception, e:
 			print e
 
