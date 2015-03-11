@@ -108,22 +108,23 @@ class CrossEPG_Rytec_Update(Screen):
 		for mirror in self.mirrors:
 			mirror = mirror.replace('\t','')
 			try:
-				print "downloading from %s" % (mirror)
-				smirror = mirror.lstrip("http://")
-				host = smirror.split("/")[0]
-				path = smirror.lstrip(host)
-				conn = httplib.HTTPConnection(host)
-				conn.request("GET", path)
-				httpres = conn.getresponse()
-				if httpres.status == 200:
-					f = open("/tmp/crossepg_rytec_tmp", "w")
-					f.write(httpres.read())
-					f.close()
-					self.loadFromFile("/tmp/crossepg_rytec_tmp")
-					os.unlink("/tmp/crossepg_rytec_tmp")
-					ret = True
-				else:
-					print "http error: %d (%s)" % (httpres.status, mirror)
+				if not ret:
+					print "downloading from %s" % (mirror)
+					smirror = mirror.lstrip("http://")
+					host = smirror.split("/")[0]
+					path = smirror.lstrip(host)
+					conn = httplib.HTTPConnection(host)
+					conn.request("GET", path)
+					httpres = conn.getresponse()
+					if httpres.status == 200:
+						f = open("/tmp/crossepg_rytec_tmp", "w")
+						f.write(httpres.read())
+						f.close()
+						self.loadFromFile("/tmp/crossepg_rytec_tmp")
+						os.unlink("/tmp/crossepg_rytec_tmp")
+						ret = True
+					else:
+						print "http error: %d (%s)" % (httpres.status, mirror)
 			except Exception, e:
 				print e
 		return ret
