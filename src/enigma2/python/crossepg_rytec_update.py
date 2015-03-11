@@ -96,7 +96,9 @@ class CrossEPG_Rytec_Update(Screen):
 			import urllib, gzip
 			filename,headers = urllib.urlretrieve('http://home.scarlet.be/epgalfasite/crossepgsources.gz')
 			fd = open(filename, 'rb')
-			self.mirrors = gzip.GzipFile(fileobj = fd, mode = 'rb')
+			sfd = gzip.GzipFile(fileobj = fd, mode = 'rb')
+			self.mirrors = sfd.readlines()
+			random.shuffle(self.mirrors)
 			os.unlink(filename)
 		except Exception, e:
 			print e
@@ -104,6 +106,7 @@ class CrossEPG_Rytec_Update(Screen):
 	def load(self):
 		ret = False
 		for mirror in self.mirrors:
+			mirror = mirror.replace('\t','')
 			try:
 				print "downloading from %s" % (mirror)
 				smirror = mirror.lstrip("http://")
