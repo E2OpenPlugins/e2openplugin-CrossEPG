@@ -5,6 +5,7 @@
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
+#include <curl/curl.h>
 
 #include "../../common.h"
 
@@ -26,7 +27,60 @@ char *_build_get_query (char *host, char *page)
 	return query;
 }
 
+size_t http_file_write(void *ptr, size_t size, size_t nmemb, FILE *stream)
+{
+	return fwrite(ptr, size, nmemb, stream);
+}
+ 
+size_t http_file_read(void *ptr, size_t size, size_t nmemb, FILE *stream)
+{
+	return fread(ptr, size, nmemb, stream);
+}
+ 
+int http_progress(void(*progress_callback)(int, int), double t, double d, double ultotal, double ulnow)
+{
+	if (progress_callback != NULL && t > 0) progress_callback ((int)d, (int)t);
+	return 0;
+}
+
 bool http_get (char *host, char *page, int port, int tempfile, void(*progress_callback)(int, int), volatile bool *stop)
+{
+	log_add ("HTTP Get (host:%s, port:%d, page:%s)", host, port, page);
+
+	FILE *fd = fdopen (tempfile, "w");
+	if (fd == NULL)
+	{
+		log_add ("Cannot open temporary file");
+	}
+
+	CURL *curl = curl_easy_init();
+	if (curl)
+	{
+		//outfile = fopen("test.curl", "w");
+		char url[4096];
+
+		sprintf(url, "http://%s:%d/%s", host, port, page);
+
+		curl_easy_setopt(curl, CURLOPT_URL, url);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, fd);
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, http_file_write);
+		curl_easy_setopt(curl, CURLOPT_READFUNCTION, http_file_read);
+		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+		curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, http_progress);
+		curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, progress_callback);
+
+		curl_easy_perform(curl);
+
+		fclose(fd);
+		curl_easy_cleanup(curl);
+		return true;
+	}
+
+	return false;
+}
+
+
+bool http_get_old (char *host, char *page, int port, int tempfile, void(*progress_callback)(int, int), volatile bool *stop)
 {
 	struct sockaddr_in *remote;
 	struct hostent *hent;

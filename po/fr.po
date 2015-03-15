@@ -1,0 +1,393 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: enigma2 - CrossEPG\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-30 11:18+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: mimi74 \n"
+"Language-Team: http://www.egami-image.com\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SearchPath-0: \n"
+
+msgid "%d providers updated"
+msgstr "%d fournisseurs actualisés"
+
+msgid "%s channels"
+msgstr "%s chaînes"
+
+msgid "%s of %s"
+msgstr "%s de %s"
+
+msgid "About"
+msgstr "A propos"
+
+msgid "Aliases db size: %s"
+msgstr "Taille de Alias:: %s"
+
+msgid "An EPG downloader"
+msgstr "Un téléchargeur EPG"
+
+msgid "Automatically reboot the decoder after a manual download"
+msgstr "Relancer automatiquement le récepteur après un téléchargement manuel"
+
+msgid "Automatically reboot the decoder after a scheduled download"
+msgstr ""
+"Relancer automatiquement le récepteur après un téléchargement programmé"
+
+msgid "Back"
+msgstr "Retour"
+
+msgid "Cancel"
+msgstr "Abandon"
+
+msgid "Cannot retrieve rytec sources"
+msgstr "Impossible de récupérer les sources Rytec"
+
+msgid "Cannot retrieve xepgdb sources"
+msgstr "Impossible de récupérer les sources xepgdb"
+
+msgid "Channels count: %s"
+msgstr "Chaînes comptées: %s"
+
+msgid "Close"
+msgstr "Fermer"
+
+msgid "Configure"
+msgstr "Configuer"
+
+msgid "Converting data"
+msgstr "Conversion données"
+
+msgid "Creation time: %s"
+msgstr "Temps création: %s"
+
+msgid "CrossEPG - Providers start order"
+msgstr "CrossEPG - Fournisseurs lancer tri"
+
+msgid "CrossEPG Force Reload"
+msgstr "CrossEPG forcer rechargement"
+
+msgid "CrossEPG Setup"
+msgstr "CrossEPG Configuration"
+
+msgid "CrossEPG automatic actions"
+msgstr "CrossEPG actions automatiques"
+
+msgid "CrossEPG error: %s"
+msgstr "CrossEPG erreur: %s"
+
+msgid "CrossEPG - Scripts providers"
+msgstr "CrossEPG - Fournisseurs Scripts"
+
+msgid "CrossEPG setup panel"
+msgstr "CrossEPG panneau config"
+
+msgid "Deflating XEPGDB"
+msgstr "Allégement XEPGDB"
+
+msgid "Deflating channels list"
+msgstr "Allégement liste chaînes"
+
+msgid "Deflating events"
+msgstr "Allégement événements"
+
+msgid "Defragment database"
+msgstr "Défragmenter base données"
+
+msgid "Descriptors db size: %s"
+msgstr "Descripteurs db taille: %s"
+
+msgid "Disable"
+msgstr "Désactiver"
+
+msgid "Download"
+msgstr "Télécharger"
+
+msgid "Download epg once a day"
+msgstr "Télécharger Epg une fois par jour"
+
+msgid "Download now"
+msgstr "Télécharger maintenant"
+
+msgid "Download on tune"
+msgstr "Télécharger au calage (OpenTV-Provider) "
+
+msgid "Downloading"
+msgstr "Téléchargement"
+
+msgid "Downloading XEPGDB"
+msgstr "Téléchargement XEPGDB"
+
+msgid "Downloading channels list"
+msgstr "Téléchargement liste chaînes"
+
+msgid "Downloading events"
+msgstr "Téléchargement événements"
+
+msgid ""
+"Drive where you save data.\n"
+"The drive MUST be mounted in rw. If you can't see your device here probably "
+"is mounted as read only or autofs handle it only in read only mode. In case "
+"of mount it manually and try again"
+msgstr ""
+"Lecteur ou vous sauvez les données.\n"
+"Le lecteur DOIT être monté en rw. Si vous ne voyez pas votre périphérique "
+"ici, il est probablement en lecture seule ou autorisé lecture seule autofs. "
+"Dans ce cas montez manuellement et essayez à nouveau"
+
+msgid "Enable"
+msgstr "Activer"
+
+msgid "Enable csv import"
+msgstr "Activer inport csv"
+
+msgid "Events count: %s"
+msgstr "Compte événements: %s"
+
+msgid "Force csv import now"
+msgstr "Forcer import cvs maintenant"
+
+msgid "Force epg reload"
+msgstr "Forcer rechargement EPG"
+
+msgid "Force epg reload on boot"
+msgstr "Forcer rechargement epg au démarrage"
+
+msgid "Force epg.dat conversion now"
+msgstr "Forcer conversion epg.dat maintenant"
+
+msgid "Hashes count: %s"
+msgstr "Compte Hashes: %s"
+
+msgid "Headers db size: %s"
+msgstr "Taille db entête: %s"
+
+msgid ""
+"Import *.csv and *.bin from %s/import or %s/import\n"
+"(*.bin are binaries with a csv as stdout)"
+msgstr ""
+"Importer *.csv et *.bin depuis %s/ ou importer depuis %s/\n"
+"(*.bin sont des fichiers binaire avec csv comme stdout)"
+
+msgid "Indexes db size: %s"
+msgstr "Taille db indexes: %s"
+
+msgid "Info about database"
+msgstr "Info à propos base données"
+
+msgid "Internal flash"
+msgstr "Flash interne"
+
+msgid "Internal flash (unsuggested)"
+msgstr "Flash interne (pas recommandé)"
+
+msgid ""
+"Lamedb used for epg.dat conversion.\n"
+"This option doesn't work with crossepg patch v2"
+msgstr ""
+"Lamedb utilisé pour conversion epg.dat.\n"
+"Cette option ne fonctionne pas avec CrossEPG Patch v2"
+
+msgid "Last update time: %s"
+msgstr "Dernière mise à jour: %s"
+
+msgid "Loading data"
+msgstr "Chargement données"
+
+msgid "MHW2 providers"
+msgstr "Fournisseurs MHW2"
+
+msgid "Merging XEPGDB"
+msgstr "Compilation XEPGDB"
+
+msgid "Move down"
+msgstr "Vers le bas"
+
+msgid "Move up"
+msgstr "Vers le haut"
+
+msgid ""
+"Only for opentv providers.\n"
+"If you zap on channel used from a provider it download the epg in background"
+msgstr ""
+"Seulement pour  les fournisseurs OpenTV.\n"
+"Si vous zappez sur une chaîne d'un fournisseur, le téléchargement se fera en "
+"arrière plan"
+
+msgid "OpenTV providers"
+msgstr "Founisseurs OpenTV"
+
+msgid ""
+"PLEASE READ!\n"
+"No disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you still "
+"want use your internal flash pay attention to:\n"
+"(1) If you don't have enough free space your box may completely block and "
+"you need to flash it again\n"
+"(2) Many write operations on your internal flash may damage your flash memory"
+msgstr ""
+"BITTE LESEN!\n"
+"Aucun disque trouvé. Un HDD ou une clef USB est fortement RECOMMANDE. Si "
+"vous voulez utiliser quand le flash interne, prennez garde à:\n"
+"(1) Si vous n'avez pas assez de mémoire libre, votre récepteur pourrait-"
+"être  bloqué et reflashé \n"
+"(2) Plusieurs opérations d'écriture sur votre flash interne pourraient "
+"détériorer votre mémoire flash"
+
+msgid "Parsing"
+msgstr "Analyse"
+
+msgid "Parsing channels list"
+msgstr "Analysse liste chaînes"
+
+msgid "Parsing events"
+msgstr "Analyse événements"
+
+msgid "Parsing summaries"
+msgstr "Analyse résumés"
+
+msgid "Parsing titles"
+msgstr "Analyse titres"
+
+msgid "Please configure crossepg before start downloader"
+msgstr "Veuillez configuer CrossEPG avant de lancer le téléchargement"
+
+msgid "Preferred lamedb"
+msgstr "Lamedb préférés"
+
+msgid "providers"
+msgstr "fournisseurs"
+
+msgid "Providers start order"
+msgstr "Ordre départ fournisseurs"
+
+msgid "Read %s"
+msgstr "Lus %s"
+
+msgid "Reading channels"
+msgstr "Lecture chaînes"
+
+msgid "Reading summaries"
+msgstr "Lecture résumés"
+
+msgid "Reading titles"
+msgstr "Lecture titres"
+
+msgid "Reboot after a manual download"
+msgstr "Relancer après un téléchargement manuel"
+
+msgid "Reboot after a scheduled download"
+msgstr "Relancer après un téléchargement programmé"
+
+msgid ""
+"Reload epg at every boot.\n"
+"Normally it's not necessary but recover epg after an enigma2 crash"
+msgstr ""
+"Recharger epg à chaque démarrage.\n"
+"Normalement pas nécessaire, mais récupère l'epg après un crash enigma2"
+
+msgid "Running script"
+msgstr "Lancement script"
+
+msgid "Save"
+msgstr "Sauver"
+
+msgid "Saving data"
+msgstr "Sauve données"
+
+msgid "Scheduled download"
+msgstr "Téléchargement programmé"
+
+msgid "Scheduled download at"
+msgstr "Téléchargement programmé à"
+
+msgid "Scheduled download disabled"
+msgstr "Téléchargement programmé désactivé"
+
+msgid "Scripts providers"
+msgstr "Scripts fournisseurs"
+
+msgid "Show 'Force reload' as plugin"
+msgstr "Afficher 'rechargement forcé' comme Plugin"
+
+msgid "Show Force reload as plugin"
+msgstr "Afficher rechargement forcé comme plugin"
+
+msgid "Show as extension"
+msgstr "Afficher comme extension"
+
+msgid "Show as plugin"
+msgstr "Afficher comme plugin"
+
+msgid "Show crossepg force load in plugin menu"
+msgstr "Afficher CrossEPG 'rechargement forcé' dans le menu extension"
+
+msgid "Show crossepg in extensions menu"
+msgstr "Afficher CrossEPG dans menu extensions"
+
+msgid "Show crossepg in plugin menu"
+msgstr "Afficher CrossEPG dans menu plugin"
+
+msgid "Starting converter"
+msgstr "Lancer convertisseur"
+
+msgid "Starting downloader"
+msgstr "Lancer téléchargeur"
+
+msgid "Starting importer"
+msgstr "Lancer importateur"
+
+msgid "Storage device"
+msgstr "Périphérique stockage"
+
+msgid "Time for scheduled daily download"
+msgstr "Heure du téléchargement programmé journalier"
+
+msgid "Total size: %s"
+msgstr "Taille totale: %s"
+
+msgid "Update rytec providers"
+msgstr "Actualiser fournisseurs rytec"
+
+msgid "Update xepgdb providers"
+msgstr "Actualiser fournisseurs xepgdb"
+
+msgid "Updating rytec providers..."
+msgstr "Actualisation fournisseurs rytec..."
+
+msgid "Updating xepgdb providers..."
+msgstr "Actualisation fournisseurs xepgdb..."
+
+msgid "Version: %s"
+msgstr "Version: %s"
+
+msgid ""
+"When the decoder is in standby opentv providers will be automatically "
+"downloaded every hour.\n"
+"XMLTV providers will be always downloaded only once a day"
+msgstr ""
+"Quand le décodeur est en mode veille, les fournisseurs opentv seront "
+"téléchargés automatiquement chaque heure.\n"
+"Les fournisseurs XMLTV seront toujours téléchargés une fois par jour"
+
+msgid "XEPGDB providers"
+msgstr "Fournisseurs XEPGDB"
+
+msgid "XMLTV providers"
+msgstr "Fournisseurs XMLTV"
+
+msgid "disabled"
+msgstr "désactivé"
+
+msgid "every hour (only in standby)"
+msgstr "chaque heure (seulement en veille)"
+
+msgid "main lamedb"
+msgstr "lamedb principal"
+
+msgid "once a day"
+msgstr "une fois par jour"

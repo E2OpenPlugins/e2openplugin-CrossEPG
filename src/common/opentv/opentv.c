@@ -15,7 +15,7 @@
 #include "../epgdb/epgdb_titles.h"
 
 #define MAX_TITLE_SIZE		256
-#define MAX_SUMMARIE_SIZE	4096
+#define MAX_SUMMARIE_SIZE	16384
 #define MAX_CHANNELS		65536
 
 typedef struct crcs_s
@@ -193,44 +193,62 @@ void opentv_read_summaries (unsigned char *data, unsigned int length, bool huffm
 	{
 		unsigned int offset = 10;
 		
-		while (offset < length)
+		while (offset + 4 < length)
 		{
 			unsigned short int	event_id;
-			unsigned char		description_length;
-			unsigned short int	packet_length = ((data[offset + 2] & 0x0f) << 8) | data[offset + 3];
-			
-			if ((data[offset + 4] != 0xb9) || ((packet_length + offset) > length)) break;
-			
+			int					packet_length = ((data[offset + 2] & 0x0f) << 8) | data[offset + 3];
+			int					packet_length2 = packet_length;
+			char				buffer[MAX_SUMMARIE_SIZE];
+			unsigned short int	buffer_size = 0;
+			unsigned int offset2;
+
+			if (packet_length == 0) break;
+
 			event_id = (data[offset] << 8) | data[offset + 1];
 			offset += 4;
-			description_length = data[offset + 1];
-			
-			if (channels[channel_id] != NULL)
+			offset2 = offset;
+			while (packet_length2 > 0)
+			{
+				unsigned char descriptor_tag = data[offset2];
+				unsigned char descriptor_length = data[offset2 + 1];
+
+				offset2 += 2;
+
+				if (descriptor_tag == 0xb9 &&
+					MAX_SUMMARIE_SIZE > buffer_size + descriptor_length &&
+					offset2 + descriptor_length < length)
+				{
+					memcpy(&buffer[buffer_size], &data[offset2], descriptor_length);
+					buffer_size += descriptor_length;
+				}
+
+				packet_length2 -= descriptor_length + 2;
+				offset2 += descriptor_length;
+			}
+
+			offset += packet_length;
+
+			if (buffer_size > 0 && channels[channel_id] != NULL)
 			{
 				epgdb_title_t *title = epgdb_titles_get_by_id_and_mjd (channels[channel_id], event_id, mjd_time);
 				if (title != NULL)
 				{
-//					if (title->changed)
-//					{
-						char tmp[4096];
-						if (!huffman_decode (data + offset + 2, description_length, tmp, 4096, huffman_debug))
-							tmp[0] = '\0';
-						
-						if (huffman_debug)
-						{
-							char mtime[20];
-							struct tm *loctime = localtime ((time_t*)&title->start_time);
-							printf ("Nid: %x Tsid: %x Sid: %x\n", channels[channel_id]->nid, channels[channel_id]->tsid, channels[channel_id]->sid);
-							strftime (mtime, 20, "%d/%m/%Y %H:%M", loctime);
-							printf ("Start time: %s\n", mtime);
-						}
-						
-						epgdb_titles_set_long_description (title, tmp);
-//					}
+					char tmp[MAX_SUMMARIE_SIZE * 2];
+					if (!huffman_decode (buffer, buffer_size, tmp, MAX_SUMMARIE_SIZE * 2, huffman_debug))
+						tmp[0] = '\0';
+					
+					if (huffman_debug)
+					{
+						char mtime[20];
+						struct tm *loctime = localtime ((time_t*)&title->start_time);
+						printf ("Nid: %x Tsid: %x Sid: %x\n", channels[channel_id]->nid, channels[channel_id]->tsid, channels[channel_id]->sid);
+						strftime (mtime, 20, "%d/%m/%Y %H:%M", loctime);
+						printf ("Start time: %s\n", mtime);
+					}
+					
+					epgdb_titles_set_long_description (title, tmp);
 				}
 			}
-			
-			offset += packet_length;
 		}
 	}
 }

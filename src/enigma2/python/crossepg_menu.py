@@ -1,6 +1,5 @@
 from enigma import *
 from crossepglib import *
-from crossepg_auto import crossepg_auto
 from crossepg_info import CrossEPG_Info
 from crossepg_about import CrossEPG_About
 from crossepg_providers import CrossEPG_Providers
@@ -12,12 +11,14 @@ from crossepg_loader import CrossEPG_Loader
 from crossepg_ordering import CrossEPG_Ordering
 from crossepg_rytec_update import CrossEPG_Rytec_Update
 from crossepg_xepgdb_update import CrossEPG_Xepgdb_Update
+from crossepg_defragmenter import CrossEPG_Defragmenter
 from crossepg_locale import _
 
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 
 from Components.Label import Label
+from Components.Sources.StaticText import StaticText
 from Components.Button import Button
 from Components.MenuList import MenuList
 from Components.Sources.List import List
@@ -26,17 +27,17 @@ from Components.Harddisk import harddiskmanager
 from Components.PluginComponent import plugins
 from Components.ActionMap import ActionMap
 from Tools.LoadPixmap import LoadPixmap
-from Tools.Directories import resolveFilename, SCOPE_PLUGINS
+from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_CURRENT_SKIN
+try:
+	from Tools.Directories import SCOPE_ACTIVE_SKIN
+except:
+	pass
 from Plugins.Plugin import PluginDescriptor
 
 from time import *
 
-try:
-	from version import version
-except Exception, e:
-	pass
-
 import _enigma
+from boxbranding import getImageDistro
 
 class CrossEPG_Menu(Screen):
 	def __init__(self, session):
@@ -48,89 +49,131 @@ class CrossEPG_Menu(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+		try:
+			from version import version
+			self.setup_title = _("CrossEPG") + " - " + version[:5]
+			Screen.setTitle(self, self.setup_title)
+		except Exception, e:
+			self.setup_title = _("CrossEPG") + " - " + _("unknow version")
+			Screen.setTitle(self, self.setup_title)
 
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.patchtype = getEPGPatchType()
 
+		self.onChangedEntry = [ ]
 		l = []
 		l.append(self.buildListEntry(_("Configure"), "configure.png"))
 		l.append(self.buildListEntry(_("XMLTV providers"), "xmltv.png"))
 		l.append(self.buildListEntry(_("OpenTV providers"), "opentv.png"))
 		l.append(self.buildListEntry(_("XEPGDB providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Scripts providers"), "scripts.png"))
-		l.append(self.buildListEntry(_("MHW2 providers"), "opentv.png"))
+		# l.append(self.buildListEntry(_("MHW2 providers"), "opentv.png"))
 		l.append(self.buildListEntry(_("Providers start order"), "reorder.png"))
 		l.append(self.buildListEntry(_("Update rytec providers"), "rytec_small.png"))
 		l.append(self.buildListEntry(_("Update xepgdb providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Download now"), "download.png"))
-		l.append(self.buildListEntry(_("Force csv import now"), "csv.png"))
-		l.append(self.buildListEntry(_("Force epg.dat conversion now"), "conversion.png"))
-		l.append(self.buildListEntry(_("Force epg reload"), "reload.png"))
+		l.append(self.buildListEntry(_("Defragment database"), "conversion.png"))
+		if getImageDistro() != "openvix":
+			l.append(self.buildListEntry(_("Force csv import now"), "csv.png"))
+			l.append(self.buildListEntry(_("Force epg.dat conversion now"), "conversion.png"))
+			l.append(self.buildListEntry(_("Force epg reload"), "reload.png"))
 		l.append(self.buildListEntry(_("Info about database"), "dbinfo.png"))
 		l.append(self.buildListEntry(_("About"), "about.png"))
 
 		self["list"] = List(l)
-		self["setupActions"] = ActionMap(["SetupActions"],
+		self["setupActions"] = ActionMap(["SetupActions", "MenuActions"],
 		{
 			"cancel": self.quit,
 			"ok": self.openSelected,
+			"menu": self.quit,
 		}, -2)
 
-		self.onFirstExecBegin.append(self.setTitleWithVerion)
-		
 		if self.config.configured == 0:
 			self.onFirstExecBegin.append(self.openSetup)
 
+	# for summary:
+	def changedEntry(self):
+		for x in self.onChangedEntry:
+			x()
+
+	def getCurrentEntry(self):
+		return str(self["list"].getCurrent()[1])
+
+	def getCurrentValue(self):
+		return ""
+
+	def createSummary(self):
+		return CrossEPG_MenuSummary
+
 	def buildListEntry(self, description, image):
-		pixmap = LoadPixmap(cached=True, path="%s/images/%s" % (os.path.dirname(sys.modules[__name__].__file__), image));
+		try:
+			png = resolveFilename(SCOPE_ACTIVE_SKIN, "crossepg/" + image)
+		except:
+			png = resolveFilename(SCOPE_CURRENT_SKIN, "skin-default/crossepg/" + image)
+		if png == None or not os.path.exists(png):
+			png = "%s/images/%s" % (os.path.dirname(sys.modules[__name__].__file__), image)
+		pixmap = LoadPixmap(cached=True, path=png)
 		return((pixmap, description))
 
 	def openSetup(self):
 		self.session.open(CrossEPG_Setup)
-			
-	def setTitleWithVerion(self):
-		try:
-			global version
-			self.setTitle("CrossEPG - %s" % version)
-		except Exception, e:
-			self.setTitle("CrossEPG - unknow version")
 
 	def openSelected(self):
 		index = self["list"].getIndex()
 		if index == 0:
 			self.session.open(CrossEPG_Setup)
-		elif index == 1:
+			return
+		if index == 1:
 			self.session.open(CrossEPG_Providers, "xmltv")
-		elif index == 2:
+			return
+		if index == 2:
 			self.session.open(CrossEPG_Providers, "opentv")
-		elif index == 3:
+			return
+		if index == 3:
 			self.session.open(CrossEPG_Providers, "xepgdb")
-		elif index == 4:
+			return
+		if index == 4:
 			self.session.open(CrossEPG_Providers, "script")
-		elif index == 5:
-			self.session.open(CrossEPG_Providers, "mhw2")
-		elif index == 6:
+			return
+		# if index == 5:
+		# 	self.session.open(CrossEPG_Providers, "mhw2")
+		# 	return
+		if index == 5:
 			self.session.open(CrossEPG_Ordering)
-		elif index == 7:
+			return
+		if index == 6:
 			self.session.open(CrossEPG_Rytec_Update)
-		elif index == 8:
+			return
+		if index == 7:
 			self.session.open(CrossEPG_Xepgdb_Update)
-		elif index == 9:
+			return
+		if index == 8:
 			self.config.load()
 			self.config.deleteLog()
 			self.downloader()
-		elif index == 10:
+			return
+		if index == 9:
+			self.session.open(CrossEPG_Defragmenter)
+			return
+		if getImageDistro() == "openvix":
+			index += 3
+		if index == 10:
 			self.importer()
-		elif index == 11:
+			return
+		if index == 11:
 			self.converter()
-		elif index == 12:
+			return
+		if index == 12:
 			self.loader()
-		elif index == 13:
+			return
+		if index == 13:
 			self.session.open(CrossEPG_Info)
-		elif index == 14:
+			return
+		if index == 14:
 			self.session.open(CrossEPG_About)
-		
+			return
+
 	def quit(self):
 		self.close()
 
@@ -172,4 +215,26 @@ class CrossEPG_Menu(Screen):
 
 	def loader(self):
 		self.session.open(CrossEPG_Loader)
+
+class CrossEPG_MenuSummary(Screen):
+	def __init__(self, session, parent):
+		Screen.__init__(self, session, parent = parent)
+		self["SetupTitle"] = StaticText(_(parent.setup_title))
+		self["SetupEntry"] = StaticText("")
+		self["SetupValue"] = StaticText("")
+		self.onShow.append(self.addWatcher)
+		self.onHide.append(self.removeWatcher)
+
+	def addWatcher(self):
+		self.parent.onChangedEntry.append(self.selectionChanged)
+		self.parent["list"].onSelectionChanged.append(self.selectionChanged)
+		self.selectionChanged()
+
+	def removeWatcher(self):
+		self.parent.onChangedEntry.remove(self.selectionChanged)
+		self.parent["list"].onSelectionChanged.remove(self.selectionChanged)
+
+	def selectionChanged(self):
+		self["SetupEntry"].text = self.parent.getCurrentEntry()
+		self["SetupValue"].text = self.parent.getCurrentValue()
 

@@ -305,3 +305,35 @@ error:
 	unlink (sfn2);
 	return ret;
 }
+
+bool dbmerge_fromfile (char *hashes_filename, char *descriptors_filename, void(*progress_callback)(int, int), void(*event_callback)(int, char*), volatile bool *stop)
+{
+	FILE *fd_h, *fd_d;
+	bool ret = false;
+	
+	fd_h = fopen (hashes_filename, "r");
+	if (fd_h == NULL)
+	{
+		log_add ("Cannot open %s", hashes_filename);
+		goto error;
+	}
+
+	fd_d = fopen (descriptors_filename, "r");
+	if (fd_d == NULL)
+	{
+		log_add ("Cannot open %s", descriptors_filename);
+		fclose (fd_h);
+		goto error;
+	}
+
+	//if (event_callback) event_callback(9, hashes_url);	// parsing xepgdb
+	if (event_callback) event_callback(0, NULL);	// turn on progress bar
+	ret = dbmerge_merge(fd_h, fd_d, progress_callback);
+	if (event_callback) event_callback(1, NULL);	// turn off progress bar
+
+	fclose(fd_h);
+	fclose(fd_d);
+
+error:
+	return ret;
+}

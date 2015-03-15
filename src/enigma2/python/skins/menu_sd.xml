@@ -1,4 +1,4 @@
-<screen position="80,120" size="560,360" title="CrossEPG">
+<screen position="80,120" size="560,360">
 	<widget source="list" render="Listbox" position="0,0" size="560,360" scrollbarMode="showOnDemand">
 		<convert type="TemplatedMultiContent">
 			{"template": [

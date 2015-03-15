@@ -1,0 +1,547 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-01 15:39+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: git/src/enigma2/python/crossepg_xepgdb_update.py:70
+#: git/src/enigma2/python/crossepg_rytec_update.py:71
+#, python-format
+msgid "%d providers updated"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:492
+#, python-format
+msgid "%s channels"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:498
+#, python-format
+msgid "%s of %s"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:76
+#: git/src/enigma2/python/crossepg_about.py:30
+msgid "About"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:71
+#, python-format
+msgid "Aliases db size: %s"
+msgstr ""
+
+#: git/src/enigma2/python/plugin.py:30 git/src/enigma2/python/plugin.py:35
+#: git/src/enigma2/python/plugin.py:40
+msgid "An EPG downloader"
+msgstr ""
+
+#: git/src/enigma2/python/plugin.py:55
+msgid "Auto"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:315
+msgid "Automatically reboot the decoder after a manual download"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:313
+msgid "Automatically reboot the decoder after a scheduled download"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:96
+#: git/src/enigma2/python/crossepg_providers.py:55
+#: git/src/enigma2/python/crossepg_ordering.py:37
+#: git/src/enigma2/python/crossepg_info.py:50
+#: git/src/enigma2/python/crossepg_about.py:48
+msgid "Back"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_rytec_update.py:73
+msgid "Cannot retrieve rytec sources"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_xepgdb_update.py:72
+msgid "Cannot retrieve xepgdb sources"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:75
+#, python-format
+msgid "Channels count: %s"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:62
+msgid "Configure"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:582
+msgid "Converting data"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:81
+#, python-format
+msgid "Creation time: %s"
+msgstr ""
+
+#: git/src/enigma2/python/plugin.py:29 git/src/enigma2/python/plugin.py:34
+#: git/src/enigma2/python/plugin.py:39 git/src/enigma2/python/plugin.py:45
+#: git/src/enigma2/python/plugin.py:50 git/src/enigma2/python/plugin.py:55
+#: git/src/enigma2/python/plugin.py:61
+#: git/src/enigma2/python/crossepg_xepgdb_update.py:40
+#: git/src/enigma2/python/crossepg_rytec_update.py:38
+#: git/src/enigma2/python/crossepg_providers.py:40
+#: git/src/enigma2/python/crossepg_ordering.py:26
+#: git/src/enigma2/python/crossepg_menu.py:50
+#: git/src/enigma2/python/crossepg_menu.py:53
+#: git/src/enigma2/python/crossepg_loader.py:33
+#: git/src/enigma2/python/crossepg_info.py:27
+#: git/src/enigma2/python/crossepg_importer.py:31
+#: git/src/enigma2/python/crossepg_converter.py:31
+#: git/src/enigma2/python/crossepg_about.py:30
+msgid "CrossEPG"
+msgstr ""
+
+#: git/src/enigma2/python/plugin.py:62
+msgid "CrossEPG Force Reload"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:36
+msgid "CrossEPG Setup"
+msgstr ""
+
+#: git/src/enigma2/python/plugin.py:56
+msgid "CrossEPG automatic actions"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_loader.py:212
+#: git/src/enigma2/python/crossepg_importer.py:126
+#: git/src/enigma2/python/crossepg_downloader.py:182
+#: git/src/enigma2/python/crossepg_converter.py:114
+#, python-format
+msgid "CrossEPG error: %s"
+msgstr ""
+
+#: git/src/enigma2/python/plugin.py:46 git/src/enigma2/python/plugin.py:51
+msgid "CrossEPG setup panel"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:483
+msgid "Deflating XEPGDB"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:462
+msgid "Deflating channels list"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:471
+msgid "Deflating events"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:67
+#, python-format
+msgid "Descriptors db size: %s"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:130
+msgid "Disable"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:85
+msgid "Disabled"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:57
+msgid "Download"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:306
+msgid "Download epg once a day"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:71
+msgid "Download now"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:219
+msgid "Download on tune"
+msgstr ""
+
+#: git/src/enigma2/python/plugin.py:29 git/src/enigma2/python/plugin.py:34
+#: git/src/enigma2/python/plugin.py:39
+msgid "Downloader"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_importer.py:101
+msgid "Downloading"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:477
+msgid "Downloading XEPGDB"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:459
+msgid "Downloading channels list"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:468
+msgid "Downloading events"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:56
+#: git/src/enigma2/python/crossepg_providers.py:132
+msgid "Enable"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:217
+msgid "Enable csv import"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:83
+msgid "Enabled"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:77
+#, python-format
+msgid "Events count: %s"
+msgstr ""
+
+#: git/src/enigma2/python/plugin.py:61
+msgid "Force Reload"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:72
+msgid "Force csv import now"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:74
+msgid "Force epg reload"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:218
+msgid "Force epg reload on boot"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:73
+msgid "Force epg.dat conversion now"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:79
+#, python-format
+msgid "Hashes count: %s"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:65
+#, python-format
+msgid "Headers db size: %s"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:297
+#, python-format
+msgid ""
+"Import *.csv and *.bin from %s/import or %s/import\n"
+"(*.bin are binaries with a csv as stdout)"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:69
+#, python-format
+msgid "Indexes db size: %s"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:27
+msgid "Info"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:75
+msgid "Info about database"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:295
+msgid ""
+"Lamedb used for epg.dat conversion.\n"
+"This option doesn't work with crossepg patch v2"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:83
+#, python-format
+msgid "Last update time: %s"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:598
+#: git/src/enigma2/python/crossepg_loader.py:36
+#: git/src/enigma2/python/crossepg_loader.py:37
+msgid "Loading data"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:39
+msgid "MHW2"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:67
+msgid "MHW2 providers"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:480
+msgid "Merging XEPGDB"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_ordering.py:97
+#: git/src/enigma2/python/crossepg_ordering.py:103
+msgid "Move down"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_ordering.py:99
+#: git/src/enigma2/python/crossepg_ordering.py:102
+msgid "Move up"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:301
+msgid ""
+"Only for opentv providers.\n"
+"If you zap on channel used from a provider it download the epg in background"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:33
+msgid "OpenTV"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:64
+msgid "OpenTV providers"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:154
+msgid ""
+"PLEASE READ!\n"
+"A hard drive or an usb pen is HARDLY SUGGESTED. If you still want use your "
+"internal flash pay attention to:\n"
+"(1) If you don't have enough free space your box may completely block and "
+"you need to flash it again\n"
+"(2) Many write operations on your internal flash may damage your flash memory"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_importer.py:97
+msgid "Parsing"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:465
+msgid "Parsing channels list"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:474
+msgid "Parsing events"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:456
+msgid "Parsing summaries"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:450
+msgid "Parsing titles"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_main.py:24
+msgid "Please configure crossepg before start downloader"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:215
+msgid "Preferred lamedb"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_ordering.py:26
+#: git/src/enigma2/python/crossepg_menu.py:68
+msgid "Providers start order"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:496
+#, python-format
+msgid "Read %s"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:444
+msgid "Reading channels"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:453
+msgid "Reading summaries"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:447
+msgid "Reading titles"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:229
+msgid "Reboot after a manual download"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:228
+msgid "Reboot after a scheduled download"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:299
+msgid ""
+"Reload epg at every boot.\n"
+"Normally it's not necessary but recover epg after an enigma2 crash"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:486
+#: git/src/enigma2/python/crossepglib.py:489
+msgid "Running script"
+msgstr ""
+
+#: git/src/enigma2/python/crossepglib.py:614
+msgid "Saving data"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:220
+msgid "Scheduled download"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:225
+msgid "Scheduled download at"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:308
+msgid "Scheduled download disabled"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:37
+msgid "Scripts"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:66
+msgid "Scripts providers"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:232
+msgid "Show 'Force reload' as plugin"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:231
+msgid "Show as extension"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:230
+msgid "Show as plugin"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:326
+msgid "Show crossepg force load in plugin menu"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:319
+#: git/src/enigma2/python/crossepg_setup.py:324
+msgid "Show crossepg in extensions menu"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:317
+#: git/src/enigma2/python/crossepg_setup.py:322
+msgid "Show crossepg in plugin menu"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_converter.py:34
+#: git/src/enigma2/python/crossepg_converter.py:35
+msgid "Starting converter"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_downloader.py:36
+#: git/src/enigma2/python/crossepg_downloader.py:40
+msgid "Starting downloader"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_importer.py:34
+#: git/src/enigma2/python/crossepg_importer.py:35
+msgid "Starting importer"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:310
+msgid "Time for scheduled daily download"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:73
+#, python-format
+msgid "Total size: %s"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:69
+msgid "Update rytec providers"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:70
+msgid "Update xepgdb providers"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_xepgdb_update.py:47
+#: git/src/enigma2/python/crossepg_rytec_update.py:46
+#: git/src/enigma2/python/crossepg_rytec_update.py:47
+msgid "Updating rytec providers..."
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_xepgdb_update.py:46
+msgid "Updating xepgdb providers..."
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_info.py:85
+#, python-format
+msgid "Version: %s"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:304
+msgid ""
+"When the decoder is in standby opentv providers will be automatically "
+"downloaded every hour.\n"
+"XMLTV providers will be always downloaded only once a day"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:35
+msgid "XEPGDB"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:65
+msgid "XEPGDB providers"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:31
+msgid "XMLTV"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:63
+msgid "XMLTV providers"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:87
+#: git/src/enigma2/python/crossepg_setup.py:211
+msgid "disabled"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:89
+#: git/src/enigma2/python/crossepg_setup.py:207
+msgid "every hour (only in standby)"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:82
+#: git/src/enigma2/python/crossepg_setup.py:201
+msgid "main lamedb"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_setup.py:88
+#: git/src/enigma2/python/crossepg_setup.py:209
+msgid "once a day"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_providers.py:40
+msgid "providers"
+msgstr ""
+
+#: git/src/enigma2/python/crossepg_menu.py:53
+msgid "unknow version"
+msgstr ""

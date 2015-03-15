@@ -1,0 +1,471 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: jerry <jerry00@quick.cz>\n"
+"Language-Team: PLi <ims21@users.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Czech\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+
+#
+msgid "Configure"
+msgstr "Nastavit"
+
+#
+msgid "XMLTV providers"
+msgstr "XMLTV provideři"
+
+#
+msgid "Scripts providers"
+msgstr "Provideři skriptů"
+
+#
+msgid "Download now"
+msgstr "Stáhnout nyní"
+
+#
+msgid "Info about database"
+msgstr "O databázi"
+
+#
+msgid "OpenTV providers"
+msgstr "OpenTV provideři"
+
+#
+msgid "XEPGDB providers"
+msgstr "XEPGDB provideři"
+
+#
+msgid "MHW2 providers"
+msgstr "MHW2 provideři"
+
+#
+msgid "Providers start order"
+msgstr "Pořadí spuštění providerů"
+
+#
+msgid "Update rytec providers"
+msgstr "Aktualizace rytec providerů"
+
+#
+msgid "Update xepgdb providers"
+msgstr "Aktualizace xepgdb providerů"
+
+#
+msgid "Force csv import now"
+msgstr "Načíst csv nyní"
+
+#
+msgid "Updating rytec providers..."
+msgstr "Aktualizuji rytec providery..."
+
+#
+msgid "Move down"
+msgstr "Níže"
+
+#
+msgid "Move up"
+msgstr "Výše"
+
+#
+msgid "Updating xepgdb providers..."
+msgstr "Aktualizuji xepgdb providery"
+
+#
+msgid "Version: %s"
+msgstr "Verze: %s"
+
+#
+msgid "Total size: %s"
+msgstr "Celková velikost: %s"
+
+#
+msgid "Time for scheduled daily download"
+msgstr "Čas plánovaného denního stahování"
+
+#
+msgid "Storage device"
+msgstr "Uložit na"
+
+#
+msgid "Starting importer"
+msgstr "Import..."
+
+#
+msgid "Starting downloader"
+msgstr "Stahování..."
+
+#
+msgid "Starting converter"
+msgstr "Převod..."
+
+#
+msgid "Show crossepg in plugin menu"
+msgstr "Zobrazit CrossEpg v menu"
+
+#
+msgid "Show crossepg in extensions menu"
+msgstr "Zobrazit CrossEpg v rozšířeních"
+
+#
+msgid "Show as plugin"
+msgstr "Zobrazit jako plugin"
+
+#
+msgid "Show as extension"
+msgstr "Zobrazit jako rozšíření"
+
+#
+msgid "Scheduled download disabled"
+msgstr "Plánované stažení vypnuto"
+
+#
+msgid "once a day"
+msgstr "jednou denně"
+
+#
+msgid "main lamedb"
+msgstr "hlavní lamedb"
+
+#
+msgid "every hour (only in standby)"
+msgstr "každou hod. (pouze ve standby)"
+
+#
+msgid "disabled"
+msgstr "vypnuto"
+
+#
+msgid ""
+"When the decoder is in standby opentv providers will be automatically downloaded every hour.\n"
+"XMLTV providers will be always downloaded only once a day"
+msgstr ""
+"Pokud je dekodér v pohotovostním režimu, poskytovatelý opentv budou automaticky staženi každou hodinu.\n"
+"XMLTV poskytovatelé budou vždy stoženi jen jednou denně"
+
+#
+msgid "Scheduled download at"
+msgstr "Stáhnout v"
+
+#
+msgid "Scheduled download"
+msgstr "Plán stažení"
+
+#
+msgid "Saving data"
+msgstr "Uložit data"
+
+#
+msgid "Running script"
+msgstr "Spuštěný skrip"
+
+#
+msgid ""
+"Reload epg at every boot.\n"
+"Normally it's not necessary but recover epg after an enigma2 crash"
+msgstr ""
+"Načíst EPG při každém bootu.\n"
+"Normálně to není potřeba, protože se EPG po pádu enigmy2 obnoví"
+
+#
+msgid "Reboot after a scheduled download"
+msgstr "Restart po plánovaném stažení"
+
+#
+msgid "Reboot after a manual download"
+msgstr "Restart po manuálním stažení"
+
+#
+msgid "Reading titles"
+msgstr "Čtou se hlavičky..."
+
+#
+msgid "Reading summaries"
+msgstr "Čtou se souhrny..."
+
+#
+msgid "Reading channels"
+msgstr "Čtou se kanály..."
+
+#
+msgid "Read %s"
+msgstr "Čtou se %s"
+
+#
+msgid "Preferred lamedb"
+msgstr "Preferovaná lamedb"
+
+#
+msgid "Please configure crossepg before start downloader"
+msgstr "Před stažením nejdříve nakonfigurujte CrossEpg"
+
+#
+msgid "Parsing titles"
+msgstr "Porovnávám hlavičky..."
+
+#
+msgid "Parsing summaries"
+msgstr "Porovnávám souhrny..."
+
+#
+msgid "Parsing events"
+msgstr "Porovnání událostí"
+
+#
+msgid "Parsing channels list"
+msgstr "Porovnání seznamu kanálů"
+
+#
+msgid "Parsing"
+msgstr "Porovnávám..."
+
+#
+msgid ""
+"PLEASE READ!\n"
+"No disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you still want use your internal flash pay attention to:\n"
+"(1) If you don't have enough free space your box may completely block and you need to flash it again\n"
+"(2) Many write operations on your internal flash may damage your flash memory"
+msgstr ""
+"ČTĚTE, PROSÍM!\n"
+"Nenalezen disk. Pokud i přesto chcete používat interní fleš, věnujte pozornost tomuto:\n"
+"(1) Pokud nemáte dostatek volného místa, můžete stb totálně zablokovat a bude nutné nové flešnutí fw\n"
+"(2) Příliž mnoho zápisů na interní flash,může způsobit poškození flash paměti "
+
+#
+msgid ""
+"Only for opentv providers.\n"
+"If you zap on channel used from a provider it download the epg in background"
+msgstr ""
+"Pouze pro providery opentv.\n"
+"Pokud přepnete na kanál používaný providerem, stáhne se EPG na pozadí"
+
+#
+msgid "Merging XEPGDB"
+msgstr "Slučuji XEPGDB"
+
+#
+msgid "Loading data"
+msgstr "Načítám data..."
+
+#
+msgid "Last update time: %s"
+msgstr "Aktualizováno v: %s"
+
+#
+msgid ""
+"Lamedb used for epg.dat conversion.\n"
+"This option doesn't work with crossepg patch v2"
+msgstr ""
+"Lamedb je používána pro konverzi epg.dat.\n"
+"Tato volba nepracuje s patchem crossepg v2"
+
+#
+msgid "Internal flash (unsuggested)"
+msgstr "Interní flash (nedoporučováno)"
+
+#
+msgid "Internal flash"
+msgstr "Interní flash"
+
+#
+msgid "Indexes db size: %s"
+msgstr "Velikost db indexu: %s"
+
+#
+msgid ""
+"Import *.csv and *.bin from %s/import or %s/import\n"
+"(*.bin are binaries with a csv as stdout)"
+msgstr ""
+"Import *.csv a *.bin z %s/import nebo %s/import\n"
+"(*.bin jako bin. souboru s csv jako stdout)"
+
+#
+msgid "Headers db size: %s"
+msgstr "Velikost hlavičky db: %s"
+
+#
+msgid "Hashes count: %s"
+msgstr "Součet Hash: %s"
+
+#
+msgid "Force epg.dat conversion now"
+msgstr "Konverze epg.dat nyní"
+
+#
+msgid "Force epg reload on boot"
+msgstr "Načtení epg při bootu"
+
+#
+msgid "Force epg reload"
+msgstr "Vynutit načtení epg"
+
+#
+msgid "Events count: %s"
+msgstr "Počet událostí: %s"
+
+#
+msgid "Enable csv import"
+msgstr "Povolit import csv"
+
+#
+msgid ""
+"Drive where you save data.\n"
+"The drive MUST be mounted in rw. If you can't see your device here probably is mounted as read only or autofs handle it only in read only mode. In case of mount it manually and try again"
+msgstr ""
+"Místo pro uložení dat.\n"
+"Jednotka MUSÍ být připojena v rw.Pokud zde vaše zařízení\n"
+"nevidíte,tak je asi připojeno jen pro čtení nebo v autofs\n"
+"jen pro čtení.Pak ho připojte manuálně a zkuste to znovu."
+
+#
+msgid "%s channels"
+msgstr "%s kanálů"
+
+#
+msgid "%s of %s"
+msgstr "%s z %s"
+
+#
+msgid "About"
+msgstr "Popis Aplikace"
+
+#
+msgid "Aliases db size: %s"
+msgstr "Velikost zástupce db: %s"
+
+#
+msgid "An EPG downloader"
+msgstr "Stahovač EPG"
+
+#
+msgid "Channels count: %s"
+msgstr "Počet kanálů: %s"
+
+#
+msgid "Creation time: %s"
+msgstr "Vytvořeno v: %s"
+
+#
+msgid "CrossEPG automatic actions"
+msgstr "Auto-akce CrossEPG"
+
+#
+msgid "CrossEPG error: %s"
+msgstr "Chyba CrossEPG: %s"
+
+#
+msgid "CrossEPG setup panel"
+msgstr "Panel nastavení CrossEPG"
+
+#
+msgid "Deflating XEPGDB"
+msgstr "Deflace XEPGDB"
+
+#
+msgid "Deflating channels list"
+msgstr "Deflace seznamu kanálů"
+
+#
+msgid "Deflating events"
+msgstr "Deflace událostí"
+
+#
+msgid "Descriptors db size: %s"
+msgstr "Velikost popisu db: %s"
+
+#
+msgid "Converting data"
+msgstr "Převod dat..."
+
+#
+msgid "Downloading"
+msgstr "Stahování..."
+
+#
+msgid "Downloading XEPGDB"
+msgstr "Stahování XEPGDB"
+
+#
+msgid "Downloading channels list"
+msgstr "Stahování seznamu kanálů"
+
+#
+msgid "Downloading events"
+msgstr "Stahování událostí"
+
+#
+msgid "Download on tune"
+msgstr "Stáhnout po naladění"
+
+#
+msgid "Download epg once a day"
+msgstr "Stáhnout epg jednou za den"
+
+#
+msgid "Back"
+msgstr "Zpět"
+
+#
+msgid "Disable"
+msgstr "Vypnout"
+
+#
+msgid "Download"
+msgstr "Stáhnout"
+
+#
+msgid "Enable"
+msgstr "Povolit"
+
+#
+msgid "CrossEPG - Providers start order"
+msgstr "CrossEPG - Pořadí providerů"
+
+#
+msgid "Automatically reboot the decoder after a scheduled download"
+msgstr "Automaticky rebootovat dekodér po plánovaném stažení"
+
+#
+msgid "Automatically reboot the decoder after a manual download"
+msgstr "Automaticky rebootovat dekodér po manuálním stažení"
+
+#
+msgid "CrossEPG - MHW2 providers"
+msgstr "CrossEPG - MHW2 provideři"
+
+#
+msgid "CrossEPG - XEPGDB providers"
+msgstr "CrossEPG - XEPGDB provideři"
+
+#
+msgid "CrossEPG - OpenTV providers"
+msgstr "CrossEPG - OpenTV provideři"
+
+#
+msgid "CrossEPG - XMLTV providers"
+msgstr "CrossEPG - XMLTV provideři"
+
+#
+msgid "CrossEPG - DB Info"
+msgstr "CrossEPG - Info o DB"
+
+#
+msgid "CrossEPG - About"
+msgstr "CrossEPG - Popis"
+
+#
+msgid "CrossEPG - Scripts providers"
+msgstr "CrossEPG - Provideři skriptů"
+
+#
+msgid "CrossEPG - Configuration"
+msgstr "CrossEPG - Konfigurace"
+
+#
+msgid "Show 'Force reload' as plugin"
+msgstr "Zobrazit 'Vynutit načtení' v pluginech"

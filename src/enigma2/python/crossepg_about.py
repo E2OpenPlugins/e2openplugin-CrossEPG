@@ -15,6 +15,12 @@ from crossepg_locale import _
 import os
 import sys
 
+from Tools.Directories import resolveFilename, SCOPE_CURRENT_SKIN
+try:
+	from Tools.Directories import SCOPE_ACTIVE_SKIN
+except:
+	pass
+
 class CrossEPG_About(Screen):
 	def __init__(self, session):
 		self.session = session
@@ -27,23 +33,25 @@ class CrossEPG_About(Screen):
 		f.close()
 
 		Screen.__init__(self, session)
-		
+		Screen.setTitle(self, _("CrossEPG") + " - " + _("About"))
+
 		self.config = CrossEPG_Config()
 		self.config.load()
-		
+
 		self["about"] = Label("")
 		self["rytec_pix"] = Pixmap()
 		self["rytec_text"] = Label("")
 		self["krkadoni_pix"] = Pixmap()
 		self["krkadoni_text"] = Label("")
 
-		self["actions"] = ActionMap(["SetupActions", "ColorActions"],
+		self["actions"] = ActionMap(["SetupActions", "ColorActions", "MenuActions"],
 		{
 			"red": self.quit,
-			"cancel": self.quit
+			"cancel": self.quit,
+			"menu": self.quit,
 		}, -2)
-		
-		self["key_red"] = Button(_("Back"))
+
+		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button("")
 		self["key_yellow"] = Button("")
 		self["key_blue"] = Button("")
@@ -53,12 +61,12 @@ class CrossEPG_About(Screen):
 		except Exception, e:
 			version = "unknow version"
 
-		credit = "SIFTeam CrossEPG %s (c) 2009-2011 Sandro Cavazzoni\n" % version
-		credit += "http://code.google.com/p/crossepg/\n\n"
+		credit = "CrossEPG %s (c) 2009-2013 Sandro Cavazzoni\n" % version
+		credit += "https://github.com/oe-alliance/e2openplugin-CrossEPG\n\n"
 		credit += "Application credits:\n"
 		credit += "- Sandro Cavazzoni aka skaman (main developer)\n"
+		credit += "- Andy Blackburn aka andyblac (co-developer)\n"
 		credit += "- Ambrosa (scripts developer)\n"
-		credit += "- Sergiotas (mhw2epgdownloader author)\n"
 		credit += "- u Killer Bestia (server side application maintainer)\n"
 		credit += "- Spaeleus (italian translations)\n"
 		credit += "- Bodyan (ukrainian translations)\n"
@@ -74,9 +82,21 @@ class CrossEPG_About(Screen):
 		self.onFirstExecBegin.append(self.setImages)
 
 	def setImages(self):
-		self["rytec_pix"].instance.setPixmapFromFile("%s/images/rytec.png" % (os.path.dirname(sys.modules[__name__].__file__)))
-		self["krkadoni_pix"].instance.setPixmapFromFile("%s/images/krkadoni.png" % (os.path.dirname(sys.modules[__name__].__file__)))
+		try:
+			rytecpng = resolveFilename(SCOPE_ACTIVE_SKIN, "crossepg/rytec.png")
+		except:
+			rytecpng = resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/crossepg/rytec.png")
+		if rytecpng == None or not os.path.exists(rytecpng):
+			rytecpng = "%s/images/rytec.png" % (os.path.dirname(sys.modules[__name__].__file__))
+		self["rytec_pix"].instance.setPixmapFromFile(rytecpng)
+		try:
+			krkadonipng = resolveFilename(SCOPE_ACTIVE_SKIN, "crossepg/krkadoni.png")
+		except:
+			krkadonipng = resolveFilename(SCOPE_CURRENT_SKIN, "skin_default/crossepg/krkadoni.png")
+		if krkadonipng == None or not os.path.exists(krkadonipng):
+			krkadonipng = "%s/images/krkadoni.png" % (os.path.dirname(sys.modules[__name__].__file__))
+		self["krkadoni_pix"].instance.setPixmapFromFile(krkadonipng)
 
 	def quit(self):
 		self.close()
-	
+

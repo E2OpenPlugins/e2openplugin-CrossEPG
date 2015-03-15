@@ -1,0 +1,421 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: enigma2 - CrossEPG\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-01-12 19:14+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: xxx\n"
+"Language-Team: xxx\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#, python-format
+msgid "%d providers updated"
+msgstr "%d operatörer uppdaterade"
+
+#, python-format
+msgid "%s channels"
+msgstr "%s kanaler"
+
+#, python-format
+msgid "%s of %s"
+msgstr "%s av %s"
+
+msgid "About"
+msgstr "Om"
+
+#, python-format
+msgid "Aliases db size: %s"
+msgstr "Storlek (Aliases): %s"
+
+msgid "An EPG downloader"
+msgstr "En EPG-hämtare"
+
+msgid "Auto"
+msgstr "Automatiskt"
+
+msgid "Automatically reboot the decoder after a manual download"
+msgstr "Starta om mottagaren automatiskt efter manuella nedladdningar"
+
+msgid "Automatically reboot the decoder after a scheduled download"
+msgstr "Starta om mottagaren automatiskt efter schemalagda nedladdningar"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Cannot retrieve rytec sources"
+msgstr "Kan inte ta emot Rytec-källor"
+
+msgid "Cannot retrieve xepgdb sources"
+msgstr "Kan inte ta emot XEPGDB-källor"
+
+#, python-format
+msgid "Channels count: %s"
+msgstr "Antal kanaler: %s"
+
+msgid "Close"
+msgstr "Stäng"
+
+msgid "Configure"
+msgstr "Inställningar"
+
+msgid "Converting data"
+msgstr "Konverterar data"
+
+#, python-format
+msgid "Creation time: %s"
+msgstr "Skapades på: %s"
+
+msgid "CrossEPG"
+msgstr "CrossEPG"
+
+msgid "CrossEPG Settings"
+msgstr "CrossEPG-inställningar"
+
+msgid "CrossEPG Force Reload"
+msgstr "CrossEPG 'Tvinga fram hämtning'"
+
+msgid "CrossEPG Setup"
+msgstr "CrossEPG-inställningar"
+
+msgid "CrossEPG automatic actions"
+msgstr "CrossEPG automatiska handlingar"
+
+#, python-format
+msgid "CrossEPG error: %s"
+msgstr "CrossEPG fel: %s"
+
+msgid "CrossEPG setup panel"
+msgstr "CrossEPG installation"
+
+msgid "Deflating XEPGDB"
+msgstr "Tömmer XEPGDB"
+
+msgid "Deflating channels list"
+msgstr "Tömmer kanallistor"
+
+msgid "Deflating events"
+msgstr "Tömmer program"
+
+#, python-format
+msgid "Descriptors db size: %s"
+msgstr "Storlek (Descriptors): %s"
+
+msgid "Disabled"
+msgstr "Avaktiverad"
+
+msgid "Download"
+msgstr "Hämta"
+
+msgid "Download epg once a day"
+msgstr "Hämta EPG dagligen"
+
+msgid "Download now"
+msgstr "Hämta nu"
+
+msgid "Download on tune"
+msgstr "Hämta vid signal"
+
+msgid "Downloader"
+msgstr "Hämtning"
+
+msgid "Downloading"
+msgstr "Hämtar..."
+
+msgid "Downloading XEPGDB"
+msgstr "Hämtar XEPGDB..."
+
+msgid "Downloading channels list"
+msgstr "Hämtar kanallistor..."
+
+msgid "Downloading events"
+msgstr "Hämtar program..."
+
+msgid ""
+"Drive where you save data.\n"
+"The drive MUST be mounted in rw. If you can't see your device here probably is mounted as read only or autofs handle it only in read only mode. In case of mount it manually and try again"
+msgstr ""
+"Lagringsenhet där EPG-data sparas.\n"
+"Enheten måste vara monterad. Om du inte ser den önskade enheten här  är den förmodligen monterad som 'Läs endast'. I detta montera enhetenmanuellt och försök sedan igen."
+
+msgid "Enable csv import"
+msgstr "Aktivera CSV-import"
+
+msgid "Enabled"
+msgstr "Aktiverad"
+
+#, python-format
+msgid "Events count: %s"
+msgstr "Antal Program: %s"
+
+msgid "Force Reload"
+msgstr "Tvinga fram uppdatering"
+
+msgid "Force csv import now"
+msgstr "Tvinga fram CSV-import nu"
+
+msgid "Force epg reload"
+msgstr "Tvinga fram EPG-uppdatering"
+
+msgid "Force epg reload on boot"
+msgstr "Tvinga fram EPG-uppdatering vid uppstart"
+
+msgid "Force epg.dat conversion now"
+msgstr "Tvinga epg.dat konvertering nu"
+
+#, python-format
+msgid "Hashes count: %s"
+msgstr "Antal (Hashes): %s"
+
+#, python-format
+msgid "Headers db size: %s"
+msgstr "Storlek (Headers): %s"
+
+#, python-format
+msgid ""
+"Import *.csv and *.bin from %s/import or %s/import\n"
+"(*.bin are binaries with a csv as stdout)"
+msgstr ""
+"Importera *.csv och *.bin från %s/import och %s/import\n"
+"(*.bin är binärer med csv som stdout)"
+
+#, python-format
+msgid "Indexes db size: %s"
+msgstr "Storlek (Databas): %s"
+
+msgid "Info"
+msgstr "Information"
+
+msgid "Info about database"
+msgstr "Databasinformation"
+
+msgid "Internal flash"
+msgstr "Internt minne"
+
+msgid "Internal flash (unsuggested)"
+msgstr "Internt minne"
+
+msgid ""
+"Lamedb used for epg.dat conversion.\n"
+"This option doesn't work with crossepg patch v2"
+msgstr ""
+"Lamedb som används för epg.dat konvertering.\n"
+"Detta alternativ fungerar inte med CrossEPG patch v2"
+
+#, python-format
+msgid "Last update time: %s"
+msgstr "Senast uppdaterad: %s"
+
+msgid "Loading data"
+msgstr "Laddar data..."
+
+msgid "MHW2"
+msgstr "MHW2"
+
+msgid "MHW2 providers"
+msgstr "MHW2-operatörer"
+
+msgid "Merging XEPGDB"
+msgstr "Slår samman XEPGDB"
+
+msgid "Move down"
+msgstr "Flytta ner"
+
+msgid "Move up"
+msgstr "Flytta upp"
+
+msgid "OK"
+msgstr "OK"
+
+msgid ""
+"Only for opentv providers.\n"
+"If you zap on channel used from a provider it download the epg in background"
+msgstr ""
+"Endast för OpenTV-operatörer.\n"
+"Om du byter kanal från operatören hämtas EPG i bakgrunden."
+
+msgid "OpenTV"
+msgstr "OpenTV"
+
+msgid "OpenTV providers"
+msgstr "OpenTV-operatörer"
+
+msgid ""
+"PLEASE READ!\n"
+"A hard drive or an usb pen is STRONGLY SUGGESTED. If you still want use your internal flash pay attention to:\n"
+"(1) If you don't have enough free space your box may completely block and you need to flash it again\n"
+"(2) Many write operations on your internal flash may damage your flash memory"
+msgstr ""
+"Notera att det interna minnet borde räcka som lagringsenhet. Gör det inte det kan det leda till att du måste\n"
+"programmera om din mottagare. Har du en intern eller extern hårddisk ansluten rekommenderas dettai första hand."
+
+msgid "Parsing"
+msgstr "Tolkar..."
+
+msgid "Parsing channels list"
+msgstr "Tolkar kanallista..."
+
+msgid "Parsing events"
+msgstr "Tolkar program...."
+
+msgid "Parsing summaries"
+msgstr "Tolkar sammanfattningar..."
+
+msgid "Parsing titles"
+msgstr "Tolkar titlar..."
+
+msgid "Please configure crossepg before start downloader"
+msgstr "Vänligen konfigurera CrossEPG innan hämtning"
+
+msgid "Preferred lamedb"
+msgstr "Föredragen 'lamedb'"
+
+msgid "Providers start order"
+msgstr "Startordning (Operatörer)"
+
+#, python-format
+msgid "Read %s"
+msgstr "Läs %s"
+
+msgid "Reading channels"
+msgstr "Läser kanaler..."
+
+msgid "Reading summaries"
+msgstr "Läser sammanfattningar..."
+
+msgid "Reading titles"
+msgstr "Läser titlar..."
+
+msgid "Really close without saving settings?"
+msgstr "Vill du verkligen stänga utan att spara inställningar?"
+
+msgid "Reboot after a manual download"
+msgstr "Starta om efter manuell hämtning"
+
+msgid "Reboot after a scheduled download"
+msgstr "Starta om efter schemalagd hämtning"
+
+msgid ""
+"Reload epg at every boot.\n"
+"Normally it's not necessary but recover epg after an enigma2 crash"
+msgstr ""
+"Uppdatera EPG vid varje uppstart.\n"
+"Normalt ska det inte behövas men EPG återställs om systemet hänger sig."
+
+msgid "Running script"
+msgstr "Script som körs"
+
+msgid "Save"
+msgstr "Spara"
+
+msgid "Saving data"
+msgstr "Sparar data..."
+
+msgid "Scheduled download"
+msgstr "Schemalagd hämtning"
+
+msgid "Scheduled download at"
+msgstr "Schemalagd hämtning vid"
+
+msgid "Scheduled download disabled"
+msgstr "Schemalagda hämtning avaktiverat"
+
+msgid "Scripts"
+msgstr "Script"
+
+msgid "Scripts providers"
+msgstr "Script-operatörer"
+
+msgid "Show 'Force reload' as plugin"
+msgstr "Visa 'Force reload' i Plugins"
+
+msgid "Show as extension"
+msgstr "Visa i Addons"
+
+msgid "Show as plugin"
+msgstr "Visa i Plugins"
+
+msgid "Show crossepg force load in plugin menu"
+msgstr "Visa CrossEPG 'Tvinga fram hämtning' i Plugins"
+
+msgid "Show crossepg in extensions menu"
+msgstr "Visa CrossEPG i Addons"
+
+msgid "Show crossepg in plugin menu"
+msgstr "Visa CrossEPG i Plugins"
+
+msgid "Starting converter"
+msgstr "Börjar konvertering"
+
+msgid "Starting downloader"
+msgstr "Börjar hämtning"
+
+msgid "Starting importer"
+msgstr "Börjar importering"
+
+msgid "Storage device"
+msgstr "Lagringsenhet"
+
+msgid "Time for scheduled daily download"
+msgstr "Tid för daglig nedladdning"
+
+#, python-format
+msgid "Total size: %s"
+msgstr "Total storlek: %s"
+
+msgid "Update rytec providers"
+msgstr "Uppdatera Rytec-lista"
+
+msgid "Update xepgdb providers"
+msgstr "Uppdatera XEPGDB-lista"
+
+msgid "Updating rytec providers..."
+msgstr "Uppdaterar Rytec-operatörer..."
+
+msgid "Updating xepgdb providers..."
+msgstr "Uppdaterar XEPGDB-operatörer..."
+
+#, python-format
+msgid "Version: %s"
+msgstr "Version: %s"
+
+msgid ""
+"When the decoder is in standby opentv providers will be automatically downloaded every hour.\n"
+"XMLTV providers will be always downloaded only once a day"
+msgstr ""
+"När mottagaren är i viloläge kommer OpenTV-operatörer automatiskt att laddasner varje timme.\n"
+"XMLTV-operatörer laddas alltid ner en gång om dagen."
+
+msgid "XEPGDB"
+msgstr "XEPGDB"
+
+msgid "XEPGDB providers"
+msgstr "XEPGDB-operatörer"
+
+msgid "XMLTV"
+msgstr "XMLTV"
+
+msgid "XMLTV providers"
+msgstr "Rytec-operatörer"
+
+msgid "disabled"
+msgstr "Avaktiverad"
+
+msgid "every hour (only in standby)"
+msgstr "Varje timme (endast i viloläge)"
+
+msgid "main lamedb"
+msgstr "Huvud-'lamedb'"
+
+msgid "once a day"
+msgstr "Dagligen"
+
+msgid "providers"
+msgstr "Operatörer"
+
+msgid "unknow version"
+msgstr "Okänd version"
+

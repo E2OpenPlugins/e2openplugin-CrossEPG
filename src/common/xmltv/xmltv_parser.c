@@ -151,14 +151,23 @@ static void xmltv_parser_add_event ()
 		current_title_iso639[1] = 'n';
 		current_title_iso639[2] = 'g';
 	}
-
+	
 	if (current_subtitle)
 	{
-		char *tmp = _malloc (strlen (current_title) + strlen (current_subtitle) + 4);
-		sprintf (tmp, "%s - %s", current_title, current_subtitle);
-		_free (current_title);
-		current_title = tmp;
+		if (current_desc) 
+		{
+			char *tmp = _malloc (strlen (current_desc) + strlen (current_subtitle) + 2);
+			sprintf (tmp, "%s\n%s", current_subtitle, current_desc);
+			_free (current_desc);
+			current_desc = tmp;
+		}
+		else 
+		{
+			current_desc = _malloc (strlen (current_subtitle) + 1);
+			strcpy(current_desc, current_subtitle);
+		}  
 	}
+	
 	while ((channel = xmltv_channels_get_by_id (current_channel, channel)) != NULL)
 	{
 		epgdb_channel_t *ch = epgdb_channels_add (channel->nid, channel->tsid, channel->sid);
