@@ -122,10 +122,6 @@ install-python:
 	#install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.7
 	install -m 644 src/common/crossepg.pyo $(D)/usr/lib/python2.7
 	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.7/lib-dynload
-	install -d $(D)/usr/lib/python2.6/lib-dynload
-	#install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.6
-	install -m 644 src/common/crossepg.pyo $(D)/usr/lib/python2.6
-	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.6/lib-dynload
 
 install-standalone:
 	install -d $(D)/usr/crossepg/aliases
