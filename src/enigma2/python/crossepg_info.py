@@ -1,6 +1,7 @@
-from enigma import getDesktop
+from enigma import getDesktop,eConsoleAppContainer
 
 from Screens.Screen import Screen
+from Screens.MessageBox import MessageBox
 
 from Components.Label import Label
 from Components.Button import Button
@@ -47,12 +48,13 @@ class CrossEPG_Info(Screen):
 			"red": self.quit,
 			"cancel": self.quit,
 			"menu": self.quit,
+			"blue": self.clean,
 		}, -2)
 
 		self["key_red"] = Button(_("Close"))
 		self["key_green"] = Button("")
 		self["key_yellow"] = Button("")
-		self["key_blue"] = Button("")
+		self["key_blue"] = Button("Clean")
 
 		self.wrapper = CrossEPG_Wrapper()
 		self.wrapper.addCallback(self.__wrapperCallback)
@@ -61,10 +63,29 @@ class CrossEPG_Info(Screen):
 		else:
 			self.wrapper.init(CrossEPG_Wrapper.CMD_INFO, self.config.db_root)
 
+		self.container = eConsoleAppContainer()
+		self.container.appClosed.append(self.appClosed)
 
 	def quit(self):
 		if not self.wrapper.running():
 			self.close()
+
+	def appClosed(self, retval):
+		self.close()
+
+	def cleanConfirm(self, result):
+		if not result:
+			return
+		if not self.wrapper.running():
+			cmd = "sh /usr/bin/clean_epg"
+			if self.container.execute(str(cmd)):
+				self.appClosed(-1)
+
+	def clean(self):
+		if os.path.exists("%s" % (self.config.db_root)):
+			self.session.openWithCallback(self.cleanConfirm, MessageBox, _("You are stopping enigma and deleting epg related data files. Really want to do it?"))
+		else:
+			self.session.open(MessageBox, _("CrossEPG dbroot '%s' not present!") % (self.config.db_root), type = MessageBox.TYPE_INFO, timeout = 5)
 
 	def __wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.INFO_HEADERSDB_SIZE:
