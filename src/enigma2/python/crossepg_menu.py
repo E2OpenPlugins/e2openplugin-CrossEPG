@@ -2,6 +2,7 @@ from enigma import *
 from crossepglib import *
 from crossepg_info import CrossEPG_Info
 from crossepg_about import CrossEPG_About
+from crossepg_log import CrossEPG_Log
 from crossepg_providers import CrossEPG_Providers
 from crossepg_setup import CrossEPG_Setup
 from crossepg_downloader import CrossEPG_Downloader
@@ -80,6 +81,7 @@ class CrossEPG_Menu(Screen):
 			l.append(self.buildListEntry(_("Force epg reload"), "reload.png"))
 		l.append(self.buildListEntry(_("Info about database"), "dbinfo.png"))
 		l.append(self.buildListEntry(_("About"), "about.png"))
+		l.append(self.buildListEntry(_("Crossepg log"), "log.png"))
 
 		self["list"] = List(l)
 		self["setupActions"] = ActionMap(["SetupActions", "MenuActions"],
@@ -172,6 +174,9 @@ class CrossEPG_Menu(Screen):
 			return
 		if index == 14:
 			self.session.open(CrossEPG_About)
+			return
+		if index == 15:
+			self.session.open(CrossEPG_Log)
 			return
 
 	def quit(self):
