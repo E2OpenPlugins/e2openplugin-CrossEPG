@@ -51,10 +51,14 @@ class CrossEPG_Config:
 	home_directory = ""
 
 	force_load_on_boot = 0
+	download_weekly_enabled = 0
+	download_weekday = _("sunday")
+	download_xdaily_enabled = 0
+	download_xdaily_num = 2
 	download_daily_enabled = 0
 	download_daily_hours = 4
 	download_daily_minutes = 0
-	download_daily_reboot = 1
+	download_daily_reboot = 0
 	download_standby_enabled = 0
 	download_manual_reboot = 0
 	csv_import_enabled = 0
@@ -104,6 +108,14 @@ class CrossEPG_Config:
 									self.providers.append(p)
 						elif key == "force_load_on_boot":
 							self.force_load_on_boot = int(value);
+						elif key == "download_weekly_enabled":
+							self.download_weekly_enabled = int(value);
+						elif key == "download_weekday":
+							self.download_weekday = value;
+						elif key == "download_xdaily_enabled":
+							self.download_xdaily_enabled = int(value);
+						elif key == "download_xdaily_num":
+							self.download_xdaily_num = int(value);
 						elif key == "download_daily_enabled":
 							self.download_daily_enabled = int(value);
 						elif key == "download_daily_hours":
@@ -154,6 +166,10 @@ class CrossEPG_Config:
 		f.write("lamedb=%s\n" % (self.lamedb))
 		f.write("providers=%s\n" % ("|".join(self.providers)))
 		f.write("force_load_on_boot=%d\n" % (self.force_load_on_boot))
+		f.write("download_weekly_enabled=%d\n" % (self.download_weekly_enabled))
+		f.write("download_weekday=%s\n" % (self.download_weekday))
+		f.write("download_xdaily_enabled=%d\n" % (self.download_xdaily_enabled))
+		f.write("download_xdaily_num=%d\n" % (self.download_xdaily_num))
 		f.write("download_daily_enabled=%d\n" % (self.download_daily_enabled))
 		f.write("download_daily_hours=%d\n" % (self.download_daily_hours))
 		f.write("download_daily_minutes=%d\n" % (self.download_daily_minutes))
