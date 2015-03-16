@@ -123,18 +123,72 @@ msgstr "Lamedb principale"
 
 #: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:85
 #: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:180
-msgid "disabled"
+msgid "Disabled"
 msgstr "Disabilitato"
 
 #: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:86
 #: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:178
-msgid "once a day"
+msgid "Once a day"
 msgstr "Una volta al giorno"
 
 #: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:87
 #: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:176
-msgid "every hour (only in standby)"
+msgid "Every hour (only in standby)"
 msgstr "Ogni ora (solo se in standby)"
+
+msgid "Once a week"
+msgstr "Un giorno della settimana"
+
+msgid "Every x days"
+msgstr "Ogni x giorni"
+
+msgid "Scheduled download on"
+msgstr "Download programmato il"
+
+msgid "Scheduled download every x days"
+msgstr "Download programmato ogni x giorni"
+
+msgid "Not scheduled"
+msgstr "Non programmato"
+
+msgid "Download epg once a week"
+msgstr "Scaricare l'epg un giorno della settimana"
+
+msgid "Download epg every x days"
+msgstr "Scaricare l'epg una volta ogni x giorni"
+
+msgid "Day for scheduled weekly download"
+msgstr "Giorno stabilito per download settimanale"
+
+msgid "Days to next download"
+msgstr "X giorni al prossimo download"
+
+msgid "Set time for scheduled download"
+msgstr "Impostare l'ora del download programmato"
+
+msgid "Next update time: %s"
+msgstr "Prossimo aggiornamento: %s"
+
+msgid "sunday"
+msgstr "domenica"
+
+msgid "monday"
+msgstr "lunedì"
+
+msgid "tuesday"
+msgstr "martedì"
+
+msgid "wednesday"
+msgstr "mercoledì"
+
+msgid "thursday"
+msgstr "giovedì"
+
+msgid "friday"
+msgstr "venerdì"
+
+msgid "saturday"
+msgstr "sabato"
 
 #: /media/TREKSTOR/enigma2-svn/crossepg/trunk/src/enigma2/python/crossepg_setup.py:128
 msgid ""

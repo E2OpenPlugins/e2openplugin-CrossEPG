@@ -427,7 +427,7 @@ class CrossEPG_Setup(ConfigListScreen, Screen):
 		if self.config.download_weekly_enabled == 0 and self.config.download_xdaily_enabled == 0 and self.config.download_daily_enabled == 0:
 			index += 1
 		if index == 6:
-			self["information"].setText(_("Time for scheduled download"))
+			self["information"].setText(_("Set time for scheduled download"))
 			return			
 		if self.fastpatch:
 			index += 2

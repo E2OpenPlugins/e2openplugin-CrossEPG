@@ -2,10 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 - CrossEPG\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-30 11:18+0100\n"
+"POT-Creation-Date: 2015-03-15 16:08+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: mimi74 \n"
 "Language-Team: http://www.egami-image.com\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,23 +15,33 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: \n"
 
+msgid "%a %e %b  %-H:%M"
+msgstr ""
+
+#, python-format
 msgid "%d providers updated"
 msgstr "%d fournisseurs actualisés"
 
+#, python-format
 msgid "%s channels"
 msgstr "%s chaînes"
 
+#, python-format
 msgid "%s of %s"
 msgstr "%s de %s"
 
 msgid "About"
 msgstr "A propos"
 
+#, python-format
 msgid "Aliases db size: %s"
 msgstr "Taille de Alias:: %s"
 
 msgid "An EPG downloader"
 msgstr "Un téléchargeur EPG"
+
+msgid "Auto"
+msgstr ""
 
 msgid "Automatically reboot the decoder after a manual download"
 msgstr "Relancer automatiquement le récepteur après un téléchargement manuel"
@@ -39,11 +50,20 @@ msgid "Automatically reboot the decoder after a scheduled download"
 msgstr ""
 "Relancer automatiquement le récepteur après un téléchargement programmé"
 
-msgid "Back"
-msgstr "Retour"
-
 msgid "Cancel"
 msgstr "Abandon"
+
+msgid "Cannot allocate the demuxer"
+msgstr ""
+
+msgid "Cannot free NIM because a recording is in progress"
+msgstr ""
+
+msgid "Cannot get frontend"
+msgstr ""
+
+msgid "Cannot get the NIM"
+msgstr ""
 
 msgid "Cannot retrieve rytec sources"
 msgstr "Impossible de récupérer les sources Rytec"
@@ -51,8 +71,12 @@ msgstr "Impossible de récupérer les sources Rytec"
 msgid "Cannot retrieve xepgdb sources"
 msgstr "Impossible de récupérer les sources xepgdb"
 
+#, python-format
 msgid "Channels count: %s"
 msgstr "Chaînes comptées: %s"
+
+msgid "Cleaner not found! Please provide /usr/bin/clean_epg"
+msgstr ""
 
 msgid "Close"
 msgstr "Fermer"
@@ -63,11 +87,12 @@ msgstr "Configuer"
 msgid "Converting data"
 msgstr "Conversion données"
 
+#, python-format
 msgid "Creation time: %s"
 msgstr "Temps création: %s"
 
-msgid "CrossEPG - Providers start order"
-msgstr "CrossEPG - Fournisseurs lancer tri"
+msgid "CrossEPG"
+msgstr ""
 
 msgid "CrossEPG Force Reload"
 msgstr "CrossEPG forcer rechargement"
@@ -78,14 +103,25 @@ msgstr "CrossEPG Configuration"
 msgid "CrossEPG automatic actions"
 msgstr "CrossEPG actions automatiques"
 
+#, python-format
+msgid "CrossEPG dbroot '%s' not present!"
+msgstr ""
+
+#, python-format
 msgid "CrossEPG error: %s"
 msgstr "CrossEPG erreur: %s"
 
-msgid "CrossEPG - Scripts providers"
-msgstr "CrossEPG - Fournisseurs Scripts"
-
 msgid "CrossEPG setup panel"
 msgstr "CrossEPG panneau config"
+
+msgid "Crossepg log"
+msgstr ""
+
+msgid "Day for scheduled weekly download"
+msgstr ""
+
+msgid "Days to next download"
+msgstr ""
 
 msgid "Deflating XEPGDB"
 msgstr "Allégement XEPGDB"
@@ -99,23 +135,30 @@ msgstr "Allégement événements"
 msgid "Defragment database"
 msgstr "Défragmenter base données"
 
+#, python-format
 msgid "Descriptors db size: %s"
 msgstr "Descripteurs db taille: %s"
 
-msgid "Disable"
-msgstr "Désactiver"
+msgid "Disabled"
+msgstr ""
 
 msgid "Download"
 msgstr "Télécharger"
 
+msgid "Download epg every x days"
+msgstr ""
+
 msgid "Download epg once a day"
 msgstr "Télécharger Epg une fois par jour"
+
+msgid "Download epg once a week"
+msgstr ""
 
 msgid "Download now"
 msgstr "Télécharger maintenant"
 
-msgid "Download on tune"
-msgstr "Télécharger au calage (OpenTV-Provider) "
+msgid "Downloader"
+msgstr ""
 
 msgid "Downloading"
 msgstr "Téléchargement"
@@ -140,14 +183,27 @@ msgstr ""
 "ici, il est probablement en lecture seule ou autorisé lecture seule autofs. "
 "Dans ce cas montez manuellement et essayez à nouveau"
 
-msgid "Enable"
-msgstr "Activer"
-
 msgid "Enable csv import"
 msgstr "Activer inport csv"
 
+msgid "Enabled"
+msgstr ""
+
+msgid "Enough Retries, delaying till next schedule."
+msgstr ""
+
+#, python-format
 msgid "Events count: %s"
 msgstr "Compte événements: %s"
+
+msgid "Every hour (only in standby)"
+msgstr ""
+
+msgid "Every x days"
+msgstr ""
+
+msgid "Force Reload"
+msgstr ""
 
 msgid "Force csv import now"
 msgstr "Forcer import cvs maintenant"
@@ -161,12 +217,15 @@ msgstr "Forcer rechargement epg au démarrage"
 msgid "Force epg.dat conversion now"
 msgstr "Forcer conversion epg.dat maintenant"
 
+#, python-format
 msgid "Hashes count: %s"
 msgstr "Compte Hashes: %s"
 
+#, python-format
 msgid "Headers db size: %s"
 msgstr "Taille db entête: %s"
 
+#, python-format
 msgid ""
 "Import *.csv and *.bin from %s/import or %s/import\n"
 "(*.bin are binaries with a csv as stdout)"
@@ -174,8 +233,12 @@ msgstr ""
 "Importer *.csv et *.bin depuis %s/ ou importer depuis %s/\n"
 "(*.bin sont des fichiers binaire avec csv comme stdout)"
 
+#, python-format
 msgid "Indexes db size: %s"
 msgstr "Taille db indexes: %s"
+
+msgid "Info"
+msgstr ""
 
 msgid "Info about database"
 msgstr "Info à propos base données"
@@ -193,14 +256,15 @@ msgstr ""
 "Lamedb utilisé pour conversion epg.dat.\n"
 "Cette option ne fonctionne pas avec CrossEPG Patch v2"
 
+#, python-format
 msgid "Last update time: %s"
 msgstr "Dernière mise à jour: %s"
 
 msgid "Loading data"
 msgstr "Chargement données"
 
-msgid "MHW2 providers"
-msgstr "Fournisseurs MHW2"
+msgid "MHW2"
+msgstr ""
 
 msgid "Merging XEPGDB"
 msgstr "Compilation XEPGDB"
@@ -211,32 +275,42 @@ msgstr "Vers le bas"
 msgid "Move up"
 msgstr "Vers le haut"
 
-msgid ""
-"Only for opentv providers.\n"
-"If you zap on channel used from a provider it download the epg in background"
+#, python-format
+msgid "Next update time: %s"
 msgstr ""
-"Seulement pour  les fournisseurs OpenTV.\n"
-"Si vous zappez sur une chaîne d'un fournisseur, le téléchargement se fera en "
-"arrière plan"
+
+msgid "No DVB-S NIMs founds"
+msgstr ""
+
+msgid "No valid NIM found"
+msgstr ""
+
+msgid "Not scheduled"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Once a day"
+msgstr ""
+
+msgid "Once a week"
+msgstr ""
+
+msgid "OpenTV"
+msgstr ""
 
 msgid "OpenTV providers"
 msgstr "Founisseurs OpenTV"
 
 msgid ""
 "PLEASE READ!\n"
-"No disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you still "
-"want use your internal flash pay attention to:\n"
+"A hard drive or an usb pen is STRONGLY SUGGESTED. If you still want use your "
+"internal flash pay attention to:\n"
 "(1) If you don't have enough free space your box may completely block and "
 "you need to flash it again\n"
 "(2) Many write operations on your internal flash may damage your flash memory"
 msgstr ""
-"BITTE LESEN!\n"
-"Aucun disque trouvé. Un HDD ou une clef USB est fortement RECOMMANDE. Si "
-"vous voulez utiliser quand le flash interne, prennez garde à:\n"
-"(1) Si vous n'avez pas assez de mémoire libre, votre récepteur pourrait-"
-"être  bloqué et reflashé \n"
-"(2) Plusieurs opérations d'écriture sur votre flash interne pourraient "
-"détériorer votre mémoire flash"
 
 msgid "Parsing"
 msgstr "Analyse"
@@ -253,18 +327,13 @@ msgstr "Analyse résumés"
 msgid "Parsing titles"
 msgstr "Analyse titres"
 
-msgid "Please configure crossepg before start downloader"
-msgstr "Veuillez configuer CrossEPG avant de lancer le téléchargement"
-
 msgid "Preferred lamedb"
 msgstr "Lamedb préférés"
-
-msgid "providers"
-msgstr "fournisseurs"
 
 msgid "Providers start order"
 msgstr "Ordre départ fournisseurs"
 
+#, python-format
 msgid "Read %s"
 msgstr "Lus %s"
 
@@ -276,6 +345,9 @@ msgstr "Lecture résumés"
 
 msgid "Reading titles"
 msgstr "Lecture titres"
+
+msgid "Really close without saving settings?"
+msgstr ""
 
 msgid "Reboot after a manual download"
 msgstr "Relancer après un téléchargement manuel"
@@ -308,14 +380,23 @@ msgstr "Téléchargement programmé à"
 msgid "Scheduled download disabled"
 msgstr "Téléchargement programmé désactivé"
 
+msgid "Scheduled download every x days"
+msgstr ""
+
+msgid "Scheduled download on"
+msgstr ""
+
+msgid "Scripts"
+msgstr ""
+
 msgid "Scripts providers"
 msgstr "Scripts fournisseurs"
 
+msgid "Set time for scheduled download"
+msgstr ""
+
 msgid "Show 'Force reload' as plugin"
 msgstr "Afficher 'rechargement forcé' comme Plugin"
-
-msgid "Show Force reload as plugin"
-msgstr "Afficher rechargement forcé comme plugin"
 
 msgid "Show as extension"
 msgstr "Afficher comme extension"
@@ -344,9 +425,7 @@ msgstr "Lancer importateur"
 msgid "Storage device"
 msgstr "Périphérique stockage"
 
-msgid "Time for scheduled daily download"
-msgstr "Heure du téléchargement programmé journalier"
-
+#, python-format
 msgid "Total size: %s"
 msgstr "Taille totale: %s"
 
@@ -362,6 +441,7 @@ msgstr "Actualisation fournisseurs rytec..."
 msgid "Updating xepgdb providers..."
 msgstr "Actualisation fournisseurs xepgdb..."
 
+#, python-format
 msgid "Version: %s"
 msgstr "Version: %s"
 
@@ -374,20 +454,124 @@ msgstr ""
 "téléchargés automatiquement chaque heure.\n"
 "Les fournisseurs XMLTV seront toujours téléchargés une fois par jour"
 
+msgid "XEPGDB"
+msgstr ""
+
 msgid "XEPGDB providers"
 msgstr "Fournisseurs XEPGDB"
+
+msgid "XMLTV"
+msgstr ""
 
 msgid "XMLTV providers"
 msgstr "Fournisseurs XMLTV"
 
-msgid "disabled"
-msgstr "désactivé"
+msgid ""
+"You are stopping enigma and deleting epg related data files. Really want to "
+"do it?"
+msgstr ""
 
-msgid "every hour (only in standby)"
-msgstr "chaque heure (seulement en veille)"
+msgid ""
+"You need to configure crossepg before starting downloader.\n"
+"Would You like to do it now ?"
+msgstr ""
+
+msgid ""
+"Your epg about to update,\n"
+"Do you want to allow this?"
+msgstr ""
+
+msgid "friday"
+msgstr ""
 
 msgid "main lamedb"
 msgstr "lamedb principal"
 
-msgid "once a day"
-msgstr "une fois par jour"
+msgid "monday"
+msgstr ""
+
+msgid "providers"
+msgstr "fournisseurs"
+
+msgid "saturday"
+msgstr ""
+
+msgid "sunday"
+msgstr ""
+
+msgid "thursday"
+msgstr ""
+
+msgid "tuesday"
+msgstr ""
+
+msgid "unknow version"
+msgstr ""
+
+msgid "wednesday"
+msgstr ""
+
+#~ msgid "Back"
+#~ msgstr "Retour"
+
+#~ msgid "CrossEPG - Providers start order"
+#~ msgstr "CrossEPG - Fournisseurs lancer tri"
+
+#~ msgid "CrossEPG - Scripts providers"
+#~ msgstr "CrossEPG - Fournisseurs Scripts"
+
+#~ msgid "Disable"
+#~ msgstr "Désactiver"
+
+#~ msgid "Download on tune"
+#~ msgstr "Télécharger au calage (OpenTV-Provider) "
+
+#~ msgid "Enable"
+#~ msgstr "Activer"
+
+#~ msgid "MHW2 providers"
+#~ msgstr "Fournisseurs MHW2"
+
+#~ msgid ""
+#~ "Only for opentv providers.\n"
+#~ "If you zap on channel used from a provider it download the epg in "
+#~ "background"
+#~ msgstr ""
+#~ "Seulement pour  les fournisseurs OpenTV.\n"
+#~ "Si vous zappez sur une chaîne d'un fournisseur, le téléchargement se fera "
+#~ "en arrière plan"
+
+#~ msgid ""
+#~ "PLEASE READ!\n"
+#~ "No disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you "
+#~ "still want use your internal flash pay attention to:\n"
+#~ "(1) If you don't have enough free space your box may completely block and "
+#~ "you need to flash it again\n"
+#~ "(2) Many write operations on your internal flash may damage your flash "
+#~ "memory"
+#~ msgstr ""
+#~ "BITTE LESEN!\n"
+#~ "Aucun disque trouvé. Un HDD ou une clef USB est fortement RECOMMANDE. Si "
+#~ "vous voulez utiliser quand le flash interne, prennez garde à:\n"
+#~ "(1) Si vous n'avez pas assez de mémoire libre, votre récepteur pourrait-"
+#~ "être  bloqué et reflashé \n"
+#~ "(2) Plusieurs opérations d'écriture sur votre flash interne pourraient "
+#~ "détériorer votre mémoire flash"
+
+#~ msgid "Please configure crossepg before start downloader"
+#~ msgstr "Veuillez configuer CrossEPG avant de lancer le téléchargement"
+
+#~ msgid "Show Force reload as plugin"
+#~ msgstr "Afficher rechargement forcé comme plugin"
+
+#~ msgid "Time for scheduled daily download"
+#~ msgstr "Heure du téléchargement programmé journalier"
+
+#~ msgid "disabled"
+#~ msgstr "désactivé"
+
+#~ msgid "every hour (only in standby)"
+#~ msgstr "chaque heure (seulement en veille)"
+
+#~ msgid "once a day"
+#~ msgstr "une fois par jour"
