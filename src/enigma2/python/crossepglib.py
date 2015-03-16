@@ -3,6 +3,7 @@ from crossepg_locale import _
 from Tools.Directories import crawlDirectory, pathExists, createDir
 from types import *
 from time import *
+from boxbranding import getImageDistro
 
 import sys, traceback
 import os
