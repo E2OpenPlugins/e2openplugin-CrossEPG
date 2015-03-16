@@ -1,0 +1,28 @@
+From ff61993fdf37a3a2fff8e104a239753b1dfcb225 Mon Sep 17 00:00:00 2001
+From: tension <tension9000@yahoo.it>
+Date: Sun, 15 Mar 2015 17:26:01 +0100
+Subject: [PATCH 122/122] Remove python 2.6 install
+
+Python 2.6 no more needed.
+---
+ Makefile | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index e482cb2..ec6104a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -122,10 +122,6 @@ install-python:
+ 	#install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.7
+ 	install -m 644 src/common/crossepg.pyo $(D)/usr/lib/python2.7
+ 	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.7/lib-dynload
+-	install -d $(D)/usr/lib/python2.6/lib-dynload
+-	#install -m 644 src/common/crossepg.py $(D)/usr/lib/python2.6
+-	install -m 644 src/common/crossepg.pyo $(D)/usr/lib/python2.6
+-	install -m 644 bin/_crossepg.so $(D)/usr/lib/python2.6/lib-dynload
+ 
+ install-standalone:
+ 	install -d $(D)/usr/crossepg/aliases
+-- 
+1.9.1
+

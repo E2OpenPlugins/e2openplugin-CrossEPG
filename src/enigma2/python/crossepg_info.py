@@ -35,6 +35,7 @@ class CrossEPG_Info(Screen):
 		self["version"] = Label("")
 		self["create"] = Label("")
 		self["last_update"] = Label("")
+		self["next_update"] = Label("")
 		self["headersdb_size"] = Label("")
 		self["descriptorsdb_size"] = Label("")
 		self["indexesdb_size"] = Label("")
@@ -62,6 +63,8 @@ class CrossEPG_Info(Screen):
 			self.wrapper.init(CrossEPG_Wrapper.CMD_INFO, config.misc.epgcachepath.value + 'crossepg')
 		else:
 			self.wrapper.init(CrossEPG_Wrapper.CMD_INFO, self.config.db_root)
+
+		self["next_update"].text = _("Next update time: %s") % (self.config.next_update_time)
 
 		self.container = eConsoleAppContainer()
 		self.container.appClosed.append(self.appClosed)
