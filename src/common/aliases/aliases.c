@@ -102,7 +102,8 @@ void _aliases_load (alias_t *aliases, int max_aliases, char *filename)
 	{
 		if (line[strlen (line)-1] == '\n') line[strlen (line)-1] = '\0';
 		char *tmp = _aliases_trim_spaces (line);
-		if (tmp[0] == '#') continue;
+		// Skip comment and empty lines
+		if (tmp[0] == '#' || tmp[0] == '\0') continue;
 				
 		alias_t alias;
 		alias.count = 0;
