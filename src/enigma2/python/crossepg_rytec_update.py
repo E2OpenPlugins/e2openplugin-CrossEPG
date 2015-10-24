@@ -94,7 +94,7 @@ class CrossEPG_Rytec_Update(Screen):
 		try:
 			print "downloading source list from EPGalfasite"
 			import urllib, gzip
-			filename,headers = urllib.urlretrieve('http://home.scarlet.be/epgalfasite/crossepgsources.gz')
+			filename,headers = urllib.urlretrieve('http://epgalfasite.dyndns.tv/crossepgsources.gz')
 			fd = open(filename, 'rb')
 			sfd = gzip.GzipFile(fileobj = fd, mode = 'rb')
 			self.mirrors = sfd.readlines()
