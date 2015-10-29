@@ -142,6 +142,9 @@ void dvb_read (dvb_t *settings, bool(*data_callback)(int, unsigned char*))
 			log_add ("ioctl DMX_SET_SOURCE failed");
 		}
 		
+		if (ioctl (PFD[i].fd, DMX_SET_BUFFER_SIZE, settings->buffer_size * 4) < 0)
+			log_add ("ioctl DMX_SET_BUFFER_SIZE failed");
+
 		if (ioctl (PFD[i].fd, DMX_SET_FILTER, &params) < 0)
 			log_add ("ioctl DMX_SET_FILTER failed");
 		
