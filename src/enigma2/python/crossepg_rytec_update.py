@@ -72,8 +72,8 @@ class CrossEPG_Rytec_Update(Screen):
 	def loadSourceList(self):
 		try:
 			print "downloading source list from EPGalfasite"
-			conn = httplib.HTTPConnection("home.scarlet.be")
-			conn.request("GET", "/epgalfasite/crossepgsources.gz")
+			conn = httplib.HTTPConnection("epgalfasite.dyndns.tv")
+			conn.request("GET", "/crossepgsources.gz")
 			httpres = conn.getresponse()
 			if httpres.status == 200:
 				f = open("/tmp/crossepg_rytec_tmp", "w")
