@@ -72,20 +72,13 @@ class CrossEPG_Rytec_Update(Screen):
 	def loadSourceList(self):
 		try:
 			print "downloading source list from EPGalfasite"
-			conn = httplib.HTTPConnection("home.scarlet.be")
-			conn.request("GET", "/epgalfasite/crossepgsources.gz")
-			httpres = conn.getresponse()
-			if httpres.status == 200:
-				f = open("/tmp/crossepg_rytec_tmp", "w")
-				f.write(httpres.read())
-				f.close()
-				gzip = os.popen("/bin/gzip -d -c /tmp/crossepg_rytec_tmp")
-				self.mirrors = gzip.read().split("\n")
-				gzip.close()
-				random.shuffle(self.mirrors)
-				os.unlink("/tmp/crossepg_rytec_tmp")
-			else:
-				print "http error: %d (%s)" % (httpres.status, "EPGalfasite")
+			import urllib, gzip
+			filename,headers = urllib.urlretrieve('http://epgalfasite.dyndns.tv/crossepgsources.gz')
+			fd = open(filename, 'rb')
+			sfd = gzip.GzipFile(fileobj = fd, mode = 'rb')
+			self.mirrors = sfd.readlines()
+			random.shuffle(self.mirrors)
+			os.unlink(filename)
 		except Exception, e:
 			print e
 				
