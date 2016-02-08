@@ -142,7 +142,15 @@ class CrossEPG_Downloader(Screen):
 	def doTune(self, transponder):
 		nimList = []
 		for nim in nimmanager.nim_slots:
-			if nim.isCompatible("DVB-S") and nim.config_mode not in ("loopthrough", "satposdepends", "nothing"):
+			if not nim.isCompatible("DVB-S"):
+				continue
+			if nim.config_mode == 'advanced':
+				try:
+					if config.Nims[nim.slot].advanced.unicableconnected is not None and config.Nims[nim.slot].advanced.unicableconnected.value == True:
+						continue # do not load FBC links, only root tuners
+				except:
+					pass
+			if nim.config_mode not in ("loopthrough", "satposdepends", "nothing"):
 				nimList.append(nim.slot)
 		if len(nimList) == 0:
 			self.error(_("No DVB-S NIMs founds"))
