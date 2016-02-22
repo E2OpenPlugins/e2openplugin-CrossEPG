@@ -66,12 +66,12 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("Configure"), "configure.png"))
 		l.append(self.buildListEntry(_("XMLTV providers"), "xmltv.png"))
 		l.append(self.buildListEntry(_("OpenTV providers"), "opentv.png"))
-		l.append(self.buildListEntry(_("XEPGDB providers"), "xepgdb.png"))
+		# l.append(self.buildListEntry(_("XEPGDB providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Scripts providers"), "scripts.png"))
 		# l.append(self.buildListEntry(_("MHW2 providers"), "opentv.png"))
 		l.append(self.buildListEntry(_("Providers start order"), "reorder.png"))
 		l.append(self.buildListEntry(_("Update rytec providers"), "rytec_small.png"))
-		l.append(self.buildListEntry(_("Update xepgdb providers"), "xepgdb.png"))
+		# l.append(self.buildListEntry(_("Update xepgdb providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Download now"), "download.png"))
 		l.append(self.buildListEntry(_("Defragment database"), "conversion.png"))
 		if getImageDistro() != "openvix":
@@ -130,47 +130,47 @@ class CrossEPG_Menu(Screen):
 		if index == 2:
 			self.session.open(CrossEPG_Providers, "opentv")
 			return
+		# if index == 3:
+		# 	self.session.open(CrossEPG_Providers, "xepgdb")
+		# 	return
 		if index == 3:
-			self.session.open(CrossEPG_Providers, "xepgdb")
-			return
-		if index == 4:
 			self.session.open(CrossEPG_Providers, "script")
 			return
 		# if index == 5:
 		# 	self.session.open(CrossEPG_Providers, "mhw2")
 		# 	return
-		if index == 5:
+		if index == 4:
 			self.session.open(CrossEPG_Ordering)
 			return
-		if index == 6:
+		if index == 5:
 			self.session.open(CrossEPG_Rytec_Update)
 			return
-		if index == 7:
-			self.session.open(CrossEPG_Xepgdb_Update)
-			return
-		if index == 8:
+		# if index == 6:
+		# 	self.session.open(CrossEPG_Xepgdb_Update)
+		# 	return
+		if index == 6:
 			self.config.load()
 			self.config.deleteLog()
 			self.downloader()
 			return
-		if index == 9:
+		if index == 7:
 			self.session.open(CrossEPG_Defragmenter)
 			return
 		if getImageDistro() == "openvix":
 			index += 3
-		if index == 10:
+		if index == 8:
 			self.importer()
 			return
-		if index == 11:
+		if index == 9:
 			self.converter()
 			return
-		if index == 12:
+		if index == 10:
 			self.loader()
 			return
-		if index == 13:
+		if index == 11:
 			self.session.open(CrossEPG_Info)
 			return
-		if index == 14:
+		if index == 12:
 			self.session.open(CrossEPG_About)
 			return
 
