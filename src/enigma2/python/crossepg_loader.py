@@ -146,11 +146,11 @@ class CrossEPG_Loader(Screen):
 		self.closeAndCallback(True)
 
 	def loadEPG(self):
-		print "[CrossEPG_Loader:loadEPG] %s" % (cmd)
 		try:
 			cmd = "%s/crossepg_epgcopy %s/ext.epg.dat %s" % (self.home_directory, self.db_root, config.misc.epgcache_filename.value)
 		except Exception, e:
 			cmd = "%s/crossepg_epgcopy %s/ext.epg.dat /hdd/epg.dat" % (self.home_directory, self.db_root)
+		print "[CrossEPG_Loader:loadEPG] %s" % (cmd)
 		try:
 			global container  # Need to keep a ref alive...
 			def appClosed(retval):
