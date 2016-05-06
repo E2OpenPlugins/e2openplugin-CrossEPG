@@ -276,7 +276,7 @@ class CrossEPG_Downloader(Screen):
 		params_fe.setDVBS(params, False)
 		self.frontend.tune(params_fe)
 		self.wrapper.demuxer("/dev/dvb/adapter%d/demux%d" % (0, demuxer_id)) # FIX: use the correct device
-		self.wrapper.frontend(slotid)
+		self.wrapper.frontend(current_slotid)
 
 		self.lockcounter = 0
 		self.locktimer = eTimer()
