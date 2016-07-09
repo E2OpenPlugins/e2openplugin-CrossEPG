@@ -48,7 +48,7 @@ class CrossEPG_Defragmenter(Screen):
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.lamedb = self.config.lamedb
-		if getImageDistro() != "ViX" and getImageDistro() != "AAF" and getImageDistro() != "openMips":
+		if getImageDistro() != "ViX" and getImageDistro() != "openatv" and getImageDistro() != "openMips":
 			self.db_root = self.config.db_root
 		else:
 			self.db_root = config.misc.epgcachepath.value + 'crossepg'
