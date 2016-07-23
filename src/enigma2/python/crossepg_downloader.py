@@ -49,6 +49,7 @@ class CrossEPG_Downloader(Screen):
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
+		self["progress_text"] = Progress()
 		self["summary_action"] = StaticText(_("Starting downloader"))
 		self["summary_status"] = StaticText()
 		self["summary_progress"] = Progress()
@@ -368,6 +369,7 @@ class CrossEPG_Downloader(Screen):
 
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESS:
 			self["progress"].setValue(param)
+			self["progress_text"].setValue(param)
 			self["summary_progress"].setValue(param)
 
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESSONOFF:
@@ -375,9 +377,11 @@ class CrossEPG_Downloader(Screen):
 				self.hideprogress.stop()
 				self["progress"].setValue(0)
 				self["progress"].show()
+				self["progress_text"].setValue(0)
 				self["summary_progress"].setValue(0)
 			else:
 				self["progress"].setValue(100)
+				self["progress_text"].setValue(100)
 				self["summary_progress"].setValue(100)
 				self.hideprogress.start(500, 1)
 		elif event == CrossEPG_Wrapper.EVENT_QUIT:

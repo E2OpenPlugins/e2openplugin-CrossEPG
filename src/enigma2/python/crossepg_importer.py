@@ -4,6 +4,7 @@ from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
+from Components.Sources.Progress import Progress
 from Components.ActionMap import NumberActionMap
 from Components.config import config
 
@@ -44,6 +45,7 @@ class CrossEPG_Importer(Screen):
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
+		self["progress_text"] = Progress()
 		self["actions"] = NumberActionMap(["WizardActions", "InputActions"],
 		{
 			"back": self.quit
@@ -131,14 +133,17 @@ class CrossEPG_Importer(Screen):
 
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESS:
 			self["progress"].setValue(param)
+			self["progress_text"].setValue(param)
 
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESSONOFF:
 			if param:
 				self.hideprogress.stop()
 				self["progress"].setValue(0)
 				self["progress"].show()
+				self["progress_text"].setValue(0)
 			else:
 				self["progress"].setValue(100)
+				self["progress_text"].setValue(100)
 				self.hideprogress.start(500, 1)
 
 		elif event == CrossEPG_Wrapper.EVENT_QUIT:

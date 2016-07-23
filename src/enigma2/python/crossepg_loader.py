@@ -5,6 +5,7 @@ from Components.Label import Label
 from Components.Sources.StaticText import StaticText
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
+from Components.Sources.Progress import Progress
 from Components.ActionMap import NumberActionMap
 from Components.config import config
 
@@ -40,6 +41,7 @@ class CrossEPG_Loader(Screen):
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
+		self["progress_text"] = Progress()
 
 		self.retValue = True
 		self.config = CrossEPG_Config()
@@ -205,6 +207,7 @@ class CrossEPG_Loader(Screen):
 
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESS:
 			self["progress"].setValue(param)
+			self["progress_text"].setValue(param)
 
 		elif event == CrossEPG_Wrapper.EVENT_CHANNEL:
 			if self.epg_channel:
@@ -231,9 +234,11 @@ class CrossEPG_Loader(Screen):
 				self.hideprogress.stop()
 				self["progress"].setValue(0)
 				self["progress"].show()
+				self["progress_text"].setValue(0)
 			else:
 				self["progress"].setValue(100)
 				self.hideprogress.start(500, 1)
+				self["progress_text"].setValue(100)
 		elif event == CrossEPG_Wrapper.EVENT_QUIT:
 			if self.epg_channel:
 				if len(self.epg_tuple) > 0:

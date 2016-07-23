@@ -3,6 +3,7 @@ from enigma import getDesktop, eTimer
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
+from Components.Sources.Progress import Progress
 
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
@@ -54,6 +55,8 @@ class CrossEPG_Rytec_Update(Screen):
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
+		self["progress_text"] = Progress()
+		self["progress_text"].hide()
 
 		self.config = CrossEPG_Config()
 		self.config.load()
