@@ -56,7 +56,7 @@ class CrossEPG_Rytec_Update(Screen):
 		self["progress"] = ProgressBar()
 		self["progress"].hide()
 		self["progress_text"] = Progress()
-		self["progress_text"].hide()
+		#self["progress_text"].hide()
 
 		self.config = CrossEPG_Config()
 		self.config.load()
