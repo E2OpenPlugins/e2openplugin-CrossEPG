@@ -66,6 +66,17 @@ class CrossEPG_Downloader(Screen):
 		self.open = False
 		self.saved = False
 		self.oldService = None
+
+		# make config
+		for slot in nimmanager.nim_slots:
+			if slot.canBeCompatible("DVB-S"):
+				try:
+					slot.config.dvbs
+					self.legacy = False
+				except:
+					self.legacy = True
+			break
+
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.providers = providers
@@ -145,13 +156,20 @@ class CrossEPG_Downloader(Screen):
 		for nim in nimmanager.nim_slots:
 			if not nim.isCompatible("DVB-S"):
 				continue
-			if nim.config_mode == 'advanced':
+			if not self.legacy:
+				config = nim.config.dvbs
+			else:
+				config = nim.config
+			
+			config_mode = config.configMode.value
+
+			if config_mode == 'advanced':
 				try:
 					if config.Nims[nim.slot].advanced.unicableconnected is not None and config.Nims[nim.slot].advanced.unicableconnected.value == True:
 						continue # do not load FBC links, only root tuners
 				except:
 					pass
-			if nim.config_mode not in ("loopthrough", "satposdepends", "nothing"):
+			if config_mode not in ("loopthrough", "satposdepends", "nothing"):
 				nimList.append(nim.slot)
 		if len(nimList) == 0:
 			self.error(_("No DVB-S NIMs founds"))
@@ -179,7 +197,13 @@ class CrossEPG_Downloader(Screen):
 		if frontendData is not None:
 			currentlyPlayingNIM = frontendData.get("tuner_number", None)
 			if currentlyPlayingNIM is not None and nimmanager.nim_slots[currentlyPlayingNIM].isCompatible("DVB-S"):
-				nimConfigMode = nimmanager.nim_slots[currentlyPlayingNIM].config_mode
+				if not self.legacy:
+					config = nimmanager.nim_slots[currentlyPlayingNIM].config.dvbs
+				else:
+					config = nimmanager.nim_slots[currentlyPlayingNIM].config
+				
+				nimConfigMode = config.configMode.value
+			
 				if nimConfigMode in ("loopthrough", "satposdepends"):
 					self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
 					self.session.nav.stopService()
