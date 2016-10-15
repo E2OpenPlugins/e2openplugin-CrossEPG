@@ -68,6 +68,7 @@ class CrossEPG_Downloader(Screen):
 		self.oldService = None
 
 		# make config
+		self.legacy = True
 		for slot in nimmanager.nim_slots:
 			if slot.canBeCompatible("DVB-S"):
 				try:
@@ -75,7 +76,7 @@ class CrossEPG_Downloader(Screen):
 					self.legacy = False
 				except:
 					self.legacy = True
-			break
+				break
 
 		self.config = CrossEPG_Config()
 		self.config.load()
