@@ -198,11 +198,11 @@ class CrossEPG_Downloader(Screen):
 			currentlyPlayingNIM = frontendData.get("tuner_number", None)
 			if currentlyPlayingNIM is not None and nimmanager.nim_slots[currentlyPlayingNIM].isCompatible("DVB-S"):
 				if not self.legacy:
-					config = nimmanager.nim_slots[currentlyPlayingNIM].config.dvbs
+					nimconfig = nimmanager.nim_slots[currentlyPlayingNIM].config.dvbs
 				else:
-					config = nimmanager.nim_slots[currentlyPlayingNIM].config
+					nimconfig = nimmanager.nim_slots[currentlyPlayingNIM].config
 				
-				nimConfigMode = config.configMode.value
+				nimConfigMode = nimconfig.configMode.value
 			
 				if nimConfigMode in ("loopthrough", "satposdepends"):
 					self.oldService = self.session.nav.getCurrentlyPlayingServiceReference()
