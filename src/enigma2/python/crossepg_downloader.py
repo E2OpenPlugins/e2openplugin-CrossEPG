@@ -157,11 +157,11 @@ class CrossEPG_Downloader(Screen):
 			if not nim.isCompatible("DVB-S"):
 				continue
 			if not self.legacy:
-				config = nim.config.dvbs
+				nimconfig = nim.config.dvbs
 			else:
-				config = nim.config
+				nimconfig = nim.config
 			
-			config_mode = config.configMode.value
+			config_mode = nimconfig.configMode.value
 
 			if config_mode == 'advanced':
 				try:
