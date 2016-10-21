@@ -31,6 +31,7 @@ class CrossEPG_Defragmenter(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
+		self.skinName = "downloader"
 		Screen.setTitle(self, _("CrossEPG"))
 
 		self["background"] = Pixmap()

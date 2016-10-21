@@ -44,6 +44,7 @@ class CrossEPG_Xepgdb_Update(Screen):
 		f.close()
 		Screen.__init__(self, session)
 		Screen.__init__(self, session)
+		self.skinName = "downloader"
 		Screen.setTitle(self, _("CrossEPG"))
 
 		self.sources = []
