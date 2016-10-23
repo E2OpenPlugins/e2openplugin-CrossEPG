@@ -1,4 +1,4 @@
-# English translations for enigma package.
+# Portuguese translations for enigma package.
 # Copyright (C) 2012 THE enigma'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the enigma package.
 # Automatically generated, 2012.
