@@ -568,3 +568,18 @@ msgid ""
 msgstr ""
 "Unidade onde vai salvar dados. \n"
 "A unidade DEVE ser montada em rw. Se não vê aqui o dispositivo, deverá estar montado como 'sómente leitura' ou 'autofs' manipulá-lo apenas em modo 'sómente leitura'. Neste caso, deve montá-lo manualmente e tentar novamente"
+
+msgid "Defragment database"
+msgstr "Desfragmentar base de dados"
+
+msgid "Defragmentation..."
+msgstr "Desfragmentação..."
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Close"
+msgstr "Sair"
