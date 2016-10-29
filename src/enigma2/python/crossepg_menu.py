@@ -82,12 +82,15 @@ class CrossEPG_Menu(Screen):
 		l.append(self.buildListEntry(_("About"), "about.png"))
 
 		self["list"] = List(l)
-		self["setupActions"] = ActionMap(["SetupActions", "MenuActions"],
+		self["setupActions"] = ActionMap(["SetupActions", 'ColorActions', "MenuActions"],
 		{
 			"cancel": self.quit,
 			"ok": self.openSelected,
+			"green": self.openSelected,
 			"menu": self.quit,
 		}, -2)
+		self["key_red"] = Button(_("Close"))
+		self["key_green"] = Button(_("OK"))
 
 		if self.config.configured == 0:
 			self.onFirstExecBegin.append(self.openSetup)
