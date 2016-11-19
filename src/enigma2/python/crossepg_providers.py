@@ -37,6 +37,8 @@ class CrossEPG_Providers(Screen):
 			protocol_title = _("XMLTV")
 		elif protocol == "opentv":
 			protocol_title = _("OpenTV")
+			from Components.NimManager import nimmanager
+			self.configured_sats = nimmanager.getConfiguredSats()
 		elif protocol == "xepgdb":
 			protocol_title = _("XEPGDB")
 		elif protocol == "script":
@@ -112,6 +114,9 @@ class CrossEPG_Providers(Screen):
 					if self.protocol == "mhw2" and description.find("mhw2") != -1:
 						self.list.append(self.buildListEntry(provider, self.providers[1][i], self.config.providers.count(provider) > 0))
 					elif self.protocol == "script" and description.find("mhw2") == -1:
+						self.list.append(self.buildListEntry(provider, self.providers[1][i], self.config.providers.count(provider) > 0))
+				elif protocol == "opentv":
+					if self.config.getTransponder(provider)["orbital_position"] in self.configured_sats:
 						self.list.append(self.buildListEntry(provider, self.providers[1][i], self.config.providers.count(provider) > 0))
 				else:
 					self.list.append(self.buildListEntry(provider, self.providers[1][i], self.config.providers.count(provider) > 0))
