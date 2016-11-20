@@ -64,8 +64,8 @@ class CrossEPG_Menu(Screen):
 		self.onChangedEntry = [ ]
 		l = []
 		l.append(self.buildListEntry(_("Configure"), "configure.png"))
-		l.append(self.buildListEntry(_("XMLTV providers"), "xmltv.png"))
 		l.append(self.buildListEntry(_("OpenTV providers"), "opentv.png"))
+		l.append(self.buildListEntry(_("XMLTV providers"), "xmltv.png"))
 		# l.append(self.buildListEntry(_("XEPGDB providers"), "xepgdb.png"))
 		l.append(self.buildListEntry(_("Scripts providers"), "scripts.png"))
 		# l.append(self.buildListEntry(_("MHW2 providers"), "opentv.png"))
@@ -128,10 +128,10 @@ class CrossEPG_Menu(Screen):
 			self.session.open(CrossEPG_Setup)
 			return
 		if index == 1:
-			self.session.open(CrossEPG_Providers, "xmltv")
+			self.session.open(CrossEPG_Providers, "opentv")
 			return
 		if index == 2:
-			self.session.open(CrossEPG_Providers, "opentv")
+			self.session.open(CrossEPG_Providers, "xmltv")
 			return
 		# if index == 3:
 		# 	self.session.open(CrossEPG_Providers, "xepgdb")
