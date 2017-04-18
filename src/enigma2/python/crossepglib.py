@@ -9,6 +9,7 @@ import os
 import re
 import new
 import _enigma
+from boxbranding import getImageDistro
 
 # return value
 # -1 none
@@ -193,7 +194,7 @@ class CrossEPG_Config:
 		except Exception, e:
 			print "[CrossEPG_Config] %s" % (e)
 			return
-			
+
 		regexp = re.compile(r"(.*)=(.*)")
 
 		transponder_keys = [
@@ -208,7 +209,7 @@ class CrossEPG_Config:
 				"roll_off",
 				"pilot",
 			]
-			
+
 		transponder = {}
 		for line in f.readlines():
 			res = re.findall(regexp, line)
@@ -218,7 +219,7 @@ class CrossEPG_Config:
 					value = int(res[0][1])
 				except Exception, e:
 					value = -1
-				
+
 				if key in transponder_keys:
 					transponder[key] = value
 
@@ -228,7 +229,7 @@ class CrossEPG_Config:
 		f.close()
 
 		return transponder
-		
+
 	def getAllProviders(self):
 		providers = list()
 		providersdesc = list()
@@ -588,7 +589,7 @@ class CrossEPG_Wrapper:
 			self.cmd.write(cmd, len(cmd))
 		else:
 			self.cmd.write(cmd)
-	
+
 	def defrag(self,):
 		print "[CrossEPG_Wrapper] -> DEFRAGMENT"
 		cmd = "DEFRAGMENT\n"
@@ -596,7 +597,7 @@ class CrossEPG_Wrapper:
 			self.cmd.write(cmd, len(cmd))
 		else:
 			self.cmd.write(cmd)
-	
+
 	def download(self, provider):
 		print "[CrossEPG_Wrapper] -> DOWNLOAD %s" % (provider)
 		cmd = "DOWNLOAD %s\n" % (provider)
