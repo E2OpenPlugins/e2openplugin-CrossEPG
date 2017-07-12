@@ -95,16 +95,21 @@ class CrossEPG_Rytec_Update(Screen):
 
 	def loadSourceList(self):
 		try:
-			print "downloading source list from EPGalfasite"
-			import urllib, gzip
-			filename,headers = urllib.urlretrieve('http://epgalfasite.dyndns.tv/crossepgsources.gz')
-			fd = open(filename, 'rb')
-			sfd = gzip.GzipFile(fileobj = fd, mode = 'rb')
-			self.mirrors = sfd.readlines()
-			random.shuffle(self.mirrors)
-			os.unlink(filename)
+			url = "http://epgalfasite.dyndns.tv/crossepgsources.gz"
+			print "[crossepg_rytec_update:loadSourceList] downloading source list from %s" % url
+			import urllib2
+			import gzip
+			from StringIO import StringIO
+			response = urllib2.urlopen(url)
+			content_raw = response.read()
+			if 'gzip' in response.info().getheader('Content-Type'):
+				self.mirrors = [x.strip() for x in gzip.GzipFile(fileobj=StringIO(content_raw)).read().strip().split("\n")]
+				random.shuffle(self.mirrors)
+			else:
+				print "[crossepg_rytec_update:loadSourceList] Fetched data is not Gzip format"
+				print "[crossepg_rytec_update:loadSourceList] content_raw:", content_raw
 		except Exception, e:
-			print e
+			print "[crossepg_rytec_update:loadSourceList] error fetching:", e
 
 	def load(self):
 		ret = False
