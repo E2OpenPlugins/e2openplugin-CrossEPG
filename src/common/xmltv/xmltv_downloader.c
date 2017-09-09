@@ -107,7 +107,7 @@ bool xmltv_downloader_channels (char *url, char *dbroot, void(*progress_callback
 	}
 
 	if (xmltv_downloader_extension_check (page, "gz"))
-	{
+	{	
 		int fd2 = -1;
 		char sfn2[256];
 		sprintf (sfn2, "%s/crossepg.tmp.XXXXXX", dbroot);
@@ -121,6 +121,32 @@ bool xmltv_downloader_channels (char *url, char *dbroot, void(*progress_callback
 			else log_add ("File deflated");
 			fclose (dest);
 			close (fd2);
+			if (event_callback) event_callback(4, NULL);	// reading message
+			ret = xmltv_channels_load (sfn2);
+			unlink (sfn2);
+		}	
+	}
+	else if (xmltv_downloader_extension_check (page, "xz"))
+	{
+		char cmdxz[256];
+		int fd2 = -1;
+		char sfn2[256];
+		char sfn3[256];
+		sprintf (sfn2, "%s/crossepg.tmp.XXXXXX", dbroot);
+		sprintf (sfn3, "%s/cross.xz", dbroot);
+		if ((fd2 = mkstemp (sfn2)) == -1) log_add ("Cannot get temp file");
+		else
+		{
+			sprintf (cmdxz, "cp %s %s", sfn, sfn3);
+			system(cmdxz);
+			sprintf (cmdxz, "xz -d %s", sfn3);
+			system(cmdxz);			
+			if (event_callback) event_callback(3, NULL);	// deflating message
+			log_add ("Deflating %s", page);
+			close (fd2);
+			sprintf (sfn3, "%s/cross", dbroot);
+			sprintf (cmdxz, "mv -f %s %s", sfn3, sfn2);
+			system(cmdxz);
 			if (event_callback) event_callback(4, NULL);	// reading message
 			ret = xmltv_channels_load (sfn2);
 			unlink (sfn2);
@@ -228,6 +254,36 @@ bool xmltv_downloader_events (char *url, char *dbroot, void(*progress_callback)(
 			if (event_callback) event_callback(1, NULL);	// turn off progress bar
 			unlink (sfn2);
 		}
+	}
+	
+	else if (xmltv_downloader_extension_check (page, "xz"))
+	{
+		char cmdxz[256];
+		int fd2 = -1;
+		char sfn2[256];
+		char sfn3[256];
+		sprintf (sfn2, "%s/crossepg.tmp.XXXXXX", dbroot);
+		sprintf (sfn3, "%s/cross.xz", dbroot);
+		if ((fd2 = mkstemp (sfn2)) == -1) log_add ("Cannot get temp file");
+		else
+		{
+			sprintf (cmdxz, "cp %s %s", sfn, sfn3);
+			system(cmdxz);
+			sprintf (cmdxz, "xz -d %s", sfn3);
+			system(cmdxz);			
+			if (event_callback) event_callback(6, NULL);	// deflating message
+			log_add ("Deflating %s", page);
+			close (fd2);
+			sprintf (sfn3, "%s/cross", dbroot);
+			sprintf (cmdxz, "mv -f %s %s", sfn3, sfn2);
+			system(cmdxz);
+			if (event_callback) event_callback(7, NULL);	// parsing events
+			if (event_callback) event_callback(0, NULL);	// turn on progress bar
+			ret = xmltv_parser_import (sfn2, progress_callback, stop);
+			if (event_callback) event_callback(1, NULL);	// turn off progress bar
+			unlink (sfn2);
+		}
+		
 	}
 	else
 	{
