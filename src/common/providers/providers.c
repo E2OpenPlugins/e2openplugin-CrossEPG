@@ -145,7 +145,7 @@ static char *providers_trim_spaces (char *text)
 	while (strlen (tmp) > 1)
 		if (tmp[strlen (tmp) - 1] == ' ') tmp[strlen (tmp) - 1] = '\0';
 		else break;
-	
+
 	if (tmp[0] == ' ') tmp[0] = '\0';
 	return tmp;
 }
@@ -156,13 +156,13 @@ bool providers_read (char *read)
 	char line[512];
 	char key[256];
 	char value[256];
-	
+
 	channels_pids_count = 0;
 	titles_pids_count = 0;
 	summaries_pids_count = 0;
 	channels_types_count = 0;
 	protocol = 0;
-	
+
 	strcpy (xmltv_channels_url_0, "");
 	strcpy (xmltv_channels_url_1, "");
 	strcpy (xmltv_channels_url_2, "");
@@ -188,18 +188,18 @@ bool providers_read (char *read)
 	strcpy (xepgdb_descriptors_url, "");
 	strcpy (script_filename, "");
 	strcpy (script_arguments, "");
-	
+
 	fd = fopen (read, "r");
-	if (!fd) 
+	if (!fd)
 		return false;
-	
-	while (fgets (line, sizeof(line), fd)) 
+
+	while (fgets (line, sizeof(line), fd))
 	{
 		char *tmp_key, *tmp_value;
-		
+
 		memset (key, 0, sizeof (key));
 		memset (value, 0, sizeof (value));
-		
+
 		if (sscanf (line, "%[^#=]=%[^\t\n]\n", key, value) != 2)
 			continue;
 
@@ -317,8 +317,8 @@ bool providers_read (char *read)
 		else if (strcmp ("arguments", tmp_key) == 0)
 			strcpy (script_arguments, tmp_value);
 	}
-	
+
 	fclose (fd);
-	
+
 	return true;
 }

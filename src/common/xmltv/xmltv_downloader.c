@@ -41,19 +41,19 @@ bool xmltv_downloader_channels (char *url, char *dbroot, void(*progress_callback
 	char host[256];
 	char port[6];
 	char page[256];
-	
+
 	char *tmp = url;
 	int pos = 0;
-	
+
 	strcpy (_url, url);
-	
+
 	if (event_callback) event_callback(2, _url);	// download message
 	if (event_callback) event_callback(0, NULL);	// turn on progress bar
 
 	memset (host, 0, sizeof (host));
 	memset (port, 0, sizeof (port));
 	memset (page, 0, sizeof (page));
-	
+
 	if (strlen (tmp) < 7) return false;
 	if (memcmp (tmp, "http://", 7) != 0) return false;
 	tmp += 7;
@@ -97,7 +97,7 @@ bool xmltv_downloader_channels (char *url, char *dbroot, void(*progress_callback
 		unlink (sfn);
 		return false;
 	}
-	
+
 	if (event_callback) event_callback(1, NULL);	// turn off progress bar
 
 	if (*stop)
@@ -124,7 +124,7 @@ bool xmltv_downloader_channels (char *url, char *dbroot, void(*progress_callback
 			if (event_callback) event_callback(4, NULL);	// reading message
 			ret = xmltv_channels_load (sfn2);
 			unlink (sfn2);
-		}	
+		}
 	}
 	else if (xmltv_downloader_extension_check (page, "xz"))
 	{
@@ -140,7 +140,7 @@ bool xmltv_downloader_channels (char *url, char *dbroot, void(*progress_callback
 			sprintf (cmdxz, "cp %s %s", sfn, sfn3);
 			system(cmdxz);
 			sprintf (cmdxz, "xz -d %s", sfn3);
-			system(cmdxz);			
+			system(cmdxz);
 			if (event_callback) event_callback(3, NULL);	// deflating message
 			log_add ("Deflating %s", page);
 			close (fd2);
@@ -157,7 +157,7 @@ bool xmltv_downloader_channels (char *url, char *dbroot, void(*progress_callback
 		if (event_callback) event_callback(4, NULL);	// reading message
 		ret = xmltv_channels_load (sfn);
 	}
-	
+
 	unlink (sfn);
 
 	return ret;
@@ -169,19 +169,19 @@ bool xmltv_downloader_events (char *url, char *dbroot, void(*progress_callback)(
 	char host[256];
 	char port[6];
 	char page[256];
-	
+
 	char *tmp = url;
 	int pos = 0;
-	
+
 	strcpy (_url, url);
-	
+
 	if (event_callback) event_callback(5, _url);	// download message
 	if (event_callback) event_callback(0, NULL);	// turn on progress bar
 
 	memset (host, 0, sizeof (host));
 	memset (port, 0, sizeof (port));
 	memset (page, 0, sizeof (page));
-	
+
 	if (strlen (tmp) < 7) return false;
 	if (memcmp (tmp, "http://", 7) != 0) return false;
 	tmp += 7;
@@ -255,7 +255,7 @@ bool xmltv_downloader_events (char *url, char *dbroot, void(*progress_callback)(
 			unlink (sfn2);
 		}
 	}
-	
+
 	else if (xmltv_downloader_extension_check (page, "xz"))
 	{
 		char cmdxz[256];
@@ -270,7 +270,7 @@ bool xmltv_downloader_events (char *url, char *dbroot, void(*progress_callback)(
 			sprintf (cmdxz, "cp %s %s", sfn, sfn3);
 			system(cmdxz);
 			sprintf (cmdxz, "xz -d %s", sfn3);
-			system(cmdxz);			
+			system(cmdxz);
 			if (event_callback) event_callback(6, NULL);	// deflating message
 			log_add ("Deflating %s", page);
 			close (fd2);
@@ -283,7 +283,7 @@ bool xmltv_downloader_events (char *url, char *dbroot, void(*progress_callback)(
 			if (event_callback) event_callback(1, NULL);	// turn off progress bar
 			unlink (sfn2);
 		}
-		
+
 	}
 	else
 	{
@@ -292,7 +292,7 @@ bool xmltv_downloader_events (char *url, char *dbroot, void(*progress_callback)(
 		ret = xmltv_parser_import (sfn, progress_callback, stop);
 		if (event_callback) event_callback(1, NULL);	// turn off progress bar
 	}
-	
+
 	unlink (sfn);
 
 	return ret;

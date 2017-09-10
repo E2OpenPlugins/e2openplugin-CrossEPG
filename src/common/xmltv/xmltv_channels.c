@@ -21,7 +21,7 @@ static xmltv_channel_t *xml_channels_last = NULL;
 static void processNode (xmlTextReaderPtr reader)
 {
 	const xmlChar *name;
-	
+
 	name = xmlTextReaderConstName (reader);
 	if (name)
 	{
@@ -37,7 +37,7 @@ static void processNode (xmlTextReaderPtr reader)
 				if (xmlTextReaderNodeType (reader) == 1 && strcmp("channel", (char*)name) == 0)
 				{
 					current_id = xmlTextReaderGetAttribute (reader, xmlCharStrdup("id"));
-						
+
 					isChannel = true;
 				}
 				else if (xmlTextReaderNodeType (reader) == 15 && strcmp("channels", (char*)name) == 0)
@@ -64,7 +64,7 @@ static void processNode (xmlTextReaderPtr reader)
 							tmp->prev = NULL;
 							tmp->next = NULL;
 							strcpy (tmp->id, (char*)current_id);
-							
+
 							if (xml_channels_last == NULL)
 							{
 								xml_channels_first = tmp;
@@ -99,12 +99,12 @@ void xmltv_channels_cleanup ()
 		while (tmp != NULL)
 		{
 			xmltv_channel_t *next = tmp->next;
-			
+
 			if (tmp->id != NULL)
 				_free (tmp->id);
-				
+
 			_free (tmp);
-			
+
 			tmp = next;
 		}
 	}
@@ -122,7 +122,7 @@ xmltv_channel_t* xmltv_channels_get_by_id (char *id, xmltv_channel_t* last)
 		{
 			if (strcasecmp (tmp->id, id) == 0)
 				return tmp;
-					
+
 			tmp = tmp->next;
 		}
 	}
@@ -133,9 +133,9 @@ bool xmltv_channels_load (char *filename)
 {
 	xmlTextReaderPtr reader;
 	int ret;
-	
+
 	log_add ("Reading channels from %s", filename);
-	
+
 	reader = xmlReaderForFile (filename, NULL, 0);
 	if (!reader)
 	{
@@ -145,23 +145,23 @@ bool xmltv_channels_load (char *filename)
 	isChannels = false;
 	isChannel = false;
 	channelsCount = 0;
-	
+
 	ret = xmlTextReaderRead (reader);
 	while (ret == 1)
 	{
 		processNode (reader);
 		ret = xmlTextReaderRead (reader);
 	}
-	
+
 	xmlFreeTextReader (reader);
-	
+
 	log_add ("Read %d channels", channelsCount);
-	
+
 	if (ret != 0)
 	{
 		log_add ("Failed to parse %s", filename);
 		return false;
 	}
-	
+
 	return true;
 }

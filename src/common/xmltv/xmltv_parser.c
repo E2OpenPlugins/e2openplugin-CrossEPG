@@ -39,7 +39,7 @@ static const char *ISO639_associations[][2] =
 	{"tur", "tr"}, {"tso", "ts"}, {"tat", "tt"}, {"twi", "tw"}, {"tah", "ty"}, {"uig", "ug"}, {"ukr", "uk"}, {"urd", "ur"},
 	{"uzb", "uz"}, {"ven", "ve"}, {"vie", "vi"}, {"vol", "vo"}, {"wln", "wa"}, {"wol", "wo"}, {"xho", "xh"}, {"yid", "yi"},
 	{"yor", "yo"}, {"zha", "za"}, {"chi", "zh"}, {"zul", "zu"}};
-	
+
 #define ISO630_COUNT 188
 
 static bool is_tv = false;
@@ -130,7 +130,7 @@ static time_t iso8601totime (char *strtime)
 	timeinfo->tm_year -= 1900;
 	timeinfo->tm_isdst = 0;
 	//timeinfo->tm_gmtoff = gmt_offset;
-	
+
 	ret = mkgmtime (timeinfo);
 	gmt_offset = (gmt_hours*60*60) + (gmt_minutes*60);
 	if (positivesign)
@@ -144,30 +144,30 @@ static time_t iso8601totime (char *strtime)
 static void xmltv_parser_add_event ()
 {
 	xmltv_channel_t* channel = NULL;
-	
+
 	if (current_title_iso639[0] == '\0' && current_title_iso639[1] == '\0' && current_title_iso639[2] == '\0')
 	{
 		current_title_iso639[0] = 'e';
 		current_title_iso639[1] = 'n';
 		current_title_iso639[2] = 'g';
 	}
-	
+
 	if (current_subtitle)
 	{
-		if (current_desc) 
+		if (current_desc)
 		{
 			char *tmp = _malloc (strlen (current_desc) + strlen (current_subtitle) + 2);
 			sprintf (tmp, "%s\n%s", current_subtitle, current_desc);
 			_free (current_desc);
 			current_desc = tmp;
 		}
-		else 
+		else
 		{
 			current_desc = _malloc (strlen (current_subtitle) + 1);
 			strcpy(current_desc, current_subtitle);
-		}  
+		}
 	}
-	
+
 	while ((channel = xmltv_channels_get_by_id (current_channel, channel)) != NULL)
 	{
 		epgdb_channel_t *ch = epgdb_channels_add (channel->nid, channel->tsid, channel->sid);
@@ -182,7 +182,7 @@ static void xmltv_parser_add_event ()
 		title->iso_639_1 = current_title_iso639[0];
 		title->iso_639_2 = current_title_iso639[1];
 		title->iso_639_3 = current_title_iso639[2];
-		
+
 		title = epgdb_titles_add (ch, title);
 		epgdb_titles_set_description (title, current_title);
 		if (current_desc)
@@ -191,14 +191,14 @@ static void xmltv_parser_add_event ()
 		if (current_starttime>=current_title)
 			events_in_future_count++;
 	}
-	
+
 	events_count++;
 }
 
 static void processNode (xmlTextReaderPtr reader)
 {
 	const xmlChar *name;
-	
+
 	name = xmlTextReaderConstName (reader);
 	if (name)
 	{
@@ -214,15 +214,15 @@ static void processNode (xmlTextReaderPtr reader)
 				if (xmlTextReaderNodeType (reader) == 15 && strcmp("programme", (char*)name) == 0)
 				{
 					is_programme = false;
-					
+
 					if (current_starttime > 0 && current_stoptime > 0 && current_title)
 						xmltv_parser_add_event ();
-					
+
 					if (current_title) _free (current_title);
 					if (current_subtitle) _free (current_subtitle);
 					if (current_desc) _free (current_desc);
 					if (current_channel) _free (current_channel);
-					
+
 					current_title = NULL;
 					current_subtitle = NULL;
 					current_desc = NULL;
@@ -397,7 +397,7 @@ static void processNode (xmlTextReaderPtr reader)
 					current_desc_iso639[0] = '\0';
 					current_desc_iso639[1] = '\0';
 					current_desc_iso639[2] = '\0';
-				
+
 					starttime = xmlTextReaderGetAttribute (reader, xmlCharStrdup("start"));
 					if (starttime)
 						current_starttime = iso8601totime ((char*)starttime);
@@ -405,7 +405,7 @@ static void processNode (xmlTextReaderPtr reader)
 					stoptime = xmlTextReaderGetAttribute (reader, xmlCharStrdup("stop"));
 					if (stoptime)
 						current_stoptime = iso8601totime ((char*)stoptime);
-				
+
 					channel = xmlTextReaderGetAttribute (reader, xmlCharStrdup("channel"));
 					if (channel)
 					{
@@ -431,9 +431,9 @@ bool xmltv_parser_import (char *filename, void(*progress_callback)(int, int), vo
 	int ret;
 	int filesize = 0;
 	FILE *fd;
-	
+
 	log_add ("Parsing %s", filename);
-	
+
 	fd = fopen (filename, "r");
 	if (fd)
 	{
@@ -448,7 +448,7 @@ bool xmltv_parser_import (char *filename, void(*progress_callback)(int, int), vo
  		log_add ("Unable to open %s\n", filename);
 		return false;
 	}
-	
+
 	is_tv = false;
 	is_programme = false;
 	is_title = false;
@@ -464,7 +464,7 @@ bool xmltv_parser_import (char *filename, void(*progress_callback)(int, int), vo
 	current_time = time(NULL);
 	events_count = 0;
 	events_in_future_count = 0;
-	
+
 	ret = xmlTextReaderRead (reader);
 	while (ret == 1)
 	{
@@ -478,22 +478,22 @@ bool xmltv_parser_import (char *filename, void(*progress_callback)(int, int), vo
 		if (progress_callback)
 			progress_callback (xmlTextReaderByteConsumed (reader), filesize);
 	}
-	
+
 	log_add ("Read %d events", events_count);
-	
+
 	/* clean up */
 	if (current_title) _free (current_title);
 	if (current_subtitle) _free (current_subtitle);
 	if (current_desc) _free (current_desc);
 	if (current_channel) _free (current_channel);
-	
+
 	current_title = NULL;
 	current_subtitle = NULL;
 	current_desc = NULL;
 	current_channel = NULL;
-	
+
 	xmlFreeTextReader (reader);
-	
+
 	if (ret != 0)
 	{
 		xmlErrorPtr error = xmlGetLastError();

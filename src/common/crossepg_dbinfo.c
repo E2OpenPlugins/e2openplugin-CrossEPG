@@ -89,7 +89,7 @@ int main (int argc, char **argv)
 	bool edump = false;
 
 	sprintf (db_root, DEFAULT_DB_ROOT);
-	
+
 	while ((c = getopt (argc, argv, "d:k:rt")) != -1)
 	{
 		switch (c)
@@ -121,11 +121,11 @@ int main (int argc, char **argv)
 				return 0;
 		}
 	}
-	
+
 	if (iactive) edump = false;
-	
+
 	while (db_root[strlen (db_root) - 1] == '/') db_root[strlen (db_root) - 1] = '\0';
-	
+
 	mkdir (db_root, S_IRWXU|S_IRWXG|S_IRWXO);
 
 	log_open (db_root);
@@ -140,7 +140,7 @@ int main (int argc, char **argv)
 		return 0;
 	}
 	epgdb_load ();
-	
+
 	if (edump) dump ();
 	else
 	{
@@ -206,7 +206,7 @@ int main (int argc, char **argv)
 		log_add ("Hashes count: %d", epgdb_index_count ());
 		interactive_send_int (INFO_HASHES_COUNT, epgdb_index_count ());
 	}
-	
+
 	epgdb_clean ();
 	memory_stats ();
 	log_close ();

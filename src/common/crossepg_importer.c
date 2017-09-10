@@ -73,9 +73,9 @@ void *interactive (void *args)
 	char buffer[4096], byte;
 	bool run = true;
 	pthread_t thread;
-	
+
 	interactive_send (ACTION_READY);
-	
+
 	while (run)
 	{
 		int i = 0, size = 0;
@@ -83,10 +83,10 @@ void *interactive (void *args)
 		while ((size = fread (&byte, 1, 1, stdin)))
 		{
 			if (byte == '\n') break;
-			buffer[i] = byte; 
+			buffer[i] = byte;
 			i++;
 		}
-		
+
 		if (memcmp (buffer, CMD_QUIT, strlen (CMD_QUIT)) == 0 || quit || size == 0)
 		{
 			run = false;
@@ -178,10 +178,10 @@ int main (int argc, char **argv)
 		homedir[i] = '\0';
 		if (ended) break;
 	}
-	
+
 	sprintf (db_root, DEFAULT_DB_ROOT);
 	sprintf (import_root, DEFAULT_IMPORT_ROOT);
-	
+
 	while ((c = getopt (argc, argv, "d:i:l:k:r")) != -1)
 	{
 		switch (c)
@@ -219,16 +219,16 @@ int main (int argc, char **argv)
 				return 0;
 		}
 	}
-	
+
 	while (homedir[strlen (homedir) - 1] == '/') homedir[strlen (homedir) - 1] = '\0';
 	while (db_root[strlen (db_root) - 1] == '/') db_root[strlen (db_root) - 1] = '\0';
 	while (import_root[strlen (import_root) - 1] == '/') import_root[strlen (import_root) - 1] = '\0';
-	
+
 	log_open (db_root);
 	log_banner ("CrossEPG Importer");
 
 	sprintf (import_homedir, "%s/import/", homedir);
-	
+
 	if (epgdb_open (db_root)) log_add ("EPGDB opened");
 	else
 	{
@@ -238,21 +238,21 @@ int main (int argc, char **argv)
 		return 0;
 	}
 	epgdb_load ();
-	
+
 	aliases_make (homedir);
-	
+
 	if (iactive) interactive_manager ();
 	else
 	{
 		volatile bool useless = false;
 		importer_parse_directory (import_root, db_root, NULL, NULL, NULL, &useless);
 		importer_parse_directory (import_homedir, db_root, NULL, NULL, NULL, &useless);
-		
+
 		log_add ("Saving data...");
 		if (epgdb_save (NULL)) log_add ("Data saved");
 		else log_add ("Error saving data");
 	}
-	
+
 	epgdb_clean ();
 	memory_stats ();
 	log_close ();

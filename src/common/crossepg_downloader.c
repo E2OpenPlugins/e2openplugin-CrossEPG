@@ -224,12 +224,12 @@ void download_opentv ()
 	log_add ("Started OpenTV events download");
 
 	sprintf (dictionary, "%s/providers/%s.dict", homedir, provider);
-	
+
 	opentv_init ();
 	if (huffman_read_dictionary (dictionary))
 	{
 		char size[256];
-		
+
 		settings.pids = providers_get_channels_pids ();
 		settings.pids_count = providers_get_channels_pids_count ();
 		settings.demuxer = demuxer;
@@ -238,13 +238,13 @@ void download_opentv ()
 		settings.buffer_size = 16 * 1024;
 		settings.filter = 0x4a;
 		settings.mask = 0xff;
-		
+
 		log_add ("Reading channels...");
 		interactive_send_text (ACTION_TYPE, "READ CHANNELS");
 		dvb_read (&settings, *bat_callback);
 		log_add ("Read %d channels", opentv_channels_count ());
 		if (stop) goto opentv_stop;
-		
+
 		settings.pids = providers_get_titles_pids ();
 		settings.pids_count = providers_get_titles_pids_count ();
 		settings.demuxer = demuxer;
@@ -253,7 +253,7 @@ void download_opentv ()
 		settings.buffer_size = 16 * 1024;
 		settings.filter = 0xa0;
 		settings.mask = 0xfc;
-		
+
 		buffer_index = 0;
 		buffer_size = 0;
 		buffer_size_last = 0;
@@ -264,7 +264,7 @@ void download_opentv ()
 		log_add ("Read %s", size);
 		interactive_send_text (ACTION_SIZE, size);
 		if (stop) goto opentv_stop;
-		
+
 		log_add ("Parsing titles...");
 		interactive_send_text (ACTION_TYPE, "PARSE TITLES");
 		interactive_send_text (ACTION_PROGRESS, "ON");
@@ -291,7 +291,7 @@ void download_opentv ()
 		log_add ("Titles parsed");
 		interactive_send_text (ACTION_PROGRESS, "OFF");
 		if (stop) goto opentv_stop;
-		
+
 		settings.pids = providers_get_summaries_pids ();
 		settings.pids_count = providers_get_summaries_pids_count ();
 		settings.demuxer = demuxer;
@@ -300,7 +300,7 @@ void download_opentv ()
 		settings.buffer_size = 16 * 1024;
 		settings.filter = 0xa8;
 		settings.mask = 0xfc;
-		
+
 		buffer_index = 0;
 		buffer_size = 0;
 		buffer_size_last = 0;
@@ -311,7 +311,7 @@ void download_opentv ()
 		log_add ("Read %s", size);
 		interactive_send_text (ACTION_SIZE, size);
 		if (stop) goto opentv_stop;
-		
+
 		log_add ("Parsing summaries...");
 		interactive_send_text (ACTION_TYPE, "PARSE SUMMARIES");
 		interactive_send_text (ACTION_PROGRESS, "ON");
@@ -338,11 +338,11 @@ void download_opentv ()
 		log_add ("Summaries parsed");
 		interactive_send_text (ACTION_PROGRESS, "OFF");
 		//if (stop) goto opentv_stop;
-		
+
 opentv_stop:
 		huffman_free_dictionary ();
 	}
-	
+
 	exec = false;
 	opentv_cleanup ();
 	interactive_send (ACTION_END);
@@ -413,7 +413,7 @@ void *download (void *args)
 		{
 			char filename[1024], tmp[4096], *tmp2, sfrontend[4];
 			FILE *fp_s; char text_s[80];
-			
+
 			interactive_send (ACTION_START);
 			interactive_send_text (ACTION_TYPE, "RUNNING SCRIPT");
 			interactive_send_text (ACTION_URL, providers_get_script_filename ());
@@ -439,7 +439,7 @@ void *download (void *args)
 				}
 				pclose(fp_s);
 			}
-				
+
 			exec = false;
 			interactive_send (ACTION_END);
 		}
@@ -486,9 +486,9 @@ void *interactive (void *args)
 	char buffer[4096], byte;
 	bool run = true;
 	pthread_t thread;
-	
+
 	interactive_send (ACTION_READY);
-	
+
 	while (run)
 	{
 		int i = 0, size = 0;
@@ -496,7 +496,7 @@ void *interactive (void *args)
 		while ((size = fread (&byte, 1, 1, stdin)))
 		{
 			if (byte == '\n') break;
-			buffer[i] = byte; 
+			buffer[i] = byte;
 			i++;
 		}
 
@@ -678,7 +678,7 @@ int main (int argc, char **argv)
 	int c, i;
 	opterr = 0;
 	bool iactive = false;
-	
+
 	strcpy (homedir, argv[0]);
 	for (i = strlen (homedir)-1; i >= 0; i--)
 	{
@@ -749,12 +749,12 @@ int main (int argc, char **argv)
 				return 0;
 		}
 	}
-	
+
 	while (homedir[strlen (homedir) - 1] == '/') homedir[strlen (homedir) - 1] = '\0';
 	while (db_root[strlen (db_root) - 1] == '/') db_root[strlen (db_root) - 1] = '\0';
-	
+
 	mkdir (db_root, S_IRWXU|S_IRWXG|S_IRWXO);
-	
+
 	log_open (db_root);
 	log_banner ("CrossEPG Downloader");
 
@@ -855,7 +855,7 @@ int main (int argc, char **argv)
 		else
 			log_add ("Cannot load provider configuration (%s)", opentv_file);
 	}
-	
+
 	memory_stats ();
 error:
 	log_close ();

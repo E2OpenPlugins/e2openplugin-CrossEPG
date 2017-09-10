@@ -49,7 +49,7 @@ void event_callback (int type, char *arg)
 	case 0:
 		interactive_send_text (ACTION_PROGRESS, "ON");
 		break;
-		
+
 	case 1:
 		interactive_send_text (ACTION_PROGRESS, "OFF");
 		break;
@@ -64,20 +64,20 @@ bool exec_defrag (bool withcallback)
 	char descriptor_filename[256];
 	char descriptor_filename_tmp[256];
 	char index_filename[256];
-	
+
 	sprintf (header_filename, "%s/crossepg.headers.db", db_root);
 	sprintf (header_filename_tmp, "%s/crossepg.headers_tmp.db", db_root);
 	sprintf (descriptor_filename, "%s/crossepg.descriptors.db", db_root);
 	sprintf (descriptor_filename_tmp, "%s/crossepg.descriptors_tmp.db", db_root);
 	sprintf (index_filename, "%s/crossepg.indexes.db", db_root);
-	
+
 	unlink (header_filename_tmp);
 	unlink (descriptor_filename_tmp);
 	unlink (index_filename);
-	
+
 	rename (header_filename, header_filename_tmp);
 	rename (descriptor_filename, descriptor_filename_tmp);
-	
+
 	if (!db_opened)
 	{
 		if (epgdb_open (db_root)) log_add ("EPGDB opened");
@@ -93,7 +93,7 @@ bool exec_defrag (bool withcallback)
 		ret = dbmerge_fromfile (header_filename_tmp, descriptor_filename_tmp, progress_callback, event_callback, stop);
 	else
 		ret = dbmerge_fromfile (header_filename_tmp, descriptor_filename_tmp, NULL, NULL, stop);
-	
+
 	if (ret)
 		log_add ("Data defragmented");
 	else
@@ -101,7 +101,7 @@ bool exec_defrag (bool withcallback)
 
 	unlink (header_filename_tmp);
 	unlink (descriptor_filename_tmp);
-	
+
 	return ret;
 }
 
@@ -119,9 +119,9 @@ void *interactive (void *args)
 	char buffer[4096], byte;
 	bool run = true;
 	pthread_t thread;
-	
+
 	interactive_send (ACTION_READY);
-	
+
 	while (run)
 	{
 		int i = 0, size = 0;
@@ -129,10 +129,10 @@ void *interactive (void *args)
 		while ((size = fread (&byte, 1, 1, stdin)))
 		{
 			if (byte == '\n') break;
-			buffer[i] = byte; 
+			buffer[i] = byte;
 			i++;
 		}
-		
+
 		if (memcmp (buffer, CMD_QUIT, strlen (CMD_QUIT)) == 0 || quit || size == 0)
 		{
 			run = false;
@@ -228,9 +228,9 @@ int main (int argc, char **argv)
 		homedir[i] = '\0';
 		if (ended) break;
 	}
-	
+
 	sprintf (db_root, DEFAULT_DB_ROOT);
-	
+
 	while ((c = getopt (argc, argv, "d:i:l:k:r")) != -1)
 	{
 		switch (c)
@@ -263,15 +263,15 @@ int main (int argc, char **argv)
 				return 0;
 		}
 	}
-	
+
 	while (homedir[strlen (homedir) - 1] == '/') homedir[strlen (homedir) - 1] = '\0';
 	while (db_root[strlen (db_root) - 1] == '/') db_root[strlen (db_root) - 1] = '\0';
-	
+
 	log_open (db_root);
 	log_banner ("CrossEPG Defragmenter");
 
 	//aliases_make (homedir);
-	
+
 	if (iactive) interactive_manager ();
 	else
 	{
@@ -282,9 +282,9 @@ int main (int argc, char **argv)
 			else log_add ("Error saving data");
 		}
 	}
-	
+
 	if (db_opened) epgdb_clean ();
-	
+
 	memory_stats ();
 	log_close ();
 	return 0;
