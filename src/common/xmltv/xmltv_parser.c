@@ -188,7 +188,7 @@ static void xmltv_parser_add_event ()
 		if (current_desc)
 			epgdb_titles_set_long_description (title, current_desc);
 
-		if (current_starttime>=current_title)
+		if (current_starttime>=current_time)
 			events_in_future_count++;
 	}
 
