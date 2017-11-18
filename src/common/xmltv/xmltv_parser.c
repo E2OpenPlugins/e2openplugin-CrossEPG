@@ -191,7 +191,8 @@ static void xmltv_parser_add_event ()
 		if (current_starttime>=current_time)
 		{
 			events_in_future_count++;
-			log_add ("current_starttime(%f)<current_time(%f)\n", (double) current_starttime, (double) current_time);
+			// only log for testdebug:
+			//log_add ("current_starttime(%f)<current_time(%f)\n", (double) current_starttime, (double) current_time);
 		}
 	}
 
