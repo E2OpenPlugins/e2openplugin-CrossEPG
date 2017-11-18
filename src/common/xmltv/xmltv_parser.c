@@ -189,7 +189,11 @@ static void xmltv_parser_add_event ()
 			epgdb_titles_set_long_description (title, current_desc);
 
 		if (current_starttime>=current_time)
+		{
 			events_in_future_count++;
+			// only log for testdebug:
+			//log_add ("current_starttime(%f)<current_time(%f)\n", (double) current_starttime, (double) current_time);
+		}
 	}
 
 	events_count++;
