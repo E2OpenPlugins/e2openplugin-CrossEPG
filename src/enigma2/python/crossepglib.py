@@ -533,7 +533,7 @@ class CrossEPG_Wrapper:
 		elif data.find("LOGTEXT ") == 0:
 			self.__callCallbacks(self.EVENT_STATUS, data[8:])
 
-	def __callCallbacks(self, event, param = None):
+	def __callCallbacks(self, event, param=None):
 		for callback in self.callbackList:
 			callback(event, param)
 

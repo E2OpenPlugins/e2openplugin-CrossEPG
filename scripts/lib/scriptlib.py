@@ -139,7 +139,7 @@ class lamedb_class:
 	INDEXBYPROVID = False # if True, also create the array lamedb_dict_prov, usually false for saving memory
 	lamedb_provid_dict = {}
 
-	def __init__(self, index_by_chname = True, index_by_provid = False):
+	def __init__(self, index_by_chname=True, index_by_provid=False):
 		self.INDEXBYCHNAME = index_by_chname
 		self.INDEXBYPROVID = index_by_provid
 		self.read_lamedb()

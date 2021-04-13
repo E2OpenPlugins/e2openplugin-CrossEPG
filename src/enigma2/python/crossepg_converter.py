@@ -15,7 +15,7 @@ import os
 import sys
 
 class CrossEPG_Converter(Screen):
-	def __init__(self, session, pcallback = None, noosd = False):
+	def __init__(self, session, pcallback=None, noosd=False):
 		self.session = session
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/downloader_sd.xml" % os.path.dirname(sys.modules[__name__].__file__)
@@ -108,7 +108,7 @@ class CrossEPG_Converter(Screen):
 			self.closeAndCallback(self.retValue)
 			
 		elif event == CrossEPG_Wrapper.EVENT_ERROR:
-			self.session.open(MessageBox, _("CrossEPG error: %s") % (param), type = MessageBox.TYPE_INFO, timeout = 20)
+			self.session.open(MessageBox, _("CrossEPG error: %s") % (param), type=MessageBox.TYPE_INFO, timeout=20)
 			self.retValue = False
 			self.quit()
 			

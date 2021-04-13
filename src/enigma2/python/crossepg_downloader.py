@@ -16,7 +16,7 @@ import os
 import sys
 
 class CrossEPG_Downloader(Screen):
-	def __init__(self, session, providers, pcallback = None, noosd = False):
+	def __init__(self, session, providers, pcallback=None, noosd=False):
 		if (getDesktop(0).size().width() < 800):
 			skin = "%s/skins/downloader_sd.xml" % os.path.dirname(sys.modules[__name__].__file__)
 			self.isHD = 0
@@ -40,8 +40,7 @@ class CrossEPG_Downloader(Screen):
 			"back": self.quit
 		}, -1)
 		
-		self.__event_tracker = ServiceEventTracker(screen=self, eventmap=
-		{
+		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 			iPlayableService.evTunedIn: self.tuned,
 		})
 		
@@ -168,7 +167,7 @@ class CrossEPG_Downloader(Screen):
 		elif event == CrossEPG_Wrapper.EVENT_QUIT:
 			self.closeAndCallback(self.retValue)
 		elif event == CrossEPG_Wrapper.EVENT_ERROR:
-			self.session.open(MessageBox, _("CrossEPG error: %s") % (param), type = MessageBox.TYPE_INFO, timeout = 20)
+			self.session.open(MessageBox, _("CrossEPG error: %s") % (param), type=MessageBox.TYPE_INFO, timeout=20)
 			self.retValue = False
 			self.quit()
 			

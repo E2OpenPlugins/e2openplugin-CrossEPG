@@ -54,7 +54,7 @@ class CrossEPG_Auto(Screen):
 		if self.config.force_load_on_boot:
 			self.loader()
 
-	def init(self, session = None):
+	def init(self, session=None):
 		if session != None:
 			self.session = session
 			

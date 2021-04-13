@@ -64,9 +64,9 @@ class CrossEPG_Rytec_Update(Screen):
 		self.loadSourceList()
 		if self.load():
 			self.save(self.config.home_directory + "/providers/")
-			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type = MessageBox.TYPE_INFO, timeout = 5)	
+			self.session.open(MessageBox, _("%d providers updated") % len(self.sources), type=MessageBox.TYPE_INFO, timeout=5)	
 		else:
-			self.session.open(MessageBox, _("Cannot retrieve rytec sources"), type = MessageBox.TYPE_ERROR, timeout = 10)	
+			self.session.open(MessageBox, _("Cannot retrieve rytec sources"), type=MessageBox.TYPE_ERROR, timeout=10)	
 		self.close()
 
 	def loadSourceList(self):
@@ -76,7 +76,7 @@ class CrossEPG_Rytec_Update(Screen):
 			import gzip
 			filename,headers = urllib.urlretrieve('http://epgalfasite.dyndns.tv/crossepgsources.gz')
 			fd = open(filename, 'rb')
-			sfd = gzip.GzipFile(fileobj = fd, mode = 'rb')
+			sfd = gzip.GzipFile(fileobj=fd, mode='rb')
 			self.mirrors = sfd.readlines()
 			random.shuffle(self.mirrors)
 			os.unlink(filename)
