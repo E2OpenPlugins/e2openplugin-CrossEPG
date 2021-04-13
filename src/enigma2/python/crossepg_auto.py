@@ -77,12 +77,12 @@ class CrossEPG_Auto(Screen):
 		ltime = (ttime[0], ttime[1], ttime[2], self.config.download_daily_hours, self.config.download_daily_minutes, 0, ttime[6], ttime[7], ttime[8])
 		stime = mktime(ltime)
 		if stime < now:
-			ttime = localtime(stime+86400)	# 24 hours in future
+			ttime = localtime(stime + 86400)	# 24 hours in future
 
 		# to avoid problems with internal clock (big changes on date/time)
 		# we step forward of 24 hours until the new time is greater than now
 		while ttime < now:
-			ttime = ttime+86400	# 24 hours in future
+			ttime = ttime + 86400	# 24 hours in future
 		
 		self.cacheYear = ttime[0]
 		self.cacheMonth = ttime[1]
@@ -102,12 +102,12 @@ class CrossEPG_Auto(Screen):
 			self.providers = []
 			now = time()
 
-			if self.config.last_full_download_timestamp <= now - (24*60*60):
+			if self.config.last_full_download_timestamp <= now - (24 * 60 * 60):
 				self.config.last_full_download_timestamp = now
 				self.config.last_partial_download_timestamp = now
 				self.config.save()
 				self.providers = self.config.providers
-			elif self.config.last_partial_download_timestamp <= now - (60*60): # skip xmltv... we download it only one time a day
+			elif self.config.last_partial_download_timestamp <= now - (60 * 60): # skip xmltv... we download it only one time a day
 				self.config.last_partial_download_timestamp = now
 				self.config.save()
 				providers = self.config.getAllProviders()
@@ -141,11 +141,11 @@ class CrossEPG_Auto(Screen):
 				self.config.last_full_download_timestamp = stime
 				self.config.last_partial_download_timestamp = stime
 				self.config.save()
-				ttime = localtime(stime+86400)	# 24 hours in future
+				ttime = localtime(stime + 86400)	# 24 hours in future
 				# to avoid problems with internal clock (big changes on date/time)
 				# we step forward of 24 hours until the new time is greater than now
 				while ttime < now:
-					ttime = ttime+86400	# 24 hours in future
+					ttime = ttime + 86400	# 24 hours in future
 				self.cacheYear = ttime[0]
 				self.cacheMonth = ttime[1]
 				self.cacheDay = ttime[2]
@@ -154,13 +154,13 @@ class CrossEPG_Auto(Screen):
 			elif stime < now + (self.POLL_TIMER / 1000) and self.config.last_full_download_timestamp != stime:
 				print "[CrossEPG_Auto] poll"
 				delta = int(stime - now)
-				self.timer.start((delta + 5)*1000, 1)	# 5 seconds offset
+				self.timer.start((delta + 5) * 1000, 1)	# 5 seconds offset
 			else:
 				print "[CrossEPG_Auto] poll"
 				self.timer.start(self.POLL_TIMER, 1)
 		elif self.config.download_tune_enabled:
 			now = time()
-			if self.config.last_partial_download_timestamp <= now - (60*60):
+			if self.config.last_partial_download_timestamp <= now - (60 * 60):
 				providerok = None
 				sservice = self.session.nav.getCurrentlyPlayingServiceReference()
 				if sservice:

@@ -223,15 +223,15 @@ class CrossEPG_Setup(Screen):
 			i += 1
 
 		self.config.csv_import_enabled = int(self.list[i][1].getValue())
-		self.config.force_load_on_boot = int(self.list[i+1][1].getValue())
-		self.config.download_tune_enabled = int(self.list[i+2][1].getValue())
+		self.config.force_load_on_boot = int(self.list[i + 1][1].getValue())
+		self.config.download_tune_enabled = int(self.list[i + 2][1].getValue())
 
 		dailycache = self.config.download_daily_enabled
 		standbycache = self.config.download_standby_enabled
-		if self.list[i+3][1].getIndex() == 0:
+		if self.list[i + 3][1].getIndex() == 0:
 			self.config.download_daily_enabled = 0
 			self.config.download_standby_enabled = 0
-		elif self.list[i+3][1].getIndex() == 1:
+		elif self.list[i + 3][1].getIndex() == 1:
 			self.config.download_daily_enabled = 1
 			self.config.download_standby_enabled = 0
 		else:
@@ -249,12 +249,12 @@ class CrossEPG_Setup(Screen):
 
 		if not self.fastpatch:
 			self.config.download_daily_reboot = int(self.list[i][1].getValue())
-			self.config.download_manual_reboot = int(self.list[i+1][1].getValue())
+			self.config.download_manual_reboot = int(self.list[i + 1][1].getValue())
 			i += 2
 
 		self.config.show_plugin = int(self.list[i][1].getValue())
-		self.config.show_extension = int(self.list[i+1][1].getValue())
-		self.config.show_force_reload_as_plugin = int(self.list[i+2][1].getValue())
+		self.config.show_extension = int(self.list[i + 1][1].getValue())
+		self.config.show_force_reload_as_plugin = int(self.list[i + 2][1].getValue())
 
 		if redraw:
 			self.makeList()

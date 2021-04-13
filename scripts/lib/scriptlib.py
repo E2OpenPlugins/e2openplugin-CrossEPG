@@ -38,7 +38,7 @@ class logging_class:
 		dbroot = crossepg.epgdb_get_dbroot()
 		if dbroot != False:
 			if fname != '':
-				self.FDlog = open(dbroot+'/'+fname,'w')
+				self.FDlog = open(dbroot + '/' + fname,'w')
 			else:
 				crossepg.log_open(dbroot)
 		else:
@@ -127,7 +127,7 @@ def delta_dst():
 # manage channel list from lamedb
 class lamedb_class:
 
-	LAMEDB='/etc/enigma2/lamedb'
+	LAMEDB = '/etc/enigma2/lamedb'
 
 	# initialize an empty dictionary (Python array) indexed by channel name
 	# format: { channel_name : [ (sid , provider) , (sid , provider) , .... ] }
@@ -237,14 +237,14 @@ class lamedb_class:
 					if self.lamedb_dict.has_key(channel_name):
 						self.lamedb_dict[channel_name].append(sp)
 					else:
-						self.lamedb_dict[channel_name]=[sp]
+						self.lamedb_dict[channel_name] = [sp]
 
 			if self.INDEXBYPROVID == True:
 				sp = (sid,channel_name)
 				if self.lamedb_provid_dict.has_key(provider_name):
 					self.lamedb_provid_dict[provider_name].append(sp)
 				else:
-					self.lamedb_provid_dict[provider_name]=[sp]
+					self.lamedb_provid_dict[provider_name] = [sp]
 
 				
 
@@ -294,7 +294,7 @@ class lamedb_class:
 		return None
 
 	def convert_sid(self,sid):
-		s=[]
+		s = []
 
 		# SID:ns:TSID:ONID:stype:unused
 

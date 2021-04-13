@@ -164,7 +164,7 @@ class main:
 		ret = osp.readlines()
 		if len(ret) > 0:
 			try:
-				m = int(ret[0])/1024
+				m = int(ret[0]) / 1024
 			except:
 				self.log("Error get SWAP value, abort",1)
 				time.sleep(10)
@@ -205,7 +205,7 @@ class main:
 			#self.DELTA_UTC = -scriptlib.delta_utc() # return negative if timezone is east of GMT (like Italy), invert sign
 			self.DELTA_UTC = 0
 		else:
-			self.DELTA_UTC = float(self.CONF_GMT_ZONE)*3600.0
+			self.DELTA_UTC = float(self.CONF_GMT_ZONE) * 3600.0
 			if self.DELTA_UTC >= 0:
 				self.DELTA_UTC = self.DELTA_UTC + scriptlib.delta_dst()
 			else:
@@ -234,9 +234,9 @@ class main:
 
 		self.TODAYMP = time.strftime("%Y/%m/%d")
 		# create a list filled with dates (format AAAA/MM/DD) from today to today+ MAX_DAY_EPG
-		self.DAYCACHEMP=[self.TODAYMP]
+		self.DAYCACHEMP = [self.TODAYMP]
 		for day in range(1,self.CONF_MAX_DAY_EPG):
-			self.DAYCACHEMP.append(time.strftime("%Y/%m/%d",time.localtime(time.time()+86400*day)))
+			self.DAYCACHEMP.append(time.strftime("%Y/%m/%d",time.localtime(time.time() + 86400 * day)))
 
 
 
@@ -252,7 +252,7 @@ class main:
 
 		chlist = self.CHANNELLIST
 
-		self.log("Start download XML data from \'" + self.CONF_URL+"\'")
+		self.log("Start download XML data from \'" + self.CONF_URL + "\'")
 		self.log2video("downloading XML data ...")
 
 		i = self.HTTP_ERROR_RETRY
@@ -269,7 +269,7 @@ class main:
 				if hasattr(e, 'msg'):
 					serr += " , " + str(e.msg)
 
-				self.log("\'" + self.CONF_URL + "\' connection error. Reason: "+serr+". Waiting "+str(self.HTTP_ERROR_WAIT_RETRY)+" sec. and retry ["+str(i)+"] ...")
+				self.log("\'" + self.CONF_URL + "\' connection error. Reason: " + serr + ". Waiting " + str(self.HTTP_ERROR_WAIT_RETRY) + " sec. and retry [" + str(i) + "] ...")
 				time.sleep(self.HTTP_ERROR_WAIT_RETRY) # add sleep
 				i -= 1
 
@@ -369,7 +369,7 @@ class main:
 					self.log("  Writing in cache \'" + eventfilename + "\'",2)
 					self.log2video(" extracting \"%s\" [%d] (%s)" % (channel_name, num_events, day))
 
-					fd=codecs.open(eventfilepath,"w",'utf-8')
+					fd = codecs.open(eventfilepath,"w",'utf-8')
 
 					fd.write(str(c) + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + channel_provider + self.FIELD_SEPARATOR + day + '\n')
 					fd.write("Local Time (human readeable)###Unix GMT Time###Event Title###Event Description\n")
@@ -378,7 +378,7 @@ class main:
 					for xml_ee in xmlref_events:
 						orainiz = xml_ee.attributes["orainizio"].value
 
-						if (orainiz >='00:00') and (orainiz <= '05:59'):
+						if (orainiz >= '00:00') and (orainiz <= '05:59'):
 							nextdayevent = 86400
 						else:
 							nextdayevent = 0
@@ -479,7 +479,7 @@ class main:
 							e_starttime = int(items[1])
 
 							if i < L:
-								e_length = int(events[i+1].split(self.FIELD_SEPARATOR)[1]) - e_starttime
+								e_length = int(events[i + 1].split(self.FIELD_SEPARATOR)[1]) - e_starttime
 							else:
 								# last event, dummy length 90 min.
 								e_length = 5400

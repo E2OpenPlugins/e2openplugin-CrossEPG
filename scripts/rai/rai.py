@@ -45,7 +45,7 @@ class Titolo_parser(sgmllib.SGMLParser):
 	def __init__(self, day_get, verbose=0):
 		sgmllib.SGMLParser.__init__(self, verbose)
 		self.daynow = day_get
-		self.daynext = time.strftime("%Y%m%d",time.localtime(time.mktime(time.strptime(day_get,"%Y%m%d"))+86400))
+		self.daynext = time.strftime("%Y%m%d",time.localtime(time.mktime(time.strptime(day_get,"%Y%m%d")) + 86400))
 		self.day = self.daynow
 		self.guidatoday = []
 		self.guidatomorrow = []
@@ -93,7 +93,7 @@ class Titolo_parser(sgmllib.SGMLParser):
 						self.inside_palinsesto = False
 						return
 
-				self.dataoraevento = time.strftime("%Y-%m-%d %H:%M",time.strptime(self.day+'-'+data,"%Y%m%d-%H:%M"))
+				self.dataoraevento = time.strftime("%Y-%m-%d %H:%M",time.strptime(self.day + '-' + data,"%Y%m%d-%H:%M"))
 				self.start_orario = False
 
 			if self.inside_a_titolo == True:
@@ -208,9 +208,9 @@ class main:
 		self.TODAY = time.strftime("%Y%m%d")
 
 		# create a list filled with dates (format AAAAMMDD) from today to today+MAX_DAY_EPG
-		self.DAYCACHE=[self.TODAY]
+		self.DAYCACHE = [self.TODAY]
 		for day in range(1,self.CONF_MAX_DAY_EPG):
-			self.DAYCACHE.append(time.strftime("%Y%m%d",time.localtime(time.time()+86400*day)))
+			self.DAYCACHE.append(time.strftime("%Y%m%d",time.localtime(time.time() + 86400 * day)))
 
 
 # ----------------------------------------------------------------------
@@ -311,17 +311,17 @@ class main:
 					time.sleep(random.uniform(self.CONF_RANDOM_MIN, self.CONF_RANDOM_MAX))
 
 					try:
-						sock=urllib2.urlopen(self.CONF_URL + '?' + xmlfile)
-						data=sock.read()
+						sock = urllib2.urlopen(self.CONF_URL + '?' + xmlfile)
+						data = sock.read()
 
 					except IOError, e:
-						serr="unknown"
+						serr = "unknown"
 						if hasattr(e, 'reason'):
-							serr=str(e.reason)
+							serr = str(e.reason)
 						elif hasattr(e, 'code'):
-							serr=str(e.code)
+							serr = str(e.code)
 							if hasattr(e, 'msg'):
-								serr+=" , "+str(e.msg)
+								serr += " , " + str(e.msg)
 
 						self.log.log("\'%s?%s\' connection error. Reason: %s. Waiting %d sec. and retry [%d] ..." % (self.CONF_URL,xmlfile, serr, self.HTTP_ERROR_WAIT_RETRY, i))
 						time.sleep(self.HTTP_ERROR_WAIT_RETRY) # add sleep
@@ -439,7 +439,7 @@ class main:
 							e_starttime = int(e.split(self.FIELD_SEPARATOR)[1])
 
 							if i < L:
-								e_length = int(events[i+1].split(self.FIELD_SEPARATOR)[1]) - e_starttime
+								e_length = int(events[i + 1].split(self.FIELD_SEPARATOR)[1]) - e_starttime
 							else:
 								# last event, dummy length 90 min.
 								e_length = 5400

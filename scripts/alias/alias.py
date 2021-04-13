@@ -57,7 +57,7 @@ class main:
 		config.read(CONF_FILE)
 
 		# reading [aliases] section
-		temp=config.items("aliases")
+		temp = config.items("aliases")
 
 		self.CHANNELLIST = {}
 		# create a dictionary (Python array) with index = channel ID
