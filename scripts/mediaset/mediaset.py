@@ -27,7 +27,7 @@ import crossepg
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	sys.exit(1)
-libdir = os.path.join(crossepg_instroot , 'scripts/lib')
+libdir = os.path.join(crossepg_instroot, 'scripts/lib')
 sys.path.append(libdir)
 
 # import local modules
@@ -98,14 +98,14 @@ class main(sgmllib.SGMLParser):
 		self.log.log("extracted %d events" % self.SGML_TOTAL_EVENTS)
 
 	def start_guidatv(self,attr):
-		if self.SGML_PALINSESTO_INSIDE == True :
+		if self.SGML_PALINSESTO_INSIDE == True:
 			self.SGML_GIORNOMP = None
 			for name,value in attr:
 				if name == "data":
 					self.log.log2video_pbar(self.SGML_PBAR_INDEX * self.SGML_PBAR_MAXVALUE)
-					if str(value).strip(' \n\r') in self.DAYCACHEMP :
+					if str(value).strip(' \n\r') in self.DAYCACHEMP:
 						self.SGML_GIORNOMP = str(value).strip(' \n\r')
-						self.log.log2video_status("processing XML %s (%d)" % (self.SGML_GIORNOMP,self.SGML_TOTAL_EVENTS) )
+						self.log.log2video_status("processing XML %s (%d)" % (self.SGML_GIORNOMP,self.SGML_TOTAL_EVENTS))
 						self.SGML_FD = {}
 						
 						for c in sorted(self.CHANNELLIST.keys()):
@@ -116,8 +116,8 @@ class main(sgmllib.SGMLParser):
 								continue
 
 							channel_name = ''
-							if len(self.CHANNELLIST[c].split(",")) > 1 :
-								if self.CHANNELLIST[c].split(",")[1] != '' :
+							if len(self.CHANNELLIST[c].split(",")) > 1:
+								if self.CHANNELLIST[c].split(",")[1] != '':
 									# channel renamed, new name provided by user
 									channel_name = self.CHANNELLIST[c].split(",")[1].strip(' \n\r').lower()
 
@@ -127,8 +127,8 @@ class main(sgmllib.SGMLParser):
 								sys.exit(1)
 
 							channel_provider = self.CONF_DEFAULT_PROVIDER
-							if len(self.CHANNELLIST[c].split(",")) > 2 :
-								if self.CHANNELLIST[c].split(",")[2] != '' :
+							if len(self.CHANNELLIST[c].split(",")) > 2:
+								if self.CHANNELLIST[c].split(",")[2] != '':
 									channel_provider = self.CHANNELLIST[c].split(",")[2].strip(' \n\r').lower()
 
 							# if channel name is not present as option in channel_list.conf , skip it
@@ -173,21 +173,21 @@ class main(sgmllib.SGMLParser):
 	def start_programma(self,attr):
 		self.SGML_PBAR_INDEX += 1
 		self.SGML_TOTAL_EVENTS += 1
-		if (self.SGML_PROGRAMMI_INSIDE == True) :
+		if (self.SGML_PROGRAMMI_INSIDE == True):
 			for name,value in attr:
-				if name == "idref" :
+				if name == "idref":
 					self.SGML_EVENT_IDREF = str(value).strip(' \n\r').lower()
-					if not self.CHANNELLIST.has_key(self.SGML_EVENT_IDREF) :
-						self.log.log("WARNING: new channel id=%s found in XML data" % self.SGML_EVENT_IDREF )
-				elif name == "timestamp" :
+					if not self.CHANNELLIST.has_key(self.SGML_EVENT_IDREF):
+						self.log.log("WARNING: new channel id=%s found in XML data" % self.SGML_EVENT_IDREF)
+				elif name == "timestamp":
 					self.SGML_EVENT_TIMESTAMP = str(value).strip(' \n\r')
-				elif name == "titolo" :
+				elif name == "titolo":
 					self.SGML_EVENT_TITLE = str(value).strip(' \n\r')
 					self.SGML_EVENT_TITLE = self.SGML_EVENT_TITLE.encode('utf-8')
 					
 
 	def end_programma(self):
-		if self.SGML_FD.has_key(self.SGML_EVENT_IDREF) :
+		if self.SGML_FD.has_key(self.SGML_EVENT_IDREF):
 				
 			event_starttime = self.SGML_EVENT_TIMESTAMP
 			event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y%m%d%H%M"))) - self.DELTA_UTC)
@@ -253,7 +253,7 @@ class main(sgmllib.SGMLParser):
 		self.log.log("=== RUNNING SCRIPT %s ===" % self.CONF_LOG_SCRIPT_NAME)
 
 		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
-		if not os.path.exists(CONF_FILE) :
+		if not os.path.exists(CONF_FILE):
 			self.log.log("ERROR: %s not present" % CONF_FILE)
 			self.log.log2video_status("ERROR: %s not present" % CONF_FILE)
 			sys.exit(1)
@@ -296,7 +296,7 @@ class main(sgmllib.SGMLParser):
 		for i in temp:
 			self.CHANNELLIST[i[0].strip(' \n\r').lower()] = unicode(i[1].strip(' \n\r').lower(),'utf-8')
 
-		if len(self.CHANNELLIST) == 0 :
+		if len(self.CHANNELLIST) == 0:
 			self.log.log("ERROR: [channels] section empty ?")
 			sys.exit(1)
 
@@ -322,7 +322,7 @@ class main(sgmllib.SGMLParser):
 		scriptlib.cleanup_oldcachedfiles(self.CONF_CACHEDIR, self.FIELD_SEPARATOR)
 
 
-		self.log.log("Start download XML data from \'%s\'" % self.CONF_URL )
+		self.log.log("Start download XML data from \'%s\'" % self.CONF_URL)
 		self.log.log2video_status("downloading XML data ...")
 
 		i = self.HTTP_ERROR_RETRY
@@ -405,18 +405,18 @@ class main(sgmllib.SGMLParser):
 		pbar_maxvalue = 100.0 / len(filelist)
 		pbar_index = 0
 
-		for f in filelist :
-			self.log.log2video_pbar( int(pbar_index * pbar_maxvalue) )
+		for f in filelist:
+			self.log.log2video_pbar(int(pbar_index * pbar_maxvalue))
 			pbar_index += 1
 			
 			id = f.split(self.FIELD_SEPARATOR)[0]
 			if previous_id == '':
 				previous_id = id
 
-			if id != previous_id :
+			if id != previous_id:
 				total_events += len(events)
 				self.log.log("  ...processing \'%s\' , nr. events %d" % (previous_id,len(events)))
-				self.log.log2video_status("processed %d events" % total_events )
+				self.log.log2video_status("processed %d events" % total_events)
 
 				for c in channels_name:
 					# a channel can have zero or more SID (different channel with same name)
@@ -445,7 +445,7 @@ class main(sgmllib.SGMLParser):
 							items = e.split(self.FIELD_SEPARATOR)
 							e_starttime = int(items[1])
 
-							if i < L :
+							if i < L:
 								e_length = int(events[i+1].split(self.FIELD_SEPARATOR)[1]) - e_starttime
 							else:
 								# last event, dummy length 90 min.
@@ -459,7 +459,7 @@ class main(sgmllib.SGMLParser):
 							e_summarie = items[3].encode('utf-8')
 
 							# add_event(start_time , duration , title , summarie , ISO639_language_code , strings_encoded_with_UTF-8)
-							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True )
+							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True)
 
 				if f == '***END***':
 					break
@@ -512,7 +512,7 @@ SCRIPT_DIR = 'scripts/mediaset/'
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	sys.exit(1)
-scriptlocation = os.path.join(crossepg_instroot , SCRIPT_DIR)
+scriptlocation = os.path.join(crossepg_instroot, SCRIPT_DIR)
 
 # get where CrossEPG save data (dbroot) and use it as script cache repository
 crossepg_dbroot = crossepg.epgdb_get_dbroot()
@@ -520,7 +520,7 @@ if crossepg_dbroot == False:
 	sys.exit(1)
 
 # initialize script class
-script_class = main(scriptlocation , crossepg_dbroot)
+script_class = main(scriptlocation, crossepg_dbroot)
 
 # download data and cache them
 script_class.download_and_cache()

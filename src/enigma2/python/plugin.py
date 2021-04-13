@@ -28,7 +28,7 @@ def Plugins(**kwargs):
 	if config.show_plugin == 1 and config.show_extension == 1:
 		plugins.append(PluginDescriptor(name="CrossEPG Downloader",
 										description=_("An EPG downloader"),
-										where=[ PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_PLUGINMENU ],
+										where=[PluginDescriptor.WHERE_EXTENSIONSMENU, PluginDescriptor.WHERE_PLUGINMENU],
 										fnc=call_downloader))
 	elif config.show_extension == 1:
 		plugins.append(PluginDescriptor(name="CrossEPG Downloader",

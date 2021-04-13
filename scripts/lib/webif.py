@@ -41,7 +41,7 @@ class webif_class:
     # see http://dream.reichholf.net/wiki/Enigma2:WebInterface    
     def WI(self,command):   
         
-        if self.USE_WEBIF_AUTH == 1 :    
+        if self.USE_WEBIF_AUTH == 1:    
             auth_handler = urllib2.HTTPBasicAuthHandler()
             auth_handler.add_password(self.WEBIF_AUTH_REALM, 'http://' + self.WEBIF_IP, self.WEBIF_AUTH_USER, self.WEBIF_AUTH_PASSW)
             opener = urllib2.build_opener(auth_handler)
@@ -96,7 +96,7 @@ class webif_class:
         # if DM is in standby mode, it return 'none'
         data=self.WI('subservices')
         
-        if data == None :
+        if data == None:
             return(None)
             
         try:

@@ -37,17 +37,17 @@ class logging_class:
 		# get where CrossEPG save data (dbroot) and use it for opening crossepg.log
 		dbroot = crossepg.epgdb_get_dbroot()
 		if dbroot != False:
-			if fname != '' :
+			if fname != '':
 				self.FDlog = open(dbroot+'/'+fname,'w')
-			else :
+			else:
 				crossepg.log_open(dbroot)
 		else:
 			print "[scriptlib] WARNING: cannot open crossepg dbroot. Log not initialized !!"
 			
 
 	def log(self,s):
-		if self.FDlog != None :
-			self.FDlog.write("%s %s\n" % (time.strftime("%d/%m/%Y %H:%M:%S"), s) )
+		if self.FDlog != None:
+			self.FDlog.write("%s %s\n" % (time.strftime("%d/%m/%Y %H:%M:%S"), s))
 		else:
 			crossepg.log_add(str(s))
 
@@ -99,7 +99,7 @@ def cleanup_oldcachedfiles(cachedir, field_separator):
 
 	for cachedfile in os.listdir(cachedir):
 		# extract date from filename
-		if cachedfile.split(field_separator)[-1] < TODAY :
+		if cachedfile.split(field_separator)[-1] < TODAY:
 			os.unlink(os.path.join(cachedir,cachedfile))
 
 
@@ -107,7 +107,7 @@ def cleanup_oldcachedfiles(cachedir, field_separator):
 # return negative number if timezone is east of GMT (like Italy)
 # return postive number if timezone is west of GMT (like USA)
 def delta_utc():
-	if time.localtime().tm_isdst == 0 :
+	if time.localtime().tm_isdst == 0:
 		# return localtime - gmtime (in seconds)
 		return time.timezone
 	else:
@@ -117,7 +117,7 @@ def delta_utc():
 
 # return DST time difference (in seconds)
 def delta_dst():
-	if time.localtime().tm_isdst == 0 :
+	if time.localtime().tm_isdst == 0:
 		return 0
 	else:
 		# return DST difference
@@ -178,7 +178,7 @@ class lamedb_class:
 		# read lamedb until are found "end" and "services" lines
 		while True:
 			temp = self.decode_charset(fd.readline())
-			if temp == '' :
+			if temp == '':
 				print("ERROR parsing lamedb, transponder section: end of file")
 				sys.exit(1)
 
@@ -198,7 +198,7 @@ class lamedb_class:
 		while True:
 			sid = self.decode_charset(fd.readline()) # read SID , it's the first line
 
-			if sid == '' :
+			if sid == '':
 				print("ERROR parsing lamedb, channel_name section: end of file")
 				sys.exit(1)
 
@@ -216,7 +216,7 @@ class lamedb_class:
 			temp = temp.strip(' \n\r').lower()
 
 			temp_P = temp.find('p:')
-			if temp_P == -1 :
+			if temp_P == -1:
 				print("ERROR parsing lamedb, channel_name section: provider name \'p:\' not present")
 				sys.exit(1)
 			else:
@@ -250,7 +250,7 @@ class lamedb_class:
 
 		fd.close()
 
-		if len(self.lamedb_dict) == 0 :
+		if len(self.lamedb_dict) == 0:
 			print("ERROR lamedb empty ?")
 			sys.exit(1)
 
@@ -258,7 +258,7 @@ class lamedb_class:
 	def get_sid_byname(self,channel_name):
 		sid_list = []
 
-		if self.lamedb_dict.has_key(channel_name) :
+		if self.lamedb_dict.has_key(channel_name):
 			for v in self.lamedb_dict[channel_name]:
 				# (sid,provider_name)
 				sid_list.append(v[0])
@@ -269,7 +269,7 @@ class lamedb_class:
 	def get_provid_byname(self,channel_name):
 		provid_list = []
 
-		if self.lamedb_dict.has_key(channel_name) :
+		if self.lamedb_dict.has_key(channel_name):
 			for v in self.lamedb_dict[channel_name]:
 				# (sid,provider_name)
 				provid_list.append(v[1])
@@ -278,7 +278,7 @@ class lamedb_class:
 
 	def get_sidprovid_byname(self,channel_name):
 		sidprov_list = []
-		if self.lamedb_dict.has_key(channel_name) :
+		if self.lamedb_dict.has_key(channel_name):
 			# (sid,provider_name)
 			sidprov_list = self.lamedb_dict[channel_name]
 
@@ -287,7 +287,7 @@ class lamedb_class:
 
 	def get_chnames_byprov(self,provider_name):
 		if self.INDEXBYPROVID == True:
-			if self.lamedb_provid_dict.has_key(provider_name) :
+			if self.lamedb_provid_dict.has_key(provider_name):
 				return self.lamedb_provid_dict[provider_name]
 			else:
 				return None
@@ -354,7 +354,7 @@ class crossepg_db_class:
 		start_time = int(start_time)
 		duration = int(duration)
 
-		if (duration < 0) or (duration > 65535) :
+		if (duration < 0) or (duration > 65535):
 			# duration must be >= 0 or < 65536 , skip this event (it's an error)
 			print("DEBUG: length error %d" % duration)
 			return
@@ -383,7 +383,7 @@ class crossepg_db_class:
 		#print("DEBUG , title DATA TYPE: \'%s\'" % type(title).__name__ )
 		#print("DEBUG , summarie DATA TYPE: \'%s\'" % type(summarie).__name__ )
 
-		if utf8 == False :
+		if utf8 == False:
 			crossepg.epgdb_titles_set_description(event_ref, title)
 			crossepg.epgdb_titles_set_long_description(event_ref, summarie)
 		else:

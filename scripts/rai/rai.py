@@ -26,7 +26,7 @@ import crossepg
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	sys.exit(1)
-libdir = os.path.join(crossepg_instroot , 'scripts/lib')
+libdir = os.path.join(crossepg_instroot, 'scripts/lib')
 sys.path.append(libdir)
 
 # import local modules
@@ -83,7 +83,7 @@ class Titolo_parser(sgmllib.SGMLParser):
 			if self.start_orario == True:
 
 				# if time < 06:00 is a next day event
-				if int(time.strftime("%H",time.strptime(data,"%H:%M"))) < 6 :
+				if int(time.strftime("%H",time.strptime(data,"%H:%M"))) < 6:
 					self.day = self.daynext
 					self.tomorrow = True
 				else:
@@ -153,7 +153,7 @@ class main:
 		self.log.log("=== RUNNING SCRIPT %s ===" % self.CONF_LOG_SCRIPT_NAME)
 
 		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
-		if not os.path.exists(CONF_FILE) :
+		if not os.path.exists(CONF_FILE):
 			self.log.log("ERROR: %s not present" % CONF_FILE)
 			sys.exit(1)
 
@@ -194,7 +194,7 @@ class main:
 		for i in temp:
 			self.CHANNELLIST[i[0]] = unicode(i[1],'utf-8')
 
-		if len(self.CHANNELLIST) == 0 :
+		if len(self.CHANNELLIST) == 0:
 			self.log.log("ERROR: [channels] section empty ?")
 			sys.exit(1)
 
@@ -261,8 +261,8 @@ class main:
 		
 			self.log.log2video_status("processing %s" % c)
 			channel_name = ''
-			if len(chlist[c].split(",")) > 1 :
-				if chlist[c].split(",")[1] != '' :
+			if len(chlist[c].split(",")) > 1:
+				if chlist[c].split(",")[1] != '':
 					# channel renamed, new name provided by user
 					channel_name = chlist[c].split(",")[1].strip(' ').lower()
 
@@ -272,8 +272,8 @@ class main:
 				sys.exit(1)
 
 			channel_provider = self.CONF_DEFAULT_PROVIDER
-			if len(chlist[c].split(",")) > 2 :
-				if chlist[c].split(",")[2] != '' :
+			if len(chlist[c].split(",")) > 2:
+				if chlist[c].split(",")[2] != '':
 					channel_provider = chlist[c].split(",")[2].strip(' ').lower()
 
 			exit_for_loop = False
@@ -306,7 +306,7 @@ class main:
 				self.log.log2video_status("downloading %s" % xmlfile)
 
 				i = self.HTTP_ERROR_RETRY
-				while i > 0  :
+				while i > 0:
 					#  wait randomly to avoid overloading website
 					time.sleep(random.uniform(self.CONF_RANDOM_MIN, self.CONF_RANDOM_MAX))
 
@@ -354,7 +354,7 @@ class main:
 							(dataora,titolo) = event
 							event_starttime = dataora
 							# time.mktime return Unix time inside GMT timezone
-							event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y-%m-%d %H:%M"))) - self.DELTA_UTC )
+							event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y-%m-%d %H:%M"))) - self.DELTA_UTC)
 							#event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y-%m-%d %H:%M")))  )
 							#self.log(event_starttime + " , " + str(self.DELTA_UTC) + " , " + str(int(time.mktime(time.strptime(event_starttime,"%Y-%m-%d %H:%M")))) + " , " + event_startime_unix_gmt )
 
@@ -402,15 +402,15 @@ class main:
 		filelist = sorted(os.listdir(self.CONF_CACHEDIR))
 		filelist.append('***END***')
 
-		for f in filelist :
+		for f in filelist:
 			id = f.split(self.FIELD_SEPARATOR)[0]
 			if previous_id == '':
 				previous_id = id
 
-			if id != previous_id :
+			if id != previous_id:
 				total_events += len(events)
 				self.log.log("  ...processing \'%s\' , nr. events %d" % (previous_id,len(events)))
-				self.log.log2video_status("processed %d events ..." % total_events )
+				self.log.log2video_status("processed %d events ..." % total_events)
 
 				for c in channels_name:
 					# a channel can have zero or more SID (different channel with same name)
@@ -438,7 +438,7 @@ class main:
 
 							e_starttime = int(e.split(self.FIELD_SEPARATOR)[1])
 
-							if i < L :
+							if i < L:
 								e_length = int(events[i+1].split(self.FIELD_SEPARATOR)[1]) - e_starttime
 							else:
 								# last event, dummy length 90 min.
@@ -454,7 +454,7 @@ class main:
 							e_summarie = e_summarie.encode('utf-8')
 
 							# add_event(start_time , duration , title , summarie , ISO639_language_code , strings_encoded_with_UTF-8)
-							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True )
+							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True)
 
 				if f == '***END***':
 					break
@@ -495,7 +495,7 @@ SCRIPT_DIR = 'scripts/rai/'
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	sys.exit(1)
-scriptlocation = os.path.join(crossepg_instroot , SCRIPT_DIR)
+scriptlocation = os.path.join(crossepg_instroot, SCRIPT_DIR)
 
 # get where CrossEPG save data (dbroot) and use it as script cache repository
 crossepg_dbroot = crossepg.epgdb_get_dbroot()
@@ -503,7 +503,7 @@ if crossepg_dbroot == False:
 	sys.exit(1)
 
 # initialize script class
-script_class = main(scriptlocation , crossepg_dbroot)
+script_class = main(scriptlocation, crossepg_dbroot)
 
 # download data and cache them
 script_class.download_and_cache()

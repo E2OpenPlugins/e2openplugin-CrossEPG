@@ -45,7 +45,7 @@ def getEPGPatchType():
 	return -1
 
 class CrossEPG_Config:
-	providers = [ ]
+	providers = []
 	db_root = "/hdd/crossepg"
 	lamedb = "lamedb"
 	home_directory = ""

@@ -74,7 +74,7 @@ class CrossEPG_Xepgdb_Update(Screen):
 			conn.request("GET", "/sources.xml")
 			httpres = conn.getresponse()
 			if httpres.status == 200:
-				f = open ("/tmp/crossepg_xepgdb_tmp", "w")
+				f = open("/tmp/crossepg_xepgdb_tmp", "w")
 				f.write(httpres.read())
 				f.close()
 				self.loadFromFile("/tmp/crossepg_xepgdb_tmp")

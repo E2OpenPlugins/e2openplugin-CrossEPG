@@ -69,8 +69,8 @@ def main():
 
 	# now the event structure is already in epgdb
 	# but we still need to add descriptions
-	epgdb_titles_set_description (title, "our custom event short description")
-	epgdb_titles_set_long_description (title, "our custom event long description")
+	epgdb_titles_set_description(title, "our custom event short description")
+	epgdb_titles_set_long_description(title, "our custom event long description")
 
 	###################
 	# READ OPERATIONS #
@@ -105,7 +105,7 @@ def main():
 	if channel:
 		# get an event by channel and timestamp
 		log_add("TEST: get an event by channel and timestamp")
-		title = epgdb_titles_get_by_time (channel, 1293840000) # exist also the api epgdb_titles_get_by_id_and_mjd(channel, event_id, mjd_time)
+		title = epgdb_titles_get_by_time(channel, 1293840000) # exist also the api epgdb_titles_get_by_id_and_mjd(channel, event_id, mjd_time)
 		if title:
 			dump_title(title)
 		else:
