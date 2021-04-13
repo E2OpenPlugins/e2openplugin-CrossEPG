@@ -182,7 +182,7 @@ class CrossEPG_Auto(Screen):
 					self.config.last_partial_download_timestamp = now
 					self.config.save()
 					self.config.deleteLog()
-					self.download([provider,])
+					self.download([provider, ])
 				else:
 					print "[CrossEPG_Auto] poll"
 					self.timer.start(self.POLL_TIMER, 1)

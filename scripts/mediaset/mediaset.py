@@ -97,15 +97,15 @@ class main(sgmllib.SGMLParser):
 		self.SGML_GIORNOMP = None
 		self.log.log("extracted %d events" % self.SGML_TOTAL_EVENTS)
 
-	def start_guidatv(self,attr):
+	def start_guidatv(self, attr):
 		if self.SGML_PALINSESTO_INSIDE == True:
 			self.SGML_GIORNOMP = None
-			for name,value in attr:
+			for name, value in attr:
 				if name == "data":
 					self.log.log2video_pbar(self.SGML_PBAR_INDEX * self.SGML_PBAR_MAXVALUE)
 					if str(value).strip(' \n\r') in self.DAYCACHEMP:
 						self.SGML_GIORNOMP = str(value).strip(' \n\r')
-						self.log.log2video_status("processing XML %s (%d)" % (self.SGML_GIORNOMP,self.SGML_TOTAL_EVENTS))
+						self.log.log2video_status("processing XML %s (%d)" % (self.SGML_GIORNOMP, self.SGML_TOTAL_EVENTS))
 						self.SGML_FD = {}
 						
 						for c in sorted(self.CHANNELLIST.keys()):
@@ -150,7 +150,7 @@ class main(sgmllib.SGMLParser):
 
 							self.log.log("  Opening for caching \'%s\'" % eventfilename)
 
-							self.SGML_FD[c] = codecs.open(eventfilepath,"w",'utf-8')
+							self.SGML_FD[c] = codecs.open(eventfilepath, "w", 'utf-8')
 							self.SGML_FD[c].write(c + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + channel_provider + self.FIELD_SEPARATOR + day + '\n')
 							self.SGML_FD[c].write("Local Time (human readeable)###Unix GMT Time###Event Title###Event Description\n")
 
@@ -162,7 +162,7 @@ class main(sgmllib.SGMLParser):
 			self.SGML_FD[c].close()
 
 
-	def start_programmi(self,attr):
+	def start_programmi(self, attr):
 		if self.SGML_GIORNOMP != None:
 			self.SGML_PROGRAMMI_INSIDE = True
 
@@ -170,11 +170,11 @@ class main(sgmllib.SGMLParser):
 		self.SGML_PROGRAMMI_INSIDE = False
 
 		
-	def start_programma(self,attr):
+	def start_programma(self, attr):
 		self.SGML_PBAR_INDEX += 1
 		self.SGML_TOTAL_EVENTS += 1
 		if (self.SGML_PROGRAMMI_INSIDE == True):
-			for name,value in attr:
+			for name, value in attr:
 				if name == "idref":
 					self.SGML_EVENT_IDREF = str(value).strip(' \n\r').lower()
 					if not self.CHANNELLIST.has_key(self.SGML_EVENT_IDREF):
@@ -190,11 +190,11 @@ class main(sgmllib.SGMLParser):
 		if self.SGML_FD.has_key(self.SGML_EVENT_IDREF):
 				
 			event_starttime = self.SGML_EVENT_TIMESTAMP
-			event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y%m%d%H%M"))) - self.DELTA_UTC)
+			event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime, "%Y%m%d%H%M"))) - self.DELTA_UTC)
 
 			event_title = unicode(self.SGML_EVENT_TITLE)
-			event_title = event_title.replace('\r','')
-			event_title = event_title.replace('\n','')
+			event_title = event_title.replace('\r', '')
+			event_title = event_title.replace('\n', '')
 			event_title = event_title.strip(u' ')
 			#self.log.log("  event_title=" + event_title)
 
@@ -234,8 +234,8 @@ class main(sgmllib.SGMLParser):
 
 # -----------------------------------------------
 
-	def convert_daymp(self,dmp):
-		daystandard = time.strftime("%Y%m%d",time.strptime(dmp,"%d/%m/%Y"))
+	def convert_daymp(self, dmp):
+		daystandard = time.strftime("%Y%m%d", time.strptime(dmp, "%d/%m/%Y"))
 		return daystandard
 
 
@@ -252,7 +252,7 @@ class main(sgmllib.SGMLParser):
 		
 		self.log.log("=== RUNNING SCRIPT %s ===" % self.CONF_LOG_SCRIPT_NAME)
 
-		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
+		CONF_FILE = os.path.join(confdir, self.CONF_CONFIGFILENAME)
 		if not os.path.exists(CONF_FILE):
 			self.log.log("ERROR: %s not present" % CONF_FILE)
 			self.log.log2video_status("ERROR: %s not present" % CONF_FILE)
@@ -263,15 +263,15 @@ class main(sgmllib.SGMLParser):
 		config.read(CONF_FILE)
 
 		# reading [global] section options
-		self.CONF_DEFAULT_PROVIDER = config.get("global","DEFAULT_PROVIDER")
+		self.CONF_DEFAULT_PROVIDER = config.get("global", "DEFAULT_PROVIDER")
 		# save cache under dbroot
-		self.CONF_CACHEDIR = os.path.join(dbroot,config.get("global","CACHE_DIRNAME"))
+		self.CONF_CACHEDIR = os.path.join(dbroot, config.get("global", "CACHE_DIRNAME"))
 
-		self.CONF_MAX_DAY_EPG = config.getint("global","MAX_DAY_EPG")
+		self.CONF_MAX_DAY_EPG = config.getint("global", "MAX_DAY_EPG")
 
-		self.CONF_URL = config.get("global","URL")
+		self.CONF_URL = config.get("global", "URL")
 
-		self.CONF_GMT_ZONE = config.get("global","GMT_ZONE")
+		self.CONF_GMT_ZONE = config.get("global", "GMT_ZONE")
 		if self.CONF_GMT_ZONE.strip(' ').lower() == 'equal':
 			#self.DELTA_UTC = -scriptlib.delta_utc() # return negative if timezone is east of GMT (like Italy), invert sign
 			self.DELTA_UTC = 0
@@ -294,7 +294,7 @@ class main(sgmllib.SGMLParser):
 
 		# create a dictionary (Python array) with index = channel ID
 		for i in temp:
-			self.CHANNELLIST[i[0].strip(' \n\r').lower()] = unicode(i[1].strip(' \n\r').lower(),'utf-8')
+			self.CHANNELLIST[i[0].strip(' \n\r').lower()] = unicode(i[1].strip(' \n\r').lower(), 'utf-8')
 
 		if len(self.CHANNELLIST) == 0:
 			self.log.log("ERROR: [channels] section empty ?")
@@ -306,8 +306,8 @@ class main(sgmllib.SGMLParser):
 		self.TODAYMP = time.strftime("%d/%m/%Y")
 		# create a list filled with dates (format DD/MM/AAAA) from today to today+ MAX_DAY_EPG
 		self.DAYCACHEMP = []
-		for day in range(0,self.CONF_MAX_DAY_EPG):
-			self.DAYCACHEMP.append(time.strftime("%d/%m/%Y",time.localtime(time.time() + 86400 * day)))
+		for day in range(0, self.CONF_MAX_DAY_EPG):
+			self.DAYCACHEMP.append(time.strftime("%d/%m/%Y", time.localtime(time.time() + 86400 * day)))
 
 
 
@@ -357,7 +357,7 @@ class main(sgmllib.SGMLParser):
 		self.log.log2video_status("processing XML data, wait ...")
 
 		# replace malformed single end tag <.../> as <...> (SGML doesn't like "/>")
-		data = data.replace('/>','></programma>')
+		data = data.replace('/>', '></programma>')
 
 		# set max 'id' occurencies
 		self.SGML_PBAR_MAXVALUE = data.count('idref="')
@@ -415,7 +415,7 @@ class main(sgmllib.SGMLParser):
 
 			if id != previous_id:
 				total_events += len(events)
-				self.log.log("  ...processing \'%s\' , nr. events %d" % (previous_id,len(events)))
+				self.log.log("  ...processing \'%s\' , nr. events %d" % (previous_id, len(events)))
 				self.log.log2video_status("processed %d events" % total_events)
 
 				for c in channels_name:
@@ -471,7 +471,7 @@ class main(sgmllib.SGMLParser):
 			if id == previous_id:
 				self.log.log("Reading  \'%s\'" % f)
 				# read events from cache file using UTF-8 and insert them in events list
-				fd = codecs.open(os.path.join(self.CONF_CACHEDIR, f),"r","utf-8")
+				fd = codecs.open(os.path.join(self.CONF_CACHEDIR, f), "r", "utf-8")
 				lines = fd.readlines()
 				fd.close()
 				if channels_name == '':
@@ -504,7 +504,7 @@ os.nice(10)
 
 # set Garbage Collector to do a "generational jump" more frequently than default 700
 # memory saving: about 50% (!!), some performance loss (obviously)
-gc.set_threshold(50,10,10)
+gc.set_threshold(50, 10, 10)
 
 SCRIPT_DIR = 'scripts/mediaset/'
 

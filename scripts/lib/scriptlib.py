@@ -19,12 +19,12 @@ def fn_escape(s):
 	if type(s).__name__ == 'str':
 		s = s.decode('utf-8')
 
-	s = s.replace(' ','_')
-	s = s.replace('/','_')
-	s = s.replace(':','_')
-	s = s.replace('.','_')
-	s = s.replace('|','_')
-	s = s.replace('!','_')
+	s = s.replace(' ', '_')
+	s = s.replace('/', '_')
+	s = s.replace(':', '_')
+	s = s.replace('.', '_')
+	s = s.replace('|', '_')
+	s = s.replace('!', '_')
 
 	return(s.encode('utf-8'))
 
@@ -38,20 +38,20 @@ class logging_class:
 		dbroot = crossepg.epgdb_get_dbroot()
 		if dbroot != False:
 			if fname != '':
-				self.FDlog = open(dbroot + '/' + fname,'w')
+				self.FDlog = open(dbroot + '/' + fname, 'w')
 			else:
 				crossepg.log_open(dbroot)
 		else:
 			print "[scriptlib] WARNING: cannot open crossepg dbroot. Log not initialized !!"
 			
 
-	def log(self,s):
+	def log(self, s):
 		if self.FDlog != None:
 			self.FDlog.write("%s %s\n" % (time.strftime("%d/%m/%Y %H:%M:%S"), s))
 		else:
 			crossepg.log_add(str(s))
 
-	def log2video_status(self,s):
+	def log2video_status(self, s):
 		print("LOGTEXT %s" % s)
 		sys.stdout.flush()
 		
@@ -63,7 +63,7 @@ class logging_class:
 		print("PROGRESS OFF")
 		sys.stdout.flush()
 
-	def log2video_pbar(self,i):
+	def log2video_pbar(self, i):
 		if i > 100:
 			i = 100
 		if i < 0:
@@ -71,7 +71,7 @@ class logging_class:
 		print("PROGRESS %d" % i)
 		sys.stdout.flush()
 		
-	def log2video_scriptname(self,s):
+	def log2video_scriptname(self, s):
 		print("TYPE RUNNING CSCRIPT %s" % s)
 		sys.stdout.flush()
 
@@ -81,8 +81,8 @@ class zlib_class:
 	UNGZTMP_FILE = "gunzip_temp"
 	BIN_GZUNZIP = "gunzip -c " + GZTMP_FILE
 
-	def gzuncompress(self,data):
-		fd = open(self.GZTMP_FILE,'w')
+	def gzuncompress(self, data):
+		fd = open(self.GZTMP_FILE, 'w')
 		fd.write(data)
 		fd.close()
 
@@ -100,7 +100,7 @@ def cleanup_oldcachedfiles(cachedir, field_separator):
 	for cachedfile in os.listdir(cachedir):
 		# extract date from filename
 		if cachedfile.split(field_separator)[-1] < TODAY:
-			os.unlink(os.path.join(cachedir,cachedfile))
+			os.unlink(os.path.join(cachedir, cachedfile))
 
 
 # return LOCALTIME - GMTIME (with DST)
@@ -146,13 +146,13 @@ class lamedb_class:
 
 	# first of all try to decode a string using UTF-8, if it fails then try with ISO-8859-1
 	# always return an Unicode string
-	def decode_charset(self,s):
+	def decode_charset(self, s):
 		u = None
-		charset_list = ('utf-8','iso-8859-1','iso-8859-2','iso-8859-15')
+		charset_list = ('utf-8', 'iso-8859-1', 'iso-8859-2', 'iso-8859-15')
 
 		for charset in charset_list:
 			try:
-				u = unicode(s,charset,"strict")
+				u = unicode(s, charset, "strict")
 			except:
 				pass
 			else:
@@ -172,7 +172,7 @@ class lamedb_class:
 
 		# lamedb mix UTF-8 + iso-8859-* inside it
 		# need charset decoding line by line
-		fd = open(self.LAMEDB,"r")
+		fd = open(self.LAMEDB, "r")
 
 		# skip transponder section
 		# read lamedb until are found "end" and "services" lines
@@ -232,7 +232,7 @@ class lamedb_class:
 			#provider_name=provider_name.encode('utf-8')
 
 			if self.INDEXBYCHNAME == True:
-				sp = (sid,provider_name)
+				sp = (sid, provider_name)
 				if channel_name != '':
 					if self.lamedb_dict.has_key(channel_name):
 						self.lamedb_dict[channel_name].append(sp)
@@ -240,7 +240,7 @@ class lamedb_class:
 						self.lamedb_dict[channel_name] = [sp]
 
 			if self.INDEXBYPROVID == True:
-				sp = (sid,channel_name)
+				sp = (sid, channel_name)
 				if self.lamedb_provid_dict.has_key(provider_name):
 					self.lamedb_provid_dict[provider_name].append(sp)
 				else:
@@ -255,7 +255,7 @@ class lamedb_class:
 			sys.exit(1)
 
 
-	def get_sid_byname(self,channel_name):
+	def get_sid_byname(self, channel_name):
 		sid_list = []
 
 		if self.lamedb_dict.has_key(channel_name):
@@ -266,7 +266,7 @@ class lamedb_class:
 		return(sid_list)
 
 
-	def get_provid_byname(self,channel_name):
+	def get_provid_byname(self, channel_name):
 		provid_list = []
 
 		if self.lamedb_dict.has_key(channel_name):
@@ -276,7 +276,7 @@ class lamedb_class:
 
 		return(provid_list)
 
-	def get_sidprovid_byname(self,channel_name):
+	def get_sidprovid_byname(self, channel_name):
 		sidprov_list = []
 		if self.lamedb_dict.has_key(channel_name):
 			# (sid,provider_name)
@@ -285,7 +285,7 @@ class lamedb_class:
 		return(sidprov_list)
 
 
-	def get_chnames_byprov(self,provider_name):
+	def get_chnames_byprov(self, provider_name):
 		if self.INDEXBYPROVID == True:
 			if self.lamedb_provid_dict.has_key(provider_name):
 				return self.lamedb_provid_dict[provider_name]
@@ -293,16 +293,16 @@ class lamedb_class:
 				return None
 		return None
 
-	def convert_sid(self,sid):
+	def convert_sid(self, sid):
 		s = []
 
 		# SID:ns:TSID:ONID:stype:unused
 
 		try:
 			tmp = sid.split(":")
-			s.append(int(tmp[0],0x10))  # SID
-			s.append(int(tmp[2],0X10))  # TSID
-			s.append(int(tmp[3],0X10))  # ONID
+			s.append(int(tmp[0], 0x10))  # SID
+			s.append(int(tmp[2], 0X10))  # TSID
+			s.append(int(tmp[3], 0X10))  # ONID
 		except:
 			pass
 
@@ -344,7 +344,7 @@ class crossepg_db_class:
 
 	# add channel into db and get a reference to the structure
 	# doesn't matter if the channel already exist... epgdb do all the work
-	def add_channel(self,ch_sid):
+	def add_channel(self, ch_sid):
 		# epgdb_channels_add(onid, tsid, sid)
 		self.db_channel_ref = crossepg.epgdb_channels_add(ch_sid[2], ch_sid[1], ch_sid[0])
 		self.event_id = 1

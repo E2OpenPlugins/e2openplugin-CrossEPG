@@ -127,7 +127,7 @@ class CrossEPG_Providers(Screen):
 			return
 
 		index = self["list"].getIndex()
-		self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, [self.list[index][2],])
+		self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, [self.list[index][2], ])
 
 	def downloadCallback(self, ret):
 		if ret:

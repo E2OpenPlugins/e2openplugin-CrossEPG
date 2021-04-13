@@ -37,7 +37,7 @@ class main:
 	CONF_LOG_SCRIPT_NAME = "ALIAS EPG"
 
 
-	def __init__(self,confdir,dbroot):
+	def __init__(self, confdir, dbroot):
 
 		# initialize logging
 		self.log = scriptlib.logging_class()
@@ -47,7 +47,7 @@ class main:
 		self.log.log("=== RUNNING SCRIPT %s ===" % self.CONF_LOG_SCRIPT_NAME)
 
 
-		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
+		CONF_FILE = os.path.join(confdir, self.CONF_CONFIGFILENAME)
 		if not os.path.exists(CONF_FILE):
 			self.log.log("ERROR: %s not present" % CONF_FILE)
 			sys.exit(1)
@@ -62,7 +62,7 @@ class main:
 		self.CHANNELLIST = {}
 		# create a dictionary (Python array) with index = channel ID
 		for i in temp:
-			self.CHANNELLIST[i[0]] = unicode(i[1],'utf-8')
+			self.CHANNELLIST[i[0]] = unicode(i[1], 'utf-8')
 
 		if len(self.CHANNELLIST) == 0:
 			self.log.log("ERROR: [aliases] section empty ?")
@@ -113,9 +113,9 @@ class main:
 							self.log.log("SID \"%s\" invalid, try next" % src_sidbyname)
 							continue
 
-						src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(ch_sid[2],ch_sid[1],ch_sid[0])
+						src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(ch_sid[2], ch_sid[1], ch_sid[0])
 						if not src_epgdb_channel:
-							self.log.log('Source channel "%s" with SID "%s" has not entry in epgdb, try next' % (src_channel,src_sidbyname))
+							self.log.log('Source channel "%s" with SID "%s" has not entry in epgdb, try next' % (src_channel, src_sidbyname))
 							continue
 						else:
 							break
@@ -127,7 +127,7 @@ class main:
 
 			elif src_channel.count('-') == 2:
 				tmp = src_channel.split('-')
-				src_sidbyname = "%s:xxxxxxxx:%s:%s:x:x" % (tmp[0].strip(' \n\r'),tmp[1].strip(' \n\r'),tmp[2].strip(' \n\r'))
+				src_sidbyname = "%s:xxxxxxxx:%s:%s:x:x" % (tmp[0].strip(' \n\r'), tmp[1].strip(' \n\r'), tmp[2].strip(' \n\r'))
 
 			else:
 				self.log.log("Channel source \"%s\" invalid" % src_channel)
@@ -140,12 +140,12 @@ class main:
 				self.log.log("SID \"%s\" invalid, try next" % src_sidbyname)
 				continue
 
-			src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(src_sid[2],src_sid[1],src_sid[0])
+			src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(src_sid[2], src_sid[1], src_sid[0])
 			if not src_epgdb_channel:
-				self.log.log('Source channel "%s" with SID "%s" has not entry in epgdb, skip it' % (src_channel,src_sidbyname))
+				self.log.log('Source channel "%s" with SID "%s" has not entry in epgdb, skip it' % (src_channel, src_sidbyname))
 				continue
 
-			self.log.log('Source channel "%s" with SID "%s" found in epgdb, using it' % (src_channel,src_sidbyname))
+			self.log.log('Source channel "%s" with SID "%s" found in epgdb, using it' % (src_channel, src_sidbyname))
 
 			for dst in dst_channels:
 				dst = dst.strip(' \n\r').lower()
@@ -166,8 +166,8 @@ class main:
 						continue
 
 					num_events = 0
-					self.log.log('   copying EPG data from "%s" to "%s" sid "%s")' % (src_channel,dst,dsid))
-					self.log.log2video_status("copy %s -> %s (%d/%d)" % (src_channel,dst,num_events,total_events))
+					self.log.log('   copying EPG data from "%s" to "%s" sid "%s")' % (src_channel, dst, dsid))
+					self.log.log2video_status("copy %s -> %s (%d/%d)" % (src_channel, dst, num_events, total_events))
 
 
 					# add channel into db
@@ -196,7 +196,7 @@ class main:
 						title = title.next
 
 						if (num_events % 25) == 0:
-							self.log.log2video_status("copy %s -> %s (%d/%d)" % (src_channel,dst,num_events,total_events))
+							self.log.log2video_status("copy %s -> %s (%d/%d)" % (src_channel, dst, num_events, total_events))
 
 
 					total_events += num_events
