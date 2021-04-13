@@ -40,7 +40,7 @@ class CrossEPG_Setup(Screen):
 			self.fastpatch = True
 		else:
 			self.fastpatch = False
-		
+
 		self.session = session
 
 		self.config = CrossEPG_Config()
@@ -70,18 +70,18 @@ class CrossEPG_Setup(Screen):
 					self.mountdescription.append(partition.description)
 				else:
 					self.mountdescription.append(partition.mountpoint)
-				
+
 		if not self.config.isQBOXHD():		# for other decoders we add internal flash as last entry (it's unsuggested)
 			self.mountdescription.append(_("Internal flash (unsuggested)"))
 			self.mountpoint.append(self.config.home_directory + "/data")
-			
+
 		# make lamedb entries
 		for lamedb in self.lamedbs:
 			if lamedb == "lamedb":
 				self.lamedbs_desc.append(_("main lamedb"))
 			else:
 				self.lamedbs_desc.append(lamedb.replace("lamedb.", "").replace(".", " "))
-				
+
 		# make automatic type entries
 		self.automatictype.append(_("disabled"))
 		self.automatictype.append(_("once a day"))
@@ -134,10 +134,10 @@ class CrossEPG_Setup(Screen):
 		except:
 			return False
 		return True
-		
-	def showWarning(self):	
+
+	def showWarning(self):
 		self.session.open(MessageBox, _("PLEASE READ!\nNo disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you still want use your internal flash pay attention to:\n(1) If you don't have enough free space your box may completely block and you need to flash it again\n(2) Many write operations on your internal flash may damage your flash memory"), type=MessageBox.TYPE_ERROR)
-	
+
 	def keyLeft(self):
 		self["config"].handleKey(KEY_LEFT)
 		self.update()
@@ -177,7 +177,7 @@ class CrossEPG_Setup(Screen):
 		if device_default == None:
 			self.config.db_root = self.mountpoint[0]
 			device_default = self.mountdescription[0]
-			
+
 		lamedb_default = _("main lamedb")
 		if self.config.lamedb != "lamedb":
 			lamedb_default = self.config.lamedb.replace("lamedb.", "").replace(".", " ")
@@ -217,7 +217,7 @@ class CrossEPG_Setup(Screen):
 	def update(self):
 		redraw = False
 		self.config.db_root = self.mountpoint[self.list[0][1].getIndex()]
-		
+
 		i = 1
 		if len(self.lamedbs_desc) > 1:
 			self.config.lamedb = self.lamedbs[self.list[i][1].getIndex()]
@@ -296,7 +296,7 @@ class CrossEPG_Setup(Screen):
 			self["information"].setText(_("Show crossepg in plugin menu"))
 		elif index == 10:
 			self["information"].setText(_("Show crossepg in extensions menu"))
-		
+
 	def quit(self):
 		self.config.last_full_download_timestamp = 0
 		self.config.last_partial_download_timestamp = 0
@@ -312,26 +312,25 @@ class CrossEPG_Setup(Screen):
 			configfile.save()
 		except Exception, e:
 			print "custom epgcache filename not supported by current enigma2 version"
-			
+
 		if getEPGPatchType() == -1:
 			# exec crossepg_prepare_pre_start for unpatched images
 			os.system(self.config.home_directory + "/crossepg_prepare_pre_start.sh")
-			
+
 		if self.show_extension != self.config.show_extension or self.show_plugin != self.config.show_plugin:
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU):
 				if plugin.name == "CrossEPG Downloader":
 					plugins.removePlugin(plugin)
-				
+
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_EXTENSIONSMENU):
 				if plugin.name == "CrossEPG Downloader":
 					plugins.removePlugin(plugin)
-				
+
 			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
-			
+
 		crossepg_auto.forcePoll()
-		
+
 		if self.config.db_root == self.config.home_directory + "/data" and not self.config.isQBOXHD():
 			self.showWarning()
-			
-		self.close()
 
+		self.close()

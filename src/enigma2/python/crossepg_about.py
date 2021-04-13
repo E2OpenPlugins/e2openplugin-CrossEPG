@@ -28,10 +28,10 @@ class CrossEPG_About(Screen):
 		f.close()
 
 		Screen.__init__(self, session)
-		
+
 		self.config = CrossEPG_Config()
 		self.config.load()
-		
+
 		self["about"] = Label("")
 		self["rytec_pix"] = Pixmap()
 		self["rytec_text"] = Label("")
@@ -43,7 +43,7 @@ class CrossEPG_About(Screen):
 			"red": self.quit,
 			"cancel": self.quit
 		}, -2)
-		
+
 		self["key_red"] = Button(_("Back"))
 		self["key_green"] = Button("")
 		self["key_yellow"] = Button("")
@@ -80,4 +80,3 @@ class CrossEPG_About(Screen):
 
 	def quit(self):
 		self.close()
-	

@@ -30,7 +30,7 @@ class CrossEPG_Downloader(Screen):
 		Screen.__init__(self, session)
 
 		self.session = session
-		
+
 		self["background"] = Pixmap()
 		self["action"] = Label(_("Starting downloader"))
 		self["status"] = Label("")
@@ -40,11 +40,11 @@ class CrossEPG_Downloader(Screen):
 		{
 			"back": self.quit
 		}, -1)
-		
+
 		self.__event_tracker = ServiceEventTracker(screen=self, eventmap={
 			iPlayableService.evTunedIn: self.tuned,
 		})
-		
+
 		self.retValue = True
 		self.provider_index = 0
 		self.status = 0
@@ -56,16 +56,16 @@ class CrossEPG_Downloader(Screen):
 		self.config.load()
 		self.providers = providers
 		self.pcallback = pcallback
-		
+
 		self.wrapper = CrossEPG_Wrapper()
 		self.wrapper.addCallback(self.wrapperCallback)
-		
+
 		self.timeout = eTimer()
 		self.timeout.callback.append(self.quit)
-		
+
 		self.hideprogress = eTimer()
 		self.hideprogress.callback.append(self["progress"].hide)
-		
+
 		self.pcallbacktimer = eTimer()
 		self.pcallbacktimer.callback.append(self.doCallback)
 
@@ -76,7 +76,7 @@ class CrossEPG_Downloader(Screen):
 			self.wrappertimer.start(100, 1)
 		else:
 			self.onFirstExecBegin.append(self.firstExec)
-			
+
 	def firstExec(self):
 		if self.isHD:
 			self["background"].instance.setPixmapFromFile("%s/images/background_hd.png" % (os.path.dirname(sys.modules[__name__].__file__)))
@@ -89,7 +89,7 @@ class CrossEPG_Downloader(Screen):
 			self.closeAndCallback(True)
 		else:
 			self.wrapper.init(CrossEPG_Wrapper.CMD_DOWNLOADER, self.config.db_root)
-	
+
 	def download(self):
 		if self.config.getChannelProtocol(self.providers[self.provider_index]) != "script":
 			if not self.open:
@@ -102,13 +102,13 @@ class CrossEPG_Downloader(Screen):
 				self.saved = True
 				self.provider_index -= 1
 				return
-			
+
 		service = self.config.getChannelID(self.providers[self.provider_index])
 		try:
 			cservice = self.session.nav.getCurrentlyPlayingServiceReference().toString()
 		except Exception, e:
 			cservice = None
-			
+
 		if service:
 			print "[CrossEPG_Downloader] %s service is %s" % (self.providers[self.provider_index], service)
 			if service == cservice:
@@ -120,16 +120,16 @@ class CrossEPG_Downloader(Screen):
 				self.session.nav.playService(eServiceReference(service))
 		else:
 			self.wrapper.download(self.providers[self.provider_index])
-	
+
 	def wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.EVENT_READY:
 			self.download()
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_END:
 			if self.saved and self.open:
 				self.wrapper.close()
 				self.open = False
-				
+
 			if self.status == 0:
 				self.provider_index += 1
 				if self.provider_index < len(self.providers):
@@ -146,17 +146,17 @@ class CrossEPG_Downloader(Screen):
 				if self.open:
 					self.wrapper.close()
 				self.wrapper.quit()
-				
+
 		elif event == CrossEPG_Wrapper.EVENT_ACTION:
 			self["action"].text = param
 			self["status"].text = ""
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_STATUS or event == CrossEPG_Wrapper.EVENT_URL:
 			self["status"].text = param
 
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESS:
 			self["progress"].setValue(param)
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESSONOFF:
 			if param:
 				self.hideprogress.stop()
@@ -171,13 +171,13 @@ class CrossEPG_Downloader(Screen):
 			self.session.open(MessageBox, _("CrossEPG error: %s") % (param), type=MessageBox.TYPE_INFO, timeout=20)
 			self.retValue = False
 			self.quit()
-			
+
 	def tuned(self):
 		if self.tune_enabled:
 			self.timeout.stop()
 			self.wrapper.download(self.providers[self.provider_index])
 			self.tune_enabled = False
-			
+
 	def quit(self):
 		if self.wrapper.running():
 			self.retValue = False
@@ -193,4 +193,3 @@ class CrossEPG_Downloader(Screen):
 	def doCallback(self):
 		if self.pcallback:
 			self.pcallback(self.retValue)
-

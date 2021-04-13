@@ -34,7 +34,7 @@ def fn_escape(s):
 
 
 class logging_class:
-	
+
 	FDlog = None
 
 	def __init__(self, fname=''):
@@ -47,7 +47,7 @@ class logging_class:
 				crossepg.log_open(dbroot)
 		else:
 			print "[scriptlib] WARNING: cannot open crossepg dbroot. Log not initialized !!"
-			
+
 	def log(self, s):
 		if self.FDlog != None:
 			self.FDlog.write("%s %s\n" % (time.strftime("%d/%m/%Y %H:%M:%S"), s))
@@ -57,11 +57,11 @@ class logging_class:
 	def log2video_status(self, s):
 		print("LOGTEXT %s" % s)
 		sys.stdout.flush()
-		
+
 	def log2video_pbar_on(self):
 		print("PROGRESS ON")
 		sys.stdout.flush()
-		
+
 	def log2video_pbar_off(self):
 		print("PROGRESS OFF")
 		sys.stdout.flush()
@@ -73,7 +73,7 @@ class logging_class:
 			i = 0
 		print("PROGRESS %d" % i)
 		sys.stdout.flush()
-		
+
 	def log2video_scriptname(self, s):
 		print("TYPE RUNNING CSCRIPT %s" % s)
 		sys.stdout.flush()
@@ -358,13 +358,13 @@ class crossepg_db_class:
 			print("DEBUG: length error %d" % duration)
 			return
 
-		event_ref = crossepg.epgdb_title_alloc() # alloc title structure in memory		
+		event_ref = crossepg.epgdb_title_alloc() # alloc title structure in memory
 		event_ref.event_id = self.event_id  # event_id is unique inside a channel
 		self.event_id += 1
 
 		event_ref.start_time = start_time	# Unix timestamp, always referred to gmt+0 without daylight saving
 		event_ref.mjd = crossepg.epgdb_calculate_mjd(event_ref.start_time)	# Modified Julian Date. if you don't know it you can calulate it with epgdb_calculate_mjd()
-	
+
 		# print("       title %s , starttime %s , duration %f" % (title, start_time, duration))
 		event_ref.length = duration  # event duration in seconds
 
@@ -387,5 +387,3 @@ class crossepg_db_class:
 		else:
 			crossepg.epgdb_titles_set_description_utf8(event_ref, title)
 			crossepg.epgdb_titles_set_long_description_utf8(event_ref, summarie)
-
-

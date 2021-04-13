@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # alias.py  by Ambrosa http://www.ambrosa.net
 # this module is used for copy epg from a channel to another
-# 11-apr-2012 
+# 11-apr-2012
 
 __author__ = "ambrosa http://www.ambrosa.net"
 __copyright__ = "Copyright (C) 2008-2011 Alessandro Ambrosini"
@@ -42,7 +42,7 @@ class main:
 		self.log = scriptlib.logging_class()
 		# write to video OSD the script name
 		self.log.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
-		
+
 		self.log.log("=== RUNNING SCRIPT %s ===" % self.CONF_LOG_SCRIPT_NAME)
 
 		CONF_FILE = os.path.join(confdir, self.CONF_CONFIGFILENAME)
@@ -229,5 +229,3 @@ script_class = main(scriptlocation, crossepg_dbroot)
 
 # copy epg
 script_class.do_epg_alias()
-
-

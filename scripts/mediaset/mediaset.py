@@ -73,7 +73,7 @@ class main(sgmllib.SGMLParser):
 # sgmllib can simple parse xml data
 	SGML_PALINSESTO_INSIDE = False
 	SGML_PROGRAMMI_INSIDE = False
-	
+
 	SGML_GIORNOMP = None
 	SGML_FD = {}
 	SGML_TOTAL_EVENTS = 0
@@ -81,7 +81,7 @@ class main(sgmllib.SGMLParser):
 	SGML_EVENT_IDREF = None
 	SGML_EVENT_TIMESTAMP = None
 	SGML_EVENT_TITLE = None
-	
+
 	SGML_PBAR_MAXVALUE = 1
 	SGML_PBAR_INDEX = 0
 
@@ -108,10 +108,10 @@ class main(sgmllib.SGMLParser):
 						self.SGML_GIORNOMP = str(value).strip(' \n\r')
 						self.log.log2video_status("processing XML %s (%d)" % (self.SGML_GIORNOMP, self.SGML_TOTAL_EVENTS))
 						self.SGML_FD = {}
-						
+
 						for c in sorted(self.CHANNELLIST.keys()):
 							cacheopt = int(self.CHANNELLIST[c].split(",")[0])
-							
+
 							# if cacheopt == 0, do nothing
 							if cacheopt == 0:
 								continue
@@ -140,7 +140,7 @@ class main(sgmllib.SGMLParser):
 							day = str(self.convert_daymp(self.SGML_GIORNOMP))
 							eventfilename = scriptlib.fn_escape(c + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + day)
 							eventfilepath = os.path.join(self.CONF_CACHEDIR, eventfilename)
-							
+
 							if (cacheopt == 1) and os.path.exists(eventfilepath):
 								continue
 							if (cacheopt == 3) and os.path.exists(eventfilepath) and (self.SGML_GIORNOMP != self.TODAYMP):
@@ -181,10 +181,10 @@ class main(sgmllib.SGMLParser):
 				elif name == "titolo":
 					self.SGML_EVENT_TITLE = str(value).strip(' \n\r')
 					self.SGML_EVENT_TITLE = self.SGML_EVENT_TITLE.encode('utf-8')
-					
+
 	def end_programma(self):
 		if self.SGML_FD.has_key(self.SGML_EVENT_IDREF):
-				
+
 			event_starttime = self.SGML_EVENT_TIMESTAMP
 			event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime, "%Y%m%d%H%M"))) - self.DELTA_UTC)
 
@@ -199,18 +199,18 @@ class main(sgmllib.SGMLParser):
 
 			self.SGML_FD[self.SGML_EVENT_IDREF].write(event_starttime + self.FIELD_SEPARATOR + event_startime_unix_gmt + self.FIELD_SEPARATOR + event_title + self.FIELD_SEPARATOR + event_description + '\n')
 			self.SGML_TOTAL_EVENTS += 1
-			
+
 			self.SGML_EVENT_IDREF = None
 			self.SGML_EVENT_TIMESTAMP = None
 			self.SGML_EVENT_TITLE = None
-		
+
 					#pbar_value = int(self.SGML_PBAR_INDEX * 100 / self.SGML_PBAR_MAXVALUE)
 					#if pbar_value > 100:
 					#	pbar_value = 100
 					#self.log.log2video_pbar(pbar_value)
 					#self.SGML_PBAR_INDEX += 1
 
-		
+
 #	def handle_data(self, data):
 #		pass
 
@@ -237,10 +237,10 @@ class main(sgmllib.SGMLParser):
 
 		# initialize logging class
 		self.log = scriptlib.logging_class(self.CONF_LOG_FILENAME)
-		
+
 		# write to video OSD the script name
 		self.log.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
-		
+
 		self.log.log("=== RUNNING SCRIPT %s ===" % self.CONF_LOG_SCRIPT_NAME)
 
 		CONF_FILE = os.path.join(confdir, self.CONF_CONFIGFILENAME)
@@ -357,7 +357,7 @@ class main(sgmllib.SGMLParser):
 		self.parse(data)
 		self.log.log2video_pbar(0)
 		self.log.log2video_pbar_off()
-		
+
 		self.log.log("end process XML data")
 
 # ----------------------------------------------------------------------
@@ -365,7 +365,7 @@ class main(sgmllib.SGMLParser):
 	def process_cache(self):
 		self.log.log("--- START PROCESSING CACHE ---")
 		self.log.log2video_status("START PROCESSING CACHE")
-		
+
 		if not os.path.exists(self.CONF_CACHEDIR):
 			self.log.log("ERROR: %s not present" % self.CONF_CACHEDIR)
 			self.log.log2video_status("ERROR: %s not present, abort" % self.CONF_CACHEDIR)
@@ -396,7 +396,7 @@ class main(sgmllib.SGMLParser):
 		for f in filelist:
 			self.log.log2video_pbar(int(pbar_index * pbar_maxvalue))
 			pbar_index += 1
-			
+
 			id = f.split(self.FIELD_SEPARATOR)[0]
 			if previous_id == '':
 				previous_id = id
@@ -471,14 +471,14 @@ class main(sgmllib.SGMLParser):
 
 		# end process, close CrossEPG DB saving data
 		crossdb.close_db()
-		
+
 		self.log.log2video_pbar(0)
 		self.log.log2video_pbar_off()
-		
+
 		self.log.log("TOTAL EPG EVENTS PROCESSED: %d" % total_events)
 		self.log.log("--- END ---")
 		self.log.log2video_status("END, processed %d events" % total_events)
-		
+
 		time.sleep(3)
 
 
@@ -513,4 +513,3 @@ script_class.download_and_cache()
 
 # read cached data and inject into CrossEPG database
 script_class.process_cache()
-

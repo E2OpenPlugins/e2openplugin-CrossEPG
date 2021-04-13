@@ -63,11 +63,10 @@ def main():
 	crossepg.log_add("GMT vs. LocalTime difference (in seconds): %d" % delta_timezone)
 	delta_daylight = scriptlib.delta_dst()
 	crossepg.log_add("DayLight Saving (DST) difference now: %d" % delta_daylight)
-	
+
 	crossepg.log_add("---- END EXAMPLE TEST SCRIPT ----")
 
 
 # -------------------------------------------------
 # run main() function
 main()
-

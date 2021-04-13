@@ -147,7 +147,7 @@ class main:
 		self.log = scriptlib.logging_class()
 		# write to video OSD the script name
 		self.log.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
-		
+
 		self.log.log("=== RUNNING SCRIPT %s ===" % self.CONF_LOG_SCRIPT_NAME)
 
 		CONF_FILE = os.path.join(confdir, self.CONF_CONFIGFILENAME)
@@ -232,14 +232,14 @@ class main:
 			cacheopt = int(string.split(chlist[c], ",")[0])
 			if cacheopt == 1:
 				pbar_max += 1
-				
+
 		pbar_max *= self.CONF_MAX_DAY_EPG
 		pbar_max = 100.0 / pbar_max
-			
+
 		self.log.log2video_pbar_on()
 		self.log.log2video_pbar(0)
 		pbar_value = 0
-		
+
 		for c in sorted(chlist.keys()):
 			self.guidatoday = []
 			self.guidatomorrow = []
@@ -255,7 +255,7 @@ class main:
 			# if cacheopt == 0, do nothing
 			if cacheopt == 0:
 				continue
-		
+
 			self.log.log2video_status("processing %s" % c)
 			channel_name = ''
 			if len(chlist[c].split(",")) > 1:
@@ -277,7 +277,7 @@ class main:
 			for day in self.DAYCACHE:
 				if exit_for_loop == True:
 					break
-				
+
 				pbar_value += 1
 				self.log.log2video_pbar(pbar_value * pbar_max)
 
@@ -366,7 +366,7 @@ class main:
 							fd.write(event_starttime + self.FIELD_SEPARATOR + event_startime_unix_gmt + self.FIELD_SEPARATOR + event_title + self.FIELD_SEPARATOR + event_description + '\n')
 
 						fd.close()
-		
+
 		self.log.log2video_pbar(0)
 		self.log.log2video_pbar_off()
 
@@ -502,4 +502,3 @@ script_class.download_and_cache()
 
 # read cached data and inject into CrossEPG database
 script_class.process_cache()
-

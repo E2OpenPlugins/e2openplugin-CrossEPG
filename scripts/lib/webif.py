@@ -23,7 +23,7 @@ class webif_class:
     WEBIF_AUTH_PASSW = 'qboxhd'
     WEBIF_AUTH_REALM = 'dm7025'
     WEBIF_IP = '127.0.0.1'
-    
+
     def __init__(self, use, auth, auth_name, auth_passw, auth_realm, ip):
         self.USE_WEBIF = use
         self.USE_WEBIF_AUTH = auth
@@ -34,18 +34,18 @@ class webif_class:
 
     def get_use_webif(self):
         return(self.USE_WEBIF)
-        
-    # WebInterface routines
-    # see http://dream.reichholf.net/wiki/Enigma2:WebInterface    
 
-    def WI(self, command):   
-        
-        if self.USE_WEBIF_AUTH == 1:    
+    # WebInterface routines
+    # see http://dream.reichholf.net/wiki/Enigma2:WebInterface
+
+    def WI(self, command):
+
+        if self.USE_WEBIF_AUTH == 1:
             auth_handler = urllib2.HTTPBasicAuthHandler()
             auth_handler.add_password(self.WEBIF_AUTH_REALM, 'http://' + self.WEBIF_IP, self.WEBIF_AUTH_USER, self.WEBIF_AUTH_PASSW)
             opener = urllib2.build_opener(auth_handler)
             urllib2.install_opener(opener)
-            
+
         try:
             sock = urllib2.urlopen('http://' + self.WEBIF_IP + '/web/' + command)
             data = sock.read()
@@ -58,29 +58,29 @@ class webif_class:
         else:
             sock.close()
             return(data)
-            
+
     def standby(self):
         current_sid = self.currentchannelsid()
         if current_sid != None:
             self.WI('powerstate?newstate=0')
             time.sleep(5)
-        
+
     def restartenigma(self):
         self.WI('powerstate?newstate=3')
-        
+
     def switchon(self):
         current_sid = self.currentchannelsid()
         if current_sid == None:
             # DM appears switched off. Switch it on !
-        
+
             # switch on emulating remote keypress
             # 'powerstate?newstate=116' is not (?) working
-            #self.WI('remotecontrol?command=116')       
+            #self.WI('remotecontrol?command=116')
             self.WI('powerstate?newstate=0')
 
             time.sleep(5)
             current_sid = self.currentchannelsid()
-        
+
         return(current_sid)
 
     def zap(self, channelsid):
@@ -93,19 +93,19 @@ class webif_class:
         # DM must be SWITCHED ON
         # if DM is in standby mode, it return 'none'
         data = self.WI('subservices')
-        
+
         if data == None:
             return(None)
-            
+
         try:
             xmldoc = minidom.parseString(data)
         except:
             return(None)
-        
+
         r = xmldoc.getElementsByTagName('e2servicereference')[0].firstChild.data
         if r == 'N/A':
             return(None)
-            
+
         return(r)
 
     def is_recording(self):
@@ -120,5 +120,3 @@ class webif_class:
         # WARNING: if DM is switched off, sending a message cause a lock/crash in the system
         if is_on != None:
             self.WI("message?text=" + quote_plus("E2_LOADEPG - " + txt) + "&type=" + str(type) + "&timeout=" + str(timeout))
-        
-

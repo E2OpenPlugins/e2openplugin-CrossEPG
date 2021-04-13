@@ -28,7 +28,7 @@ class CrossEPG_Importer(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
-		
+
 		self["background"] = Pixmap()
 		self["action"] = Label(_("Starting importer"))
 		self["status"] = Label("")
@@ -38,8 +38,8 @@ class CrossEPG_Importer(Screen):
 		{
 			"back": self.quit
 		}, -1)
-		
-		self.retValue = True	
+
+		self.retValue = True
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.lamedb = self.config.lamedb
@@ -47,15 +47,15 @@ class CrossEPG_Importer(Screen):
 		if not pathExists(self.db_root):
 			if not createDir(self.db_root):
 				self.db_root = "/hdd/crossepg"
-				
+
 		self.pcallback = pcallback
-		
+
 		self.wrapper = CrossEPG_Wrapper()
 		self.wrapper.addCallback(self.wrapperCallback)
-		
+
 		self.hideprogress = eTimer()
 		self.hideprogress.callback.append(self["progress"].hide)
-		
+
 		self.pcallbacktimer = eTimer()
 		self.pcallbacktimer.callback.append(self.doCallback)
 
@@ -77,11 +77,11 @@ class CrossEPG_Importer(Screen):
 
 	def startWrapper(self):
 		self.wrapper.init(CrossEPG_Wrapper.CMD_IMPORTER, self.db_root)
-	
+
 	def wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.EVENT_READY:
 			self.wrapper.importx()
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_END:
 			if self.status == 0:
 				self.status += 1
@@ -90,24 +90,24 @@ class CrossEPG_Importer(Screen):
 				self.wrapper.delCallback(self.wrapperCallback)
 				self.wrapper.quit()
 				self.closeAndCallback(self.retValue)
-				
+
 		elif event == CrossEPG_Wrapper.EVENT_FILE:
 			self["action"].text = _("Parsing")
 			self["status"].text = param
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_URL:
 			self["action"].text = _("Downloading")
 			self["status"].text = param
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_ACTION:
 			self["action"].text = param
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_STATUS:
 			self["status"].text = param
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESS:
 			self["progress"].setValue(param)
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESSONOFF:
 			if param:
 				self.hideprogress.stop()
@@ -116,15 +116,15 @@ class CrossEPG_Importer(Screen):
 			else:
 				self["progress"].setValue(100)
 				self.hideprogress.start(500, 1)
-				
+
 		elif event == CrossEPG_Wrapper.EVENT_QUIT:
 			self.closeAndCallback(self.retValue)
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_ERROR:
 			self.session.open(MessageBox, _("CrossEPG error: %s") % (param), type=MessageBox.TYPE_INFO, timeout=20)
 			self.retValue = False
 			self.quit()
-			
+
 	def quit(self):
 		if self.wrapper.running():
 			self.retValue = False
@@ -140,4 +140,3 @@ class CrossEPG_Importer(Screen):
 	def doCallback(self):
 		if self.pcallback:
 			self.pcallback(self.retValue)
-

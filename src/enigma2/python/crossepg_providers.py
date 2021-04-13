@@ -97,7 +97,7 @@ class CrossEPG_Providers(Screen):
 			return((description, pixmap, name))
 		else:
 			return((description, None, name))
-		
+
 	def selectionChanged(self):
 		if len(self.list) == 0:
 			return
@@ -150,4 +150,3 @@ class CrossEPG_Providers(Screen):
 	def quit(self):
 		self.config.save()
 		self.close()
-

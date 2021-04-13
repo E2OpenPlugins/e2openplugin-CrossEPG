@@ -49,20 +49,20 @@ class CrossEPG_Auto(Screen):
 			os.unlink("/tmp/crossepg.standby")
 			print "[CrossEPG_Auto] coming back in standby in 30 seconds"
 			self.standbyTimer.start(30000, 1)
-			
+
 		self.config.load()
-		
+
 		if self.config.force_load_on_boot:
 			self.loader()
 
 	def init(self, session=None):
 		if session != None:
 			self.session = session
-			
+
 		if time() < 1262325600:		# if before 2010 probably the clock isn't yet updated
 			self.delayedInitTimer.start(60000, 1)	#initialization delayed of 1 minute
 			return
-			
+
 		self.resetDailyDownloadDateCache()
 		self.timer.start(self.POLL_TIMER_BOOT, 1)
 
@@ -70,7 +70,7 @@ class CrossEPG_Auto(Screen):
 		self.timer.stop()
 		self.resetDailyDownloadDateCache()
 		self.timer.start(self.POLL_TIMER_FAST, 1)
-		
+
 	def resetDailyDownloadDateCache(self):
 		self.config.load()
 		now = time()
@@ -84,11 +84,11 @@ class CrossEPG_Auto(Screen):
 		# we step forward of 24 hours until the new time is greater than now
 		while ttime < now:
 			ttime = ttime + 86400	# 24 hours in future
-		
+
 		self.cacheYear = ttime[0]
 		self.cacheMonth = ttime[1]
 		self.cacheDay = ttime[2]
-			
+
 	def poll(self):
 		from Screens.Standby import inStandby
 		self.config.load()

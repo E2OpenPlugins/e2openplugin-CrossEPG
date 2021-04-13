@@ -57,9 +57,9 @@ class CrossEPG_Ordering(Screen):
 			if prv == provider:
 				return self.providers[1][i]
 			i += 1
-			
+
 		return provider
-	
+
 	def buildList(self):
 		self.list = []
 		for provider in self.config.providers:
@@ -69,7 +69,7 @@ class CrossEPG_Ordering(Screen):
 
 	def buildListEntry(self, name, description):
 		return((description, None, name))
-		
+
 	def selectionChanged(self):
 		if len(self.list) <= 1:
 			return
@@ -94,10 +94,10 @@ class CrossEPG_Ordering(Screen):
 			tmp = self.config.providers[index - 1]
 			self.config.providers[index - 1] = self.config.providers[index]
 			self.config.providers[index] = tmp
-			
+
 			self.buildList()
 			self["list"].setIndex(index - 1)
-			
+
 	def moveDown(self):
 		if len(self.list) <= 1:
 			return
@@ -114,4 +114,3 @@ class CrossEPG_Ordering(Screen):
 	def quit(self):
 		self.config.save()
 		self.close()
-

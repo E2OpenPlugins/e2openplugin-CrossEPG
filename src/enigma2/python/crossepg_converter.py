@@ -28,7 +28,7 @@ class CrossEPG_Converter(Screen):
 		self.skin = f.read()
 		f.close()
 		Screen.__init__(self, session)
-		
+
 		self["background"] = Pixmap()
 		self["action"] = Label(_("Starting converter"))
 		self["status"] = Label("")
@@ -38,8 +38,8 @@ class CrossEPG_Converter(Screen):
 		{
 			"back": self.quit
 		}, -1)
-		
-		self.retValue = True	
+
+		self.retValue = True
 		self.config = CrossEPG_Config()
 		self.config.load()
 		self.lamedb = self.config.lamedb
@@ -47,15 +47,15 @@ class CrossEPG_Converter(Screen):
 		if not pathExists(self.db_root):
 			if not createDir(self.db_root):
 				self.db_root = "/hdd/crossepg"
-				
+
 		self.pcallback = pcallback
-		
+
 		self.wrapper = CrossEPG_Wrapper()
 		self.wrapper.addCallback(self.wrapperCallback)
-		
+
 		self.hideprogress = eTimer()
 		self.hideprogress.callback.append(self["progress"].hide)
-		
+
 		self.pcallbacktimer = eTimer()
 		self.pcallbacktimer.callback.append(self.doCallback)
 
@@ -75,27 +75,27 @@ class CrossEPG_Converter(Screen):
 
 	def startWrapper(self):
 		self.wrapper.init(CrossEPG_Wrapper.CMD_CONVERTER, self.db_root)
-		
+
 	def wrapperCallback(self, event, param):
 		if event == CrossEPG_Wrapper.EVENT_READY:
 			self.wrapper.epgdat("%s/ext.epg.dat" % (self.db_root))
 			self.wrapper.lamedb("/etc/enigma2/%s" % (self.lamedb))
 			self.wrapper.convert()
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_END:
 			self.wrapper.delCallback(self.wrapperCallback)
 			self.wrapper.quit()
 			self.closeAndCallback(self.retValue)
-				
+
 		elif event == CrossEPG_Wrapper.EVENT_ACTION:
 			self["action"].text = param
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_STATUS:
 			self["status"].text = param
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESS:
 			self["progress"].setValue(param)
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_PROGRESSONOFF:
 			if param:
 				self.hideprogress.stop()
@@ -104,15 +104,15 @@ class CrossEPG_Converter(Screen):
 			else:
 				self["progress"].setValue(100)
 				self.hideprogress.start(500, 1)
-				
+
 		elif event == CrossEPG_Wrapper.EVENT_QUIT:
 			self.closeAndCallback(self.retValue)
-			
+
 		elif event == CrossEPG_Wrapper.EVENT_ERROR:
 			self.session.open(MessageBox, _("CrossEPG error: %s") % (param), type=MessageBox.TYPE_INFO, timeout=20)
 			self.retValue = False
 			self.quit()
-			
+
 	def quit(self):
 		if self.wrapper.running():
 			self.retValue = False
@@ -128,4 +128,3 @@ class CrossEPG_Converter(Screen):
 	def doCallback(self):
 		if self.pcallback:
 			self.pcallback(self.retValue)
-

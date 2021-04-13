@@ -539,4 +539,3 @@ script_class.download_and_cache()
 
 # read cached data and inject into CrossEPG database
 script_class.process_cache()
-

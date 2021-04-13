@@ -79,7 +79,7 @@ class CrossEPG_Menu(Screen):
 		}, -2)
 
 		self.onFirstExecBegin.append(self.setTitleWithVerion)
-		
+
 		if self.config.configured == 0:
 			self.onFirstExecBegin.append(self.openSetup)
 
@@ -89,7 +89,7 @@ class CrossEPG_Menu(Screen):
 
 	def openSetup(self):
 		self.session.open(CrossEPG_Setup)
-			
+
 	def setTitleWithVerion(self):
 		try:
 			global version
@@ -131,7 +131,7 @@ class CrossEPG_Menu(Screen):
 			self.session.open(CrossEPG_Info)
 		elif index == 14:
 			self.session.open(CrossEPG_About)
-		
+
 	def quit(self):
 		self.close()
 
@@ -173,4 +173,3 @@ class CrossEPG_Menu(Screen):
 
 	def loader(self):
 		self.session.open(CrossEPG_Loader)
-
