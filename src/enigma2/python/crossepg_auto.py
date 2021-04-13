@@ -13,6 +13,7 @@ from time import *
 
 import os
 
+
 class CrossEPG_Auto(Screen):
 	POLL_TIMER = 1800000	# poll every 30 minutes
 	#POLL_TIMER = 18000
@@ -48,20 +49,20 @@ class CrossEPG_Auto(Screen):
 			os.unlink("/tmp/crossepg.standby")
 			print "[CrossEPG_Auto] coming back in standby in 30 seconds"
 			self.standbyTimer.start(30000, 1)
-			
+
 		self.config.load()
-		
+
 		if self.config.force_load_on_boot:
 			self.loader()
 
-	def init(self, session = None):
+	def init(self, session=None):
 		if session != None:
 			self.session = session
-			
+
 		if time() < 1262325600:		# if before 2010 probably the clock isn't yet updated
 			self.delayedInitTimer.start(60000, 1)	#initialization delayed of 1 minute
 			return
-			
+
 		self.resetDailyDownloadDateCache()
 		self.timer.start(self.POLL_TIMER_BOOT, 1)
 
@@ -69,7 +70,7 @@ class CrossEPG_Auto(Screen):
 		self.timer.stop()
 		self.resetDailyDownloadDateCache()
 		self.timer.start(self.POLL_TIMER_FAST, 1)
-		
+
 	def resetDailyDownloadDateCache(self):
 		self.config.load()
 		now = time()
@@ -77,17 +78,17 @@ class CrossEPG_Auto(Screen):
 		ltime = (ttime[0], ttime[1], ttime[2], self.config.download_daily_hours, self.config.download_daily_minutes, 0, ttime[6], ttime[7], ttime[8])
 		stime = mktime(ltime)
 		if stime < now:
-			ttime = localtime(stime+86400)	# 24 hours in future
+			ttime = localtime(stime + 86400)	# 24 hours in future
 
 		# to avoid problems with internal clock (big changes on date/time)
 		# we step forward of 24 hours until the new time is greater than now
 		while ttime < now:
-			ttime = ttime+86400	# 24 hours in future
-		
+			ttime = ttime + 86400	# 24 hours in future
+
 		self.cacheYear = ttime[0]
 		self.cacheMonth = ttime[1]
 		self.cacheDay = ttime[2]
-			
+
 	def poll(self):
 		from Screens.Standby import inStandby
 		self.config.load()
@@ -102,12 +103,12 @@ class CrossEPG_Auto(Screen):
 			self.providers = []
 			now = time()
 
-			if self.config.last_full_download_timestamp <= now - (24*60*60):
+			if self.config.last_full_download_timestamp <= now - (24 * 60 * 60):
 				self.config.last_full_download_timestamp = now
 				self.config.last_partial_download_timestamp = now
 				self.config.save()
 				self.providers = self.config.providers
-			elif self.config.last_partial_download_timestamp <= now - (60*60): # skip xmltv... we download it only one time a day
+			elif self.config.last_partial_download_timestamp <= now - (60 * 60): # skip xmltv... we download it only one time a day
 				self.config.last_partial_download_timestamp = now
 				self.config.save()
 				providers = self.config.getAllProviders()
@@ -141,11 +142,11 @@ class CrossEPG_Auto(Screen):
 				self.config.last_full_download_timestamp = stime
 				self.config.last_partial_download_timestamp = stime
 				self.config.save()
-				ttime = localtime(stime+86400)	# 24 hours in future
+				ttime = localtime(stime + 86400)	# 24 hours in future
 				# to avoid problems with internal clock (big changes on date/time)
 				# we step forward of 24 hours until the new time is greater than now
 				while ttime < now:
-					ttime = ttime+86400	# 24 hours in future
+					ttime = ttime + 86400	# 24 hours in future
 				self.cacheYear = ttime[0]
 				self.cacheMonth = ttime[1]
 				self.cacheDay = ttime[2]
@@ -153,14 +154,14 @@ class CrossEPG_Auto(Screen):
 				self.download(self.config.providers)
 			elif stime < now + (self.POLL_TIMER / 1000) and self.config.last_full_download_timestamp != stime:
 				print "[CrossEPG_Auto] poll"
-				delta = int(stime - now);
-				self.timer.start((delta + 5)*1000, 1)	# 5 seconds offset
+				delta = int(stime - now)
+				self.timer.start((delta + 5) * 1000, 1)	# 5 seconds offset
 			else:
 				print "[CrossEPG_Auto] poll"
 				self.timer.start(self.POLL_TIMER, 1)
 		elif self.config.download_tune_enabled:
 			now = time()
-			if self.config.last_partial_download_timestamp <= now - (60*60):
+			if self.config.last_partial_download_timestamp <= now - (60 * 60):
 				providerok = None
 				sservice = self.session.nav.getCurrentlyPlayingServiceReference()
 				if sservice:
@@ -172,7 +173,7 @@ class CrossEPG_Auto(Screen):
 						if providers[2][i] == "opentv":
 							if self.config.getChannelID(provider) == service:
 								providerok = provider
-								break;
+								break
 						i += 1
 
 				if providerok:
@@ -182,7 +183,7 @@ class CrossEPG_Auto(Screen):
 					self.config.last_partial_download_timestamp = now
 					self.config.save()
 					self.config.deleteLog()
-					self.download([provider,])
+					self.download([provider, ])
 				else:
 					print "[CrossEPG_Auto] poll"
 					self.timer.start(self.POLL_TIMER, 1)
@@ -300,5 +301,6 @@ class CrossEPG_Auto(Screen):
 			print "[CrossEPG_Auto] coming back in standby"
 			from Screens.Standby import Standby
 			self.session.open(Standby)
+
 
 crossepg_auto = CrossEPG_Auto()

@@ -10,18 +10,19 @@ from crossepg_setup import CrossEPG_Setup
 from crossepg_menu import CrossEPG_Menu
 from crossepg_auto import crossepg_auto
 
+
 class CrossEPG_Main:
 	def __init__(self):
 		self.config = CrossEPG_Config()
 		self.patchtype = getEPGPatchType()
-		
+
 	def downloader(self, session):
 		self.session = session
 		crossepg_auto.lock = True
 		crossepg_auto.stop()
 		self.config.load()
 		if self.config.configured == 0:
-			self.session.open(MessageBox, _("Please configure crossepg before start downloader"), type = MessageBox.TYPE_ERROR)
+			self.session.open(MessageBox, _("Please configure crossepg before start downloader"), type=MessageBox.TYPE_ERROR)
 		else:
 			self.config.deleteLog()
 			self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, self.config.providers)
@@ -88,5 +89,6 @@ class CrossEPG_Main:
 
 	def autostart(self, reason, session):
 		crossepg_auto.init(session)
-		
+
+
 crossepg_main = CrossEPG_Main()

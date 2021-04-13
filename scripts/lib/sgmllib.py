@@ -118,32 +118,37 @@ class SGMLParser(markupbase.ParserBase):
                 i = n
                 break
             match = interesting.search(rawdata, i)
-            if match: j = match.start()
-            else: j = n
+            if match:
+                j = match.start()
+            else:
+                j = n
             if i < j:
                 self.handle_data(rawdata[i:j])
             i = j
-            if i == n: break
+            if i == n:
+                break
             if rawdata[i] == '<':
                 if starttagopen.match(rawdata, i):
                     if self.literal:
                         self.handle_data(rawdata[i])
-                        i = i+1
+                        i = i + 1
                         continue
                     k = self.parse_starttag(i)
-                    if k < 0: break
+                    if k < 0:
+                        break
                     i = k
                     continue
                 if rawdata.startswith("</", i):
                     k = self.parse_endtag(i)
-                    if k < 0: break
+                    if k < 0:
+                        break
                     i = k
                     self.literal = 0
                     continue
                 if self.literal:
                     if n > (i + 1):
                         self.handle_data("<")
-                        i = i+1
+                        i = i + 1
                     else:
                         # incomplete
                         break
@@ -154,40 +159,45 @@ class SGMLParser(markupbase.ParserBase):
                         # This should be removed,
                         # and comments handled only in parse_declaration.
                     k = self.parse_comment(i)
-                    if k < 0: break
+                    if k < 0:
+                        break
                     i = k
                     continue
                 if rawdata.startswith("<?", i):
                     k = self.parse_pi(i)
-                    if k < 0: break
-                    i = i+k
+                    if k < 0:
+                        break
+                    i = i + k
                     continue
                 if rawdata.startswith("<!", i):
                     # This is some sort of declaration; in "HTML as
                     # deployed," this should only be the document type
                     # declaration ("<!DOCTYPE html...>").
                     k = self.parse_declaration(i)
-                    if k < 0: break
+                    if k < 0:
+                        break
                     i = k
                     continue
             elif rawdata[i] == '&':
                 if self.literal:
                     self.handle_data(rawdata[i])
-                    i = i+1
+                    i = i + 1
                     continue
                 match = charref.match(rawdata, i)
                 if match:
                     name = match.group(1)
                     self.handle_charref(name)
                     i = match.end(0)
-                    if rawdata[i-1] != ';': i = i-1
+                    if rawdata[i - 1] != ';':
+                        i = i - 1
                     continue
                 match = entityref.match(rawdata, i)
                 if match:
                     name = match.group(1)
                     self.handle_entityref(name)
                     i = match.end(0)
-                    if rawdata[i-1] != ';': i = i-1
+                    if rawdata[i - 1] != ';':
+                        i = i - 1
                     continue
             else:
                 self.error('neither < nor & ??')
@@ -196,7 +206,7 @@ class SGMLParser(markupbase.ParserBase):
             match = incomplete.match(rawdata, i)
             if not match:
                 self.handle_data(rawdata[i])
-                i = i+1
+                i = i + 1
                 continue
             j = match.end(0)
             if j == n:
@@ -216,15 +226,15 @@ class SGMLParser(markupbase.ParserBase):
     # Internal -- parse processing instr, return length or -1 if not terminated
     def parse_pi(self, i):
         rawdata = self.rawdata
-        if rawdata[i:i+2] != '<?':
+        if rawdata[i:i + 2] != '<?':
             self.error('unexpected call to parse_pi()')
-        match = piclose.search(rawdata, i+2)
+        match = piclose.search(rawdata, i + 2)
         if not match:
             return -1
         j = match.start(0)
-        self.handle_pi(rawdata[i+2: j])
+        self.handle_pi(rawdata[i + 2: j])
         j = match.end(0)
-        return j-i
+        return j - i
 
     def get_starttag_text(self):
         return self.__starttag_text
@@ -253,26 +263,27 @@ class SGMLParser(markupbase.ParserBase):
         # As a shortcut way to exit, this isn't so bad, but shouldn't
         # be used to locate the actual end of the start tag since the
         # < or > characters may be embedded in an attribute value.
-        match = endbracket.search(rawdata, i+1)
+        match = endbracket.search(rawdata, i + 1)
         if not match:
             return -1
         j = match.start(0)
         # Now parse the data between i+1 and j into a tag and attrs
         attrs = []
-        if rawdata[i:i+2] == '<>':
+        if rawdata[i:i + 2] == '<>':
             # SGML shorthand: <> == <last open tag seen>
             k = j
             tag = self.lasttag
         else:
-            match = tagfind.match(rawdata, i+1)
+            match = tagfind.match(rawdata, i + 1)
             if not match:
                 self.error('unexpected call to parse_starttag')
             k = match.end(0)
-            tag = rawdata[i+1:k].lower()
+            tag = rawdata[i + 1:k].lower()
             self.lasttag = tag
         while k < j:
             match = attrfind.match(rawdata, k)
-            if not match: break
+            if not match:
+                break
             attrname, rest, attrvalue = match.group(1, 2, 3)
             if not rest:
                 attrvalue = attrname
@@ -286,7 +297,7 @@ class SGMLParser(markupbase.ParserBase):
             attrs.append((attrname.lower(), attrvalue))
             k = match.end(0)
         if rawdata[j] == '>':
-            j = j+1
+            j = j + 1
         self.__starttag_text = rawdata[start_pos:j]
         self.finish_starttag(tag, attrs)
         return j
@@ -305,13 +316,13 @@ class SGMLParser(markupbase.ParserBase):
     # Internal -- parse endtag
     def parse_endtag(self, i):
         rawdata = self.rawdata
-        match = endbracket.search(rawdata, i+1)
+        match = endbracket.search(rawdata, i + 1)
         if not match:
             return -1
         j = match.start(0)
-        tag = rawdata[i+2:j].strip().lower()
+        tag = rawdata[i + 2:j].strip().lower()
         if rawdata[j] == '>':
-            j = j+1
+            j = j + 1
         self.finish_endtag(tag)
         return j
 
@@ -358,7 +369,8 @@ class SGMLParser(markupbase.ParserBase):
                 return
             found = len(self.stack)
             for i in range(found):
-                if self.stack[i] == tag: found = i
+                if self.stack[i] == tag:
+                    found = i
         while len(self.stack) > found:
             tag = self.stack[-1]
             try:
@@ -508,7 +520,7 @@ class TestSGMLParser(SGMLParser):
         self.flush()
 
 
-def test(args = None):
+def test(args=None):
     import sys
 
     if args is None:

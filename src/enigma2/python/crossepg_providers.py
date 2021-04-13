@@ -16,6 +16,7 @@ from crossepg_locale import _
 
 from crossepglib import *
 
+
 class CrossEPG_Providers(Screen):
 	def __init__(self, session, protocol):
 		if (getDesktop(0).size().width() < 800):
@@ -92,11 +93,11 @@ class CrossEPG_Providers(Screen):
 
 	def buildListEntry(self, name, description, enabled):
 		if enabled:
-			pixmap = LoadPixmap(cached=True, path="%s/images/enabled.png" % os.path.dirname(sys.modules[__name__].__file__));
+			pixmap = LoadPixmap(cached=True, path="%s/images/enabled.png" % os.path.dirname(sys.modules[__name__].__file__))
 			return((description, pixmap, name))
 		else:
 			return((description, None, name))
-		
+
 	def selectionChanged(self):
 		if len(self.list) == 0:
 			return
@@ -127,7 +128,7 @@ class CrossEPG_Providers(Screen):
 			return
 
 		index = self["list"].getIndex()
-		self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, [self.list[index][2],])
+		self.session.openWithCallback(self.downloadCallback, CrossEPG_Downloader, [self.list[index][2], ])
 
 	def downloadCallback(self, ret):
 		if ret:
@@ -149,4 +150,3 @@ class CrossEPG_Providers(Screen):
 	def quit(self):
 		self.config.save()
 		self.close()
-

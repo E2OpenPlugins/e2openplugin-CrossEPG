@@ -26,7 +26,7 @@ import crossepg
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	sys.exit(1)
-libdir = os.path.join(crossepg_instroot , 'scripts/lib')
+libdir = os.path.join(crossepg_instroot, 'scripts/lib')
 sys.path.append(libdir)
 
 # import local modules
@@ -48,7 +48,6 @@ class Description_parser(sgmllib.SGMLParser):
 		self.start_div_boxtxt = False
 		self.description = ''
 
-
 	def start_div(self, attributes):
 		for name, value in attributes:
 			if name == "class":
@@ -62,13 +61,12 @@ class Description_parser(sgmllib.SGMLParser):
 			self.start_div_box = False
 			self.start_div_boxtxt = False
 
-
 	def handle_data(self, data):
 		if self.start_div_boxtxt == True:
 			self.description += data.decode('iso-8859-1')
 
 	def get_descr(self):
-		return (self.description.strip(' \n\r') )
+		return (self.description.strip(' \n\r'))
 
 # =================================================================
 
@@ -101,30 +99,28 @@ class main:
 	FIELD_SEPARATOR = '###'
 	CHANNELLIST = {}
 
-
-	def log(self,s,video=0):
+	def log(self, s, video=0):
 		self.logging.log(self.CONF_LOG_PREFIX + str(s))
 		if video == 1:
 			self.log2video(str(s))
 
-	def log2video(self,s):
+	def log2video(self, s):
 		self.logging.log2video_status(str(s))
 
-	def convert_daymp(self,dmp):
-		daystandard = time.strftime("%Y%m%d",time.strptime(dmp,"%Y/%m/%d"))
+	def convert_daymp(self, dmp):
+		daystandard = time.strftime("%Y%m%d", time.strptime(dmp, "%Y/%m/%d"))
 		return daystandard
 
-
-	def get_description(self,url):
+	def get_description(self, url):
 
 		if url[:7] != 'http://':
 			return('')
 
-		if (url[-5:] != '.html') and (url[-4:] != '.htm') :
+		if (url[-5:] != '.html') and (url[-4:] != '.htm'):
 			return('')
 
 		self.log("   downloading description \'" + url + "\'")
-		url = str(urllib.quote(url,safe=":/"))
+		url = str(urllib.quote(url, safe=":/"))
 
 		try:
 			sock = urllib2.urlopen(url)
@@ -149,42 +145,38 @@ class main:
 
 		return('')
 
-
-
-	def __init__(self,confdir,dbroot):
+	def __init__(self, confdir, dbroot):
 
 		# initialize logging
 		self.logging = scriptlib.logging_class()
 		# write to video OSD the script name
 		self.logging.log2video_scriptname(self.CONF_LOG_SCRIPT_NAME)
 
-
 		# check swap memory available
-		osp = os.popen('free | awk \'/Swap/ { print $2 }\'','r')
+		osp = os.popen('free | awk \'/Swap/ { print $2 }\'', 'r')
 		ret = osp.readlines()
 		if len(ret) > 0:
 			try:
-				m = int(ret[0])/1024
+				m = int(ret[0]) / 1024
 			except:
-				self.log("Error get SWAP value, abort",1)
+				self.log("Error get SWAP value, abort", 1)
 				time.sleep(10)
 				sys.exit(1)
 
 			if m < 60:
-				self.log("SWAP Not Enabled (<60MB), abort",1)
+				self.log("SWAP Not Enabled (<60MB), abort", 1)
 				time.sleep(10)
 				sys.exit(1)
 		else:
-			self.log("Error get SWAP value, abort",1)
+			self.log("Error get SWAP value, abort", 1)
 			time.sleep(10)
 			sys.exit(1)
 
 		osp.close()
 
-
-		CONF_FILE = os.path.join(confdir,self.CONF_CONFIGFILENAME)
-		if not os.path.exists(CONF_FILE) :
-			self.log("ERROR: %s not present" % CONF_FILE,1)
+		CONF_FILE = os.path.join(confdir, self.CONF_CONFIGFILENAME)
+		if not os.path.exists(CONF_FILE):
+			self.log("ERROR: %s not present" % CONF_FILE, 1)
 			sys.exit(1)
 
 		config = ConfigParser.ConfigParser()
@@ -192,20 +184,20 @@ class main:
 		config.read(CONF_FILE)
 
 		# reading [global] section options
-		self.CONF_DEFAULT_PROVIDER = config.get("global","DEFAULT_PROVIDER")
+		self.CONF_DEFAULT_PROVIDER = config.get("global", "DEFAULT_PROVIDER")
 		# save cache under dbroot
-		self.CONF_CACHEDIR = os.path.join(dbroot,config.get("global","CACHE_DIRNAME"))
+		self.CONF_CACHEDIR = os.path.join(dbroot, config.get("global", "CACHE_DIRNAME"))
 
-		self.CONF_DL_DESC = config.getint("global","DL_DESC")
-		self.CONF_MAX_DAY_EPG = config.getint("global","MAX_DAY_EPG")
-		self.CONF_URL = config.get("global","URL")
+		self.CONF_DL_DESC = config.getint("global", "DL_DESC")
+		self.CONF_MAX_DAY_EPG = config.getint("global", "MAX_DAY_EPG")
+		self.CONF_URL = config.get("global", "URL")
 
-		self.CONF_GMT_ZONE = config.get("global","GMT_ZONE")
+		self.CONF_GMT_ZONE = config.get("global", "GMT_ZONE")
 		if self.CONF_GMT_ZONE.strip(' ').lower() == 'equal':
 			#self.DELTA_UTC = -scriptlib.delta_utc() # return negative if timezone is east of GMT (like Italy), invert sign
 			self.DELTA_UTC = 0
 		else:
-			self.DELTA_UTC = float(self.CONF_GMT_ZONE)*3600.0
+			self.DELTA_UTC = float(self.CONF_GMT_ZONE) * 3600.0
 			if self.DELTA_UTC >= 0:
 				self.DELTA_UTC = self.DELTA_UTC + scriptlib.delta_dst()
 			else:
@@ -219,14 +211,14 @@ class main:
 			os.mkdir(self.CONF_CACHEDIR)
 
 		# reading [channels] section
-		temp = config.items("channels");
+		temp = config.items("channels")
 
 		# create a dictionary (Python array) with index = channel ID
 		for i in temp:
-			self.CHANNELLIST[i[0].strip(' \n\r').lower()] = unicode(i[1].strip(' \n\r').lower(),'utf-8')
+			self.CHANNELLIST[i[0].strip(' \n\r').lower()] = unicode(i[1].strip(' \n\r').lower(), 'utf-8')
 
-		if len(self.CHANNELLIST) == 0 :
-			self.log("ERROR: [channels] section empty ?",1)
+		if len(self.CHANNELLIST) == 0:
+			self.log("ERROR: [channels] section empty ?", 1)
 			sys.exit(1)
 
 		# set network socket timeout
@@ -234,10 +226,9 @@ class main:
 
 		self.TODAYMP = time.strftime("%Y/%m/%d")
 		# create a list filled with dates (format AAAA/MM/DD) from today to today+ MAX_DAY_EPG
-		self.DAYCACHEMP=[self.TODAYMP]
-		for day in range(1,self.CONF_MAX_DAY_EPG):
-			self.DAYCACHEMP.append(time.strftime("%Y/%m/%d",time.localtime(time.time()+86400*day)))
-
+		self.DAYCACHEMP = [self.TODAYMP]
+		for day in range(1, self.CONF_MAX_DAY_EPG):
+			self.DAYCACHEMP.append(time.strftime("%Y/%m/%d", time.localtime(time.time() + 86400 * day)))
 
 
 # ----------------------------------------------------------------------
@@ -252,7 +243,7 @@ class main:
 
 		chlist = self.CHANNELLIST
 
-		self.log("Start download XML data from \'" + self.CONF_URL+"\'")
+		self.log("Start download XML data from \'" + self.CONF_URL + "\'")
 		self.log2video("downloading XML data ...")
 
 		i = self.HTTP_ERROR_RETRY
@@ -269,7 +260,7 @@ class main:
 				if hasattr(e, 'msg'):
 					serr += " , " + str(e.msg)
 
-				self.log("\'" + self.CONF_URL + "\' connection error. Reason: "+serr+". Waiting "+str(self.HTTP_ERROR_WAIT_RETRY)+" sec. and retry ["+str(i)+"] ...")
+				self.log("\'" + self.CONF_URL + "\' connection error. Reason: " + serr + ". Waiting " + str(self.HTTP_ERROR_WAIT_RETRY) + " sec. and retry [" + str(i) + "] ...")
 				time.sleep(self.HTTP_ERROR_WAIT_RETRY) # add sleep
 				i -= 1
 
@@ -293,7 +284,6 @@ class main:
 			time.sleep(5)
 			sys.exit(1)
 
-
 		self.log("End process XML data")
 		self.log2video("end process XML data")
 
@@ -301,14 +291,14 @@ class main:
 		xmlref_giorno = xmldoc.getElementsByTagName('giorno')
 		for xml_gg in xmlref_giorno:
 			gg = xml_gg.attributes["data"].value
-			if gg not in self.DAYCACHEMP :
+			if gg not in self.DAYCACHEMP:
 				continue
 
 			xmlref_canale = xml_gg.getElementsByTagName('canale')
 			for xml_ch in xmlref_canale:
 				chid = xml_ch.attributes["id"].value.strip(' \n\r').lower()
-				if not chlist.has_key(chid) :
-						self.log("Warning: new channel \"id=%s name=%s\" found in XML data" % (xml_ch.attributes["id"].value,xml_ch.attributes["description"]))
+				if not chlist.has_key(chid):
+						self.log("Warning: new channel \"id=%s name=%s\" found in XML data" % (xml_ch.attributes["id"].value, xml_ch.attributes["description"]))
 						continue
 
 				clist = [chid]
@@ -330,8 +320,8 @@ class main:
 						continue
 
 					channel_name = ''
-					if len(chlist[c].split(",")) > 1 :
-						if chlist[c].split(",")[1] != '' :
+					if len(chlist[c].split(",")) > 1:
+						if chlist[c].split(",")[1] != '':
 							# channel renamed, new name provided by user
 							channel_name = chlist[c].split(",")[1].strip(' \n\r').lower()
 
@@ -341,8 +331,8 @@ class main:
 						sys.exit(1)
 
 					channel_provider = self.CONF_DEFAULT_PROVIDER
-					if len(chlist[c].split(",")) > 2 :
-						if chlist[c].split(",")[2] != '' :
+					if len(chlist[c].split(",")) > 2:
+						if chlist[c].split(",")[2] != '':
 							channel_provider = chlist[c].split(",")[2].strip(' \n\r').lower()
 
 					# if channel name is not present as option in channel_list.conf , quit with error
@@ -366,10 +356,10 @@ class main:
 						continue
 
 					num_events = 0
-					self.log("  Writing in cache \'" + eventfilename + "\'",2)
+					self.log("  Writing in cache \'" + eventfilename + "\'", 2)
 					self.log2video(" extracting \"%s\" [%d] (%s)" % (channel_name, num_events, day))
 
-					fd=codecs.open(eventfilepath,"w",'utf-8')
+					fd = codecs.open(eventfilepath, "w", 'utf-8')
 
 					fd.write(str(c) + self.FIELD_SEPARATOR + channel_name + self.FIELD_SEPARATOR + channel_provider + self.FIELD_SEPARATOR + day + '\n')
 					fd.write("Local Time (human readeable)###Unix GMT Time###Event Title###Event Description\n")
@@ -378,7 +368,7 @@ class main:
 					for xml_ee in xmlref_events:
 						orainiz = xml_ee.attributes["orainizio"].value
 
-						if (orainiz >='00:00') and (orainiz <= '05:59') :
+						if (orainiz >= '00:00') and (orainiz <= '05:59'):
 							nextdayevent = 86400
 						else:
 							nextdayevent = 0
@@ -387,29 +377,27 @@ class main:
 
 						if c == (chid + '+1'):
 							# manage channel "+1"
-							event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y/%m/%d %H:%M"))) - self.DELTA_UTC + 3600 + nextdayevent)
+							event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime, "%Y/%m/%d %H:%M"))) - self.DELTA_UTC + 3600 + nextdayevent)
 						else:
 							# normal channel, not "+1"
-							event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime,"%Y/%m/%d %H:%M"))) - self.DELTA_UTC + nextdayevent)
-
+							event_startime_unix_gmt = str(int(time.mktime(time.strptime(event_starttime, "%Y/%m/%d %H:%M"))) - self.DELTA_UTC + nextdayevent)
 
 						event_title = unicode(xml_ee.getElementsByTagName('titolo')[0].firstChild.data)
-						event_title = event_title.replace('\r','')
-						event_title = event_title.replace('\n','')
+						event_title = event_title.replace('\r', '')
+						event_title = event_title.replace('\n', '')
 						event_title = event_title.strip(u' ')
 
 						event_description = ''
-						if self.CONF_DL_DESC == 1 :
+						if self.CONF_DL_DESC == 1:
 							url_desc = xml_ee.getElementsByTagName('linkScheda')[0].firstChild.data
 							event_description = unicode(self.get_description(url_desc.strip(' \n\r'))[:self.CONF_DLDESCMAXCHAR])
-							event_description = event_description.replace('\r','')
-							event_description = event_description.replace('\n',u' ')
+							event_description = event_description.replace('\r', '')
+							event_description = event_description.replace('\n', u' ')
 							event_description = event_description.strip(u' ')
 
 						fd.write(event_starttime + self.FIELD_SEPARATOR + event_startime_unix_gmt + self.FIELD_SEPARATOR + event_title + self.FIELD_SEPARATOR + event_description + '\n')
 						num_events += 1
 						self.log2video(" extracting \"%s\" [%d] (%s)" % (channel_name, num_events, day))
-
 
 					fd.close()
 
@@ -417,12 +405,11 @@ class main:
 
 # ----------------------------------------------------------------------
 
-
 	def process_cache(self):
 		self.log("--- START PROCESSING CACHE ---")
 		self.log2video("START PROCESSING CACHE")
 		if not os.path.exists(self.CONF_CACHEDIR):
-			self.log("ERROR: %s not present" % self.CONF_CACHEDIR,1)
+			self.log("ERROR: %s not present" % self.CONF_CACHEDIR, 1)
 			sys.exit(1)
 
 		self.log("Loading lamedb")
@@ -441,15 +428,15 @@ class main:
 		filelist = sorted(os.listdir(self.CONF_CACHEDIR))
 		filelist.append('***END***')
 
-		for f in filelist :
+		for f in filelist:
 			id = f.split(self.FIELD_SEPARATOR)[0]
 			if previous_id == '':
 				previous_id = id
 
-			if id != previous_id :
+			if id != previous_id:
 				total_events += len(events)
-				self.log("  ...processing \'%s\' , nr. events %d" % (previous_id,len(events)))
-				self.log2video("processed %d events ..." % total_events )
+				self.log("  ...processing \'%s\' , nr. events %d" % (previous_id, len(events)))
+				self.log2video("processed %d events ..." % total_events)
 
 				for c in channels_name:
 					# a channel can have zero or more SID (different channel with same name)
@@ -478,8 +465,8 @@ class main:
 							items = e.split(self.FIELD_SEPARATOR)
 							e_starttime = int(items[1])
 
-							if i < L :
-								e_length = int(events[i+1].split(self.FIELD_SEPARATOR)[1]) - e_starttime
+							if i < L:
+								e_length = int(events[i + 1].split(self.FIELD_SEPARATOR)[1]) - e_starttime
 							else:
 								# last event, dummy length 90 min.
 								e_length = 5400
@@ -492,7 +479,7 @@ class main:
 							e_summarie = items[3].encode('utf-8')
 
 							# add_event(start_time , duration , title , summarie , ISO639_language_code , strings_encoded_with_UTF-8)
-							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True )
+							crossdb.add_event(e_starttime, e_length, e_title, e_summarie, 'ita', True)
 
 				if f == '***END***':
 					break
@@ -504,7 +491,7 @@ class main:
 			if id == previous_id:
 				self.log("Reading  \'%s\'" % f)
 				# read events from cache file using UTF-8 and insert them in events list
-				fd = codecs.open(os.path.join(self.CONF_CACHEDIR, f),"r","utf-8")
+				fd = codecs.open(os.path.join(self.CONF_CACHEDIR, f), "r", "utf-8")
 				lines = fd.readlines()
 				fd.close()
 				if channels_name == '':
@@ -521,17 +508,15 @@ class main:
 		self.log2video("END , events processed: %d" % total_events)
 
 
-
 # ****************************************************************************************************************************
 
 # MAIN CODE: SCRIPT START HERE
-
 # increase this process niceness (other processes have higher priority)
 os.nice(10)
 
 # set Garbage Collector to do a "generational jump" more frequently than default 700
 # memory saving: about 50% (!!), some performance loss (obviously)
-gc.set_threshold(50,10,10)
+gc.set_threshold(50, 10, 10)
 
 SCRIPT_DIR = 'scripts/mediaprem/'
 
@@ -539,7 +524,7 @@ SCRIPT_DIR = 'scripts/mediaprem/'
 crossepg_instroot = crossepg.epgdb_get_installroot()
 if crossepg_instroot == False:
 	sys.exit(1)
-scriptlocation = os.path.join(crossepg_instroot , SCRIPT_DIR)
+scriptlocation = os.path.join(crossepg_instroot, SCRIPT_DIR)
 
 # get where CrossEPG save data (dbroot) and use it as script cache repository
 crossepg_dbroot = crossepg.epgdb_get_dbroot()
@@ -547,11 +532,10 @@ if crossepg_dbroot == False:
 	sys.exit(1)
 
 # initialize script class
-script_class = main(scriptlocation , crossepg_dbroot)
+script_class = main(scriptlocation, crossepg_dbroot)
 
 # download data and cache them
 script_class.download_and_cache()
 
 # read cached data and inject into CrossEPG database
 script_class.process_cache()
-

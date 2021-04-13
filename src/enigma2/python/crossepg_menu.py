@@ -38,6 +38,7 @@ except Exception, e:
 
 import _enigma
 
+
 class CrossEPG_Menu(Screen):
 	def __init__(self, session):
 		if (getDesktop(0).size().width() < 800):
@@ -78,17 +79,17 @@ class CrossEPG_Menu(Screen):
 		}, -2)
 
 		self.onFirstExecBegin.append(self.setTitleWithVerion)
-		
+
 		if self.config.configured == 0:
 			self.onFirstExecBegin.append(self.openSetup)
 
 	def buildListEntry(self, description, image):
-		pixmap = LoadPixmap(cached=True, path="%s/images/%s" % (os.path.dirname(sys.modules[__name__].__file__), image));
+		pixmap = LoadPixmap(cached=True, path="%s/images/%s" % (os.path.dirname(sys.modules[__name__].__file__), image))
 		return((pixmap, description))
 
 	def openSetup(self):
 		self.session.open(CrossEPG_Setup)
-			
+
 	def setTitleWithVerion(self):
 		try:
 			global version
@@ -130,7 +131,7 @@ class CrossEPG_Menu(Screen):
 			self.session.open(CrossEPG_Info)
 		elif index == 14:
 			self.session.open(CrossEPG_About)
-		
+
 	def quit(self):
 		self.close()
 
@@ -172,4 +173,3 @@ class CrossEPG_Menu(Screen):
 
 	def loader(self):
 		self.session.open(CrossEPG_Loader)
-

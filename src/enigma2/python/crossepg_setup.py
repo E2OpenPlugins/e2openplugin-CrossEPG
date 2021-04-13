@@ -23,6 +23,7 @@ from time import *
 
 import os
 
+
 class CrossEPG_Setup(Screen):
 	def __init__(self, session):
 		if (getDesktop(0).size().width() < 800):
@@ -39,7 +40,7 @@ class CrossEPG_Setup(Screen):
 			self.fastpatch = True
 		else:
 			self.fastpatch = False
-		
+
 		self.session = session
 
 		self.config = CrossEPG_Config()
@@ -69,25 +70,25 @@ class CrossEPG_Setup(Screen):
 					self.mountdescription.append(partition.description)
 				else:
 					self.mountdescription.append(partition.mountpoint)
-				
+
 		if not self.config.isQBOXHD():		# for other decoders we add internal flash as last entry (it's unsuggested)
 			self.mountdescription.append(_("Internal flash (unsuggested)"))
 			self.mountpoint.append(self.config.home_directory + "/data")
-			
+
 		# make lamedb entries
 		for lamedb in self.lamedbs:
 			if lamedb == "lamedb":
 				self.lamedbs_desc.append(_("main lamedb"))
 			else:
 				self.lamedbs_desc.append(lamedb.replace("lamedb.", "").replace(".", " "))
-				
+
 		# make automatic type entries
 		self.automatictype.append(_("disabled"))
 		self.automatictype.append(_("once a day"))
 		self.automatictype.append(_("every hour (only in standby)"))
 
 		self.list = []
-		self["config"] = ConfigList(self.list, session = self.session)
+		self["config"] = ConfigList(self.list, session=self.session)
 		self["config"].onSelectionChanged.append(self.setInfo)
 		self["information"] = Label("")
 		self["key_red"] = Button(_("Back"))
@@ -133,10 +134,10 @@ class CrossEPG_Setup(Screen):
 		except:
 			return False
 		return True
-		
-	def showWarning(self):	
-		self.session.open(MessageBox, _("PLEASE READ!\nNo disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you still want use your internal flash pay attention to:\n(1) If you don't have enough free space your box may completely block and you need to flash it again\n(2) Many write operations on your internal flash may damage your flash memory"), type = MessageBox.TYPE_ERROR)
-	
+
+	def showWarning(self):
+		self.session.open(MessageBox, _("PLEASE READ!\nNo disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you still want use your internal flash pay attention to:\n(1) If you don't have enough free space your box may completely block and you need to flash it again\n(2) Many write operations on your internal flash may damage your flash memory"), type=MessageBox.TYPE_ERROR)
+
 	def keyLeft(self):
 		self["config"].handleKey(KEY_LEFT)
 		self.update()
@@ -176,7 +177,7 @@ class CrossEPG_Setup(Screen):
 		if device_default == None:
 			self.config.db_root = self.mountpoint[0]
 			device_default = self.mountdescription[0]
-			
+
 		lamedb_default = _("main lamedb")
 		if self.config.lamedb != "lamedb":
 			lamedb_default = self.config.lamedb.replace("lamedb.", "").replace(".", " ")
@@ -216,22 +217,22 @@ class CrossEPG_Setup(Screen):
 	def update(self):
 		redraw = False
 		self.config.db_root = self.mountpoint[self.list[0][1].getIndex()]
-		
+
 		i = 1
 		if len(self.lamedbs_desc) > 1:
 			self.config.lamedb = self.lamedbs[self.list[i][1].getIndex()]
 			i += 1
 
 		self.config.csv_import_enabled = int(self.list[i][1].getValue())
-		self.config.force_load_on_boot = int(self.list[i+1][1].getValue())
-		self.config.download_tune_enabled = int(self.list[i+2][1].getValue())
+		self.config.force_load_on_boot = int(self.list[i + 1][1].getValue())
+		self.config.download_tune_enabled = int(self.list[i + 2][1].getValue())
 
 		dailycache = self.config.download_daily_enabled
 		standbycache = self.config.download_standby_enabled
-		if self.list[i+3][1].getIndex() == 0:
+		if self.list[i + 3][1].getIndex() == 0:
 			self.config.download_daily_enabled = 0
 			self.config.download_standby_enabled = 0
-		elif self.list[i+3][1].getIndex() == 1:
+		elif self.list[i + 3][1].getIndex() == 1:
 			self.config.download_daily_enabled = 1
 			self.config.download_standby_enabled = 0
 		else:
@@ -249,12 +250,12 @@ class CrossEPG_Setup(Screen):
 
 		if not self.fastpatch:
 			self.config.download_daily_reboot = int(self.list[i][1].getValue())
-			self.config.download_manual_reboot = int(self.list[i+1][1].getValue())
+			self.config.download_manual_reboot = int(self.list[i + 1][1].getValue())
 			i += 2
 
 		self.config.show_plugin = int(self.list[i][1].getValue())
-		self.config.show_extension = int(self.list[i+1][1].getValue())
-		self.config.show_force_reload_as_plugin = int(self.list[i+2][1].getValue())
+		self.config.show_extension = int(self.list[i + 1][1].getValue())
+		self.config.show_force_reload_as_plugin = int(self.list[i + 2][1].getValue())
 
 		if redraw:
 			self.makeList()
@@ -295,7 +296,7 @@ class CrossEPG_Setup(Screen):
 			self["information"].setText(_("Show crossepg in plugin menu"))
 		elif index == 10:
 			self["information"].setText(_("Show crossepg in extensions menu"))
-		
+
 	def quit(self):
 		self.config.last_full_download_timestamp = 0
 		self.config.last_partial_download_timestamp = 0
@@ -311,26 +312,25 @@ class CrossEPG_Setup(Screen):
 			configfile.save()
 		except Exception, e:
 			print "custom epgcache filename not supported by current enigma2 version"
-			
+
 		if getEPGPatchType() == -1:
 			# exec crossepg_prepare_pre_start for unpatched images
 			os.system(self.config.home_directory + "/crossepg_prepare_pre_start.sh")
-			
+
 		if self.show_extension != self.config.show_extension or self.show_plugin != self.config.show_plugin:
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_PLUGINMENU):
 				if plugin.name == "CrossEPG Downloader":
 					plugins.removePlugin(plugin)
-				
+
 			for plugin in plugins.getPlugins(PluginDescriptor.WHERE_EXTENSIONSMENU):
 				if plugin.name == "CrossEPG Downloader":
 					plugins.removePlugin(plugin)
-				
+
 			plugins.readPluginList(resolveFilename(SCOPE_PLUGINS))
-			
+
 		crossepg_auto.forcePoll()
-		
+
 		if self.config.db_root == self.config.home_directory + "/data" and not self.config.isQBOXHD():
 			self.showWarning()
-			
-		self.close()
 
+		self.close()

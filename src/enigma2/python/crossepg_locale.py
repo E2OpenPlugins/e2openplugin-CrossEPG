@@ -1,10 +1,12 @@
 from Components.Language import language
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS, SCOPE_LANGUAGE
 
-import os,gettext
+import os
+import gettext
 
 PluginLanguageDomain = "CrossEPG"
 PluginLanguagePath = "SystemPlugins/CrossEPG/po"
+
 
 def localeInit():
 	lang = language.getLanguage()[:2] # getLanguage returns e.g. "fi_FI" for "language_country"
@@ -12,6 +14,7 @@ def localeInit():
 	print "[CrossEPG] set language to ", lang
 	gettext.bindtextdomain(PluginLanguageDomain, resolveFilename(SCOPE_PLUGINS, PluginLanguagePath))
 	gettext.bindtextdomain('enigma2', resolveFilename(SCOPE_LANGUAGE, ""))
+
 
 def _(txt):
 	t = gettext.dgettext(PluginLanguageDomain, txt)
