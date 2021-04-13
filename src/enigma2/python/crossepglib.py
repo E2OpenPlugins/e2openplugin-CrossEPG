@@ -3,7 +3,8 @@ from crossepg_locale import _
 from Tools.Directories import crawlDirectory, pathExists, createDir
 from types import *
 
-import sys, traceback
+import sys
+import traceback
 import os
 import re
 import time
