@@ -153,7 +153,7 @@ class CrossEPG_Auto(Screen):
 				self.download(self.config.providers)
 			elif stime < now + (self.POLL_TIMER / 1000) and self.config.last_full_download_timestamp != stime:
 				print "[CrossEPG_Auto] poll"
-				delta = int(stime - now);
+				delta = int(stime - now)
 				self.timer.start((delta + 5)*1000, 1)	# 5 seconds offset
 			else:
 				print "[CrossEPG_Auto] poll"
@@ -172,7 +172,7 @@ class CrossEPG_Auto(Screen):
 						if providers[2][i] == "opentv":
 							if self.config.getChannelID(provider) == service:
 								providerok = provider
-								break;
+								break
 						i += 1
 
 				if providerok:

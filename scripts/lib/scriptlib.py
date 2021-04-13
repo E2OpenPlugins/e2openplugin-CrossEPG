@@ -206,7 +206,7 @@ class lamedb_class:
 
 			if sid == u'end':
 				# reached end of channel section, end loop
-				break;
+				break
 
 			channel_name = self.decode_charset(fd.readline()) # read channel name, this is the second line
 
@@ -384,10 +384,10 @@ class crossepg_db_class:
 		#print("DEBUG , summarie DATA TYPE: \'%s\'" % type(summarie).__name__ )
 
 		if utf8 == False :
-			crossepg.epgdb_titles_set_description(event_ref, title);
-			crossepg.epgdb_titles_set_long_description(event_ref, summarie);
+			crossepg.epgdb_titles_set_description(event_ref, title)
+			crossepg.epgdb_titles_set_long_description(event_ref, summarie)
 		else:
-			crossepg.epgdb_titles_set_description_utf8(event_ref, title);
-			crossepg.epgdb_titles_set_long_description_utf8(event_ref, summarie);
+			crossepg.epgdb_titles_set_description_utf8(event_ref, title)
+			crossepg.epgdb_titles_set_long_description_utf8(event_ref, summarie)
 
 

@@ -417,7 +417,7 @@ class main(sgmllib.SGMLParser):
 			os.mkdir(self.CONF_CACHEDIR)
 
 		# reading [channels] section
-		temp = config.items("channels");
+		temp = config.items("channels")
 
 		# create a dictionary (Python array) with index = channel ID
 		for i in temp:

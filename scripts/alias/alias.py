@@ -57,7 +57,7 @@ class main:
 		config.read(CONF_FILE)
 
 		# reading [aliases] section
-		temp=config.items("aliases");
+		temp=config.items("aliases")
 
 		self.CHANNELLIST = {}
 		# create a dictionary (Python array) with index = channel ID
@@ -113,7 +113,7 @@ class main:
 							self.log.log("SID \"%s\" invalid, try next" % src_sidbyname)
 							continue
 
-						src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(ch_sid[2],ch_sid[1],ch_sid[0]);
+						src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(ch_sid[2],ch_sid[1],ch_sid[0])
 						if not src_epgdb_channel :
 							self.log.log('Source channel "%s" with SID "%s" has not entry in epgdb, try next' % (src_channel,src_sidbyname) )
 							continue
@@ -140,7 +140,7 @@ class main:
 				self.log.log("SID \"%s\" invalid, try next" % src_sidbyname)
 				continue
 
-			src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(src_sid[2],src_sid[1],src_sid[0]);
+			src_epgdb_channel = crossepg.epgdb_channels_get_by_freq(src_sid[2],src_sid[1],src_sid[0])
 			if not src_epgdb_channel :
 				self.log.log('Source channel "%s" with SID "%s" has not entry in epgdb, skip it' % (src_channel,src_sidbyname) )
 				continue
@@ -175,7 +175,7 @@ class main:
 					# this make a reference to the dest. channel
 					crossdb.add_channel(dst_sid)
 
-					title = src_epgdb_channel.title_first;
+					title = src_epgdb_channel.title_first
 
 					while (title != None) :
 						#print str(title.start_time)

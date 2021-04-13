@@ -110,7 +110,7 @@ class CrossEPG_Xepgdb_Update(Screen):
 				filename = "xepgdb_" + filename
 			f = open(destination + "/" + filename + ".conf", "w")
 			f.write("description=" + source.description + "\n")
-			f.write("protocol=xepgdb\n");
+			f.write("protocol=xepgdb\n")
 			f.write("headers_url =" + source.headers + "\n")
 			f.write("descriptors_url =" + source.descriptors + "\n")
 			f.close()

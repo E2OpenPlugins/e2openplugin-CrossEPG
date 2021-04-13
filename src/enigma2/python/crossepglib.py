@@ -103,35 +103,35 @@ class CrossEPG_Config:
 								if len(p) > 0 and os.path.exists("%s/providers/%s.conf" % (self.home_directory, p)):
 									self.providers.append(p)
 						elif key == "force_load_on_boot":
-							self.force_load_on_boot = int(value);
+							self.force_load_on_boot = int(value)
 						elif key == "download_daily_enabled":
-							self.download_daily_enabled = int(value);
+							self.download_daily_enabled = int(value)
 						elif key == "download_daily_hours":
-							self.download_daily_hours = int(value);
+							self.download_daily_hours = int(value)
 						elif key == "download_daily_minutes":
-							self.download_daily_minutes = int(value);
+							self.download_daily_minutes = int(value)
 						elif key == "download_tune_enabled":
-							self.download_tune_enabled = int(value);
+							self.download_tune_enabled = int(value)
 						elif key == "download_daily_reboot":
-							self.download_daily_reboot = int(value);
+							self.download_daily_reboot = int(value)
 						elif key == "download_manual_reboot":
-							self.download_manual_reboot = int(value);
+							self.download_manual_reboot = int(value)
 						elif key == "download_standby_enabled":
-							self.download_standby_enabled = int(value);
+							self.download_standby_enabled = int(value)
 						elif key == "last_partial_download_timestamp":
-							self.last_partial_download_timestamp = int(value);
+							self.last_partial_download_timestamp = int(value)
 						elif key == "last_full_download_timestamp":
-							self.last_full_download_timestamp = int(value);
+							self.last_full_download_timestamp = int(value)
 						elif key == "csv_import_enabled":
-							self.csv_import_enabled = int(value);
+							self.csv_import_enabled = int(value)
 						elif key == "show_plugin":
-							self.show_plugin = int(value);
+							self.show_plugin = int(value)
 						elif key == "show_extension":
-							self.show_extension = int(value);
+							self.show_extension = int(value)
 						elif key == "show_force_reload_as_plugin":
-							self.show_force_reload_as_plugin = int(value);
+							self.show_force_reload_as_plugin = int(value)
 						elif key == "configured":
-							self.configured = int(value);
+							self.configured = int(value)
 			except Exception:
 				pass
 
@@ -195,10 +195,10 @@ class CrossEPG_Config:
 			print "[CrossEPG_Config] %s" % (e)
 			return
 			
-		nid = -1;
-		tsid = -1;
-		sid = -1;
-		namespace = -1;
+		nid = -1
+		tsid = -1
+		sid = -1
+		namespace = -1
 		nidRe = re.compile(r"nid=(.*)")
 		tsidRe = re.compile(r"tsid=(.*)")
 		sidRe = re.compile(r"sid=(.*)")
@@ -216,7 +216,7 @@ class CrossEPG_Config:
 				tsid = int(ztsid[0])
 			znamespace = re.findall(namespaceRe, line)	
 			if znamespace:
-				namespace = int(znamespace[0]);
+				namespace = int(znamespace[0])
 		
 		if nid == -1 or sid == -1 or tsid == -1:
 			return
@@ -342,7 +342,7 @@ class CrossEPG_Wrapper:
 		self.type = 0
 		self.maxSize = "0 byte"
 		
-		versionlist = getEnigmaVersionString().split("-");
+		versionlist = getEnigmaVersionString().split("-")
 		
 		self.oldapi = False
 		try:
@@ -441,52 +441,52 @@ class CrossEPG_Wrapper:
 			ttype = data[5:]
 			print "[CrossEPG_Wrapper] <- TYPE %s" % (ttype)
 			if ttype == "READ CHANNELS":
-				self.type = 0;
+				self.type = 0
 				self.__callCallbacks(self.EVENT_ACTION, _("Reading channels"))
 			elif ttype == "READ TITLES":
-				self.type = 1;
+				self.type = 1
 				self.__callCallbacks(self.EVENT_ACTION, _("Reading titles"))
 			elif ttype == "PARSE TITLES":
-				self.type = 2;
+				self.type = 2
 				self.__callCallbacks(self.EVENT_ACTION, _("Parsing titles"))
 			elif ttype == "READ SUMMARIES":
-				self.type = 3;
+				self.type = 3
 				self.__callCallbacks(self.EVENT_ACTION, _("Reading summaries"))
 			elif ttype == "PARSE SUMMARIES":
-				self.type = 4;
+				self.type = 4
 				self.__callCallbacks(self.EVENT_ACTION, _("Parsing summaries"))
 			elif ttype == "DOWNLOADING CHANNELS LIST":
-				self.type = 5;
+				self.type = 5
 				self.__callCallbacks(self.EVENT_ACTION, _("Downloading channels list"))
 			elif ttype == "DEFLATING CHANNELS LIST":
-				self.type = 6;
+				self.type = 6
 				self.__callCallbacks(self.EVENT_ACTION, _("Deflating channels list"))
 			elif ttype == "PARSING CHANNELS LIST":
-				self.type = 7;
+				self.type = 7
 				self.__callCallbacks(self.EVENT_ACTION, _("Parsing channels list"))
 			elif ttype == "DOWNLOADING EVENTS":
-				self.type = 8;
+				self.type = 8
 				self.__callCallbacks(self.EVENT_ACTION, _("Downloading events"))
 			elif ttype == "DEFLATING EVENTS":
-				self.type = 9;
+				self.type = 9
 				self.__callCallbacks(self.EVENT_ACTION, _("Deflating events"))
 			elif ttype == "PARSING EVENTS":
-				self.type = 10;
+				self.type = 10
 				self.__callCallbacks(self.EVENT_ACTION, _("Parsing events"))
 			elif ttype == "DOWNLOADING XEPGDB":
-				self.type = 11;
+				self.type = 11
 				self.__callCallbacks(self.EVENT_ACTION, _("Downloading XEPGDB"))
 			elif ttype == "PARSING XEPGDB":
-				self.type = 12;
+				self.type = 12
 				self.__callCallbacks(self.EVENT_ACTION, _("Merging XEPGDB"))
 			elif ttype == "DEFLATING XEPGDB":
-				self.type = 13;
+				self.type = 13
 				self.__callCallbacks(self.EVENT_ACTION, _("Deflating XEPGDB"))
 			elif ttype == "RUNNING SCRIPT":
-				self.type = 14;
+				self.type = 14
 				self.__callCallbacks(self.EVENT_ACTION, _("Running script"))
 			elif ttype.find("RUNNING CSCRIPT ") == 0:
-				self.type = 14;
+				self.type = 14
 				self.__callCallbacks(self.EVENT_ACTION, _("Running script") + " " + data[21:])
 				
 		elif data.find("CHANNELS ") == 0:

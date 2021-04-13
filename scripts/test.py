@@ -50,14 +50,14 @@ def main():
 
 	# open CrossEPG internal database
 	if crossepg.epgdb_open(dbroot):
-		crossepg.log_add("EPGDB opened successfully (root = %s)" % dbroot);
+		crossepg.log_add("EPGDB opened successfully (root = %s)" % dbroot)
 	else:
-		crossepg.log_add("Error opening EPGDB");
-		crossepg.epgdb_close();
+		crossepg.log_add("Error opening EPGDB")
+		crossepg.epgdb_close()
 		sys.exit(1)
 
-	crossepg.log_add("Closing EPGDB");
-	crossepg.epgdb_close();
+	crossepg.log_add("Closing EPGDB")
+	crossepg.epgdb_close()
 
 
 	delta_timezone = scriptlib.delta_utc()

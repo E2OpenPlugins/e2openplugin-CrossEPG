@@ -92,7 +92,7 @@ class CrossEPG_Providers(Screen):
 
 	def buildListEntry(self, name, description, enabled):
 		if enabled:
-			pixmap = LoadPixmap(cached=True, path="%s/images/enabled.png" % os.path.dirname(sys.modules[__name__].__file__));
+			pixmap = LoadPixmap(cached=True, path="%s/images/enabled.png" % os.path.dirname(sys.modules[__name__].__file__))
 			return((description, pixmap, name))
 		else:
 			return((description, None, name))

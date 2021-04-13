@@ -147,7 +147,7 @@ class CrossEPG_Rytec_Update(Screen):
 				filename = "rytec_" + filename
 			f = open(destination + "/" + filename + ".conf", "w")
 			f.write("description=" + source.description + "\n")
-			f.write("protocol=xmltv\n");
+			f.write("protocol=xmltv\n")
 			count = 0
 			for url in source.channels_urls:
 				f.write("channels_url_" + str(count) + "=" + url + "\n")
@@ -157,6 +157,6 @@ class CrossEPG_Rytec_Update(Screen):
 			for url in source.epg_urls:
 				f.write("epg_url_" + str(count) + "=" + url + "\n")
 				count += 1
-			f.write("preferred_language=eng");
+			f.write("preferred_language=eng")
 			f.close()
 			

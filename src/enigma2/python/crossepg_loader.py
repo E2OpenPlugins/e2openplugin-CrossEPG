@@ -112,7 +112,7 @@ class CrossEPG_Loader(Screen):
 			self.hideprogress = eTimer()
 			self.hideprogress.callback.append(self["progress"].hide)
 			
-			self.epg_channel = None;
+			self.epg_channel = None
 			self.epg_tuple = ()
 			self.epg_starttime = 0
 			self.epg_length = 0

@@ -29,14 +29,14 @@ def main():
 
 	# open epgdb
 	if epgdb_open(dbroot):
-		log_add("EPGDB opened (root=%s)" % dbroot);
+		log_add("EPGDB opened (root=%s)" % dbroot)
 	else:
-		log_add("Error opening EPGDB");
-		epgdb_close();
+		log_add("Error opening EPGDB")
+		epgdb_close()
 		return
 
 	# load indexes and hashes in memory
-	epgdb_load();
+	epgdb_load()
 
 	####################
 	# WRITE OPERATIONS #
@@ -69,8 +69,8 @@ def main():
 
 	# now the event structure is already in epgdb
 	# but we still need to add descriptions
-	epgdb_titles_set_description (title, "our custom event short description");
-	epgdb_titles_set_long_description (title, "our custom event long description");
+	epgdb_titles_set_description (title, "our custom event short description")
+	epgdb_titles_set_long_description (title, "our custom event long description")
 
 	###################
 	# READ OPERATIONS #
@@ -79,14 +79,14 @@ def main():
 	# walk inside channels and events
 	log_add("TEST: walk inside channels and events")
 	channel_count = 0
-	channel = epgdb_channels_get_first();
+	channel = epgdb_channels_get_first()
 	while channel != None:
 		log_add("---------CHANNEL---------")
 		log_add("NID: 0x%x" % channel.nid)
 		log_add("TSID: 0x%x" % channel.tsid)
 		log_add("SID: 0x%x" % channel.sid)
 		title_count = 0
-		title = channel.title_first;
+		title = channel.title_first
 		while title != None:
 			dump_title(title)
 			title = title.next
@@ -101,11 +101,11 @@ def main():
 
 	# get a channel by nid, tsid, sid
 	log_add("TEST: get a channel by nid, tsid, sid")
-	channel = epgdb_channels_get_by_freq(nid, tsid, sid);
+	channel = epgdb_channels_get_by_freq(nid, tsid, sid)
 	if channel:
 		# get an event by channel and timestamp
 		log_add("TEST: get an event by channel and timestamp")
-		title = epgdb_titles_get_by_time (channel, 1293840000); # exist also the api epgdb_titles_get_by_id_and_mjd(channel, event_id, mjd_time)
+		title = epgdb_titles_get_by_time (channel, 1293840000) # exist also the api epgdb_titles_get_by_id_and_mjd(channel, event_id, mjd_time)
 		if title:
 			dump_title(title)
 		else:
@@ -116,13 +116,13 @@ def main():
 	# saving data
 	# it's necessary only if you add new events
 	if epgdb_save(None):
-		log_add("Data saved");
+		log_add("Data saved")
 	else:
-		log_add("Error saving data");
+		log_add("Error saving data")
 
 	# close epgdb and clean memory
 	epgdb_close()
 	epgdb_clean()
-	log_add("EPGDB closed");
+	log_add("EPGDB closed")
 
 main()

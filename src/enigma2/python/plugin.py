@@ -63,4 +63,4 @@ def Plugins(**kwargs):
 										where = PluginDescriptor.WHERE_PLUGINMENU,
 										fnc = call_loaderAsPlugin))
 									
-	return plugins;
+	return plugins
