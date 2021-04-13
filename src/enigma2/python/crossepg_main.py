@@ -10,6 +10,7 @@ from crossepg_setup import CrossEPG_Setup
 from crossepg_menu import CrossEPG_Menu
 from crossepg_auto import crossepg_auto
 
+
 class CrossEPG_Main:
 	def __init__(self):
 		self.config = CrossEPG_Config()
@@ -89,4 +90,5 @@ class CrossEPG_Main:
 	def autostart(self, reason, session):
 		crossepg_auto.init(session)
 		
+
 crossepg_main = CrossEPG_Main()

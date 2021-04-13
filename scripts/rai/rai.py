@@ -36,6 +36,7 @@ import scriptlib
 # =================================================================
 # HTML PARSER
 
+
 class Titolo_parser(sgmllib.SGMLParser):
 
 	def parse(self, s):
@@ -55,7 +56,6 @@ class Titolo_parser(sgmllib.SGMLParser):
 		self.start_titolo = False
 		self.inside_a_titolo = False
 		self.inside_palinsesto = False
-
 
 	def start_div(self, attributes):
 		for name, value in attributes:
@@ -106,7 +106,6 @@ class Titolo_parser(sgmllib.SGMLParser):
 				self.start_titolo = False
 				self.inside_palinsesto = False
 
-
 	def get_guida(self):
 		return ((self.guidatoday, self.guidatomorrow))
 
@@ -141,7 +140,6 @@ class main:
 	DAYCACHE = []
 	FIELD_SEPARATOR = '###'
 	CHANNELLIST = {}
-
 
 	def __init__(self, confdir, dbroot):
 
@@ -215,7 +213,6 @@ class main:
 
 # ----------------------------------------------------------------------
 
-
 	def download_and_cache(self):
 		self.log.log("--- START DOWNLOAD AND CACHE DATA ---")
 		self.log.log2video_status("STARTING DOWNLOAD")
@@ -283,7 +280,6 @@ class main:
 				
 				pbar_value += 1
 				self.log.log2video_pbar(pbar_value * pbar_max)
-
 
 				day_get = time.strftime("%Y_%m_%d", time.strptime(day, "%Y%m%d"))
 				xmlfile = "%s_%s" % (c, day_get)
@@ -375,9 +371,7 @@ class main:
 		self.log.log2video_pbar_off()
 
 
-
 # ----------------------------------------------------------------------
-
 
 	def process_cache(self):
 		self.log.log("--- START PROCESSING CACHE ---")
@@ -484,11 +478,9 @@ class main:
 		time.sleep(3)
 
 
-
 # ****************************************************************************************************************************
 
 # MAIN CODE: SCRIPT START HERE
-
 SCRIPT_DIR = 'scripts/rai/'
 
 # get CrossEPG installation dir.

@@ -16,6 +16,7 @@ import _enigma
 import os
 import sys
 
+
 class CrossEPG_Loader(Screen):
 	def __init__(self, session, pcallback=None, noosd=False):
 		self.session = session

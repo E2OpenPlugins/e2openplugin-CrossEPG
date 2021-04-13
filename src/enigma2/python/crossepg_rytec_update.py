@@ -16,11 +16,13 @@ import re
 import os
 import random
 
+
 class CrossEPG_Rytec_Source(object):
 	def __init__(self):
 		self.channels_urls = []
 		self.epg_urls = []
 		self.description = ""
+
 
 class CrossEPG_Rytec_Update(Screen):
 	def __init__(self, session):

@@ -15,6 +15,7 @@ from crossepg_locale import _
 import os
 import sys
 
+
 class CrossEPG_Downloader(Screen):
 	def __init__(self, session, providers, pcallback=None, noosd=False):
 		if (getDesktop(0).size().width() < 800):

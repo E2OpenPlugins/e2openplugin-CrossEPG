@@ -49,7 +49,6 @@ class Description_parser(sgmllib.SGMLParser):
 		self.start_div_boxtxt = False
 		self.description = ''
 
-
 	def start_div(self, attributes):
 		for name, value in attributes:
 			if name == "class":
@@ -63,14 +62,12 @@ class Description_parser(sgmllib.SGMLParser):
 			self.start_div_box = False
 			self.start_div_boxtxt = False
 
-
 	def handle_data(self, data):
 		if self.start_div_boxtxt == True:
 			self.description += data.decode('iso-8859-1')
 
 	def get_descr(self):
 		return (self.description.strip(' \n\r'))
-
 
 
 # =================================================================
@@ -321,7 +318,6 @@ class main(sgmllib.SGMLParser):
 		daystandard = time.strftime("%Y%m%d", time.strptime(dmp, "%Y/%m/%d"))
 		return daystandard
 
-
 	def get_description(self, url, maxchar=128):
 
 		if url[:7] != 'http://':
@@ -361,8 +357,6 @@ class main(sgmllib.SGMLParser):
 			return(self.DESCRIPTIONS_WEBCACHE[url_hash])
 
 		return('')
-
-
 
 	def __init__(self, confdir, dbroot):
 
@@ -437,7 +431,6 @@ class main(sgmllib.SGMLParser):
 			self.DAYCACHEMP.append(time.strftime("%Y/%m/%d", time.localtime(time.time() + 86400 * day)))
 
 
-
 # ----------------------------------------------------------------------
 
 
@@ -447,7 +440,6 @@ class main(sgmllib.SGMLParser):
 
 		self.log.log("Removing old cached files")
 		scriptlib.cleanup_oldcachedfiles(self.CONF_CACHEDIR, self.FIELD_SEPARATOR)
-
 
 		self.log.log("Start download XML data from \'" + self.CONF_URL + "\'")
 		self.log.log2video_status("downloading XML data ...")
@@ -499,7 +491,6 @@ class main(sgmllib.SGMLParser):
 		self.log.log("end process XML data")
 
 # ----------------------------------------------------------------------
-
 
 	def process_cache(self):
 		self.log.log("--- START PROCESSING CACHE ---")
@@ -621,11 +612,9 @@ class main(sgmllib.SGMLParser):
 		time.sleep(3)
 
 
-
 # ****************************************************************************************************************************
 
 # MAIN CODE: SCRIPT START HERE
-
 # increase this process niceness (other processes have higher priority)
 os.nice(10)
 

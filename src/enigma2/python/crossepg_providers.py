@@ -16,6 +16,7 @@ from crossepg_locale import _
 
 from crossepglib import *
 
+
 class CrossEPG_Providers(Screen):
 	def __init__(self, session, protocol):
 		if (getDesktop(0).size().width() < 800):

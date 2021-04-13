@@ -23,6 +23,7 @@ from time import *
 
 import os
 
+
 class CrossEPG_Setup(Screen):
 	def __init__(self, session):
 		if (getDesktop(0).size().width() < 800):

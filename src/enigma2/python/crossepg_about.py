@@ -15,6 +15,7 @@ from crossepg_locale import _
 import os
 import sys
 
+
 class CrossEPG_About(Screen):
 	def __init__(self, session):
 		self.session = session

@@ -17,6 +17,8 @@ import _enigma
 # 1 edg nemesis patch
 # 2 oudeis patch
 # 3 crossepg v2.1 patch
+
+
 def getEPGPatchType():
 	try:
 		xepgpatch = new.instancemethod(_enigma.eEPGCache_crossepgImportEPGv21, None, eEPGCache)
@@ -43,6 +45,7 @@ def getEPGPatchType():
 		pass
 
 	return -1
+
 
 class CrossEPG_Config:
 	providers = []
@@ -296,6 +299,7 @@ class CrossEPG_Config:
 			os.unlink(self.db_root + "/crossepg.log")
 		except Exception, e:
 			print e
+
 
 class CrossEPG_Wrapper:
 	EVENT_READY = 0

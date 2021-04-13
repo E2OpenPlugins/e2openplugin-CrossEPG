@@ -38,6 +38,7 @@ except Exception, e:
 
 import _enigma
 
+
 class CrossEPG_Menu(Screen):
 	def __init__(self, session):
 		if (getDesktop(0).size().width() < 800):

@@ -13,6 +13,7 @@ from time import *
 
 import os
 
+
 class CrossEPG_Auto(Screen):
 	POLL_TIMER = 1800000	# poll every 30 minutes
 	#POLL_TIMER = 18000
@@ -300,5 +301,6 @@ class CrossEPG_Auto(Screen):
 			print "[CrossEPG_Auto] coming back in standby"
 			from Screens.Standby import Standby
 			self.session.open(Standby)
+
 
 crossepg_auto = CrossEPG_Auto()
