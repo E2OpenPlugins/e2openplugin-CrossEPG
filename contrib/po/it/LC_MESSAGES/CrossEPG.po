@@ -2,19 +2,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2 - crossepg\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-30 11:14+0100\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Alexwilmac <ghenessior@gmail.com>\n"
-"Language-Team: www.linsat.net <spaeleus@croci.org>\n"
+"POT-Creation-Date: 2011-04-30 11:18+0100\n"
+"PO-Revision-Date: 2020-05-06 15:13+0900\n"
+"Last-Translator: Alexwilmac-insanity\n"
+"Language-Team:  <vuplus-community>\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.7.3\n"
+"X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Basepath: /media/TREKSTOR/enigma2-svn/crossepg/trunk\n"
-"X-Generator: Poedit 2.2.3\n"
-"X-Poedit-SearchPath-0: /media/TREKSTOR/enigma2-svn/crossepg/trunk\n"
+
+msgid "%a %e %b  %-H:%M"
+msgstr "%a %e %b  %-H:%M"
 
 msgid "%d providers updated"
 msgstr "%d provider aggiornati"
@@ -34,23 +35,41 @@ msgstr "Dimensioni db alias: %s"
 msgid "An EPG downloader"
 msgstr "Downloader EPG"
 
+msgid "Auto"
+msgstr "Auto"
+
 msgid "Automatically reboot the decoder after a manual download"
-msgstr "Riavviare dopo un download manuale"
+msgstr "Riavviare automaticamente dopo un download manuale"
 
 msgid "Automatically reboot the decoder after a scheduled download"
-msgstr "Riavviare automaticamente il decoder dopo un download programmato"
+msgstr "Riavviare automaticamente dopo un download programmato"
 
-msgid "Back"
-msgstr "Indietro"
+msgid "Cancel"
+msgstr "Annulla"
+
+msgid "Cannot allocate the demuxer"
+msgstr "Impossibile allocare il demuxer"
+
+msgid "Cannot free NIM because a recording is in progress"
+msgstr "Non posso liberare il tuner perché è in corso una registrazione"
+
+msgid "Cannot get frontend"
+msgstr "Impossibile ottenere il frontend"
+
+msgid "Cannot get the NIM"
+msgstr "Impossibile usare il tuner"
 
 msgid "Cannot retrieve rytec sources"
 msgstr "Impossibile recuperare le fonti rytec"
 
 msgid "Cannot retrieve xepgdb sources"
-msgstr "Impossibile recuperare le fonti xepgbd"
+msgstr "Impossibile recuperare le fonti xepgdb"
 
 msgid "Channels count: %s"
 msgstr "Numero canali: %s"
+
+msgid "Close"
+msgstr "Chiudi"
 
 msgid "Configure"
 msgstr "Configurazione"
@@ -61,11 +80,14 @@ msgstr "Conversione dati..."
 msgid "Creation time: %s"
 msgstr "Ora di creazione: %s"
 
-msgid "CrossEPG - Providers start order"
-msgstr "CrossEPG -  Ordine di avvio provider"
+msgid "CrossEPG"
+msgstr "CrossEPG"
 
 msgid "CrossEPG Force Reload"
-msgstr "\"Force reload\" di CrossEPG"
+msgstr "Forzare ricaricamento di CrossEPG"
+
+msgid "CrossEPG Setup"
+msgstr "Impostazioni CrossEPG"
 
 msgid "CrossEPG automatic actions"
 msgstr "Automatismi di CrossEPG"
@@ -85,23 +107,29 @@ msgstr "Espansione elenco canali"
 msgid "Deflating events"
 msgstr "Espansione eventi"
 
+msgid "Defragment database"
+msgstr "Deframmentare il database"
+
+msgid "Defragmentation..."
+msgstr "Deframmentazione..."
+
 msgid "Descriptors db size: %s"
 msgstr "Dimensioni db descrizioni: %s"
 
-msgid "Disable"
-msgstr "Disabilitare"
+msgid "Disabled"
+msgstr "Disabilitato"
 
 msgid "Download"
 msgstr "Download"
 
 msgid "Download epg once a day"
-msgstr "Scaricare l'epg una volta al giorno"
+msgstr "Scaricare l'EPG una volta al giorno"
 
 msgid "Download now"
 msgstr "Download"
 
-msgid "Download on tune"
-msgstr "Download su sintonia"
+msgid "Downloader"
+msgstr "Downloader"
 
 msgid "Downloading"
 msgstr "Download..."
@@ -117,35 +145,41 @@ msgstr "Download eventi"
 
 msgid ""
 "Drive where you save data.\n"
-"The drive MUST be mounted in rw. If you can't see your device here probably "
-"is mounted as read only or autofs handle it only in read only mode. In case "
-"of mount it manually and try again"
+"The drive MUST be mounted in rw. If you can't see your device here probably is "
+"mounted as read only or autofs handle it only in read only mode. In case of "
+"mount it manually and try again"
 msgstr ""
 "Supporto per il salvataggio dei dati.\n"
-"Il supporto DEVE essere montato in modalità RW. Se non compare in elenco "
-"probabilmente è montato in sola lettura o autofs riesce a  gestirlo "
-"esclusivamente in sola lettura. Montarlo manualmente e riprovare."
-
-msgid "Enable"
-msgstr "Abilitare"
+"Il supporto DEVE essere montato  R/W [lettura/scrittura].\n"
+"Se non è rilevato, probabilmente è montato R/O [sola lettura].\n"
+"Montarlo manualmente e riprovare"
 
 msgid "Enable csv import"
-msgstr "Abilitare importazione csv"
+msgstr "Abilitare l'importazione csv"
+
+msgid "Enabled"
+msgstr "Abilitare"
+
+msgid "Enough Retries, delaying till next schedule."
+msgstr "Troppi tentativi, rimando fino alla prossima pianificazione."
 
 msgid "Events count: %s"
 msgstr "Numero eventi: %s"
+
+msgid "Force Reload"
+msgstr "Forzare caricamento"
 
 msgid "Force csv import now"
 msgstr "Forzare l'importazione csv"
 
 msgid "Force epg reload"
-msgstr "Forzare il caricamento epg"
+msgstr "Forzare il caricamento EPG"
 
 msgid "Force epg reload on boot"
-msgstr "Forzare il caricamento epg all'avvio"
+msgstr "Forzare il caricamento EPG all'avvio"
 
 msgid "Force epg.dat conversion now"
-msgstr "Forzare la conversione di epg.dat"
+msgstr "Forzare conversione epg.dat"
 
 msgid "Hashes count: %s"
 msgstr "Numero chiavi: %s"
@@ -163,6 +197,9 @@ msgstr ""
 msgid "Indexes db size: %s"
 msgstr "Dimensioni db indici: %s"
 
+msgid "Info"
+msgstr "Info"
+
 msgid "Info about database"
 msgstr "Info sul database"
 
@@ -177,7 +214,7 @@ msgid ""
 "This option doesn't work with crossepg patch v2"
 msgstr ""
 "Lamedb usato per la conversione di epg.dat.\n"
-"Questa opzione non funziona con la patch crossepg v2"
+"Questa opzione non funziona con la versione di Crossepg v2"
 
 msgid "Last update time: %s"
 msgstr "Ora ultimo aggiornamento: %s"
@@ -185,50 +222,54 @@ msgstr "Ora ultimo aggiornamento: %s"
 msgid "Loading data"
 msgstr "Caricamento dati..."
 
-msgid "MHW2 providers"
-msgstr "Provider MHW2"
+msgid "MHW2"
+msgstr "MHW2"
 
 msgid "Merging XEPGDB"
 msgstr "Unione XEPGDB"
 
 msgid "Move down"
-msgstr "Spostare giù"
+msgstr "Sposta giù"
 
 msgid "Move up"
-msgstr "Spostare su"
+msgstr "Sposta su"
 
-msgid ""
-"Only for opentv providers.\n"
-"If you zap on channel used from a provider it download the epg in background"
-msgstr ""
-"Solo per provider opentv.\n"
-"In caso di sintonia sul canale previsto, il download dell'epg avverrà in "
-"background"
+msgid "No DVB-S NIMs founds"
+msgstr "Nessun tuner DVB-S configurato"
+
+msgid "No valid NIM found"
+msgstr "Nessun tuner valido trovato"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "OpenTV"
+msgstr "OpenTV"
 
 msgid "OpenTV providers"
 msgstr "Provider OpenTV"
 
 msgid ""
 "PLEASE READ!\n"
-"No disk found. An hard drive or an usb pen is HARDLY SUGGESTED. If you still "
-"want use your internal flash pay attention to:\n"
-"(1) If you don't have enough free space your box may completely block and "
-"you need to flash it again\n"
+"A hard drive or an usb pen is STRONGLY SUGGESTED. If you still want use your "
+"internal flash pay attention to:\n"
+"(1) If you don't have enough free space your box may completely block and you "
+"need to flash it again\n"
 "(2) Many write operations on your internal flash may damage your flash memory"
 msgstr ""
 "LEGGERE ATTENTAMENTE!\n"
-"Nessun disco trovato. Si raccomanda l'utilizzo di un HDD o una penna USB. "
-"Volendo Utilizzare la flash interna, ricordare che:\n"
-"1) In caso di spazio insufficiente, il box potrebbe bloccarsi completamente, "
-"magari costringendo a reistallare l'immagine.2) Ripetute operazioni di "
-"scrittura sulla flash interna potrebbero danneggiarla o abbreviarne la vita "
-"operativa."
+"Nessun disco trovato. Si raccomanda l'utilizzo di un HDD o di una chiavetta "
+"USB. Volendo utilizzare la flash interna, ricordare che:\n"
+"1) In caso di spazio insufficiente il box potrebbe bloccarsi completamente, "
+"costringendoti a reinstallare l'immagine\n"
+"2) Ripetute operazioni di scrittura nella flash interna potrebbero danneggiarla "
+"o abbreviarne la vita."
 
 msgid "Parsing"
 msgstr "Analisi..."
 
 msgid "Parsing channels list"
-msgstr "Analisi elenco canali"
+msgstr "Analisi lista canali"
 
 msgid "Parsing events"
 msgstr "Analisi eventi"
@@ -238,9 +279,6 @@ msgstr "Analisi sommari..."
 
 msgid "Parsing titles"
 msgstr "Analisi titoli..."
-
-msgid "Please configure crossepg before start downloader"
-msgstr "Configurare crossepg prima di avviare il download"
 
 msgid "Preferred lamedb"
 msgstr "Lamedb preferito"
@@ -260,8 +298,11 @@ msgstr "Lettura sommari..."
 msgid "Reading titles"
 msgstr "Lettura titoli..."
 
+msgid "Really close without saving settings?"
+msgstr "Uscire senza salvare le modifiche?"
+
 msgid "Reboot after a manual download"
-msgstr "Riavviare dopo uno scaricamento manuale"
+msgstr "Riavviare dopo un download manuale"
 
 msgid "Reboot after a scheduled download"
 msgstr "Riavviare dopo un download programmato"
@@ -270,11 +311,15 @@ msgid ""
 "Reload epg at every boot.\n"
 "Normally it's not necessary but recover epg after an enigma2 crash"
 msgstr ""
-"Ricaricare l'epg a ogni riavvio.\n"
-"Normalmente non necessario, ricostruisce l'epg in caso di crash di enigma2"
+"Ricaricare l'EPG a ogni riavvio.\n"
+"Normalmente non è necessario, ma ricostruisce l'EPG in caso di crash del "
+"sistema."
 
 msgid "Running script"
 msgstr "Esecuzione script..."
+
+msgid "Save"
+msgstr "Salva"
 
 msgid "Saving data"
 msgstr "Salvataggio dati..."
@@ -288,17 +333,23 @@ msgstr "Download programmato alle"
 msgid "Scheduled download disabled"
 msgstr "Download programmato disabilitato"
 
+msgid "Scripts"
+msgstr "Script"
+
 msgid "Scripts providers"
 msgstr "Script provider"
 
 msgid "Show 'Force reload' as plugin"
-msgstr "Mostrare \"Force reload\" come plugin"
+msgstr "Mostrare 'Forzare ricaricamento' come plugin"
 
 msgid "Show as extension"
 msgstr "Mostrare come estensione"
 
 msgid "Show as plugin"
 msgstr "Mostrare come plugin"
+
+msgid "Show crossepg force load in plugin menu"
+msgstr "Mostrare forzare caricamento CrossEPG nel menu plugin"
 
 msgid "Show crossepg in extensions menu"
 msgstr "Mostrare nel menu estensioni"
@@ -327,9 +378,6 @@ msgstr "Dimensioni totali: %s"
 msgid "Update rytec providers"
 msgstr "Aggiornare provider rytec"
 
-msgid "Update xepgdb providers"
-msgstr "Aggiornare provider xepgdb"
-
 msgid "Updating rytec providers..."
 msgstr "Aggiornamento provider rytec..."
 
@@ -344,16 +392,33 @@ msgid ""
 "downloaded every hour.\n"
 "XMLTV providers will be always downloaded only once a day"
 msgstr ""
-"Se il decoder si trova in standby, il download dell'epg di provider opentv "
+"Se il decoder si trova in standby, il download dell'EPG dei provider opentv "
 "verrà effettuato ogni ora.\n"
-"Il download dei dati di provider XMLTV verrà in ogni caso effettuato solo "
-"una volta al giorno"
+"Il download dei dati dei provider XMLTV verrà in ogni caso effettuato solo una "
+"volta al giorno"
 
-msgid "XEPGDB providers"
-msgstr "Provider XEPGDB"
+msgid "XEPGDB"
+msgstr "XEPGDB"
+
+msgid "XMLTV"
+msgstr "XMLTV"
 
 msgid "XMLTV providers"
-msgstr "Provider XMLTV"
+msgstr "Providers XMLTV"
+
+msgid ""
+"You need to configure crossepg before starting downloader.\n"
+"Would You like to do it now ?"
+msgstr ""
+"È necessario configurare CrossEPG prima di avviare il downloader.\n"
+"Desideri farlo ora?"
+
+msgid ""
+"Your epg about to update,\n"
+"Do you want to allow this?"
+msgstr ""
+"La tua EPG sta per aggiornarsi:\n"
+"procedo?"
 
 msgid "disabled"
 msgstr "Disabilitato"
@@ -366,3 +431,9 @@ msgstr "Lamedb principale"
 
 msgid "once a day"
 msgstr "Una volta al giorno"
+
+msgid "providers"
+msgstr "Providers"
+
+msgid "unknown version"
+msgstr "Versione sconosciuta"
